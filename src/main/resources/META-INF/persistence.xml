@@ -3,8 +3,6 @@
              version="2.0">
     <persistence-unit name="PostgresDS">
         <jta-data-source>java:jboss/datasources/PostgresDS</jta-data-source>
-        <class>edu.piotrjonski.scrumus.model.ProjectEntity</class>
-        <class>edu.piotrjonski.scrumus.model.SprintEntity</class>
         <properties>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
