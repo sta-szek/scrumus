@@ -20,15 +20,13 @@ public class SessionBean {
     public void putsmthtoDB() {
         String projectKey = "PRKEY";
         String projectName = "Project Name";
+        String projectDescription = "Testowy projekt";
         String sprintName1 = "Sprint 1";
         String sprintName2 = "Sprint 2";
-        TimeRange timeRange1 = new TimeRange(LocalDateTime.now(),
-                                             LocalDateTime.now()
-                                                          .plusDays(7));
-        TimeRange timeRange2 = new TimeRange(LocalDateTime.now()
-                                                          .plusDays(7),
-                                             LocalDateTime.now()
-                                                          .plusDays(14));
+        LocalDateTime now = LocalDateTime.now();
+        TimeRange timeRange1 = new TimeRange(now, now.plusDays(7));
+        TimeRange timeRange2 = new TimeRange(now.plusDays(7),
+                                             now.plusDays(14));
         String storyName1 = "Story name 1";
         String storyName2 = "Story name 2";
         String issueSummary1 = "Issue summary 1";
@@ -40,11 +38,14 @@ public class SessionBean {
         String description3 = "Description3";
         String description4 = "Description4";
 
+
         // --------- ISSUES
-        Issue issue1 = new Issue(0, projectKey + "0", issueSummary1, description1);
-        Issue issue2 = new Issue(0, projectKey + "1", issueSummary2, description2);
-        Issue issue3 = new Issue(0, projectKey + "2", issueSummary3, description3);
-        Issue issue4 = new Issue(0, projectKey + "3", issueSummary4, description4);
+        IssueType issueType = new IssueType(0, "Task");
+
+        Issue issue1 = new Issue(0, projectKey + "0", issueSummary1, description1, now, null, issueType);
+        Issue issue2 = new Issue(0, projectKey + "1", issueSummary2, description2, now, null, issueType);
+        Issue issue3 = new Issue(0, projectKey + "2", issueSummary3, description3, now, null, issueType);
+        Issue issue4 = new Issue(0, projectKey + "3", issueSummary4, description4, now, null, issueType);
         List<Issue> issues1 = new ArrayList<>();
         List<Issue> issues2 = new ArrayList<>();
         issues1.add(issue1);
@@ -68,7 +69,7 @@ public class SessionBean {
         sprints.add(sprint2);
 
         // --------- PROJEKTY
-        Project project = new Project(0, projectKey, projectName, sprints);
+        Project project = new Project(0, projectKey, projectName, projectDescription, sprints, now);
 
         // --------- BACKLOGI
         List<Issue> backlogIssues1 = new ArrayList<>();
@@ -81,9 +82,11 @@ public class SessionBean {
 
         List<Sprint> sprints1 = new ArrayList<>();
         List<Story> stories3 = new ArrayList<>();
-        stories3.add(new Story(0, "name", 10, createIssues(100)));
-        sprints1.add(new Sprint(0, "name", new TimeRange(LocalDateTime.now(), LocalDateTime.now()), stories3));
-        Project project1 = new Project(0, "p2", "p2", sprints1);
+        stories3.add(new Story(0, "name", 10, createIssues(10, issueType)));
+        sprints1.add(new Sprint(0, "name", new TimeRange(now, now), stories3));
+        Project project1 = new Project(0, "p2", "p2", projectDescription, sprints1, now);
+        entityManager.persist(issueType);
+        issueType = entityManager.find(IssueType.class, 1);
         entityManager.persist(project1);
         // entityManager.persist(backlog1);
         // entityManager.persist(backlog2);
@@ -97,7 +100,7 @@ public class SessionBean {
 
     }
 
-    private List<Issue> createIssues(int amount) {
+    private List<Issue> createIssues(int amount, IssueType issueType) {
         List<Issue> issues = new ArrayList<>(amount);
         for (int i = 0; i < amount; i++) {
             issues.add(new Issue(0,
@@ -110,7 +113,9 @@ public class SessionBean {
                                  " long descriptionVery long descriptionVery long descriptionVery long " +
                                  "descriptionVery long descriptionVery long descriptionVery long descriptionVery long" +
                                  " descriptionVery long descriptionVery long descriptionVery long descriptionVery " +
-                                 "long descriptionVery long descriptionVery long descriptionVery long description"));
+                                 "long descriptionVery long descriptionVery long descriptionVery long description",
+                                 LocalDateTime.now(),
+                                 null, issueType));
         }
         return issues;
     }

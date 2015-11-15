@@ -6,24 +6,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
+/**
+ * Represents issue type datastore object.
+ */
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Story {
+public class IssueType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(length = 255, nullable = false)
+    @Column(length = 32, unique = true, nullable = false)
     private String name;
-
-    @Column(nullable = false)
-    private int points;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Issue> issues;
 }
