@@ -38,11 +38,14 @@ public class SessionBean {
         String description3 = "Description3";
         String description4 = "Description4";
 
+
         // --------- ISSUES
-        Issue issue1 = new Issue(0, projectKey + "0", issueSummary1, description1, now, null);
-        Issue issue2 = new Issue(0, projectKey + "1", issueSummary2, description2, now, null);
-        Issue issue3 = new Issue(0, projectKey + "2", issueSummary3, description3, now, null);
-        Issue issue4 = new Issue(0, projectKey + "3", issueSummary4, description4, now, null);
+        IssueType issueType = new IssueType(0, "Task");
+
+        Issue issue1 = new Issue(0, projectKey + "0", issueSummary1, description1, now, null, issueType);
+        Issue issue2 = new Issue(0, projectKey + "1", issueSummary2, description2, now, null, issueType);
+        Issue issue3 = new Issue(0, projectKey + "2", issueSummary3, description3, now, null, issueType);
+        Issue issue4 = new Issue(0, projectKey + "3", issueSummary4, description4, now, null, issueType);
         List<Issue> issues1 = new ArrayList<>();
         List<Issue> issues2 = new ArrayList<>();
         issues1.add(issue1);
@@ -79,9 +82,11 @@ public class SessionBean {
 
         List<Sprint> sprints1 = new ArrayList<>();
         List<Story> stories3 = new ArrayList<>();
-        stories3.add(new Story(0, "name", 10, createIssues(100)));
+        stories3.add(new Story(0, "name", 10, createIssues(10, issueType)));
         sprints1.add(new Sprint(0, "name", new TimeRange(now, now), stories3));
         Project project1 = new Project(0, "p2", "p2", projectDescription, sprints1, now);
+        entityManager.persist(issueType);
+        issueType = entityManager.find(IssueType.class, 1);
         entityManager.persist(project1);
         // entityManager.persist(backlog1);
         // entityManager.persist(backlog2);
@@ -95,7 +100,7 @@ public class SessionBean {
 
     }
 
-    private List<Issue> createIssues(int amount) {
+    private List<Issue> createIssues(int amount, IssueType issueType) {
         List<Issue> issues = new ArrayList<>(amount);
         for (int i = 0; i < amount; i++) {
             issues.add(new Issue(0,
@@ -110,7 +115,7 @@ public class SessionBean {
                                  " descriptionVery long descriptionVery long descriptionVery long descriptionVery " +
                                  "long descriptionVery long descriptionVery long descriptionVery long description",
                                  LocalDateTime.now(),
-                                 null));
+                                 null, issueType));
         }
         return issues;
     }
