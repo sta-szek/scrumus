@@ -1,29 +1,30 @@
 package edu.piotrjonski.scrumus.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
+import java.time.LocalDateTime;
 
+/**
+ * Represents comment datastore object.
+ */
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Story {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(length = 255, nullable = false)
-    private String name;
+    @Column(length = 4096, nullable = false)
+    private String commentBody;
 
     @Column(nullable = false)
-    private int points;
+    private LocalDateTime creationDate = LocalDateTime.now();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Issue> issues;
+
 }
