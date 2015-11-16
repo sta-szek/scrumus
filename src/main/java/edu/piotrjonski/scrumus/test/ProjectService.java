@@ -25,7 +25,6 @@ public class ProjectService {
         //sessionBean.putsmthtoDB();
         Project project = sessionBean.getProjectEntity();
 
-
         return Response.ok(project)
                        .build();
 
