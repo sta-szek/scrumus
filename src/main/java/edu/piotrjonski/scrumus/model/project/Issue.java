@@ -32,6 +32,9 @@ public class Issue {
     @Column(length = 4096, nullable = true)
     private String description;
 
+    @Column(length = 4096, nullable = true)
+    private String definitionOfDone;
+
     @Column(nullable = false)
     private LocalDateTime creationDate = LocalDateTime.now();
 
