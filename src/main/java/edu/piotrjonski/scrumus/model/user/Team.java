@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -29,5 +28,5 @@ public class Team {
     private List<Developer> developers;
 
     @ManyToMany(mappedBy = "teams")
-    private Collection<Project> projects;
+    private List<Project> projects;
 }

@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.model.project;
 
+import edu.piotrjonski.scrumus.model.user.Developer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,5 +27,6 @@ public class Comment {
     @Column(nullable = false)
     private LocalDateTime creationDate = LocalDateTime.now();
 
-
+    @ManyToOne
+    private Developer developer;
 }
