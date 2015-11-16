@@ -24,6 +24,9 @@ public class Story {
     @Column(length = 255, nullable = false)
     private String name;
 
+    @Column(length = 4096, nullable = true)
+    private String definitionOfDone;
+
     @Column(nullable = false)
     private int points;
 

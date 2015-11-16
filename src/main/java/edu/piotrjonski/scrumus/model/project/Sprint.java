@@ -23,11 +23,13 @@ public class Sprint {
     @Column(nullable = false, length = 64)
     private String name;
 
+    @Column(length = 4096, nullable = true)
+    private String definitionOfDone;
+
     @Embedded
     private TimeRange timeRange;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Story> stories;
-
 
 }
