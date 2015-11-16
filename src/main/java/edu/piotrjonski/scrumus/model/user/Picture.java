@@ -1,5 +1,4 @@
-package edu.piotrjonski.scrumus.model;
-
+package edu.piotrjonski.scrumus.model.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,18 +7,21 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 /**
- * Represents issue type datastore object.
+ * Represents picture object.
  */
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class IssueType {
+@Entity
+public class Picture {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(length = 32, unique = true, nullable = false)
+    @Column(nullable = false, length = 255, unique = false)
     private String name;
+
+    @Lob
+    private byte[] data;
 }

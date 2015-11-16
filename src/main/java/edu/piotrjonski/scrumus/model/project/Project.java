@@ -1,5 +1,6 @@
-package edu.piotrjonski.scrumus.model;
+package edu.piotrjonski.scrumus.model.project;
 
+import edu.piotrjonski.scrumus.model.user.Team;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,14 +10,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Represents project datastore object.
+ * Represents project object.
  */
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @NamedQueries({@NamedQuery(name = Project.FIND_BY_ID, query = Project.FIND_BY_ID_QUERY),
                @NamedQuery(name = Project.FIND_BY_KEY, query = Project.FIND_BY_KEY_QUERY)})
+@Entity
 public class Project {
 
     public static final String FIND_BY_ID = "findById";
@@ -39,11 +40,16 @@ public class Project {
     @Column(length = 4096, nullable = true)
     private String description;
 
+    @Column(nullable = false)
+    private LocalDateTime creationDate = LocalDateTime.now();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Sprint> sprints;
 
-    @Column(nullable = false)
-    private LocalDateTime creationDate = LocalDateTime.now();
+    @ManyToMany
+    private List<Team> teams;
+
+    @OneToOne
+    private Backlog backlog;
 
 }

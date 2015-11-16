@@ -1,4 +1,4 @@
-package edu.piotrjonski.scrumus.model;
+package edu.piotrjonski.scrumus.model.project;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,10 +10,10 @@ import java.util.List;
 /**
  * Represents sprint datastore object.
  */
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Sprint {
 
     @Id

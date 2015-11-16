@@ -1,5 +1,6 @@
-package edu.piotrjonski.scrumus.model;
+package edu.piotrjonski.scrumus.model.project;
 
+import edu.piotrjonski.scrumus.model.user.Developer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,12 +9,12 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
- * Represents comment datastore object.
+ * Represents comment object.
  */
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Comment {
 
     @Id
@@ -26,5 +27,6 @@ public class Comment {
     @Column(nullable = false)
     private LocalDateTime creationDate = LocalDateTime.now();
 
-
+    @ManyToOne
+    private Developer developer;
 }
