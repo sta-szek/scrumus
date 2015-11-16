@@ -1,4 +1,4 @@
-package edu.piotrjonski.scrumus.model;
+package edu.piotrjonski.scrumus.model.project;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,12 +8,12 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
- * Represents comment datastore object.
+ * Represents comment object.
  */
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Comment {
 
     @Id

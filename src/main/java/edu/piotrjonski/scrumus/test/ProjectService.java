@@ -1,6 +1,6 @@
 package edu.piotrjonski.scrumus.test;
 
-import edu.piotrjonski.scrumus.model.Project;
+import edu.piotrjonski.scrumus.model.project.Project;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -22,7 +22,7 @@ public class ProjectService {
     @GET
     @Produces("application/json")
     public Response getProject() {
-        sessionBean.putsmthtoDB();
+        //sessionBean.putsmthtoDB();
         Project project = sessionBean.getProjectEntity();
 
 

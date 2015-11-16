@@ -1,4 +1,4 @@
-package edu.piotrjonski.scrumus.model;
+package edu.piotrjonski.scrumus.model.project;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,12 +10,12 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 /**
- * Represents retrospective minuses datastore object.
+ * Represents retrospective minus object.
  */
-@Embeddable
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Embeddable
 public class RetrospectiveItem {
 
     @Column(nullable = false)

@@ -1,4 +1,4 @@
-package edu.piotrjonski.scrumus.model;
+package edu.piotrjonski.scrumus.model.project;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 /**
  * Represents time range between two dates.
  */
-@Embeddable
 @Data
 @NoArgsConstructor
-@AllArgsConstructor(suppressConstructorProperties = true)
+@AllArgsConstructor
+@Embeddable
 public class TimeRange {
 
     @Column(nullable = false)

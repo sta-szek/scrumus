@@ -1,4 +1,4 @@
-package edu.piotrjonski.scrumus.model;
+package edu.piotrjonski.scrumus.model.project;
 
 
 import lombok.AllArgsConstructor;
@@ -8,10 +8,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
+/**
+ * Represents story object.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Story {
 
     @Id

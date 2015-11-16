@@ -1,23 +1,24 @@
-package edu.piotrjonski.scrumus.model;
+package edu.piotrjonski.scrumus.model.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
-@Entity
+/**
+ * Represents admin object.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Backlog {
+@Entity
+public class Admin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToMany
-    private List<Issue> issues;
-
+    @OneToOne
+    private Developer developer;
 }
