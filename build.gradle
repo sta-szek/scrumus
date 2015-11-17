@@ -12,8 +12,8 @@ defaultTasks 'clean', 'test', 'build'
 description = 'Web Project'
 version = '1.0'
 
-String appName = 'myProject'
-String vendor = 'My Company, Inc.'
+String appName = 'scrumus'
+String vendor = 'Scrumus'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8

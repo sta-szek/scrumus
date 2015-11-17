@@ -22,7 +22,7 @@ public class Team {
     private int id;
 
     @Column(nullable = false, length = 30, unique = false)
-    private String firstName;
+    private String name;
 
     @ManyToMany
     private List<Developer> developers;

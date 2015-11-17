@@ -32,4 +32,7 @@ public class Sprint {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Story> stories;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Retrospective retrospective;
+
 }
