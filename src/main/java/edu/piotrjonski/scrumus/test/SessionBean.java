@@ -1,6 +1,6 @@
 package edu.piotrjonski.scrumus.test;
 
-import edu.piotrjonski.scrumus.model.project.Project;
+import edu.piotrjonski.scrumus.dao.model.project.Project;
 
 import javax.ejb.Singleton;
 import javax.inject.Inject;
@@ -83,7 +83,7 @@ public class SessionBean {
 //        sprints1.add(new Sprint(0, "name", new TimeRange(now, now), stories3));
 //        Project project1 = new Project(0, "p2", "p2", projectDescription, sprints1, now);
 //        entityManager.persist(issueType);
-//        issueType = entityManager.find(IssueType.class, 1);
+//        issueType = entityManager.findByKey(IssueType.class, 1);
 //        entityManager.persist(project1);
 //        // entityManager.persist(backlog1);
 //        // entityManager.persist(backlog2);

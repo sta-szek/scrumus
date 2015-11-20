@@ -1,4 +1,4 @@
-package edu.piotrjonski.scrumus.model.project;
+package edu.piotrjonski.scrumus.dao.model.project;
 
 /**
  * Represents retrospective item type such as plus or minus.

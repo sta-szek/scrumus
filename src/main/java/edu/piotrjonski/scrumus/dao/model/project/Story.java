@@ -1,4 +1,4 @@
-package edu.piotrjonski.scrumus.model.project;
+package edu.piotrjonski.scrumus.dao.model.project;
 
 
 import lombok.AllArgsConstructor;

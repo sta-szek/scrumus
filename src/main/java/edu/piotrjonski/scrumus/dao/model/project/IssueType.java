@@ -1,28 +1,25 @@
-package edu.piotrjonski.scrumus.model.user;
+package edu.piotrjonski.scrumus.dao.model.project;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
- * Represents scrum master object.
+ * Represents issue type object.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class ScrumMaster {
+public class IssueType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne
-    private Developer developer;
-
-    @OneToMany
-    private List<Team> teams;
+    @Column(length = 32, unique = true, nullable = false)
+    private String name;
 }

@@ -1,6 +1,6 @@
-package edu.piotrjonski.scrumus.model.user;
+package edu.piotrjonski.scrumus.dao.model.user;
 
-import edu.piotrjonski.scrumus.model.project.Project;
+import edu.piotrjonski.scrumus.dao.model.project.Project;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

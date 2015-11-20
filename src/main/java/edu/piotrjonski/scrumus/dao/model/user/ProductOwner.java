@@ -1,6 +1,6 @@
-package edu.piotrjonski.scrumus.model.project;
+package edu.piotrjonski.scrumus.dao.model.user;
 
-
+import edu.piotrjonski.scrumus.dao.model.project.Project;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,18 +8,21 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 /**
- * Represents issue type object.
+ * Represents product owner object.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class IssueType {
+public class ProductOwner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(length = 32, unique = true, nullable = false)
-    private String name;
+    @OneToOne
+    private Developer developer;
+
+    @OneToOne
+    private Project project;
 }

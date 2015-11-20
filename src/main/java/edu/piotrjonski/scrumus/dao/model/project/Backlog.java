@@ -1,27 +1,26 @@
-package edu.piotrjonski.scrumus.model.user;
+package edu.piotrjonski.scrumus.dao.model.project;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
- * Represents picture object.
+ * Represents backlog object.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Picture {
+public class Backlog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, length = 255, unique = false)
-    private String name;
+    @OneToMany
+    private List<Issue> issues;
 
-    @Lob
-    private byte[] data;
 }

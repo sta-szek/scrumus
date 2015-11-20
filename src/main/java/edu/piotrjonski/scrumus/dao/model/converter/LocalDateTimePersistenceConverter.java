@@ -1,4 +1,4 @@
-package edu.piotrjonski.scrumus.model.converter;
+package edu.piotrjonski.scrumus.dao.model.converter;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

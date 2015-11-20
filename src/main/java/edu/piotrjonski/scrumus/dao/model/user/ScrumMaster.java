@@ -1,19 +1,20 @@
-package edu.piotrjonski.scrumus.model.user;
+package edu.piotrjonski.scrumus.dao.model.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
- * Represents admin object.
+ * Represents scrum master object.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Admin {
+public class ScrumMaster {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,4 +22,7 @@ public class Admin {
 
     @OneToOne
     private Developer developer;
+
+    @OneToMany
+    private List<Team> teams;
 }

@@ -1,6 +1,5 @@
-package edu.piotrjonski.scrumus.model.user;
+package edu.piotrjonski.scrumus.dao.model.user;
 
-import edu.piotrjonski.scrumus.model.project.Project;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,13 +7,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 /**
- * Represents product owner object.
+ * Represents admin object.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class ProductOwner {
+public class Admin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +21,4 @@ public class ProductOwner {
 
     @OneToOne
     private Developer developer;
-
-    @OneToOne
-    private Project project;
 }

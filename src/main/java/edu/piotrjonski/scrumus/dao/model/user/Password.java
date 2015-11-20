@@ -1,26 +1,27 @@
-package edu.piotrjonski.scrumus.model.project;
+package edu.piotrjonski.scrumus.dao.model.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
- * Represents backlog object.
+ * Represents password object.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Backlog {
+public class Password {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToMany
-    private List<Issue> issues;
+    @Column(nullable = false, length = 1024, unique = false)
+    private String password;
 
+    @OneToOne
+    private Developer developer;
 }

@@ -1,4 +1,4 @@
-package edu.piotrjonski.scrumus.model.user;
+package edu.piotrjonski.scrumus.dao.model.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@NamedQueries({@NamedQuery(name = Developer.FIND_ALL, query = Developer.FIND_ALL_QUERY)})
 public class Developer {
+
+    public static final String FIND_ALL = "findAll";
+
+    protected static final String FIND_ALL_QUERY = "SELECT d FROM Developer d";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +29,7 @@ public class Developer {
     private String firstName;
 
     @Column(nullable = false, length = 30, unique = false)
-    private String lastName;
+    private String surname;
 
     @Column(nullable = false, length = 20, unique = true)
     private String username;

@@ -1,6 +1,6 @@
 package edu.piotrjonski.scrumus.test;
 
-import edu.piotrjonski.scrumus.model.project.Project;
+import edu.piotrjonski.scrumus.dao.model.project.Project;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
