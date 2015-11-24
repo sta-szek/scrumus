@@ -24,6 +24,7 @@ public class TeamDAO extends AbstractDAO<Team, edu.piotrjonski.scrumus.domain.Te
     public Team mapToDatabaseModel(final edu.piotrjonski.scrumus.domain.Team domainModel) {
         Team team = new Team();
         team.setName(domainModel.getName());
+        team.setId(domainModel.getId());
         team.setProjects(projectDAO.mapToDatabaseModel(domainModel.getProjects()));
         return team;
     }
