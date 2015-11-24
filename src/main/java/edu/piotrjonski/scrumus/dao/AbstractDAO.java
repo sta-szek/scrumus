@@ -3,7 +3,6 @@ package edu.piotrjonski.scrumus.dao;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,8 +20,8 @@ public abstract class AbstractDAO<T, V> {
         this.entityClass = entityClass;
     }
 
-    public Optional<V> findByKey(@NotNull(message = "{edu.piotrjonski.scrumus.dao.developer.key.null}") Object key) {
-        return Optional.ofNullable(mapToDomainModel(entityManager.find(entityClass, key)));
+    public Optional<V> findByKey(Object key) {
+        return Optional.ofNullable(mapToDomainModelIfNotNull(entityManager.find(entityClass, key)));
     }
 
     public List<V> findAll() {
@@ -30,10 +29,9 @@ public abstract class AbstractDAO<T, V> {
         return mapToDomainModel(dbEntities);
     }
 
-    public Optional<V> saveOrUpdate(
-            @NotNull(message = "{edu.piotrjonski.scrumus.dao.developer.domainObject.null}") V domainObject) {
-        T dbEntity = entityManager.merge(mapToDatabaseModel(domainObject));
-        return Optional.ofNullable(mapToDomainModel(dbEntity));
+    public Optional<V> saveOrUpdate(V domainObject) {
+        T dbEntity = entityManager.merge(mapToDatabaseModelIfNotNull(domainObject));
+        return Optional.ofNullable(mapToDomainModelIfNotNull(dbEntity));
     }
 
     public void delete(Object id) {
@@ -45,25 +43,38 @@ public abstract class AbstractDAO<T, V> {
         domainObjects.forEach(this::delete);
     }
 
-    public abstract T mapToDatabaseModel(V developer);
+    public List<T> mapToDatabaseModel(List<V> domainModels) {
+        return domainModels.stream()
+                           .map(this::mapToDatabaseModelIfNotNull)
+                           .collect(Collectors.toList());
+    }
 
-    public abstract V mapToDomainModel(T developer);
-
-    public List<T> mapToDatabaseModel(List<V> entities) {
-        return entities.stream()
-                       .map(this::mapToDatabaseModel)
+    public List<V> mapToDomainModel(List<T> dbModels) {
+        return dbModels.stream()
+                       .map(this::mapToDomainModelIfNotNull)
                        .collect(Collectors.toList());
     }
 
-    public List<V> mapToDomainModel(List<T> entities) {
-        return entities.stream()
-                       .map(this::mapToDomainModel)
-                       .collect(Collectors.toList());
+    public T mapToDatabaseModelIfNotNull(V domainModel) {
+        return domainModel != null
+               ? mapToDatabaseModel(domainModel)
+               : null;
     }
+
+    public V mapToDomainModelIfNotNull(T dbModel) {
+        return dbModel != null
+               ? mapToDomainModel(dbModel)
+               : null;
+    }
+
+    protected abstract T mapToDatabaseModel(V domainModel);
+
+    protected abstract V mapToDomainModel(T dbModel);
 
     protected abstract Query getFindAllQuery();
 
     protected abstract Query getDeleteByIdQuery();
 
     protected abstract String getId();
+
 }

@@ -15,26 +15,22 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@NamedQueries({@NamedQuery(name = Project.FIND_BY_ID, query = Project.FIND_BY_ID_QUERY),
-               @NamedQuery(name = Project.FIND_BY_KEY, query = Project.FIND_BY_KEY_QUERY)})
+@NamedQueries({@NamedQuery(name = Project.FIND_ALL, query = Project.FIND_ALL_QUERY),
+               @NamedQuery(name = Project.DELETE_BY_KEY, query = Project.DELETE_BY_KEY_QUERY)})
 @Entity
 public class Project {
 
-    public static final String FIND_BY_ID = "findById";
-    public static final String FIND_BY_ID_PARAMETER = "id";
-    public static final String FIND_BY_ID_QUERY = "SELECT project FROM Project project WHERE Project.id = :id";
-    public static final String FIND_BY_KEY = "findByKey";
-    public static final String FIND_BY_KEY_PARAMETER = "key";
-    public static final String FIND_BY_KEY_QUERY = "SELECT project FROM Project project WHERE Project.key = :key";
+    public static final String FIND_ALL = "findAllProjects";
+    public static final String FIND_ALL_QUERY = "SELECT p FROM Project p";
+    public static final String DELETE_BY_KEY = "deleteProjectByKey";
+    public static final String KEY = "key";
+    protected static final String DELETE_BY_KEY_QUERY = "DELETE FROM Project p WHERE p.key=:" + KEY;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
     @Column(length = 8, nullable = false, unique = true)
     private String key;
 
-    @Column(nullable = false, length = 255, unique = true)
+    @Column(length = 255, nullable = false, unique = true)
     private String name;
 
     @Column(length = 4096, nullable = true)
@@ -46,13 +42,12 @@ public class Project {
     @Column(nullable = false)
     private LocalDateTime creationDate = LocalDateTime.now();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Sprint> sprints;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Team> teams;
 
-    @OneToOne
-    private Backlog backlog;
-
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Backlog backlog = new Backlog();
 }

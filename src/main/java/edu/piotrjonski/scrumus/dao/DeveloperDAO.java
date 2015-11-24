@@ -19,30 +19,24 @@ public class DeveloperDAO extends AbstractDAO<Developer, edu.piotrjonski.scrumus
     }
 
     @Override
-    public Developer mapToDatabaseModel(final edu.piotrjonski.scrumus.domain.Developer developer) {
-        if (developer == null) {
-            return null;
-        }
+    public Developer mapToDatabaseModel(final edu.piotrjonski.scrumus.domain.Developer domainModel) {
         Developer dbDeveloper = new Developer();
-        dbDeveloper.setId(developer.getId());
-        dbDeveloper.setFirstName(developer.getFirstName());
-        dbDeveloper.setSurname(developer.getSurname());
-        dbDeveloper.setUsername(developer.getUsername());
-        dbDeveloper.setEmail(developer.getEmail());
+        dbDeveloper.setId(domainModel.getId());
+        dbDeveloper.setFirstName(domainModel.getFirstName());
+        dbDeveloper.setSurname(domainModel.getSurname());
+        dbDeveloper.setUsername(domainModel.getUsername());
+        dbDeveloper.setEmail(domainModel.getEmail());
         return dbDeveloper;
     }
 
     @Override
-    public edu.piotrjonski.scrumus.domain.Developer mapToDomainModel(final Developer developer) {
-        if (developer == null) {
-            return null;
-        }
+    public edu.piotrjonski.scrumus.domain.Developer mapToDomainModel(final Developer dbModel) {
         edu.piotrjonski.scrumus.domain.Developer domainDeveloper = new edu.piotrjonski.scrumus.domain.Developer();
-        domainDeveloper.setId(developer.getId());
-        domainDeveloper.setFirstName(developer.getFirstName());
-        domainDeveloper.setSurname(developer.getSurname());
-        domainDeveloper.setUsername(developer.getUsername());
-        domainDeveloper.setEmail(developer.getEmail());
+        domainDeveloper.setId(dbModel.getId());
+        domainDeveloper.setFirstName(dbModel.getFirstName());
+        domainDeveloper.setSurname(dbModel.getSurname());
+        domainDeveloper.setUsername(dbModel.getUsername());
+        domainDeveloper.setEmail(dbModel.getEmail());
         return domainDeveloper;
     }
 
@@ -60,6 +54,4 @@ public class DeveloperDAO extends AbstractDAO<Developer, edu.piotrjonski.scrumus
     protected String getId() {
         return Developer.ID;
     }
-
-
 }

@@ -21,10 +21,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
 
 @RunWith(Arquillian.class)
-public class DeveloperDAOTest {
+public class DeveloperDAOIT {
 
     public static final String EMAIL = "jako@company.com";
     public static final String USERNAME = "jako";
@@ -43,12 +42,10 @@ public class DeveloperDAOTest {
 
     @Deployment
     public static WebArchive createDeployment() {
-        WebArchive war = ShrinkWrap.create(EmbeddedGradleImporter.class, "scrumus-arquillian-tests.war")
-                                   .forThisProjectDirectory()
-                                   .importBuildOutput()
-                                   .as(WebArchive.class);
-
-        return war;
+        return ShrinkWrap.create(EmbeddedGradleImporter.class, "scrumus-arquillian-tests.war")
+                         .forThisProjectDirectory()
+                         .importBuildOutput()
+                         .as(WebArchive.class);
     }
 
     @Before
@@ -65,7 +62,7 @@ public class DeveloperDAOTest {
     @Test
     public void shouldSave() {
         // given
-        Developer developer = createDeveloper();
+        Developer developer = createDevloper();
 
         // when
         developerDAO.saveOrUpdate(developer);
@@ -78,39 +75,39 @@ public class DeveloperDAOTest {
     @Test
     public void shouldUpdate() {
         // given
-        String updatedDeveloperName = "UpdatedDeveloper";
-        Developer developer = createDeveloper();
+        String updatedUserName = "UpdatedUser";
+        Developer developer = createDevloper();
         developer = developerDAO.mapToDomainModel(entityManager.merge(developerDAO.mapToDatabaseModel(developer)));
-        developer.setFirstName(updatedDeveloperName);
+        developer.setFirstName(updatedUserName);
 
         // when
         developer = developerDAO.saveOrUpdate(developer)
                                 .get();
 
         // then
-        assertThat(developer.getFirstName()).isEqualTo(updatedDeveloperName);
+        assertThat(developer.getFirstName()).isEqualTo(updatedUserName);
     }
 
     @Test
     public void shouldDelete() {
         // given
-        Developer developer = createDeveloper();
+        Developer developer = createDevloper();
         developer = developerDAO.mapToDomainModel(entityManager.merge(developerDAO.mapToDatabaseModel(developer)));
 
         // when
         developerDAO.delete(developer.getId());
-        int allDevelopers = findAll().size();
+        int allUsers = findAll().size();
 
         // then
-        assertThat(allDevelopers).isEqualTo(0);
+        assertThat(allUsers).isEqualTo(0);
     }
 
     @Test
     public void shouldFindAll() {
         // given
-        Developer developer1 = createDeveloper();
-        Developer developer2 = createDeveloper();
-        Developer developer3 = createDeveloper();
+        Developer developer1 = createDevloper();
+        Developer developer2 = createDevloper();
+        Developer developer3 = createDevloper();
 
         int id1 = entityManager.merge(developerDAO.mapToDatabaseModel(developer1))
                                .getId();
@@ -136,8 +133,8 @@ public class DeveloperDAOTest {
     @Test
     public void shouldFindByKey() {
         // given
-        Developer developer1 = createDeveloper();
-        Developer developer2 = createDeveloper();
+        Developer developer1 = createDevloper();
+        Developer developer2 = createDevloper();
         int id = entityManager.merge(developerDAO.mapToDatabaseModel(developer1))
                               .getId();
         entityManager.merge(developerDAO.mapToDatabaseModel(developer2));
@@ -156,38 +153,10 @@ public class DeveloperDAOTest {
         // given
 
         // when
-        Optional<Developer> developer = developerDAO.findByKey(0);
+        Optional<Developer> user = developerDAO.findByKey(0);
 
         // then
-        assertThat(developer).isEmpty();
-    }
-
-    @Test
-    public void shouldThrowExceptionWhenKeyIsNull() {
-        // given
-        Object key = null;
-
-        // when
-        Throwable thrown = catchThrowable(() -> {
-            developerDAO.findByKey(key);
-        });
-
-        // then
-        assertThat(thrown).hasCauseInstanceOf(javax.validation.ConstraintViolationException.class)
-                          .hasMessageContaining("The developer key must not be null!");
-    }
-
-    @Test
-    public void shouldThrowExceptionWhenDeveloperIsNull() {
-        // given
-        Developer developer = null;
-
-        // when
-        Throwable thrown = catchThrowable(() -> developerDAO.saveOrUpdate(developer));
-
-        // then
-        assertThat(thrown).hasCauseInstanceOf(javax.validation.ConstraintViolationException.class)
-                          .hasMessageContaining("The developer must not be null!");
+        assertThat(user).isEmpty();
     }
 
     private void startTransaction() throws SystemException, NotSupportedException {
@@ -204,7 +173,7 @@ public class DeveloperDAOTest {
         entityManager.clear();
     }
 
-    private Developer createDeveloper() {
+    private Developer createDevloper() {
         Developer developer = new Developer();
         developer.setFirstName(JAN + nextUniqueValue);
         developer.setSurname(SURNAME + nextUniqueValue);
@@ -218,6 +187,5 @@ public class DeveloperDAOTest {
         return entityManager.createQuery("SELECT d FROM Developer d")
                             .getResultList();
     }
-
 
 }

@@ -18,8 +18,8 @@ import java.util.List;
                @NamedQuery(name = Developer.DELETE_BY_ID, query = Developer.DELETE_BY_ID_QUERY)})
 public class Developer {
 
-    public static final String FIND_ALL = "findAll";
-    public static final String DELETE_BY_ID = "deleteById";
+    public static final String FIND_ALL = "findAllDevelopers";
+    public static final String DELETE_BY_ID = "deleteDeveloperById";
     public static final String ID = "id";
 
     protected static final String FIND_ALL_QUERY = "SELECT d FROM Developer d";
