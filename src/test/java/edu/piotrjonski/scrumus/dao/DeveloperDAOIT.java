@@ -77,7 +77,8 @@ public class DeveloperDAOIT {
         // given
         String updatedUserName = "UpdatedUser";
         Developer developer = createDevloper();
-        developer = developerDAO.mapToDomainModel(entityManager.merge(developerDAO.mapToDatabaseModel(developer)));
+        developer = developerDAO.mapToDomainModelIfNotNull(entityManager.merge(developerDAO.mapToDatabaseModelIfNotNull(
+                developer)));
         developer.setFirstName(updatedUserName);
 
         // when
@@ -92,7 +93,8 @@ public class DeveloperDAOIT {
     public void shouldDelete() {
         // given
         Developer developer = createDevloper();
-        developer = developerDAO.mapToDomainModel(entityManager.merge(developerDAO.mapToDatabaseModel(developer)));
+        developer = developerDAO.mapToDomainModelIfNotNull(entityManager.merge(developerDAO.mapToDatabaseModelIfNotNull(
+                developer)));
 
         // when
         developerDAO.delete(developer.getId());
@@ -109,11 +111,11 @@ public class DeveloperDAOIT {
         Developer developer2 = createDevloper();
         Developer developer3 = createDevloper();
 
-        int id1 = entityManager.merge(developerDAO.mapToDatabaseModel(developer1))
+        int id1 = entityManager.merge(developerDAO.mapToDatabaseModelIfNotNull(developer1))
                                .getId();
-        int id2 = entityManager.merge(developerDAO.mapToDatabaseModel(developer2))
+        int id2 = entityManager.merge(developerDAO.mapToDatabaseModelIfNotNull(developer2))
                                .getId();
-        int id3 = entityManager.merge(developerDAO.mapToDatabaseModel(developer3))
+        int id3 = entityManager.merge(developerDAO.mapToDatabaseModelIfNotNull(developer3))
                                .getId();
 
         developer1.setId(id1);
@@ -135,9 +137,9 @@ public class DeveloperDAOIT {
         // given
         Developer developer1 = createDevloper();
         Developer developer2 = createDevloper();
-        int id = entityManager.merge(developerDAO.mapToDatabaseModel(developer1))
+        int id = entityManager.merge(developerDAO.mapToDatabaseModelIfNotNull(developer1))
                               .getId();
-        entityManager.merge(developerDAO.mapToDatabaseModel(developer2));
+        entityManager.merge(developerDAO.mapToDatabaseModelIfNotNull(developer2));
         developer1.setId(id);
 
         // when

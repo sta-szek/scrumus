@@ -1,13 +1,14 @@
 package edu.piotrjonski.scrumus.dao;
 
 import edu.piotrjonski.scrumus.dao.model.user.TeamEntity;
+import edu.piotrjonski.scrumus.domain.Team;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.Query;
 
 @Stateless
-public class TeamDAO extends AbstractDAO<TeamEntity, edu.piotrjonski.scrumus.domain.Team> {
+public class TeamDAO extends AbstractDAO<TeamEntity, Team> {
 
     @Inject
     private ProjectDAO projectDAO;
@@ -21,7 +22,7 @@ public class TeamDAO extends AbstractDAO<TeamEntity, edu.piotrjonski.scrumus.dom
     }
 
     @Override
-    public TeamEntity mapToDatabaseModel(final edu.piotrjonski.scrumus.domain.Team domainModel) {
+    protected TeamEntity mapToDatabaseModel(final edu.piotrjonski.scrumus.domain.Team domainModel) {
         TeamEntity teamEntity = new TeamEntity();
         teamEntity.setName(domainModel.getName());
         teamEntity.setId(domainModel.getId());
@@ -30,7 +31,7 @@ public class TeamDAO extends AbstractDAO<TeamEntity, edu.piotrjonski.scrumus.dom
     }
 
     @Override
-    public edu.piotrjonski.scrumus.domain.Team mapToDomainModel(final TeamEntity dbModel) {
+    protected edu.piotrjonski.scrumus.domain.Team mapToDomainModel(final TeamEntity dbModel) {
         edu.piotrjonski.scrumus.domain.Team team = new edu.piotrjonski.scrumus.domain.Team();
         team.setId(dbModel.getId());
         team.setName(dbModel.getName());

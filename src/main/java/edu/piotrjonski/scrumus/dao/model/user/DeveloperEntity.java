@@ -43,7 +43,7 @@ public class DeveloperEntity {
     @Column(nullable = false, length = 40, unique = true)
     private String email;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private PictureEntity pictureEntity;
 
     @ManyToMany(mappedBy = "developerEntities")

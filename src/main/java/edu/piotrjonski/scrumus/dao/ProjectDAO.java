@@ -17,7 +17,7 @@ public class ProjectDAO extends AbstractDAO<Project, edu.piotrjonski.scrumus.dom
     }
 
     @Override
-    public Project mapToDatabaseModel(final edu.piotrjonski.scrumus.domain.Project domainModel) {
+    protected Project mapToDatabaseModel(final edu.piotrjonski.scrumus.domain.Project domainModel) {
         Project project = new Project();
         project.setKey(domainModel.getKey());
         project.setName(domainModel.getName());
@@ -28,7 +28,7 @@ public class ProjectDAO extends AbstractDAO<Project, edu.piotrjonski.scrumus.dom
     }
 
     @Override
-    public edu.piotrjonski.scrumus.domain.Project mapToDomainModel(final Project dbModel) {
+    protected edu.piotrjonski.scrumus.domain.Project mapToDomainModel(final Project dbModel) {
         edu.piotrjonski.scrumus.domain.Project project = new edu.piotrjonski.scrumus.domain.Project();
         project.setCreationDate(dbModel.getCreationDate());
         project.setDefinitionOfDone(dbModel.getDefinitionOfDone());

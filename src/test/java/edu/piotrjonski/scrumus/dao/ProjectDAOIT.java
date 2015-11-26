@@ -28,7 +28,7 @@ public class ProjectDAOIT {
 
     public static final String NAME = "name";
     public static final LocalDateTime NOW = LocalDateTime.now();
-    public static final String DESCRITPION = "Descritpion";
+    public static final String DESCRIPTION = "Descritpion";
     public static int nextUniqueValue = 0;
 
     @Inject
@@ -77,7 +77,8 @@ public class ProjectDAOIT {
         // given
         String updatedName = "UpdatedName";
         Project project = createProject();
-        project = projectDAO.mapToDomainModel(entityManager.merge(projectDAO.mapToDatabaseModel(project)));
+        project = projectDAO.mapToDomainModelIfNotNull(entityManager.merge(projectDAO.mapToDatabaseModelIfNotNull(
+                project)));
         project.setName(updatedName);
 
         // when
@@ -92,7 +93,8 @@ public class ProjectDAOIT {
     public void shouldDelete() {
         // given
         Project project = createProject();
-        project = projectDAO.mapToDomainModel(entityManager.merge(projectDAO.mapToDatabaseModel(project)));
+        project = projectDAO.mapToDomainModelIfNotNull(entityManager.merge(projectDAO.mapToDatabaseModelIfNotNull(
+                project)));
 
         // when
         projectDAO.delete(project.getKey());
@@ -109,11 +111,11 @@ public class ProjectDAOIT {
         Project project2 = createProject();
         Project project3 = createProject();
 
-        String id1 = entityManager.merge(projectDAO.mapToDatabaseModel(project1))
+        String id1 = entityManager.merge(projectDAO.mapToDatabaseModelIfNotNull(project1))
                                   .getKey();
-        String id2 = entityManager.merge(projectDAO.mapToDatabaseModel(project2))
+        String id2 = entityManager.merge(projectDAO.mapToDatabaseModelIfNotNull(project2))
                                   .getKey();
-        String id3 = entityManager.merge(projectDAO.mapToDatabaseModel(project3))
+        String id3 = entityManager.merge(projectDAO.mapToDatabaseModelIfNotNull(project3))
                                   .getKey();
 
         project1.setKey(id1);
@@ -135,9 +137,9 @@ public class ProjectDAOIT {
         // given
         Project project1 = createProject();
         Project project2 = createProject();
-        String id = entityManager.merge(projectDAO.mapToDatabaseModel(project1))
+        String id = entityManager.merge(projectDAO.mapToDatabaseModelIfNotNull(project1))
                                  .getKey();
-        entityManager.merge(projectDAO.mapToDatabaseModel(project2));
+        entityManager.merge(projectDAO.mapToDatabaseModelIfNotNull(project2));
         project1.setKey(id);
 
         // when
@@ -178,7 +180,7 @@ public class ProjectDAOIT {
         project.setName(NAME + nextUniqueValue);
         project.setCreationDate(NOW);
         project.setKey(NAME + nextUniqueValue);
-        project.setDescription(DESCRITPION + nextUniqueValue);
+        project.setDescription(DESCRIPTION + nextUniqueValue);
         nextUniqueValue++;
         return project;
     }

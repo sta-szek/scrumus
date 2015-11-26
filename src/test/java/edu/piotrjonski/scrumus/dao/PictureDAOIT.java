@@ -1,8 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
-import edu.piotrjonski.scrumus.domain.Project;
-import edu.piotrjonski.scrumus.domain.Team;
-import org.assertj.core.util.Lists;
+import edu.piotrjonski.scrumus.domain.Picture;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -19,24 +17,21 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
-public class TeamDAOIT {
+public class PictureDAOIT {
 
     public static final String NAME = "name";
-    public static final LocalDateTime NOW = LocalDateTime.now();
+    public static final int ID = 1;
+    public static final byte[] DATA = new byte[5];
     public static int nextUniqueValue = 0;
 
     @Inject
-    private TeamDAO teamDAO;
-
-    @Inject
-    private ProjectDAO projectDAO;
+    private PictureDAO pictureDAO;
 
     @Inject
     private UserTransaction userTransaction;
@@ -66,10 +61,10 @@ public class TeamDAOIT {
     @Test
     public void shouldSave() {
         // given
-        Team team = createTeam();
+        Picture picture = createPicture();
 
         // when
-        teamDAO.saveOrUpdate(team);
+        pictureDAO.saveOrUpdate(picture);
 
         // then
         assertThat(findAll().size()).isEqualTo(1);
@@ -80,76 +75,78 @@ public class TeamDAOIT {
     public void shouldUpdate() {
         // given
         String updatedName = "UpdatedName";
-        Team team = createTeam();
-        team = teamDAO.mapToDomainModelIfNotNull(entityManager.merge(teamDAO.mapToDatabaseModelIfNotNull(team)));
-        team.setName(updatedName);
+        Picture picture = createPicture();
+        picture = pictureDAO.mapToDomainModelIfNotNull(entityManager.merge(pictureDAO.mapToDatabaseModelIfNotNull(
+                picture)));
+        picture.setName(updatedName);
 
         // when
-        team = teamDAO.saveOrUpdate(team)
-                      .get();
+        picture = pictureDAO.saveOrUpdate(picture)
+                            .get();
 
         // then
-        assertThat(team.getName()).isEqualTo(updatedName);
+        assertThat(picture.getName()).isEqualTo(updatedName);
     }
 
     @Test
     public void shouldDelete() {
         // given
-        Team team = createTeam();
-        team = teamDAO.mapToDomainModelIfNotNull(entityManager.merge(teamDAO.mapToDatabaseModelIfNotNull(team)));
+        Picture picture = createPicture();
+        picture = pictureDAO.mapToDomainModelIfNotNull(entityManager.merge(pictureDAO.mapToDatabaseModelIfNotNull(
+                picture)));
 
         // when
-        teamDAO.delete(team.getId());
-        int allUsers = findAll().size();
+        pictureDAO.delete(picture.getId());
+        int allPictures = findAll().size();
 
         // then
-        assertThat(allUsers).isEqualTo(0);
+        assertThat(allPictures).isEqualTo(0);
     }
 
     @Test
     public void shouldFindAll() {
         // given
-        Team team1 = createTeam();
-        Team team2 = createTeam();
-        Team team3 = createTeam();
+        Picture picture1 = createPicture();
+        Picture picture2 = createPicture();
+        Picture picture3 = createPicture();
 
-        int id1 = entityManager.merge(teamDAO.mapToDatabaseModelIfNotNull(team1))
+        int id1 = entityManager.merge(pictureDAO.mapToDatabaseModelIfNotNull(picture1))
                                .getId();
-        int id2 = entityManager.merge(teamDAO.mapToDatabaseModelIfNotNull(team2))
+        int id2 = entityManager.merge(pictureDAO.mapToDatabaseModelIfNotNull(picture2))
                                .getId();
-        int id3 = entityManager.merge(teamDAO.mapToDatabaseModelIfNotNull(team3))
+        int id3 = entityManager.merge(pictureDAO.mapToDatabaseModelIfNotNull(picture3))
                                .getId();
 
-        team1.setId(id1);
-        team2.setId(id2);
-        team3.setId(id3);
+        picture1.setId(id1);
+        picture2.setId(id2);
+        picture3.setId(id3);
 
         // when
-        List<Team> teams = teamDAO.findAll();
+        List<Picture> pictures = pictureDAO.findAll();
 
         // then
-        assertThat(teams).hasSize(3)
-                         .contains(team1)
-                         .contains(team2)
-                         .contains(team3);
+        assertThat(pictures).hasSize(3)
+                            .contains(picture1)
+                            .contains(picture2)
+                            .contains(picture3);
     }
 
     @Test
     public void shouldFindByKey() {
         // given
-        Team team1 = createTeam();
-        Team team2 = createTeam();
-        int id = entityManager.merge(teamDAO.mapToDatabaseModelIfNotNull(team1))
+        Picture picture1 = createPicture();
+        Picture picture2 = createPicture();
+        int id = entityManager.merge(pictureDAO.mapToDatabaseModelIfNotNull(picture1))
                               .getId();
-        entityManager.merge(teamDAO.mapToDatabaseModelIfNotNull(team2));
-        team1.setId(id);
+        entityManager.merge(pictureDAO.mapToDatabaseModelIfNotNull(picture2));
+        picture1.setId(id);
 
         // when
-        Team team = teamDAO.findByKey(id)
-                           .get();
+        Picture picture = pictureDAO.findByKey(id)
+                                    .get();
 
         // then
-        assertThat(team).isEqualTo(team1);
+        assertThat(picture).isEqualTo(picture1);
     }
 
     @Test
@@ -157,7 +154,7 @@ public class TeamDAOIT {
         // given
 
         // when
-        Optional<Team> user = teamDAO.findByKey(0);
+        Optional<Picture> user = pictureDAO.findByKey(0);
 
         // then
         assertThat(user).isEmpty();
@@ -171,31 +168,23 @@ public class TeamDAOIT {
     private void clearData() throws Exception {
         userTransaction.begin();
         entityManager.joinTransaction();
-        entityManager.createQuery("DELETE FROM TeamEntity")
+        entityManager.createQuery("DELETE FROM PictureEntity")
                      .executeUpdate();
         userTransaction.commit();
         entityManager.clear();
     }
 
-    private Team createTeam() {
-        Team team = new Team();
-        team.setName(NAME + nextUniqueValue);
-        team.setProjects(createProjects());
-        return team;
+    private Picture createPicture() {
+        Picture picture = new Picture();
+        picture.setName(NAME + nextUniqueValue);
+        picture.setData(DATA);
+        picture.setId(ID + nextUniqueValue);
+        nextUniqueValue++;
+        return picture;
     }
 
-    private List<Project> createProjects() {
-        Project project = new Project();
-        project.setName(NAME + nextUniqueValue);
-        project.setCreationDate(NOW);
-        project.setKey(NAME + nextUniqueValue);
-        project = projectDAO.mapToDomainModelIfNotNull(entityManager.merge(projectDAO.mapToDatabaseModelIfNotNull(
-                project)));
-        return Lists.newArrayList(project);
-    }
-
-    private List<Team> findAll() {
-        return entityManager.createQuery("SELECT d FROM TeamEntity d")
+    private List<Picture> findAll() {
+        return entityManager.createQuery("SELECT d FROM PictureEntity d")
                             .getResultList();
     }
 }
