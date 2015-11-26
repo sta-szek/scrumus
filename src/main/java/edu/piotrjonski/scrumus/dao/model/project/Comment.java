@@ -1,6 +1,6 @@
 package edu.piotrjonski.scrumus.dao.model.project;
 
-import edu.piotrjonski.scrumus.dao.model.user.Developer;
+import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,5 +28,5 @@ public class Comment {
     private LocalDateTime creationDate = LocalDateTime.now();
 
     @ManyToOne
-    private Developer developer;
+    private DeveloperEntity developerEntity;
 }

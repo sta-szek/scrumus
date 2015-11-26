@@ -1,19 +1,19 @@
 package edu.piotrjonski.scrumus.dao;
 
-import edu.piotrjonski.scrumus.dao.model.user.Team;
+import edu.piotrjonski.scrumus.dao.model.user.TeamEntity;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.Query;
 
 @Stateless
-public class TeamDAO extends AbstractDAO<Team, edu.piotrjonski.scrumus.domain.Team> {
+public class TeamDAO extends AbstractDAO<TeamEntity, edu.piotrjonski.scrumus.domain.Team> {
 
     @Inject
     private ProjectDAO projectDAO;
 
     public TeamDAO() {
-        this(Team.class);
+        this(TeamEntity.class);
     }
 
     private TeamDAO(final Class entityClass) {
@@ -21,16 +21,16 @@ public class TeamDAO extends AbstractDAO<Team, edu.piotrjonski.scrumus.domain.Te
     }
 
     @Override
-    public Team mapToDatabaseModel(final edu.piotrjonski.scrumus.domain.Team domainModel) {
-        Team team = new Team();
-        team.setName(domainModel.getName());
-        team.setId(domainModel.getId());
-        team.setProjects(projectDAO.mapToDatabaseModel(domainModel.getProjects()));
-        return team;
+    public TeamEntity mapToDatabaseModel(final edu.piotrjonski.scrumus.domain.Team domainModel) {
+        TeamEntity teamEntity = new TeamEntity();
+        teamEntity.setName(domainModel.getName());
+        teamEntity.setId(domainModel.getId());
+        teamEntity.setProjects(projectDAO.mapToDatabaseModel(domainModel.getProjects()));
+        return teamEntity;
     }
 
     @Override
-    public edu.piotrjonski.scrumus.domain.Team mapToDomainModel(final Team dbModel) {
+    public edu.piotrjonski.scrumus.domain.Team mapToDomainModel(final TeamEntity dbModel) {
         edu.piotrjonski.scrumus.domain.Team team = new edu.piotrjonski.scrumus.domain.Team();
         team.setId(dbModel.getId());
         team.setName(dbModel.getName());
@@ -40,16 +40,16 @@ public class TeamDAO extends AbstractDAO<Team, edu.piotrjonski.scrumus.domain.Te
 
     @Override
     protected Query getFindAllQuery() {
-        return entityManager.createNamedQuery(Team.FIND_ALL, Team.class);
+        return entityManager.createNamedQuery(TeamEntity.FIND_ALL, TeamEntity.class);
     }
 
     @Override
     protected Query getDeleteByIdQuery() {
-        return entityManager.createNamedQuery(Team.DELETE_BY_ID);
+        return entityManager.createNamedQuery(TeamEntity.DELETE_BY_ID);
     }
 
     @Override
     protected String getId() {
-        return Team.ID;
+        return TeamEntity.ID;
     }
 }

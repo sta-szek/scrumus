@@ -1,6 +1,6 @@
 package edu.piotrjonski.scrumus.dao.model.project;
 
-import edu.piotrjonski.scrumus.dao.model.user.Team;
+import edu.piotrjonski.scrumus.dao.model.user.TeamEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,7 +46,7 @@ public class Project {
     private List<Sprint> sprints;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    private List<Team> teams;
+    private List<TeamEntity> teamEntities;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Backlog backlog = new Backlog();

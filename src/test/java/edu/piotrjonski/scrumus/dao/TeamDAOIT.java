@@ -171,7 +171,7 @@ public class TeamDAOIT {
     private void clearData() throws Exception {
         userTransaction.begin();
         entityManager.joinTransaction();
-        entityManager.createQuery("DELETE FROM Team")
+        entityManager.createQuery("DELETE FROM TeamEntity")
                      .executeUpdate();
         userTransaction.commit();
         entityManager.clear();
@@ -194,7 +194,7 @@ public class TeamDAOIT {
     }
 
     private List<Team> findAll() {
-        return entityManager.createQuery("SELECT d FROM Team d")
+        return entityManager.createQuery("SELECT d FROM TeamEntity d")
                             .getResultList();
     }
 }

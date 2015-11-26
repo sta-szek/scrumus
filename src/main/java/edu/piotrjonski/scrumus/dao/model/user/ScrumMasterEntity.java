@@ -5,23 +5,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
- * Represents picture object.
+ * Represents scrum master object.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Picture {
+@Table(name = "scrum_master")
+public class ScrumMasterEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, length = 255, unique = false)
-    private String name;
+    @OneToOne
+    private DeveloperEntity developerEntity;
 
-    @Lob
-    private byte[] data;
+    @OneToMany
+    private List<TeamEntity> teamEntities;
 }

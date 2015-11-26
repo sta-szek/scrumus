@@ -1,6 +1,5 @@
 package edu.piotrjonski.scrumus.dao.model.user;
 
-import edu.piotrjonski.scrumus.dao.model.project.Project;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,21 +7,22 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 /**
- * Represents product owner object.
+ * Represents password object.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class ProductOwner {
+@Table(name = "password")
+public class PasswordEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne
-    private Developer developer;
+    @Column(nullable = false, length = 1024, unique = false)
+    private String password;
 
     @OneToOne
-    private Project project;
+    private DeveloperEntity developerEntity;
 }

@@ -14,16 +14,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@NamedQueries({@NamedQuery(name = Developer.FIND_ALL, query = Developer.FIND_ALL_QUERY),
-               @NamedQuery(name = Developer.DELETE_BY_ID, query = Developer.DELETE_BY_ID_QUERY)})
-public class Developer {
+@Table(name = "developer")
+@NamedQueries({@NamedQuery(name = DeveloperEntity.FIND_ALL, query = DeveloperEntity.FIND_ALL_QUERY),
+               @NamedQuery(name = DeveloperEntity.DELETE_BY_ID, query = DeveloperEntity.DELETE_BY_ID_QUERY)})
+public class DeveloperEntity {
 
     public static final String FIND_ALL = "findAllDevelopers";
     public static final String DELETE_BY_ID = "deleteDeveloperById";
     public static final String ID = "id";
 
-    protected static final String FIND_ALL_QUERY = "SELECT d FROM Developer d";
-    protected static final String DELETE_BY_ID_QUERY = "DELETE FROM Developer d WHERE d.id=:" + ID;
+    protected static final String FIND_ALL_QUERY = "SELECT d FROM DeveloperEntity d";
+    protected static final String DELETE_BY_ID_QUERY = "DELETE FROM DeveloperEntity d WHERE d.id=:" + ID;
 
 
     @Id
@@ -43,8 +44,8 @@ public class Developer {
     private String email;
 
     @OneToOne
-    private Picture picture;
+    private PictureEntity pictureEntity;
 
-    @ManyToMany(mappedBy = "developers")
-    private List<Team> teams;
+    @ManyToMany(mappedBy = "developerEntities")
+    private List<TeamEntity> teamEntities;
 }

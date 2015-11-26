@@ -7,21 +7,19 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 /**
- * Represents password object.
+ * Represents admin object.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Password {
+@Table(name = "admin")
+public class AdminEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, length = 1024, unique = false)
-    private String password;
-
     @OneToOne
-    private Developer developer;
+    private DeveloperEntity developerEntity;
 }

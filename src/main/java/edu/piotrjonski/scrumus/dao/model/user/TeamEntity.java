@@ -15,16 +15,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@NamedQueries({@NamedQuery(name = Team.FIND_ALL, query = Team.FIND_ALL_QUERY),
-               @NamedQuery(name = Team.DELETE_BY_ID, query = Team.DELETE_BY_ID_QUERY)})
-public class Team {
+@Table(name = "team")
+@NamedQueries({@NamedQuery(name = TeamEntity.FIND_ALL, query = TeamEntity.FIND_ALL_QUERY),
+               @NamedQuery(name = TeamEntity.DELETE_BY_ID, query = TeamEntity.DELETE_BY_ID_QUERY)})
+public class TeamEntity {
 
     public static final String FIND_ALL = "findAllTeams";
     public static final String DELETE_BY_ID = "deleteTeamById";
     public static final String ID = "id";
 
-    protected static final String FIND_ALL_QUERY = "SELECT d FROM Team d";
-    protected static final String DELETE_BY_ID_QUERY = "DELETE FROM Team d WHERE d.id=:" + ID;
+    protected static final String FIND_ALL_QUERY = "SELECT d FROM TeamEntity d";
+    protected static final String DELETE_BY_ID_QUERY = "DELETE FROM TeamEntity d WHERE d.id=:" + ID;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,8 +35,8 @@ public class Team {
     private String name;
 
     @ManyToMany
-    private List<Developer> developers;
+    private List<DeveloperEntity> developerEntities;
 
-    @ManyToMany(mappedBy = "teams")
+    @ManyToMany(mappedBy = "teamEntities")
     private List<Project> projects;
 }

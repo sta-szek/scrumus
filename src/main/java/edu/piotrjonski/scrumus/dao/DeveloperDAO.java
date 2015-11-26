@@ -1,17 +1,17 @@
 package edu.piotrjonski.scrumus.dao;
 
 
-import edu.piotrjonski.scrumus.dao.model.user.Developer;
+import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
 @Stateless
-public class DeveloperDAO extends AbstractDAO<Developer, edu.piotrjonski.scrumus.domain.Developer> {
+public class DeveloperDAO extends AbstractDAO<DeveloperEntity, edu.piotrjonski.scrumus.domain.Developer> {
 
 
     public DeveloperDAO() {
-        this(Developer.class);
+        this(DeveloperEntity.class);
     }
 
     private DeveloperDAO(final Class entityClass) {
@@ -19,18 +19,18 @@ public class DeveloperDAO extends AbstractDAO<Developer, edu.piotrjonski.scrumus
     }
 
     @Override
-    public Developer mapToDatabaseModel(final edu.piotrjonski.scrumus.domain.Developer domainModel) {
-        Developer dbDeveloper = new Developer();
-        dbDeveloper.setId(domainModel.getId());
-        dbDeveloper.setFirstName(domainModel.getFirstName());
-        dbDeveloper.setSurname(domainModel.getSurname());
-        dbDeveloper.setUsername(domainModel.getUsername());
-        dbDeveloper.setEmail(domainModel.getEmail());
-        return dbDeveloper;
+    public DeveloperEntity mapToDatabaseModel(final edu.piotrjonski.scrumus.domain.Developer domainModel) {
+        DeveloperEntity dbDeveloperEntity = new DeveloperEntity();
+        dbDeveloperEntity.setId(domainModel.getId());
+        dbDeveloperEntity.setFirstName(domainModel.getFirstName());
+        dbDeveloperEntity.setSurname(domainModel.getSurname());
+        dbDeveloperEntity.setUsername(domainModel.getUsername());
+        dbDeveloperEntity.setEmail(domainModel.getEmail());
+        return dbDeveloperEntity;
     }
 
     @Override
-    public edu.piotrjonski.scrumus.domain.Developer mapToDomainModel(final Developer dbModel) {
+    public edu.piotrjonski.scrumus.domain.Developer mapToDomainModel(final DeveloperEntity dbModel) {
         edu.piotrjonski.scrumus.domain.Developer domainDeveloper = new edu.piotrjonski.scrumus.domain.Developer();
         domainDeveloper.setId(dbModel.getId());
         domainDeveloper.setFirstName(dbModel.getFirstName());
@@ -42,16 +42,16 @@ public class DeveloperDAO extends AbstractDAO<Developer, edu.piotrjonski.scrumus
 
     @Override
     protected Query getFindAllQuery() {
-        return entityManager.createNamedQuery(Developer.FIND_ALL, Developer.class);
+        return entityManager.createNamedQuery(DeveloperEntity.FIND_ALL, DeveloperEntity.class);
     }
 
     @Override
     protected Query getDeleteByIdQuery() {
-        return entityManager.createNamedQuery(Developer.DELETE_BY_ID);
+        return entityManager.createNamedQuery(DeveloperEntity.DELETE_BY_ID);
     }
 
     @Override
     protected String getId() {
-        return Developer.ID;
+        return DeveloperEntity.ID;
     }
 }

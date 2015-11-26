@@ -167,7 +167,7 @@ public class DeveloperDAOIT {
     private void clearData() throws Exception {
         userTransaction.begin();
         entityManager.joinTransaction();
-        entityManager.createQuery("DELETE FROM Developer")
+        entityManager.createQuery("DELETE FROM DeveloperEntity")
                      .executeUpdate();
         userTransaction.commit();
         entityManager.clear();
@@ -184,7 +184,7 @@ public class DeveloperDAOIT {
     }
 
     private List<Developer> findAll() {
-        return entityManager.createQuery("SELECT d FROM Developer d")
+        return entityManager.createQuery("SELECT d FROM DeveloperEntity d")
                             .getResultList();
     }
 

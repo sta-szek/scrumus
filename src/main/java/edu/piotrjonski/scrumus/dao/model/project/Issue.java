@@ -1,6 +1,6 @@
 package edu.piotrjonski.scrumus.dao.model.project;
 
-import edu.piotrjonski.scrumus.dao.model.user.Developer;
+import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,8 +45,8 @@ public class Issue {
     private IssueType issueType;
 
     @OneToOne
-    private Developer reporter;
+    private DeveloperEntity reporter;
 
     @OneToOne
-    private Developer assignee;
+    private DeveloperEntity assignee;
 }
