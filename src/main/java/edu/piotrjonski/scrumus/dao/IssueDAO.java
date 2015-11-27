@@ -52,7 +52,6 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
     protected Issue mapToDomainModel(final IssueEntity dbModel) {
         Issue issue = new Issue();
         issue.setId(dbModel.getId());
-        issue.setAssigneeId(dbModel.getId());
         issue.setComments(commentDAO.mapToDomainModel(dbModel.getCommentEntities()));
         issue.setCreationDate(dbModel.getCreationDate());
         issue.setDefinitionOfDone(dbModel.getDefinitionOfDone());
@@ -60,9 +59,11 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
         issue.setId(dbModel.getId());
         issue.setIssueType(issueTypeDAO.mapToDomainModel(dbModel.getIssueTypeEntity()));
         issue.setKey(dbModel.getKey());
+        issue.setSummary(dbModel.getSummary());
+        issue.setAssigneeId(dbModel.getAssignee()
+                                   .getId());
         issue.setReporterId(dbModel.getReporter()
                                    .getId());
-        issue.setSummary(dbModel.getSummary());
         return issue;
     }
 
