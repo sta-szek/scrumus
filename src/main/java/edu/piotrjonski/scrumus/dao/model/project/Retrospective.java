@@ -28,5 +28,5 @@ public class Retrospective {
     private List<RetrospectiveItem> retrospectiveItems = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Comment> comments = new ArrayList<>();
+    private List<CommentEntity> commentEntities = new ArrayList<>();
 }

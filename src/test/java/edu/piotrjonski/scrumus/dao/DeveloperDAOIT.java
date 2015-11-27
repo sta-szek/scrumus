@@ -28,7 +28,7 @@ public class DeveloperDAOIT {
     public static final String EMAIL = "jako@company.com";
     public static final String USERNAME = "jako";
     public static final String SURNAME = "Kowalski";
-    public static final String JAN = "Jan";
+    public static final String FIRSTNAME = "Jan";
     public static int nextUniqueValue = 0;
 
     @Inject
@@ -177,7 +177,7 @@ public class DeveloperDAOIT {
 
     private Developer createDevloper() {
         Developer developer = new Developer();
-        developer.setFirstName(JAN + nextUniqueValue);
+        developer.setFirstName(FIRSTNAME + nextUniqueValue);
         developer.setSurname(SURNAME + nextUniqueValue);
         developer.setUsername(USERNAME + nextUniqueValue);
         developer.setEmail(EMAIL + nextUniqueValue);

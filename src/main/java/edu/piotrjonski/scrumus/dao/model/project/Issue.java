@@ -39,7 +39,7 @@ public class Issue {
     private LocalDateTime creationDate = LocalDateTime.now();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Comment> comments = new ArrayList<>();
+    private List<CommentEntity> commentEntities = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
     private IssueType issueType;

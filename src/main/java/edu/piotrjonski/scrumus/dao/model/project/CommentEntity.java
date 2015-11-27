@@ -15,7 +15,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Comment {
+@Table(name = "comment")
+@NamedQueries({@NamedQuery(name = CommentEntity.FIND_ALL, query = CommentEntity.FIND_ALL_QUERY),
+               @NamedQuery(name = CommentEntity.DELETE_BY_ID, query = CommentEntity.DELETE_BY_ID_QUERY)})
+public class CommentEntity {
+
+    public static final String FIND_ALL = "findAllComments";
+    public static final String DELETE_BY_ID = "deleteCommentById";
+    public static final String ID = "id";
+
+    protected static final String FIND_ALL_QUERY = "SELECT c FROM CommentEntity c";
+    protected static final String DELETE_BY_ID_QUERY = "DELETE FROM CommentEntity c WHERE c.id=:" + ID;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
