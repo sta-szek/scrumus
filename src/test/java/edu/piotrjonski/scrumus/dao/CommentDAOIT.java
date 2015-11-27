@@ -170,9 +170,9 @@ public class CommentDAOIT {
         developerEntity.setFirstName("firstname" + nextUniqueValue);
         developerEntity.setSurname("surname" + nextUniqueValue);
         developerEntity.setUsername("username" + nextUniqueValue);
-        developerEntity.setId(nextUniqueValue);
+        //developerEntity.setId(nextUniqueValue);
         nextUniqueValue++;
-        entityManager.merge(developerEntity);
+        entityManager.persist(developerEntity);
     }
 
     private void startTransaction() throws SystemException, NotSupportedException {
