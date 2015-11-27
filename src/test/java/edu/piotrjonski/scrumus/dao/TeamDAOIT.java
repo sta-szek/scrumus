@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Arquillian.class)
 public class TeamDAOIT {
 
-    public static final String NAME = "name";
+    public static final String NAME = "abcdge";
     public static final LocalDateTime NOW = LocalDateTime.now();
     public static int nextUniqueValue = 0;
 

@@ -1,8 +1,8 @@
 package edu.piotrjonski.scrumus.dao;
 
 
-import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.domain.Comment;
+import edu.piotrjonski.scrumus.domain.Developer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -18,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
+import javax.transaction.Transactional;
 import javax.transaction.UserTransaction;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,7 +33,10 @@ public class CommentDAOIT {
     public static final int ID = 1;
     public static final int DEVELOPER_ID = 1;
     public static final LocalDateTime CREATION_DATE = LocalDateTime.now();
-    public static int nextUniqueValue = 0;
+    public static int nextUniqueValue = 1;
+
+    @Inject
+    private DeveloperDAO developerDAO;
 
     @Inject
     private CommentDAO commentDAO;
@@ -63,9 +67,14 @@ public class CommentDAOIT {
     }
 
     @Test
+    @Transactional
     public void shouldSave() {
         // given
+        int developerId = developerDAO.saveOrUpdate(createDeveloper())
+                                      .get()
+                                      .getId();
         Comment comment = createComment();
+        comment.setDeveloperId(developerId);
 
         // when
         commentDAO.saveOrUpdate(comment);
@@ -76,10 +85,15 @@ public class CommentDAOIT {
     }
 
     @Test
+    @Transactional
     public void shouldUpdate() {
         // given
         String commentBody = "updatedBody";
+        int developerId = developerDAO.saveOrUpdate(createDeveloper())
+                                      .get()
+                                      .getId();
         Comment comment = createComment();
+        comment.setDeveloperId(developerId);
         comment = commentDAO.mapToDomainModelIfNotNull(entityManager.merge(commentDAO.mapToDatabaseModelIfNotNull(
                 comment)));
         comment.setCommentBody(commentBody);
@@ -93,9 +107,14 @@ public class CommentDAOIT {
     }
 
     @Test
+    @Transactional
     public void shouldDelete() {
         // given
+        int developerId = developerDAO.saveOrUpdate(createDeveloper())
+                                      .get()
+                                      .getId();
         Comment comment = createComment();
+        comment.setDeveloperId(developerId);
         comment = commentDAO.mapToDomainModelIfNotNull(entityManager.merge(commentDAO.mapToDatabaseModelIfNotNull(
                 comment)));
 
@@ -108,11 +127,19 @@ public class CommentDAOIT {
     }
 
     @Test
+    @Transactional
     public void shouldFindAll() {
         // given
+
+        int developerId = developerDAO.saveOrUpdate(createDeveloper())
+                                      .get()
+                                      .getId();
         Comment comment1 = createComment();
         Comment comment2 = createComment();
         Comment comment3 = createComment();
+        comment1.setDeveloperId(developerId);
+        comment2.setDeveloperId(developerId);
+        comment3.setDeveloperId(developerId);
 
         int id1 = entityManager.merge(commentDAO.mapToDatabaseModelIfNotNull(comment1))
                                .getId();
@@ -136,10 +163,16 @@ public class CommentDAOIT {
     }
 
     @Test
+    @Transactional
     public void shouldFindByKey() {
         // given
+        int developerId = developerDAO.saveOrUpdate(createDeveloper())
+                                      .get()
+                                      .getId();
         Comment comment1 = createComment();
         Comment comment2 = createComment();
+        comment1.setDeveloperId(developerId);
+        comment2.setDeveloperId(developerId);
         int id = entityManager.merge(commentDAO.mapToDatabaseModelIfNotNull(comment1))
                               .getId();
         entityManager.merge(commentDAO.mapToDatabaseModelIfNotNull(comment2));
@@ -154,6 +187,7 @@ public class CommentDAOIT {
     }
 
     @Test
+    @Transactional
     public void shouldFindEmptyOptional() {
         // given
 
@@ -164,21 +198,18 @@ public class CommentDAOIT {
         assertThat(user).isEmpty();
     }
 
-    private void createAndPersistDeveloper() {
-        DeveloperEntity developerEntity = new DeveloperEntity();
-        developerEntity.setEmail("email" + nextUniqueValue);
-        developerEntity.setFirstName("firstname" + nextUniqueValue);
-        developerEntity.setSurname("surname" + nextUniqueValue);
-        developerEntity.setUsername("username" + nextUniqueValue);
-        //developerEntity.setId(nextUniqueValue);
-        nextUniqueValue++;
-        entityManager.persist(developerEntity);
+    private Developer createDeveloper() {
+        Developer developer = new Developer();
+        developer.setEmail("email" + nextUniqueValue);
+        developer.setFirstName("firstname" + nextUniqueValue);
+        developer.setSurname("surname" + nextUniqueValue);
+        developer.setUsername("username" + nextUniqueValue);
+        return developer;
     }
 
     private void startTransaction() throws SystemException, NotSupportedException {
         userTransaction.begin();
         entityManager.joinTransaction();
-        createAndPersistDeveloper();
     }
 
     private void clearData() throws Exception {
@@ -195,7 +226,6 @@ public class CommentDAOIT {
         comment.setCommentBody(COMMENT_BODY + nextUniqueValue);
         comment.setCreationDate(CREATION_DATE);
         comment.setId(ID + nextUniqueValue);
-        comment.setDeveloperId(DEVELOPER_ID);
         nextUniqueValue++;
         return comment;
     }
