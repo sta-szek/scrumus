@@ -31,5 +31,5 @@ public class Story {
     private int points;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Issue> issues;
+    private List<IssueEntity> issueEntities;
 }

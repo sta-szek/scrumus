@@ -1,11 +1,9 @@
-package edu.piotrjonski.scrumus.dao.model.project;
+package edu.piotrjonski.scrumus.domain;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 
 /**
  * Represents issue type object.
@@ -13,13 +11,8 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 public class IssueType {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(length = 32, unique = true, nullable = false)
     private String name;
 }

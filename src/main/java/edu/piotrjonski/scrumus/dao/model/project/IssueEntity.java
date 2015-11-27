@@ -17,7 +17,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Issue {
+@Table(name = "issue")
+@NamedQueries({@NamedQuery(name = IssueEntity.FIND_ALL, query = IssueEntity.FIND_ALL_QUERY),
+               @NamedQuery(name = IssueEntity.DELETE_BY_ID, query = IssueEntity.DELETE_BY_ID_QUERY)})
+public class IssueEntity {
+
+    public static final String FIND_ALL = "findAllIssues";
+    public static final String DELETE_BY_ID = "deleteIssueById";
+    public static final String ID = "id";
+
+    protected static final String FIND_ALL_QUERY = "SELECT i FROM IssueEntity i";
+    protected static final String DELETE_BY_ID_QUERY = "DELETE FROM IssueEntity i WHERE i.id=:" + ID;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,11 +52,11 @@ public class Issue {
     private List<CommentEntity> commentEntities = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
-    private IssueType issueType;
+    private IssueTypeEntity issueTypeEntity;
 
     @OneToOne
     private DeveloperEntity reporter;
 
-    @OneToOne
+    @ManyToOne(optional = false)
     private DeveloperEntity assignee;
 }
