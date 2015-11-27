@@ -1,7 +1,5 @@
 package edu.piotrjonski.scrumus.domain;
 
-import edu.piotrjonski.scrumus.dao.model.project.CommentEntity;
-import edu.piotrjonski.scrumus.dao.model.project.IssueTypeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

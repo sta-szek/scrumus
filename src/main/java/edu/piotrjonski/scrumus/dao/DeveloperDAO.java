@@ -10,7 +10,6 @@ import javax.persistence.Query;
 @Stateless
 public class DeveloperDAO extends AbstractDAO<DeveloperEntity, Developer> {
 
-
     public DeveloperDAO() {
         this(DeveloperEntity.class);
     }
@@ -20,7 +19,7 @@ public class DeveloperDAO extends AbstractDAO<DeveloperEntity, Developer> {
     }
 
     @Override
-    protected DeveloperEntity mapToDatabaseModel(final edu.piotrjonski.scrumus.domain.Developer domainModel) {
+    protected DeveloperEntity mapToDatabaseModel(final Developer domainModel) {
         DeveloperEntity dbDeveloperEntity = new DeveloperEntity();
         dbDeveloperEntity.setId(domainModel.getId());
         dbDeveloperEntity.setFirstName(domainModel.getFirstName());
@@ -31,7 +30,7 @@ public class DeveloperDAO extends AbstractDAO<DeveloperEntity, Developer> {
     }
 
     @Override
-    protected edu.piotrjonski.scrumus.domain.Developer mapToDomainModel(final DeveloperEntity dbModel) {
+    protected Developer mapToDomainModel(final DeveloperEntity dbModel) {
         edu.piotrjonski.scrumus.domain.Developer domainDeveloper = new edu.piotrjonski.scrumus.domain.Developer();
         domainDeveloper.setId(dbModel.getId());
         domainDeveloper.setFirstName(dbModel.getFirstName());

@@ -29,7 +29,7 @@ public class CommentDAO extends AbstractDAO<CommentEntity, Comment> {
         CommentEntity commentEntity = new CommentEntity();
         commentEntity.setCommentBody(domainModel.getCommentBody());
         commentEntity.setCreationDate(domainModel.getCreationDate());
-        commentEntity.setDeveloperEntity(findDeveloperEntity(domainModel));
+        commentEntity.setDeveloperEntity(findDeveloperEntity(domainModel.getDeveloperId()));
         commentEntity.setId(domainModel.getId());
         return commentEntity;
     }
@@ -60,8 +60,8 @@ public class CommentDAO extends AbstractDAO<CommentEntity, Comment> {
         return CommentEntity.ID;
     }
 
-    private DeveloperEntity findDeveloperEntity(final Comment domainModel) {
-        Optional<Developer> developer = developerDAO.findByKey(domainModel.getDeveloperId());
+    private DeveloperEntity findDeveloperEntity(final int id) {
+        Optional<Developer> developer = developerDAO.findByKey(id);
         return developerDAO.mapToDatabaseModelIfNotNull(developer.get());
     }
 }
