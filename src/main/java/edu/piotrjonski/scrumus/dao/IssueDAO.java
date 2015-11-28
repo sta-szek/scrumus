@@ -41,7 +41,7 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
         issueEntity.setDefinitionOfDone(domainModel.getDefinitionOfDone());
         issueEntity.setDescription(domainModel.getDescription());
         issueEntity.setId(domainModel.getId());
-        issueEntity.setIssueTypeEntity(issueTypeDAO.mapToDatabaseModel(domainModel.getIssueType()));
+        issueEntity.setIssueTypeEntity(issueTypeDAO.mapToDatabaseModelIfNotNull(domainModel.getIssueType()));
         issueEntity.setKey(domainModel.getKey());
         issueEntity.setReporter(findDeveloperEntity(domainModel.getReporterId()));
         issueEntity.setSummary(domainModel.getSummary());
@@ -57,7 +57,7 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
         issue.setDefinitionOfDone(dbModel.getDefinitionOfDone());
         issue.setDescription(dbModel.getDescription());
         issue.setId(dbModel.getId());
-        issue.setIssueType(issueTypeDAO.mapToDomainModel(dbModel.getIssueTypeEntity()));
+        issue.setIssueType(issueTypeDAO.mapToDomainModelIfNotNull(dbModel.getIssueTypeEntity()));
         issue.setKey(dbModel.getKey());
         issue.setSummary(dbModel.getSummary());
         issue.setAssigneeId(dbModel.getAssignee()
@@ -83,7 +83,11 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
     }
 
     private DeveloperEntity findDeveloperEntity(final int id) {
-        Optional<Developer> developer = developerDAO.findByKey(id);
-        return developerDAO.mapToDatabaseModelIfNotNull(developer.get());
+        if (id != 0) {
+            Optional<Developer> developer = developerDAO.findByKey(id);
+            return developerDAO.mapToDatabaseModelIfNotNull(developer.get());
+        } else {
+            return null;
+        }
     }
 }

@@ -51,7 +51,7 @@ public class IssueEntity {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CommentEntity> commentEntities = new ArrayList<>();
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private IssueTypeEntity issueTypeEntity;
 
     @OneToOne

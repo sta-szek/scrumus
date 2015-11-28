@@ -44,15 +44,23 @@ public abstract class AbstractDAO<T, V> {
     }
 
     public List<T> mapToDatabaseModel(List<V> domainModels) {
-        return domainModels.stream()
-                           .map(this::mapToDatabaseModelIfNotNull)
-                           .collect(Collectors.toList());
+        if (domainModels != null) {
+            return domainModels.stream()
+                               .map(this::mapToDatabaseModelIfNotNull)
+                               .collect(Collectors.toList());
+        } else {
+            return null;
+        }
     }
 
     public List<V> mapToDomainModel(List<T> dbModels) {
-        return dbModels.stream()
-                       .map(this::mapToDomainModelIfNotNull)
-                       .collect(Collectors.toList());
+        if (dbModels != null) {
+            return dbModels.stream()
+                           .map(this::mapToDomainModelIfNotNull)
+                           .collect(Collectors.toList());
+        } else {
+            return null;
+        }
     }
 
     public T mapToDatabaseModelIfNotNull(V domainModel) {
