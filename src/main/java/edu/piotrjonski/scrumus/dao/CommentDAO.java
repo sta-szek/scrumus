@@ -62,6 +62,6 @@ public class CommentDAO extends AbstractDAO<CommentEntity, Comment> {
 
     private DeveloperEntity findDeveloperEntity(final int id) {
         Optional<Developer> developer = developerDAO.findByKey(id);
-        return developerDAO.mapToDatabaseModelIfNotNull(developer.get());
+        return developerDAO.mapToDatabaseModelIfNotNull(developer.orElseGet(null));
     }
 }
