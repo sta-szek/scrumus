@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jboss.spec.javax.batch:jboss-batch-api_1.0_spec:1.0.0.Final">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jboss.spec.javax.batch/jboss-batch-api_1.0_spec/1.0.0.Final/7905af7bb3f1f31109cb4ace940f2ca4fa9ca443/jboss-batch-api_1.0_spec-1.0.0.Final.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jboss.spec.javax.batch/jboss-batch-api_1.0_spec/1.0.0.Final/e27c2487c7d2552a4523b4cb98de216717990afd/jboss-batch-api_1.0_spec-1.0.0.Final-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

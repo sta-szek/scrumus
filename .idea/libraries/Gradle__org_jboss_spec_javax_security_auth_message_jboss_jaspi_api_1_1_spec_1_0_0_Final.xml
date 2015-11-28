@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jboss.spec.javax.security.auth.message:jboss-jaspi-api_1.1_spec:1.0.0.Final">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jboss.spec.javax.security.auth.message/jboss-jaspi-api_1.1_spec/1.0.0.Final/a6c6b9bbb21f0d2cdb4230d0314912b53f07ec03/jboss-jaspi-api_1.1_spec-1.0.0.Final.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jboss.spec.javax.security.auth.message/jboss-jaspi-api_1.1_spec/1.0.0.Final/95ee92eb7771c62aff6eed00f2e44c31bf68bdc8/jboss-jaspi-api_1.1_spec-1.0.0.Final-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
