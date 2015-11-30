@@ -22,7 +22,7 @@ public class TeamDAO extends AbstractDAO<TeamEntity, Team> {
     }
 
     @Override
-    protected TeamEntity mapToDatabaseModel(final edu.piotrjonski.scrumus.domain.Team domainModel) {
+    protected TeamEntity mapToDatabaseModel(final Team domainModel) {
         TeamEntity teamEntity = new TeamEntity();
         teamEntity.setName(domainModel.getName());
         teamEntity.setId(domainModel.getId());
@@ -31,8 +31,8 @@ public class TeamDAO extends AbstractDAO<TeamEntity, Team> {
     }
 
     @Override
-    protected edu.piotrjonski.scrumus.domain.Team mapToDomainModel(final TeamEntity dbModel) {
-        edu.piotrjonski.scrumus.domain.Team team = new edu.piotrjonski.scrumus.domain.Team();
+    protected Team mapToDomainModel(final TeamEntity dbModel) {
+        Team team = new Team();
         team.setId(dbModel.getId());
         team.setName(dbModel.getName());
         team.setProjects(projectDAO.mapToDomainModel(dbModel.getProjectEntities()));

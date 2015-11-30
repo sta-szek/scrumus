@@ -14,7 +14,16 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Sprint {
+@Table(name = "sprint")
+@NamedQueries({@NamedQuery(name = SprintEntity.FIND_ALL, query = SprintEntity.FIND_ALL_QUERY),
+               @NamedQuery(name = SprintEntity.DELETE_BY_ID, query = SprintEntity.DELETE_BY_KEY_QUERY)})
+public class SprintEntity {
+
+    public static final String FIND_ALL = "findAllSprints";
+    public static final String FIND_ALL_QUERY = "SELECT p FROM SprintEntity p";
+    public static final String DELETE_BY_ID = "deleteSprintByKey";
+    public static final String ID = "id";
+    protected static final String DELETE_BY_KEY_QUERY = "DELETE FROM SprintEntity p WHERE p.id=:" + ID;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +39,7 @@ public class Sprint {
     private TimeRange timeRange;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Story> stories;
+    private List<StoryEntity> stories;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private RetrospectiveEntity retrospectiveEntity;

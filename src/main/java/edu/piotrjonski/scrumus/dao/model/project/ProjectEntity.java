@@ -44,7 +44,7 @@ public class ProjectEntity {
     private LocalDateTime creationDate = LocalDateTime.now();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Sprint> sprints;
+    private List<SprintEntity> sprintEntities;
 
     @ManyToMany(fetch = FetchType.LAZY)
     private List<TeamEntity> teamEntities;

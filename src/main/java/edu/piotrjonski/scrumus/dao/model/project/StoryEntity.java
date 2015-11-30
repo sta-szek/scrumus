@@ -15,7 +15,16 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Story {
+@Table(name = "story")
+@NamedQueries({@NamedQuery(name = StoryEntity.FIND_ALL, query = StoryEntity.FIND_ALL_QUERY),
+               @NamedQuery(name = StoryEntity.DELETE_BY_ID, query = StoryEntity.DELETE_BY_KEY_QUERY)})
+public class StoryEntity {
+
+    public static final String FIND_ALL = "findAllStories";
+    public static final String FIND_ALL_QUERY = "SELECT p FROM StoryEntity p";
+    public static final String DELETE_BY_ID = "deleteStoryByKey";
+    public static final String ID = "id";
+    protected static final String DELETE_BY_KEY_QUERY = "DELETE FROM StoryEntity p WHERE p.id=:" + ID;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
