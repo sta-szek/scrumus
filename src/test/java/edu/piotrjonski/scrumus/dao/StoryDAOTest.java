@@ -49,8 +49,6 @@ public class StoryDAOTest {
         story.setIssues(Lists.newArrayList(new Issue()));
         story.setName(name);
         story.setPoints(points);
-        story.setDefinitionOfDone(dod);
-        story.setId(id);
 
         // when
         StoryEntity result = storyDAO.mapToDatabaseModel(story);
@@ -76,8 +74,6 @@ public class StoryDAOTest {
         story.setIssueEntities(Lists.newArrayList(new IssueEntity()));
         story.setName(name);
         story.setPoints(points);
-        story.setDefinitionOfDone(dod);
-        story.setId(id);
 
         // when
         Story result = storyDAO.mapToDomainModel(story);

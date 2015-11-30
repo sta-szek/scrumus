@@ -25,7 +25,6 @@ public class StoryEntity {
     public static final String DELETE_BY_ID = "deleteStoryByKey";
     public static final String ID = "id";
     protected static final String DELETE_BY_KEY_QUERY = "DELETE FROM StoryEntity p WHERE p.id=:" + ID;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

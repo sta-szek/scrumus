@@ -16,12 +16,15 @@ import java.util.List;
 @Entity
 @Table(name = "sprint")
 @NamedQueries({@NamedQuery(name = SprintEntity.FIND_ALL, query = SprintEntity.FIND_ALL_QUERY),
-               @NamedQuery(name = SprintEntity.DELETE_BY_ID, query = SprintEntity.DELETE_BY_KEY_QUERY)})
+               @NamedQuery(name = SprintEntity.DELETE_BY_ID, query = SprintEntity.DELETE_BY_KEY_QUERY),
+               @NamedQuery(name = SprintEntity.FIND_ALL_STORIES, query = SprintEntity.FIND_ALL_STORIES_QUERY)})
 public class SprintEntity {
 
     public static final String FIND_ALL = "findAllSprints";
     public static final String FIND_ALL_QUERY = "SELECT p FROM SprintEntity p";
     public static final String DELETE_BY_ID = "deleteSprintByKey";
+    public static final String FIND_ALL_STORIES = "findAllSprintStories";
+    public static final String FIND_ALL_STORIES_QUERY = "SELECT s.stories FROM SprintEntity s";
     public static final String ID = "id";
     protected static final String DELETE_BY_KEY_QUERY = "DELETE FROM SprintEntity p WHERE p.id=:" + ID;
 

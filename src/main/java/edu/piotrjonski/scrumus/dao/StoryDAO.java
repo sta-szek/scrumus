@@ -1,11 +1,14 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.project.SprintEntity;
 import edu.piotrjonski.scrumus.dao.model.project.StoryEntity;
 import edu.piotrjonski.scrumus.domain.Story;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.Query;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Stateless
 public class StoryDAO extends AbstractDAO<StoryEntity, Story> {
@@ -19,6 +22,14 @@ public class StoryDAO extends AbstractDAO<StoryEntity, Story> {
 
     private StoryDAO(final Class entityClass) {
         super(entityClass);
+    }
+
+    public List<Story> findStoriesForSprint(int sprintId) {
+        return entityManager.createNamedQuery(SprintEntity.FIND_ALL_STORIES, StoryEntity.class)
+                            .getResultList()
+                            .stream()
+                            .map(this::mapToDomainModel)
+                            .collect(Collectors.toList());
     }
 
     @Override
