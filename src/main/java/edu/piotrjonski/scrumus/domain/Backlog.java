@@ -1,10 +1,9 @@
-package edu.piotrjonski.scrumus.dao.model.project;
+package edu.piotrjonski.scrumus.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -13,14 +12,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 public class Backlog {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @OneToMany
-    private List<IssueEntity> issueEntities;
+    private List<Issue> issues;
 
 }

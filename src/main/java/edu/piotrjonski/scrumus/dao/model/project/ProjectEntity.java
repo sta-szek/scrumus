@@ -50,5 +50,5 @@ public class ProjectEntity {
     private List<TeamEntity> teamEntities;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Backlog backlog = new Backlog();
+    private BacklogEntity backlogEntity = new BacklogEntity();
 }
