@@ -1,6 +1,6 @@
 package edu.piotrjonski.scrumus.dao.model.user;
 
-import edu.piotrjonski.scrumus.dao.model.project.Project;
+import edu.piotrjonski.scrumus.dao.model.project.ProjectEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,5 +38,5 @@ public class TeamEntity {
     private List<DeveloperEntity> developerEntities;
 
     @ManyToMany(mappedBy = "teamEntities")
-    private List<Project> projects;
+    private List<ProjectEntity> projectEntities;
 }

@@ -1,15 +1,16 @@
 package edu.piotrjonski.scrumus.dao;
 
-import edu.piotrjonski.scrumus.dao.model.project.Project;
+import edu.piotrjonski.scrumus.dao.model.project.ProjectEntity;
+import edu.piotrjonski.scrumus.domain.Project;
 
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
 @Stateless
-public class ProjectDAO extends AbstractDAO<Project, edu.piotrjonski.scrumus.domain.Project> {
+public class ProjectDAO extends AbstractDAO<ProjectEntity, Project> {
 
     public ProjectDAO() {
-        this(Project.class);
+        this(ProjectEntity.class);
     }
 
     private ProjectDAO(final Class entityClass) {
@@ -17,19 +18,19 @@ public class ProjectDAO extends AbstractDAO<Project, edu.piotrjonski.scrumus.dom
     }
 
     @Override
-    protected Project mapToDatabaseModel(final edu.piotrjonski.scrumus.domain.Project domainModel) {
-        Project project = new Project();
-        project.setKey(domainModel.getKey());
-        project.setName(domainModel.getName());
-        project.setCreationDate(domainModel.getCreationDate());
-        project.setDescription(domainModel.getDescription());
-        project.setDefinitionOfDone(domainModel.getDefinitionOfDone());
-        return project;
+    protected ProjectEntity mapToDatabaseModel(final Project domainModel) {
+        ProjectEntity projectEntity = new ProjectEntity();
+        projectEntity.setKey(domainModel.getKey());
+        projectEntity.setName(domainModel.getName());
+        projectEntity.setCreationDate(domainModel.getCreationDate());
+        projectEntity.setDescription(domainModel.getDescription());
+        projectEntity.setDefinitionOfDone(domainModel.getDefinitionOfDone());
+        return projectEntity;
     }
 
     @Override
-    protected edu.piotrjonski.scrumus.domain.Project mapToDomainModel(final Project dbModel) {
-        edu.piotrjonski.scrumus.domain.Project project = new edu.piotrjonski.scrumus.domain.Project();
+    protected edu.piotrjonski.scrumus.domain.Project mapToDomainModel(final ProjectEntity dbModel) {
+        Project project = new Project();
         project.setCreationDate(dbModel.getCreationDate());
         project.setDefinitionOfDone(dbModel.getDefinitionOfDone());
         project.setDescription(dbModel.getDescription());
@@ -40,16 +41,16 @@ public class ProjectDAO extends AbstractDAO<Project, edu.piotrjonski.scrumus.dom
 
     @Override
     protected Query getFindAllQuery() {
-        return entityManager.createNamedQuery(Project.FIND_ALL, Project.class);
+        return entityManager.createNamedQuery(ProjectEntity.FIND_ALL, ProjectEntity.class);
     }
 
     @Override
     protected Query getDeleteByIdQuery() {
-        return entityManager.createNamedQuery(Project.DELETE_BY_KEY);
+        return entityManager.createNamedQuery(ProjectEntity.DELETE_BY_KEY);
     }
 
     @Override
     protected String getId() {
-        return Project.KEY;
+        return ProjectEntity.KEY;
     }
 }

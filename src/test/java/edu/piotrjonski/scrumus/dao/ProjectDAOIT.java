@@ -169,7 +169,7 @@ public class ProjectDAOIT {
     private void clearData() throws Exception {
         userTransaction.begin();
         entityManager.joinTransaction();
-        entityManager.createQuery("DELETE FROM Project")
+        entityManager.createQuery("DELETE FROM ProjectEntity")
                      .executeUpdate();
         userTransaction.commit();
         entityManager.clear();
@@ -186,7 +186,7 @@ public class ProjectDAOIT {
     }
 
     private List<Project> findAll() {
-        return entityManager.createQuery("SELECT d FROM Project d")
+        return entityManager.createQuery("SELECT d FROM ProjectEntity d")
                             .getResultList();
     }
 }

@@ -51,6 +51,7 @@
           <element id="library" level="project" name="Gradle: org.wildfly:wildfly-build-config:8.0.0.Final" />
           <element id="library" level="project" name="Gradle: xalan:xalan:2.7.1.jbossorg-2" />
           <element id="library" level="project" name="Gradle: xalan:serializer:2.7.1.jbossorg-2" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.0/da217367fd25e88df52ba79e47658d4cf928b0d1/commons-collections4-4.0.jar" />
         </element>
       </element>
       <element id="directory" name="META-INF">

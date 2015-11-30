@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.project.ProjectEntity;
 import edu.piotrjonski.scrumus.domain.Project;
 import org.junit.Test;
 
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ProjectDAOTest {
+public class ProjectEntityDAOTest {
 
     private ProjectDAO projectDAO = new ProjectDAO();
 
@@ -27,7 +28,7 @@ public class ProjectDAOTest {
         project.setName(name);
 
         // when
-        edu.piotrjonski.scrumus.dao.model.project.Project result = projectDAO.mapToDatabaseModel(project);
+        ProjectEntity result = projectDAO.mapToDatabaseModel(project);
 
         // then
         assertThat(result.getCreationDate()).isEqualTo(now);
@@ -45,16 +46,15 @@ public class ProjectDAOTest {
         String dod = "dod";
         String description = "Description";
         String key = "key";
-        edu.piotrjonski.scrumus.dao.model.project.Project project = new edu.piotrjonski.scrumus.dao.model.project
-                .Project();
-        project.setName(name);
-        project.setCreationDate(now);
-        project.setDefinitionOfDone(dod);
-        project.setDescription(description);
-        project.setKey(key);
+        ProjectEntity projectEntity = new ProjectEntity();
+        projectEntity.setName(name);
+        projectEntity.setCreationDate(now);
+        projectEntity.setDefinitionOfDone(dod);
+        projectEntity.setDescription(description);
+        projectEntity.setKey(key);
 
         // when
-        Project result = projectDAO.mapToDomainModel(project);
+        Project result = projectDAO.mapToDomainModel(projectEntity);
 
         // then
         assertThat(result.getKey()).isEqualTo(key);

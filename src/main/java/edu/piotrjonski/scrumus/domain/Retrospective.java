@@ -1,10 +1,9 @@
-package edu.piotrjonski.scrumus.dao.model.project;
+package edu.piotrjonski.scrumus.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,19 +13,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 public class Retrospective {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(length = 4096, nullable = true)
     private String description;
-
-    @ElementCollection(fetch = FetchType.EAGER)
     private List<RetrospectiveItem> retrospectiveItems = new ArrayList<>();
-
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<CommentEntity> commentEntities = new ArrayList<>();
+    private List<Comment> commentEntities = new ArrayList<>();
 }

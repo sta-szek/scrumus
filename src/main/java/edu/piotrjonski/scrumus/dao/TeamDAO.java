@@ -26,7 +26,7 @@ public class TeamDAO extends AbstractDAO<TeamEntity, Team> {
         TeamEntity teamEntity = new TeamEntity();
         teamEntity.setName(domainModel.getName());
         teamEntity.setId(domainModel.getId());
-        teamEntity.setProjects(projectDAO.mapToDatabaseModel(domainModel.getProjects()));
+        teamEntity.setProjectEntities(projectDAO.mapToDatabaseModel(domainModel.getProjects()));
         return teamEntity;
     }
 
@@ -35,7 +35,7 @@ public class TeamDAO extends AbstractDAO<TeamEntity, Team> {
         edu.piotrjonski.scrumus.domain.Team team = new edu.piotrjonski.scrumus.domain.Team();
         team.setId(dbModel.getId());
         team.setName(dbModel.getName());
-        team.setProjects(projectDAO.mapToDomainModel(dbModel.getProjects()));
+        team.setProjects(projectDAO.mapToDomainModel(dbModel.getProjectEntities()));
         return team;
     }
 

@@ -16,7 +16,7 @@ import javax.persistence.Enumerated;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class RetrospectiveItem {
+public class RetrospectiveItemEmbeddable {
 
     @Column(nullable = false)
     private int rate;
@@ -25,5 +25,5 @@ public class RetrospectiveItem {
     private String description;
 
     @Enumerated(value = EnumType.STRING)
-    private RetrospectiveItemType retrospectiveItemType;
+    private RetrospectiveItemTypeEnum retrospectiveItemTypeEnum;
 }

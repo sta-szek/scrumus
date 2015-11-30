@@ -1,6 +1,6 @@
 package edu.piotrjonski.scrumus.dao.model.user;
 
-import edu.piotrjonski.scrumus.dao.model.project.Project;
+import edu.piotrjonski.scrumus.dao.model.project.ProjectEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,5 +25,5 @@ public class ProductOwnerEntity {
     private DeveloperEntity developerEntity;
 
     @OneToOne
-    private Project project;
+    private ProjectEntity projectEntity;
 }

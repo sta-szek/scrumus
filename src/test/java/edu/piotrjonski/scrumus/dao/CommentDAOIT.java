@@ -28,8 +28,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CommentDAOIT {
 
     public static final String COMMENT_BODY = "commentbody";
-    public static final int ID = 1;
-    public static final int DEVELOPER_ID = 1;
     public static final LocalDateTime CREATION_DATE = LocalDateTime.now();
     public static int nextUniqueValue = 1;
 

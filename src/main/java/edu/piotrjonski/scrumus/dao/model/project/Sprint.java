@@ -33,6 +33,6 @@ public class Sprint {
     private List<Story> stories;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Retrospective retrospective;
+    private RetrospectiveEntity retrospectiveEntity;
 
 }
