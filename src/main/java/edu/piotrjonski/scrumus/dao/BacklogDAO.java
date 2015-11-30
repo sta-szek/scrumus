@@ -1,9 +1,7 @@
 package edu.piotrjonski.scrumus.dao;
 
 import edu.piotrjonski.scrumus.dao.model.project.BacklogEntity;
-import edu.piotrjonski.scrumus.dao.model.user.PictureEntity;
 import edu.piotrjonski.scrumus.domain.Backlog;
-import edu.piotrjonski.scrumus.domain.Picture;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
