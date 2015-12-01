@@ -60,8 +60,7 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
         issue.setIssueType(issueTypeDAO.mapToDomainModelIfNotNull(dbModel.getIssueTypeEntity()));
         issue.setKey(dbModel.getKey());
         issue.setSummary(dbModel.getSummary());
-        issue.setAssigneeId(dbModel.getAssignee()
-                                   .getId());
+        issue.setAssigneeId(getAssigneeId(dbModel));
         issue.setReporterId(dbModel.getReporter()
                                    .getId());
         return issue;
@@ -85,9 +84,19 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
     private DeveloperEntity findDeveloperEntity(final int id) {
         if (id != 0) {
             Optional<Developer> developer = developerDAO.findByKey(id);
-            return developerDAO.mapToDatabaseModelIfNotNull(developer.get());
+            if (developer.isPresent()) {
+                return developerDAO.mapToDatabaseModelIfNotNull(developer.get());
+            }
+        }
+        return null;
+    }
+
+    private int getAssigneeId(final IssueEntity dbModel) {
+        if (dbModel.getAssignee() != null) {
+            return dbModel.getAssignee()
+                          .getId();
         } else {
-            return null;
+            return 0;
         }
     }
 }

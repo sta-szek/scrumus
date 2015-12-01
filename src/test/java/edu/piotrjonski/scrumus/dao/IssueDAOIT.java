@@ -28,12 +28,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Arquillian.class)
 public class IssueDAOIT {
 
-    public static final int DEVELOPER_ID = 1;
     public static final String SUMMARY = "abcdge";
     public static final String KEY = "abcdge";
     public static final String DESCRIPTION = "abcdge";
     public static final String DOD = "abcdge";
     public static final LocalDateTime NOW = LocalDateTime.now();
+    public static int currentlySavedDeveloperId = 1;
     public static int nextUniqueValue = 0;
 
     @Inject
@@ -176,12 +176,13 @@ public class IssueDAOIT {
         userTransaction.begin();
         entityManager.joinTransaction();
         Developer developer = new Developer();
-        developer.setId(DEVELOPER_ID);
         developer.setEmail("Email" + nextUniqueValue);
         developer.setFirstName("firstname" + nextUniqueValue);
         developer.setSurname("surname" + nextUniqueValue);
         developer.setUsername("username" + nextUniqueValue);
-        developerDAO.saveOrUpdate(developer);
+        currentlySavedDeveloperId = developerDAO.saveOrUpdate(developer)
+                                                .get()
+                                                .getId();
 
         IssueType issueType = new IssueType(0, "name" + nextUniqueValue);
         issueTypeDAO.saveOrUpdate(issueType);
@@ -193,20 +194,21 @@ public class IssueDAOIT {
         entityManager.joinTransaction();
         entityManager.createQuery("DELETE FROM IssueEntity")
                      .executeUpdate();
+        entityManager.createQuery("DELETE FROM DeveloperEntity ")
+                     .executeUpdate();
         userTransaction.commit();
         entityManager.clear();
     }
 
     private Issue createIssue() {
         Issue issue = new Issue();
-        issue.setAssigneeId(DEVELOPER_ID);
         issue.setComments(null);
         issue.setCreationDate(NOW);
         issue.setKey(KEY + nextUniqueValue);
         issue.setDescription(DESCRIPTION);
         issue.setDefinitionOfDone(DOD);
         issue.setIssueType(new IssueType(1, "name0"));
-        issue.setReporterId(DEVELOPER_ID);
+        issue.setReporterId(currentlySavedDeveloperId);
         issue.setSummary(SUMMARY);
         nextUniqueValue++;
         return issue;

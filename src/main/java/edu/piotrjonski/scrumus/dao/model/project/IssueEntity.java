@@ -54,9 +54,9 @@ public class IssueEntity {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private IssueTypeEntity issueTypeEntity;
 
-    @OneToOne
+    @ManyToOne(optional = false)
     private DeveloperEntity reporter;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private DeveloperEntity assignee;
 }
