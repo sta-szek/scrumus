@@ -61,7 +61,7 @@ dependencies {
     testCompile 'org.powermock:powermock-api-mockito:1.6.3'
 
     testCompile "junit:junit:${libraryVersions.junit}"
-    compile "org.assertj:assertj-core:${libraryVersions.assertj}"
+    testCompile "org.assertj:assertj-core:${libraryVersions.assertj}"
     testCompile 'org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-depchain:2.1.0'
     testCompile 'org.jboss.arquillian:arquillian-bom:1.1.10.Final'
     testCompile 'org.jboss.arquillian.junit:arquillian-junit-container:1.1.10.Final'

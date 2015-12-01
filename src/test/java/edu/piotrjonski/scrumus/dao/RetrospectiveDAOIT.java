@@ -5,11 +5,10 @@ import edu.piotrjonski.scrumus.dao.model.project.RetrospectiveEntity;
 import edu.piotrjonski.scrumus.domain.Retrospective;
 import edu.piotrjonski.scrumus.domain.RetrospectiveItem;
 import edu.piotrjonski.scrumus.domain.RetrospectiveItemType;
+import edu.piotrjonski.scrumus.utils.TestUtils;
 import org.assertj.core.util.Lists;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.gradle.archive.importer.embedded.EmbeddedGradleImporter;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.After;
 import org.junit.Before;
@@ -44,10 +43,7 @@ public class RetrospectiveDAOIT {
 
     @Deployment
     public static WebArchive createDeployment() {
-        return ShrinkWrap.create(EmbeddedGradleImporter.class, "scrumus-arquillian-tests.war")
-                         .forThisProjectDirectory()
-                         .importBuildOutput()
-                         .as(WebArchive.class);
+        return TestUtils.createDeployment();
     }
 
     @Before
