@@ -1,7 +1,14 @@
-plugins {
-    id "com.bmuschko.cargo" version "2.0.3"
-    id "com.bmuschko.cargo-base" version "2.0.3"
-}
+ext.libraryVersions = [
+        javaee                  : '7.0',
+        wildfly                 : '8.0.0.Final',
+        junit                   : '4.12',
+        assertj                 : '3.2.0',
+        arquillian              : '1.1.10.Final',
+        shrinkWrapResolverGradle: '2.2.0'
+]
+
+ext.jbossHome = hasProperty('jbossHome') ? jbossHome : "${rootDir}\\wildfly-8.0.0.Final"
+println jbossHome
 
 apply plugin: 'java'
 apply plugin: 'war'
@@ -19,15 +26,69 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
-
-    jcenter()
     mavenCentral()
-
+    maven { url 'http://repository.jboss.org/nexus/content/groups/public' }
+    maven { url 'http://repository.jboss.org/nexus/content/repositories/deprecated' }
+    maven { url 'http://repo.jfrog.org/artifactory/repo' }
 }
 
-dependencies{
-    compile 'org.apache.commons:commons-lang3:3.4'
-    compile 'javax:javaee-api:7.0'
-    compile 'org.projectlombok:lombok:1.16.6'
+//dependencies {
+//    providedCompile "javax:javaee-api:${libraryVersions.javaee}"
+//    providedCompile 'org.projectlombok:lombok:1.16.6'
+//
+//    testCompile "junit:junit:${libraryVersions.junit}"
+//    testCompile "org.jboss.arquillian.junit:arquillian-junit-container:${libraryVersions.arquillian}"
+//    testCompile "org.jboss.arquillian.protocol:arquillian-protocol-servlet:${libraryVersions.arquillian}"
+//    testCompile "org.wildfly:wildfly-arquillian-container-managed:${libraryVersions.wildfly}"
+//    testCompile "org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-gradle-depchain:${libraryVersions.shrinkWrapResolverGradle}"
+//
+//
+//}
+//
+//test {
+//    testLogging {
+//        events 'passed', 'skipped', 'failed'
+//        exceptionFormat = 'full'
+//    }
+//}
+dependencies {
+    providedCompile 'org.projectlombok:lombok:1.16.6'
+    compile 'org.wildfly:wildfly-spec-api:8.0.0.Final'
+    compile 'org.slf4j:slf4j-simple:1.7.7'
+    compile 'org.apache.commons:commons-collections4:4.0'
 
+    testCompile 'org.powermock:powermock-module-junit4:1.6.3'
+    testCompile 'org.powermock:powermock-api-mockito:1.6.3'
+
+    testCompile "junit:junit:${libraryVersions.junit}"
+    compile "org.assertj:assertj-core:${libraryVersions.assertj}"
+    testCompile 'org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-depchain:2.1.0'
+    testCompile 'org.jboss.arquillian:arquillian-bom:1.1.10.Final'
+    testCompile 'org.jboss.arquillian.junit:arquillian-junit-container:1.1.10.Final'
+    testCompile 'org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-impl-gradle-embedded-archive:2.2.0'
+
+
+
+    testRuntime 'org.jboss.logging:jboss-logging:3.1.4.GA'
+    // testCompile 'org.jboss.arquillian.protocol:arquillian-protocol-servlet:1.1.10.Final'
+
+    /**
+     * Embedded means it runs in the same JVM, it still needs the full installation
+     */
+    //testRuntime 'org.wildfly:wildfly-arquillian-container-embedded:8.0.0.Final'
+    testRuntime 'org.wildfly:wildfly-arquillian-container-managed:8.2.1.Final'
+}
+
+test {
+    jvmArgs '-XX:MaxPermSize=256m'
+
+    /**
+     * Installation of JBOSS to use for testing, this can be set here
+     * or in the arquillian.xml.
+     */
+    environment 'JBOSS_HOME', rootProject.jbossHome
+    /**
+     * WildFly embedded default logging
+     */
+    systemProperty 'java.util.logging.manager', 'org.jboss.logmanager.LogManager'
 }
