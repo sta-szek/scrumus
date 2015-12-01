@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ProjectEntityDAOTest {
+public class ProjectDAOTest {
 
     private ProjectDAO projectDAO = new ProjectDAO();
 

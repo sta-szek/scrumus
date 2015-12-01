@@ -24,8 +24,11 @@ public class SprintEntity {
     public static final String FIND_ALL_QUERY = "SELECT p FROM SprintEntity p";
     public static final String DELETE_BY_ID = "deleteSprintByKey";
     public static final String FIND_ALL_STORIES = "findAllSprintStories";
-    public static final String FIND_ALL_STORIES_QUERY = "SELECT s.stories FROM SprintEntity s";
     public static final String ID = "id";
+    public static final String FIND_ALL_STORIES_QUERY =
+            "SELECT DISTINCT(story) FROM StoryEntity story WHERE EXISTS(SELECT s FROM SprintEntity s WHERE s.id=:" + ID +
+            " AND story MEMBER OF s.stories)";
+    //public static final String FIND_ALL_STORIES_QUERY = "SELECT s.stories FROM SprintEntity s WHERE s.id=:" + ID;
     protected static final String DELETE_BY_KEY_QUERY = "DELETE FROM SprintEntity p WHERE p.id=:" + ID;
 
     @Id

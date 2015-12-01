@@ -25,6 +25,7 @@ public class StoryEntity {
     public static final String DELETE_BY_ID = "deleteStoryByKey";
     public static final String ID = "id";
     protected static final String DELETE_BY_KEY_QUERY = "DELETE FROM StoryEntity p WHERE p.id=:" + ID;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -35,9 +36,9 @@ public class StoryEntity {
     @Column(length = 4096, nullable = true)
     private String definitionOfDone;
 
-    @Column(nullable = false)
+    @Column
     private int points;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<IssueEntity> issueEntities;
 }

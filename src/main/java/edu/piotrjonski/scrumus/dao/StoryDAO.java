@@ -26,6 +26,7 @@ public class StoryDAO extends AbstractDAO<StoryEntity, Story> {
 
     public List<Story> findStoriesForSprint(int sprintId) {
         return entityManager.createNamedQuery(SprintEntity.FIND_ALL_STORIES, StoryEntity.class)
+                            .setParameter(SprintEntity.ID, sprintId)
                             .getResultList()
                             .stream()
                             .map(this::mapToDomainModel)
