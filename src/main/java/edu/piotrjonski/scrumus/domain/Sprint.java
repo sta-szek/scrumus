@@ -1,7 +1,6 @@
 package edu.piotrjonski.scrumus.domain;
 
 import edu.piotrjonski.scrumus.dao.model.project.TimeRange;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +9,6 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Sprint {
     private int id;
     private String name;
