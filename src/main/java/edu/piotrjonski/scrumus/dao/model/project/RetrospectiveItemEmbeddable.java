@@ -1,6 +1,5 @@
 package edu.piotrjonski.scrumus.dao.model.project;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +13,6 @@ import javax.persistence.Enumerated;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Embeddable
 public class RetrospectiveItemEmbeddable {
 

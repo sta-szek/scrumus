@@ -100,7 +100,11 @@ public class RetrospectiveDAOTest {
     }
 
     private RetrospectiveItemEmbeddable createDatabaseRetrospectiveItem() {
-        return new RetrospectiveItemEmbeddable(RATE, ITEM_DESC, MINUS1);
+        RetrospectiveItemEmbeddable retrospectiveItemEmbeddable = new RetrospectiveItemEmbeddable();
+        retrospectiveItemEmbeddable.setRate(RATE);
+        retrospectiveItemEmbeddable.setDescription(ITEM_DESC);
+        retrospectiveItemEmbeddable.setRetrospectiveItemTypeEnum(MINUS1);
+        return retrospectiveItemEmbeddable;
     }
 
     private Comment createComment() {
@@ -109,7 +113,12 @@ public class RetrospectiveDAOTest {
 
     private CommentEntity createDatabaseComment() {
         DeveloperEntity developerEntity = createDeveloperEntity();
-        return new CommentEntity(RATE, ITEM_DESC, NOW, developerEntity);
+        CommentEntity commentEntity = new CommentEntity();
+        commentEntity.setId(RATE);
+        commentEntity.setCommentBody(ITEM_DESC);
+        commentEntity.setCreationDate(NOW);
+        commentEntity.setDeveloperEntity(developerEntity);
+        return commentEntity;
     }
 
     private DeveloperEntity createDeveloperEntity() {

@@ -19,4 +19,5 @@ public class Story {
     private String definitionOfDone;
     private int points;
     private List<Issue> issues;
+    private int sprintId;
 }

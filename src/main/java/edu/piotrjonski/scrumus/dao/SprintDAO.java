@@ -16,9 +16,6 @@ public class SprintDAO extends AbstractDAO<SprintEntity, Sprint> {
     @Inject
     private RetrospectiveDAO retrospectiveDAO;
 
-    @Inject
-    private StoryDAO storyDAO;
-
     public SprintDAO() {
         this(SprintEntity.class);
     }
@@ -34,7 +31,6 @@ public class SprintDAO extends AbstractDAO<SprintEntity, Sprint> {
         sprintEntity.setId(domainModel.getId());
         sprintEntity.setName(domainModel.getName());
         sprintEntity.setRetrospectiveEntity(findRetrospectiveEntity(domainModel.getRetrospectiveId()));
-        sprintEntity.setStories(storyDAO.mapToDatabaseModel(storyDAO.findStoriesForSprint(domainModel.getId())));
         sprintEntity.setTimeRange(domainModel.getTimeRange());
         return sprintEntity;
     }

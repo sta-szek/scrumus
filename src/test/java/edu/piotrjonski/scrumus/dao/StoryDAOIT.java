@@ -1,5 +1,7 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.project.TimeRange;
+import edu.piotrjonski.scrumus.domain.Sprint;
 import edu.piotrjonski.scrumus.domain.Story;
 import edu.piotrjonski.scrumus.utils.TestUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -16,6 +18,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,10 +31,15 @@ public class StoryDAOIT {
     private StoryDAO storyDAO;
 
     @Inject
+    private SprintDAO sprintDAO;
+
+    @Inject
     private UserTransaction userTransaction;
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    private int currentSprintId;
 
     @Deployment
     public static WebArchive createDeployment() {
@@ -61,6 +69,35 @@ public class StoryDAOIT {
         assertThat(findAll().size()).isEqualTo(1);
 
     }
+
+    @Test
+    public void shouldFindStoriesForSprint() {
+        // given
+        Story story1 = new Story(0, "name1", "dod1", 1, null, currentSprintId);
+        Story story2 = new Story(0, "name2", "dod2", 2, null, currentSprintId);
+        Story story3 = new Story(0, "name3", "dod3", 3, null, currentSprintId);
+        Story story4 = new Story(0, "name4", "dod4", 4, null, currentSprintId);
+
+        story1 = storyDAO.saveOrUpdate(story1)
+                         .get();
+        story2 = storyDAO.saveOrUpdate(story2)
+                         .get();
+        story3 = storyDAO.saveOrUpdate(story3)
+                         .get();
+        story4 = storyDAO.saveOrUpdate(story4)
+                         .get();
+
+        // when
+        List<Story> result = storyDAO.findStoriesForSprint(currentSprintId);
+
+        // then
+        assertThat(result).hasSize(4)
+                          .contains(story1)
+                          .contains(story2)
+                          .contains(story3)
+                          .contains(story4);
+    }
+
 
     @Test
     public void shouldUpdate() {
@@ -154,12 +191,21 @@ public class StoryDAOIT {
     private void startTransaction() throws SystemException, NotSupportedException {
         userTransaction.begin();
         entityManager.joinTransaction();
+        TimeRange timeRange = new TimeRange();
+        timeRange.setEndDate(LocalDateTime.now());
+        timeRange.setStartDate(LocalDateTime.now());
+        Sprint sprint = new Sprint(0, "name", "dod", timeRange, 0);
+        currentSprintId = sprintDAO.saveOrUpdate(sprint)
+                                   .get()
+                                   .getId();
     }
 
     private void clearData() throws Exception {
         userTransaction.begin();
         entityManager.joinTransaction();
         entityManager.createQuery("DELETE FROM StoryEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM SprintEntity")
                      .executeUpdate();
         userTransaction.commit();
         entityManager.clear();
@@ -170,6 +216,7 @@ public class StoryDAOIT {
         story.setDefinitionOfDone("dod");
         story.setName("name");
         story.setPoints(1);
+        story.setSprintId(currentSprintId);
         return story;
     }
 

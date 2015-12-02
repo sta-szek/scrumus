@@ -27,9 +27,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @RunWith(PowerMockRunner.class)
 public class SprintDAOTest {
 
-    public static final TimeRange TIME_RANGE = new TimeRange(LocalDateTime.now(),
-                                                             LocalDateTime.now()
-                                                                          .plusDays(14));
+    public static TimeRange timeRange;
     @Mock
     private StoryDAO storyDAO;
 
@@ -48,6 +46,9 @@ public class SprintDAOTest {
                                              .mapToDatabaseModelIfNotNull(anyObject());
         doReturn(Optional.of(createRetrospective())).when(retrospectiveDAO)
                                                     .findByKey(anyObject());
+        timeRange = new TimeRange();
+        timeRange.setEndDate(LocalDateTime.now());
+        timeRange.setStartDate(LocalDateTime.now());
     }
 
     @Test
@@ -61,7 +62,7 @@ public class SprintDAOTest {
         sprint.setId(id);
         sprint.setName(name);
         sprint.setRetrospectiveId(1);
-        sprint.setTimeRange(TIME_RANGE);
+        sprint.setTimeRange(timeRange);
 
         // when
         SprintEntity result = sprintDAO.mapToDatabaseModel(sprint);
@@ -72,7 +73,7 @@ public class SprintDAOTest {
         assertThat(result.getRetrospectiveEntity()
                          .getId()).isEqualTo(1);
         assertThat(result.getName()).isEqualTo(name);
-        assertThat(result.getTimeRange()).isEqualTo(TIME_RANGE);
+        assertThat(result.getTimeRange()).isEqualTo(timeRange);
     }
 
     @Test
@@ -86,7 +87,7 @@ public class SprintDAOTest {
         sprint.setId(id);
         sprint.setName(name);
         sprint.setRetrospectiveEntity(createRetrospectiveEntity());
-        sprint.setTimeRange(TIME_RANGE);
+        sprint.setTimeRange(timeRange);
 
         // when
         Sprint result = sprintDAO.mapToDomainModel(sprint);
@@ -96,7 +97,7 @@ public class SprintDAOTest {
         assertThat(result.getId()).isEqualTo(id);
         assertThat(result.getRetrospectiveId()).isEqualTo(1);
         assertThat(result.getName()).isEqualTo(name);
-        assertThat(result.getTimeRange()).isEqualTo(TIME_RANGE);
+        assertThat(result.getTimeRange()).isEqualTo(timeRange);
     }
 
     private RetrospectiveEntity createRetrospectiveEntity() {

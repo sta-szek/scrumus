@@ -2,12 +2,14 @@ package edu.piotrjonski.scrumus.dao;
 
 import edu.piotrjonski.scrumus.dao.model.project.SprintEntity;
 import edu.piotrjonski.scrumus.dao.model.project.StoryEntity;
+import edu.piotrjonski.scrumus.domain.Sprint;
 import edu.piotrjonski.scrumus.domain.Story;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.Query;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Stateless
@@ -15,6 +17,9 @@ public class StoryDAO extends AbstractDAO<StoryEntity, Story> {
 
     @Inject
     private IssueDAO issueDAO;
+
+    @Inject
+    private SprintDAO sprintDAO;
 
     public StoryDAO() {
         this(StoryEntity.class);
@@ -41,6 +46,7 @@ public class StoryDAO extends AbstractDAO<StoryEntity, Story> {
         storyEntity.setIssueEntities(issueDAO.mapToDatabaseModel(domainModel.getIssues()));
         storyEntity.setName(domainModel.getName());
         storyEntity.setPoints(domainModel.getPoints());
+        storyEntity.setSprint(findSprintById(domainModel.getSprintId()));
         return storyEntity;
     }
 
@@ -52,6 +58,7 @@ public class StoryDAO extends AbstractDAO<StoryEntity, Story> {
         story.setIssues(issueDAO.mapToDomainModel(dbModel.getIssueEntities()));
         story.setName(dbModel.getName());
         story.setPoints(dbModel.getPoints());
+        story.setSprintId(getSprintId(dbModel));
         return story;
     }
 
@@ -68,5 +75,23 @@ public class StoryDAO extends AbstractDAO<StoryEntity, Story> {
     @Override
     protected String getId() {
         return StoryEntity.ID;
+    }
+
+    private int getSprintId(final StoryEntity dbModel) {
+        SprintEntity sprint = dbModel.getSprint();
+        if (sprint != null) {
+            return sprint.getId();
+        } else {
+            return 0;
+        }
+    }
+
+    private SprintEntity findSprintById(int id) {
+        Optional<Sprint> sprintOptional = sprintDAO.findByKey(id);
+        if (sprintOptional.isPresent()) {
+            return sprintDAO.mapToDatabaseModelIfNotNull(sprintOptional.get());
+        } else {
+            return null;
+        }
     }
 }

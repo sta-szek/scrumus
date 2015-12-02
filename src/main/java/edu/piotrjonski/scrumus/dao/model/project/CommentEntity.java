@@ -1,7 +1,6 @@
 package edu.piotrjonski.scrumus.dao.model.project;
 
 import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +12,6 @@ import java.time.LocalDateTime;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "comment")
 @NamedQueries({@NamedQuery(name = CommentEntity.FIND_ALL, query = CommentEntity.FIND_ALL_QUERY),

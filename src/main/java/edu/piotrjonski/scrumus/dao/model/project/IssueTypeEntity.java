@@ -1,7 +1,6 @@
 package edu.piotrjonski.scrumus.dao.model.project;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +11,6 @@ import javax.persistence.*;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "issue_type")
 @NamedQueries({@NamedQuery(name = IssueTypeEntity.FIND_ALL, query = IssueTypeEntity.FIND_ALL_QUERY),

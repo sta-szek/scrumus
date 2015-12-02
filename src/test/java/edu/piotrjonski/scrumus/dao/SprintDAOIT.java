@@ -171,9 +171,11 @@ public class SprintDAOIT {
         Sprint sprint = new Sprint();
         sprint.setDefinitionOfDone("dod");
         sprint.setName("name");
-        sprint.setTimeRange(new TimeRange(LocalDateTime.now(),
-                                          LocalDateTime.now()
-                                                       .plusDays(14)));
+        TimeRange timeRange = new TimeRange();
+        timeRange.setStartDate(LocalDateTime.now());
+        timeRange.setEndDate(LocalDateTime.now()
+                                          .plusDays(14));
+        sprint.setTimeRange(timeRange);
         return sprint;
     }
 
