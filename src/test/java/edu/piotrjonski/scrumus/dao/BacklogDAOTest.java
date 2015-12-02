@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Spy;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -25,11 +24,11 @@ import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
 @RunWith(PowerMockRunner.class)
 public class BacklogDAOTest {
 
-    @Mock
-    private CommentDAO commentDAO;
+    @Spy
+    private CommentDAO commentDAO = new CommentDAO();
 
-    @Mock
-    private IssueTypeDAO issueTypeDAO;
+    @Spy
+    private IssueTypeDAO issueTypeDAO = new IssueTypeDAO();
 
     @Spy
     private IssueDAO issueDAO = new IssueDAO();
