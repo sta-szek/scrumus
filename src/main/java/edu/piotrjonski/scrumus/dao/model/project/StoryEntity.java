@@ -1,7 +1,6 @@
 package edu.piotrjonski.scrumus.dao.model.project;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +12,6 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "story")
 @NamedQueries({@NamedQuery(name = StoryEntity.FIND_ALL, query = StoryEntity.FIND_ALL_QUERY),
@@ -41,4 +39,7 @@ public class StoryEntity {
 
     @OneToMany(fetch = FetchType.EAGER)
     private List<IssueEntity> issueEntities;
+
+    @ManyToOne(optional = false)
+    private SprintEntity sprint;
 }

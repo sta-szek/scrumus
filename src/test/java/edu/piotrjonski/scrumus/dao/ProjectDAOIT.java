@@ -1,7 +1,7 @@
 package edu.piotrjonski.scrumus.dao;
 
 import edu.piotrjonski.scrumus.domain.Project;
-import edu.piotrjonski.scrumus.utils.TestUtils;
+import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -41,7 +41,7 @@ public class ProjectDAOIT {
 
     @Deployment
     public static WebArchive createDeployment() {
-        return TestUtils.createDeployment();
+        return UtilsTest.createDeployment();
     }
 
     @Before

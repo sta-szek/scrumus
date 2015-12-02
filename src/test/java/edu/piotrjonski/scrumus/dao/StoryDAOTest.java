@@ -13,8 +13,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyList;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -23,6 +26,9 @@ public class StoryDAOTest {
 
     @Mock
     private IssueDAO issueDAO;
+
+    @Mock
+    private SprintDAO sprintDAO;
 
     @InjectMocks
     private StoryDAO storyDAO;
@@ -34,6 +40,8 @@ public class StoryDAOTest {
                                                  .mapToDomainModel(anyList());
         doReturn(Lists.newArrayList(new IssueEntity())).when(issueDAO)
                                                        .mapToDatabaseModel(anyList());
+        doReturn(Optional.empty()).when(sprintDAO)
+                                  .findByKey(anyObject());
     }
 
     @Test

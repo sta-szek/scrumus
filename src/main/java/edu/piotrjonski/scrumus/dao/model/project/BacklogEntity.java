@@ -1,6 +1,5 @@
 package edu.piotrjonski.scrumus.dao.model.project;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +11,6 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "backlog")
 @NamedQueries({@NamedQuery(name = BacklogEntity.FIND_ALL, query = BacklogEntity.FIND_ALL_QUERY),

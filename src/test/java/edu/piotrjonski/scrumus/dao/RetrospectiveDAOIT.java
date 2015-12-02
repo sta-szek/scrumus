@@ -5,7 +5,7 @@ import edu.piotrjonski.scrumus.dao.model.project.RetrospectiveEntity;
 import edu.piotrjonski.scrumus.domain.Retrospective;
 import edu.piotrjonski.scrumus.domain.RetrospectiveItem;
 import edu.piotrjonski.scrumus.domain.RetrospectiveItemType;
-import edu.piotrjonski.scrumus.utils.TestUtils;
+import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.assertj.core.util.Lists;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -43,7 +43,7 @@ public class RetrospectiveDAOIT {
 
     @Deployment
     public static WebArchive createDeployment() {
-        return TestUtils.createDeployment();
+        return UtilsTest.createDeployment();
     }
 
     @Before
@@ -188,10 +188,23 @@ public class RetrospectiveDAOIT {
     }
 
     private List<RetrospectiveItem> createRetrospectiveItems() {
-        RetrospectiveItem retrospectiveItem1 = new RetrospectiveItem(1, "desc1", RetrospectiveItemType.MINUS);
-        RetrospectiveItem retrospectiveItem2 = new RetrospectiveItem(5, "desc1", RetrospectiveItemType.PLUS);
-        RetrospectiveItem retrospectiveItem3 = new RetrospectiveItem(7, "desc1", RetrospectiveItemType.PLUS);
-        RetrospectiveItem retrospectiveItem4 = new RetrospectiveItem(2, "desc1", RetrospectiveItemType.MINUS);
+        RetrospectiveItem retrospectiveItem1 = new RetrospectiveItem();
+        RetrospectiveItem retrospectiveItem2 = new RetrospectiveItem();
+        RetrospectiveItem retrospectiveItem3 = new RetrospectiveItem();
+        RetrospectiveItem retrospectiveItem4 = new RetrospectiveItem();
+        retrospectiveItem1.setRate(1);
+        retrospectiveItem1.setDescription("desc1");
+        retrospectiveItem1.setRetrospectiveItemType(RetrospectiveItemType.MINUS);
+        retrospectiveItem2.setRate(5);
+        retrospectiveItem2.setDescription("desc1");
+        retrospectiveItem2.setRetrospectiveItemType(RetrospectiveItemType.PLUS);
+        retrospectiveItem3.setRate(7);
+        retrospectiveItem3.setDescription("desc1");
+        retrospectiveItem3.setRetrospectiveItemType(RetrospectiveItemType.PLUS);
+        retrospectiveItem4.setRate(2);
+        retrospectiveItem4.setDescription("desc1");
+        retrospectiveItem4.setRetrospectiveItemType(RetrospectiveItemType.MINUS);
+
         return Lists.newArrayList(retrospectiveItem1, retrospectiveItem2, retrospectiveItem3, retrospectiveItem4);
     }
 }

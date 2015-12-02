@@ -96,23 +96,49 @@ public class RetrospectiveDAOTest {
     }
 
     private RetrospectiveItem createDomainRetrospectiveItem() {
-        return new RetrospectiveItem(RATE, ITEM_DESC, MINUS);
+        RetrospectiveItem retrospectiveItem = new RetrospectiveItem();
+        retrospectiveItem.setRate(RATE);
+        retrospectiveItem.setDescription(ITEM_DESC);
+        retrospectiveItem.setRetrospectiveItemType(RetrospectiveItemType.MINUS);
+        return retrospectiveItem;
     }
 
     private RetrospectiveItemEmbeddable createDatabaseRetrospectiveItem() {
-        return new RetrospectiveItemEmbeddable(RATE, ITEM_DESC, MINUS1);
+        RetrospectiveItemEmbeddable retrospectiveItemEmbeddable = new RetrospectiveItemEmbeddable();
+        retrospectiveItemEmbeddable.setRate(RATE);
+        retrospectiveItemEmbeddable.setDescription(ITEM_DESC);
+        retrospectiveItemEmbeddable.setRetrospectiveItemTypeEnum(MINUS1);
+        return retrospectiveItemEmbeddable;
     }
 
     private Comment createComment() {
-        return new Comment(RATE, ITEM_DESC, NOW, 1);
+        Comment comment = new Comment();
+        comment.setCommentBody(ITEM_DESC);
+        comment.setDeveloperId(1);
+        comment.setCreationDate(NOW);
+        comment.setId(RATE);
+        return comment;
     }
 
     private CommentEntity createDatabaseComment() {
         DeveloperEntity developerEntity = createDeveloperEntity();
-        return new CommentEntity(RATE, ITEM_DESC, NOW, developerEntity);
+        CommentEntity commentEntity = new CommentEntity();
+        commentEntity.setId(RATE);
+        commentEntity.setCommentBody(ITEM_DESC);
+        commentEntity.setCreationDate(NOW);
+        commentEntity.setDeveloperEntity(developerEntity);
+        return commentEntity;
     }
 
     private DeveloperEntity createDeveloperEntity() {
-        return new DeveloperEntity(1, "firstname", "surname", "username", "email", null, null);
+        DeveloperEntity developerEntity = new DeveloperEntity();
+        developerEntity.setEmail("email");
+        developerEntity.setFirstName("firstname");
+        developerEntity.setId(1);
+        developerEntity.setPictureEntity(null);
+        developerEntity.setSurname("surname");
+        developerEntity.setTeamEntities(null);
+        developerEntity.setUsername("username");
+        return developerEntity;
     }
 }

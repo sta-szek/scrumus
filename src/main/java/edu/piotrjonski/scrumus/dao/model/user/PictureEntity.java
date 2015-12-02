@@ -1,6 +1,5 @@
 package edu.piotrjonski.scrumus.dao.model.user;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +10,6 @@ import javax.persistence.*;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "picture")
 @NamedQueries({@NamedQuery(name = PictureEntity.FIND_ALL, query = PictureEntity.FIND_ALL_QUERY),

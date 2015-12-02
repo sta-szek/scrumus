@@ -5,7 +5,7 @@ import edu.piotrjonski.scrumus.domain.Backlog;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Issue;
 import edu.piotrjonski.scrumus.domain.IssueType;
-import edu.piotrjonski.scrumus.utils.TestUtils;
+import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.assertj.core.util.Lists;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -49,7 +49,7 @@ public class BacklogDAOIT {
 
     @Deployment
     public static WebArchive createDeployment() {
-        return TestUtils.createDeployment();
+        return UtilsTest.createDeployment();
     }
 
     @Before
@@ -79,14 +79,21 @@ public class BacklogDAOIT {
     @Test
     public void shouldUpdate() {
         // given
-        IssueType issueType = new IssueType(1, "task");
+        IssueType issueType = new IssueType();
+        issueType.setId(1);
+        issueType.setName("task");
 
         Issue issue = new Issue();
         issue.setKey("testkey");
         issue.setSummary("summary");
         issue.setIssueType(issueType);
 
-        Developer developer = new Developer(1, "firstname", "a", "b", "c");
+        Developer developer = new Developer();
+        developer.setId(1);
+        developer.setFirstName("firstname");
+        developer.setEmail("A");
+        developer.setSurname("b");
+        developer.setUsername("C");
         developer = developerDAO.saveOrUpdate(developer)
                                 .get();
 

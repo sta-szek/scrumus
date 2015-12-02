@@ -1,18 +1,15 @@
 package edu.piotrjonski.scrumus.dao.model.project;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Represents sprint datastore object.
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "sprint")
 @NamedQueries({@NamedQuery(name = SprintEntity.FIND_ALL, query = SprintEntity.FIND_ALL_QUERY),
@@ -25,10 +22,7 @@ public class SprintEntity {
     public static final String DELETE_BY_ID = "deleteSprintByKey";
     public static final String FIND_ALL_STORIES = "findAllSprintStories";
     public static final String ID = "id";
-    public static final String FIND_ALL_STORIES_QUERY =
-            "SELECT DISTINCT(story) FROM StoryEntity story WHERE EXISTS(SELECT s FROM SprintEntity s WHERE s.id=:" + ID +
-            " AND story MEMBER OF s.stories)";
-    //public static final String FIND_ALL_STORIES_QUERY = "SELECT s.stories FROM SprintEntity s WHERE s.id=:" + ID;
+    public static final String FIND_ALL_STORIES_QUERY = "SELECT story FROM StoryEntity story WHERE story.sprint.id=:" + ID;
     protected static final String DELETE_BY_KEY_QUERY = "DELETE FROM SprintEntity p WHERE p.id=:" + ID;
 
     @Id
@@ -43,9 +37,6 @@ public class SprintEntity {
 
     @Embedded
     private TimeRange timeRange;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<StoryEntity> stories;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private RetrospectiveEntity retrospectiveEntity;

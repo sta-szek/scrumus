@@ -1,6 +1,5 @@
 package edu.piotrjonski.scrumus.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +8,6 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class RetrospectiveItem {
     private int rate;
     private String description;
