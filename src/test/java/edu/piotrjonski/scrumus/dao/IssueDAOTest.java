@@ -28,7 +28,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @RunWith(PowerMockRunner.class)
 public class IssueDAOTest {
 
-    public static final int DEVELOPER_ID = 15;
+    private static final int DEVELOPER_ID = 15;
 
     @Spy
     private CommentDAO commentDAO = new CommentDAO();

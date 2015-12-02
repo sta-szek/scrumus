@@ -5,15 +5,11 @@ import edu.piotrjonski.scrumus.dao.model.project.RetrospectiveEntity;
 import edu.piotrjonski.scrumus.dao.model.project.RetrospectiveItemEmbeddable;
 import edu.piotrjonski.scrumus.dao.model.project.RetrospectiveItemTypeEnum;
 import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
-import edu.piotrjonski.scrumus.domain.Comment;
-import edu.piotrjonski.scrumus.domain.Retrospective;
-import edu.piotrjonski.scrumus.domain.RetrospectiveItem;
-import edu.piotrjonski.scrumus.domain.RetrospectiveItemType;
+import edu.piotrjonski.scrumus.domain.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Spy;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -36,8 +32,8 @@ public class RetrospectiveDAOTest {
     public static final RetrospectiveItemTypeEnum MINUS1 = RetrospectiveItemTypeEnum.MINUS;
     public static final LocalDateTime NOW = LocalDateTime.now();
 
-    @Mock
-    private DeveloperDAO developerDAO;
+    @Spy
+    private DeveloperDAO developerDAO = new DeveloperDAO();
 
     @Spy
     private CommentDAO commentDAO = new CommentDAO();
@@ -49,8 +45,8 @@ public class RetrospectiveDAOTest {
     public void before() {
         initMocks(this);
         setInternalState(commentDAO, "developerDAO", developerDAO);
-        doReturn(Optional.of(createDeveloperEntity())).when(developerDAO)
-                                                      .findByKey(anyObject());
+        doReturn(Optional.of(createDeveloper())).when(developerDAO)
+                                                .findByKey(anyObject());
     }
 
     @Test
@@ -140,5 +136,15 @@ public class RetrospectiveDAOTest {
         developerEntity.setTeamEntities(null);
         developerEntity.setUsername("username");
         return developerEntity;
+    }
+
+    private Developer createDeveloper() {
+        Developer developer = new Developer();
+        developer.setEmail("email");
+        developer.setFirstName("firstname");
+        developer.setId(1);
+        developer.setSurname("surname");
+        developer.setUsername("username");
+        return developer;
     }
 }
