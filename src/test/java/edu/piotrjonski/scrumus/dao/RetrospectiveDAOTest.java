@@ -96,7 +96,11 @@ public class RetrospectiveDAOTest {
     }
 
     private RetrospectiveItem createDomainRetrospectiveItem() {
-        return new RetrospectiveItem(RATE, ITEM_DESC, MINUS);
+        RetrospectiveItem retrospectiveItem = new RetrospectiveItem();
+        retrospectiveItem.setRate(RATE);
+        retrospectiveItem.setDescription(ITEM_DESC);
+        retrospectiveItem.setRetrospectiveItemType(RetrospectiveItemType.MINUS);
+        return retrospectiveItem;
     }
 
     private RetrospectiveItemEmbeddable createDatabaseRetrospectiveItem() {
@@ -108,7 +112,12 @@ public class RetrospectiveDAOTest {
     }
 
     private Comment createComment() {
-        return new Comment(RATE, ITEM_DESC, NOW, 1);
+        Comment comment = new Comment();
+        comment.setCommentBody(ITEM_DESC);
+        comment.setDeveloperId(1);
+        comment.setCreationDate(NOW);
+        comment.setId(RATE);
+        return comment;
     }
 
     private CommentEntity createDatabaseComment() {

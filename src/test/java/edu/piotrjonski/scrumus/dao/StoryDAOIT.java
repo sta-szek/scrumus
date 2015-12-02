@@ -3,7 +3,7 @@ package edu.piotrjonski.scrumus.dao;
 import edu.piotrjonski.scrumus.dao.model.project.TimeRange;
 import edu.piotrjonski.scrumus.domain.Sprint;
 import edu.piotrjonski.scrumus.domain.Story;
-import edu.piotrjonski.scrumus.utils.TestUtils;
+import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -43,7 +43,7 @@ public class StoryDAOIT {
 
     @Deployment
     public static WebArchive createDeployment() {
-        return TestUtils.createDeployment();
+        return UtilsTest.createDeployment();
     }
 
     @Before
@@ -73,10 +73,19 @@ public class StoryDAOIT {
     @Test
     public void shouldFindStoriesForSprint() {
         // given
-        Story story1 = new Story(0, "name1", "dod1", 1, null, currentSprintId);
-        Story story2 = new Story(0, "name2", "dod2", 2, null, currentSprintId);
-        Story story3 = new Story(0, "name3", "dod3", 3, null, currentSprintId);
-        Story story4 = new Story(0, "name4", "dod4", 4, null, currentSprintId);
+        String name = "bame";
+        Story story1 = new Story();
+        Story story2 = new Story();
+        Story story3 = new Story();
+        Story story4 = new Story();
+        story1.setName(name);
+        story2.setName(name);
+        story3.setName(name);
+        story4.setName(name);
+        story1.setSprintId(currentSprintId);
+        story2.setSprintId(currentSprintId);
+        story3.setSprintId(currentSprintId);
+        story4.setSprintId(currentSprintId);
 
         story1 = storyDAO.saveOrUpdate(story1)
                          .get();
@@ -194,7 +203,9 @@ public class StoryDAOIT {
         TimeRange timeRange = new TimeRange();
         timeRange.setEndDate(LocalDateTime.now());
         timeRange.setStartDate(LocalDateTime.now());
-        Sprint sprint = new Sprint(0, "name", "dod", timeRange, 0);
+        Sprint sprint = new Sprint();
+        sprint.setName("name");
+        sprint.setTimeRange(timeRange);
         currentSprintId = sprintDAO.saveOrUpdate(sprint)
                                    .get()
                                    .getId();

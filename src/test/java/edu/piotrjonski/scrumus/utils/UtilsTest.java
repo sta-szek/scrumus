@@ -4,7 +4,7 @@ package edu.piotrjonski.scrumus.utils;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 
-public class TestUtils {
+public class UtilsTest {
 
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class, "scrumus-arquillian-integration-test.war")

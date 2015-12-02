@@ -2,7 +2,7 @@ package edu.piotrjonski.scrumus.dao;
 
 import edu.piotrjonski.scrumus.domain.Project;
 import edu.piotrjonski.scrumus.domain.Team;
-import edu.piotrjonski.scrumus.utils.TestUtils;
+import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.assertj.core.util.Lists;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -45,7 +45,7 @@ public class TeamDAOIT {
 
     @Deployment
     public static WebArchive createDeployment() {
-        return TestUtils.createDeployment();
+        return UtilsTest.createDeployment();
     }
 
     @Before

@@ -3,7 +3,7 @@ package edu.piotrjonski.scrumus.dao;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Issue;
 import edu.piotrjonski.scrumus.domain.IssueType;
-import edu.piotrjonski.scrumus.utils.TestUtils;
+import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -52,7 +52,7 @@ public class IssueDAOIT {
 
     @Deployment
     public static WebArchive createDeployment() {
-        return TestUtils.createDeployment();
+        return UtilsTest.createDeployment();
     }
 
     @Before
@@ -180,7 +180,9 @@ public class IssueDAOIT {
                                                 .get()
                                                 .getId();
 
-        IssueType issueType = new IssueType(0, "name" + nextUniqueValue);
+        IssueType issueType = new IssueType();
+        issueType.setId(0);
+        issueType.setName("name" + nextUniqueValue);
         issueTypeDAO.saveOrUpdate(issueType);
         nextUniqueValue++;
     }
@@ -203,7 +205,10 @@ public class IssueDAOIT {
         issue.setKey(KEY + nextUniqueValue);
         issue.setDescription(DESCRIPTION);
         issue.setDefinitionOfDone(DOD);
-        issue.setIssueType(new IssueType(1, "name0"));
+        IssueType issueType = new IssueType();
+        issueType.setId(1);
+        issueType.setName("name0");
+        issue.setIssueType(issueType);
         issue.setReporterId(currentlySavedDeveloperId);
         issue.setSummary(SUMMARY);
         nextUniqueValue++;
