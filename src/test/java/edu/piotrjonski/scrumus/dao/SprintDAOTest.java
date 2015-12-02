@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.Spy;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.time.LocalDateTime;
@@ -27,12 +27,13 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @RunWith(PowerMockRunner.class)
 public class SprintDAOTest {
 
-    public static TimeRange timeRange;
-    @Mock
-    private StoryDAO storyDAO;
+    private static TimeRange timeRange;
 
-    @Mock
-    private RetrospectiveDAO retrospectiveDAO;
+    @Spy
+    private StoryDAO storyDAO = new StoryDAO();
+
+    @Spy
+    private RetrospectiveDAO retrospectiveDAO = new RetrospectiveDAO();
 
     @InjectMocks
     private SprintDAO sprintDAO;
