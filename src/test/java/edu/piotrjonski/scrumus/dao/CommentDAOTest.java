@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.Spy;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.time.LocalDateTime;
@@ -25,10 +25,10 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @RunWith(PowerMockRunner.class)
 public class CommentDAOTest {
 
-    public static final int DEVELOPER_ID = 2;
+    private static final int DEVELOPER_ID = 2;
 
-    @Mock
-    private DeveloperDAO developerDAO;
+    @Spy
+    private DeveloperDAO developerDAO = new DeveloperDAO();
 
     @InjectMocks
     private CommentDAO commentDAO;
