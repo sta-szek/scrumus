@@ -21,7 +21,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(PowerMockRunner.class)
-public class TeamEntityDAOTest {
+public class TeamDAOTest {
 
     @Spy
     private ProjectDAO projectDAO = new ProjectDAO();
