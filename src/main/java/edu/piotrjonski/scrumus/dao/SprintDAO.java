@@ -62,20 +62,19 @@ public class SprintDAO extends AbstractDAO<SprintEntity, Sprint> {
     }
 
     private int getRetrospectiveId(final SprintEntity dbModel) {
-        if (dbModel.getRetrospectiveEntity() != null) {
-            return dbModel.getRetrospectiveEntity()
-                          .getId();
-        } else {
-            return 0;
-        }
+        RetrospectiveEntity retrospectiveEntity = dbModel.getRetrospectiveEntity();
+        return retrospectiveEntity != null
+               ? retrospectiveEntity.getId()
+               : 0;
     }
 
     private RetrospectiveEntity findRetrospectiveEntity(final int id) {
         if (id != 0) {
             Optional<Retrospective> retrospective = retrospectiveDAO.findByKey(id);
-            return retrospectiveDAO.mapToDatabaseModelIfNotNull(retrospective.get());
-        } else {
-            return null;
+            if (retrospective.isPresent()) {
+                return retrospectiveDAO.mapToDatabaseModelIfNotNull(retrospective.get());
+            }
         }
+        return null;
     }
 }

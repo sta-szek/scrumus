@@ -41,9 +41,7 @@ public class CommentDAO extends AbstractDAO<CommentEntity, Comment> {
         comment.setId(dbModel.getId());
         comment.setCommentBody(dbModel.getCommentBody());
         comment.setCreationDate(dbModel.getCreationDate());
-        comment.setDeveloperId(developerEntity != null
-                               ? developerEntity.getId()
-                               : 0);
+        comment.setDeveloperId(getDeveloperId(developerEntity));
         return comment;
     }
 
@@ -62,12 +60,19 @@ public class CommentDAO extends AbstractDAO<CommentEntity, Comment> {
         return CommentEntity.ID;
     }
 
+    private int getDeveloperId(final DeveloperEntity developerEntity) {
+        return developerEntity != null
+               ? developerEntity.getId()
+               : 0;
+    }
+
     private DeveloperEntity findDeveloperEntity(final int id) {
         if (id != 0) {
             Optional<Developer> developer = developerDAO.findByKey(id);
-            return developerDAO.mapToDatabaseModelIfNotNull(developer.get());
-        } else {
-            return null;
+            if (developer.isPresent()) {
+                return developerDAO.mapToDatabaseModelIfNotNull(developer.get());
+            }
         }
+        return null;
     }
 }
