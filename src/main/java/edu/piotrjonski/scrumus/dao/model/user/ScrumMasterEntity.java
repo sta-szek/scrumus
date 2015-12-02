@@ -1,6 +1,5 @@
 package edu.piotrjonski.scrumus.dao.model.user;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +11,6 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "scrum_master")
 public class ScrumMasterEntity {

@@ -122,6 +122,14 @@ public class RetrospectiveDAOTest {
     }
 
     private DeveloperEntity createDeveloperEntity() {
-        return new DeveloperEntity(1, "firstname", "surname", "username", "email", null, null);
+        DeveloperEntity developerEntity = new DeveloperEntity();
+        developerEntity.setEmail("email");
+        developerEntity.setFirstName("firstname");
+        developerEntity.setId(1);
+        developerEntity.setPictureEntity(null);
+        developerEntity.setSurname("surname");
+        developerEntity.setTeamEntities(null);
+        developerEntity.setUsername("username");
+        return developerEntity;
     }
 }

@@ -1,7 +1,6 @@
 package edu.piotrjonski.scrumus.dao.model.user;
 
 import edu.piotrjonski.scrumus.dao.model.project.ProjectEntity;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +12,6 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "team")
 @NamedQueries({@NamedQuery(name = TeamEntity.FIND_ALL, query = TeamEntity.FIND_ALL_QUERY),
