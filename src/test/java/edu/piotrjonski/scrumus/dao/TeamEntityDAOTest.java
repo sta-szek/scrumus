@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.Spy;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.List;
@@ -23,8 +23,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @RunWith(PowerMockRunner.class)
 public class TeamEntityDAOTest {
 
-    @Mock
-    private ProjectDAO projectDAO;
+    @Spy
+    private ProjectDAO projectDAO = new ProjectDAO();
 
     @InjectMocks
     private TeamDAO teamDAO;
