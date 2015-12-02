@@ -200,7 +200,6 @@ public class IssueDAOIT {
 
     private Issue createIssue() {
         Issue issue = new Issue();
-        issue.setComments(null);
         issue.setCreationDate(NOW);
         issue.setKey(KEY + nextUniqueValue);
         issue.setDescription(DESCRIPTION);
@@ -210,6 +209,7 @@ public class IssueDAOIT {
         issueType.setName("name0");
         issue.setIssueType(issueType);
         issue.setReporterId(currentlySavedDeveloperId);
+        issue.setAssigneeId(currentlySavedDeveloperId);
         issue.setSummary(SUMMARY);
         nextUniqueValue++;
         return issue;

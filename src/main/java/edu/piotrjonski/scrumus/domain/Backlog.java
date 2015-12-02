@@ -3,6 +3,7 @@ package edu.piotrjonski.scrumus.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,6 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 public class Backlog {
     private int id;
-    private List<Issue> issues;
+    private List<Issue> issues = new ArrayList<>();
 
 }
