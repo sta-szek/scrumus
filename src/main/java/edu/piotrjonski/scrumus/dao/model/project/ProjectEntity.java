@@ -15,15 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "project")
-@NamedQueries({@NamedQuery(name = ProjectEntity.FIND_ALL, query = ProjectEntity.FIND_ALL_QUERY),
-               @NamedQuery(name = ProjectEntity.DELETE_BY_KEY, query = ProjectEntity.DELETE_BY_KEY_QUERY)})
+@NamedQueries({@NamedQuery(name = ProjectEntity.FIND_ALL, query = ProjectEntity.FIND_ALL_QUERY)})
 public class ProjectEntity {
 
     public static final String FIND_ALL = "findAllProjects";
     public static final String FIND_ALL_QUERY = "SELECT p FROM ProjectEntity p";
-    public static final String DELETE_BY_KEY = "deleteProjectByKey";
-    public static final String KEY = "key";
-    protected static final String DELETE_BY_KEY_QUERY = "DELETE FROM ProjectEntity p WHERE p.key=:" + KEY;
 
     @Id
     @Column(length = 8, nullable = false, unique = true)

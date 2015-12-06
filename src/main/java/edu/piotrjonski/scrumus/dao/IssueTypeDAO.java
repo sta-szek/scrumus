@@ -38,13 +38,4 @@ public class IssueTypeDAO extends AbstractDAO<IssueTypeEntity, IssueType> {
         return entityManager.createNamedQuery(IssueTypeEntity.FIND_ALL, IssueTypeEntity.class);
     }
 
-    @Override
-    protected Query getDeleteByIdQuery() {
-        return entityManager.createNamedQuery(IssueTypeEntity.DELETE_BY_ID);
-    }
-
-    @Override
-    protected String getId() {
-        return IssueTypeEntity.ID;
-    }
 }

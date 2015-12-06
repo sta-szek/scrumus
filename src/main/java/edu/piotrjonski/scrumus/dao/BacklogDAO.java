@@ -42,13 +42,4 @@ public class BacklogDAO extends AbstractDAO<BacklogEntity, Backlog> {
         return entityManager.createNamedQuery(BacklogEntity.FIND_ALL, BacklogEntity.class);
     }
 
-    @Override
-    protected Query getDeleteByIdQuery() {
-        return entityManager.createNamedQuery(BacklogEntity.DELETE_BY_ID);
-    }
-
-    @Override
-    protected String getId() {
-        return BacklogEntity.ID;
-    }
 }

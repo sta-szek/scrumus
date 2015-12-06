@@ -13,17 +13,11 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "developer")
-@NamedQueries({@NamedQuery(name = DeveloperEntity.FIND_ALL, query = DeveloperEntity.FIND_ALL_QUERY),
-               @NamedQuery(name = DeveloperEntity.DELETE_BY_ID, query = DeveloperEntity.DELETE_BY_ID_QUERY)})
+@NamedQueries({@NamedQuery(name = DeveloperEntity.FIND_ALL, query = DeveloperEntity.FIND_ALL_QUERY)})
 public class DeveloperEntity {
 
     public static final String FIND_ALL = "findAllDevelopers";
-    public static final String DELETE_BY_ID = "deleteDeveloperById";
-    public static final String ID = "id";
-
     protected static final String FIND_ALL_QUERY = "SELECT d FROM DeveloperEntity d";
-    protected static final String DELETE_BY_ID_QUERY = "DELETE FROM DeveloperEntity d WHERE d.id=:" + ID;
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

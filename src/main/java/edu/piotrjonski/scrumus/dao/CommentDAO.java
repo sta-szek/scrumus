@@ -50,16 +50,6 @@ public class CommentDAO extends AbstractDAO<CommentEntity, Comment> {
         return entityManager.createNamedQuery(CommentEntity.FIND_ALL, CommentEntity.class);
     }
 
-    @Override
-    protected Query getDeleteByIdQuery() {
-        return entityManager.createNamedQuery(CommentEntity.DELETE_BY_ID);
-    }
-
-    @Override
-    protected String getId() {
-        return CommentEntity.ID;
-    }
-
     private int getDeveloperId(final DeveloperEntity developerEntity) {
         return developerEntity != null
                ? developerEntity.getId()
