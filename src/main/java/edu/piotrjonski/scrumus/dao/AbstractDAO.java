@@ -37,13 +37,10 @@ public abstract class AbstractDAO<T, V> {
     }
 
     public void delete(Object id) {
-        getDeleteByIdQuery().setParameter(getId(), id)
-                            .executeUpdate();
-    }
-
-    public void delete(List<V> domainObjects) {
-        List<V> objectsToDelete = ListUtils.emptyIfNull(domainObjects);
-        objectsToDelete.forEach(this::delete);
+        T objectToDelete = entityManager.find(entityClass, id);
+        if (objectToDelete != null) {
+            entityManager.remove(objectToDelete);
+        }
     }
 
     public List<T> mapToDatabaseModel(List<V> domainModels) {
