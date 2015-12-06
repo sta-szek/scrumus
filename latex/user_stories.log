@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2015.12.6)  6 DEC 2015 18:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2015.12.6)  6 DEC 2015 18:55
 entering extended mode
 **user_stories.tex
 (user_stories.tex
@@ -358,20 +358,20 @@ Package graphics Info: Driver file: pdftex.def on input line 94.
 (E:\MiKTeX\tex\latex\listings\lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 ) (user_stories.aux)
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for OT4/cmr/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 50.
+LaTeX Font Info:    ... okay on input line 50.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 50.
+LaTeX Font Info:    ... okay on input line 50.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 50.
+LaTeX Font Info:    ... okay on input line 50.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 50.
+LaTeX Font Info:    ... okay on input line 50.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 50.
+LaTeX Font Info:    ... okay on input line 50.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 50.
+LaTeX Font Info:    ... okay on input line 50.
+LaTeX Font Info:    Checking defaults for OT4/cmr/m/n on input line 50.
+LaTeX Font Info:    ... okay on input line 50.
 \c@lstlisting=\count96
 
 (E:\MiKTeX\tex\context\base\supp-pdf.mkii
@@ -388,59 +388,80 @@ LaTeX Font Info:    ... okay on input line 46.
 \makeMPintoPDFobject=\count102
 \everyMPtoPDFconversion=\toks19
 )
-LaTeX Font Info:    Try loading font information for OML+plm on input line 48.
+LaTeX Font Info:    Try loading font information for OML+plm on input line 52.
  (E:\MiKTeX\tex\latex\polski\omlplm.fd
 File: omlplm.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
-LaTeX Font Info:    Try loading font information for OMS+plsy on input line 48.
+LaTeX Font Info:    Try loading font information for OMS+plsy on input line 52.
 
  (E:\MiKTeX\tex\latex\polski\omsplsy.fd
 File: omsplsy.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
-LaTeX Font Info:    Try loading font information for OMX+plex on input line 48.
+LaTeX Font Info:    Try loading font information for OMX+plex on input line 52.
 
  (E:\MiKTeX\tex\latex\polski\omxplex.fd
 File: omxplex.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <12> on input line 48.
+(Font)              <12> on input line 52.
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <8> on input line 48.
+(Font)              <8> on input line 52.
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <6> on input line 48.
-LaTeX Font Info:    Try loading font information for U+lasy on input line 48.
+(Font)              <6> on input line 52.
+LaTeX Font Info:    Try loading font information for U+lasy on input line 52.
  (E:\MiKTeX\tex\latex\base\ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
-(user_stories.toc
-LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <10.95> on input line 2.
-)
+(user_stories.toc)
 \tf@toc=\write3
  [1
 
 {C:/Users/Piotruś/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 57--61
+LaTeX Font Info:    External font `plex10' loaded for size
+(Font)              <10.95> on input line 61.
+LaTeX Font Info:    External font `plex10' loaded for size
+(Font)              <9> on input line 61.
+LaTeX Font Info:    External font `plex10' loaded for size
+(Font)              <5> on input line 61.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 66.
+ (E:\MiKTeX\tex\latex\base\omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 66.
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 66.
+
+(E:\MiKTeX\tex\latex\base\omlcmr.fd
+File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OML/cmr/m/it' in size <10.95> not available
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 66.
+
+Underfull \hbox (badness 10000) in paragraph at lines 70--74
 
  []
 
 [2] [3] [4] (user_stories.aux) ) 
 Here is how much of TeX's memory you used:
- 3096 strings out of 493673
- 40175 string characters out of 3151267
- 127706 words of memory out of 3000000
- 6412 multiletter control sequences out of 15000+200000
- 12252 words of font info for 38 fonts, out of 3000000 for 9000
+ 3153 strings out of 493673
+ 40920 string characters out of 3151267
+ 128706 words of memory out of 3000000
+ 6454 multiletter control sequences out of 15000+200000
+ 15398 words of font info for 48 fonts, out of 3000000 for 9000
  1025 hyphenation exceptions out of 8191
- 26i,6n,36p,290b,219s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 26i,8n,36p,534b,237s stack positions out of 5000i,500n,10000p,200000b,50000s
 {E:/MiKTeX/fonts/enc/dvips/pl/plit.enc}{E:/MiKT
-eX/fonts/enc/dvips/pl/plrm.enc}<E:/MiKTeX/fonts/type1/public/pl/plbx10.pfb><E:/
-MiKTeX/fonts/type1/public/pl/plbx12.pfb><E:/MiKTeX/fonts/type1/public/pl/plr10.
-pfb><E:/MiKTeX/fonts/type1/public/pl/plr12.pfb><E:/MiKTeX/fonts/type1/public/pl
-/plr17.pfb><E:/MiKTeX/fonts/type1/public/pl/plti10.pfb>
-Output written on user_stories.pdf (4 pages, 66726 bytes).
+eX/fonts/enc/dvips/pl/plrm.enc}<E:/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10
+.pfb><E:/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><E:/MiKTeX/fonts/type
+1/public/pl/plbx10.pfb><E:/MiKTeX/fonts/type1/public/pl/plbx12.pfb><E:/MiKTeX/f
+onts/type1/public/pl/plr10.pfb><E:/MiKTeX/fonts/type1/public/pl/plr12.pfb><E:/M
+iKTeX/fonts/type1/public/pl/plr17.pfb><E:/MiKTeX/fonts/type1/public/pl/plr6.pfb
+><E:/MiKTeX/fonts/type1/public/pl/plr8.pfb><E:/MiKTeX/fonts/type1/public/pl/plr
+9.pfb><E:/MiKTeX/fonts/type1/public/pl/plti10.pfb><E:/MiKTeX/fonts/type1/public
+/pl/plti9.pfb>
+Output written on user_stories.pdf (4 pages, 104788 bytes).
 PDF statistics:
- 41 PDF objects out of 1000 (max. 8388607)
+ 65 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -39,6 +39,10 @@
 	title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
 
+\newenvironment{italicquote}
+{\begin{quote}\itshape}
+{\end{quote}}
+
 \author{Piotr Joński}
 \title{Historyjki użytkownika}
 %\frenchspacing - Wyłączenie większych odstępów na końcu zdań
@@ -51,10 +55,19 @@
 \newpage
 
 \section{Historyjki użytkownika}
-TODO opis co to jest
+Jednym ze sposobów na prowadzenie dokumentacji projektu, jak i zbioru wymagań jest utrzymywanie rejestru historyjek użytkownika. Historyjki użytkownika są częścią zwinnych metody prowadzenia projektu. Jako że wytwarzanemu systemowi towarzyszy metodyka Scrum, nie mogło tutaj zabraknąć tego elementu.
 
-\subsection{Historyjki związane z użytkownikami}
-	W projektowanym systemie występują cztery rodzaje użytkowników (administrator, product owner, scrum master oraz developer) z różnymi uprawnieniami. Teraz szczegółowo zostaną opisane uprawnienia każdego z nich w postaci \textit{user stories}.
+\begin{italicquote}
+	Historyjka jest jednostką funkcjonalnościc w projektach XP. Pokazujemy postęp prac, dostarczając przetestowany i zintegrowany kod, który składa się na implementację danej historyjki. Historyjka powinna być zrozumiała i wartościowa dla klientów, testowalna przez programistów i na tyle mała, żeby programiści mogli zaimplementować sześć historyjek w takcie jednej iteracji\footnote{K. Beck, M. Fowler, \textit{Planning Extreme Programming}, Addison-Wesley, Bostion 2000, s.42}.
+\end{italicquote}
+
+Historyjki mogą mieć wiele wzorców. W tej pracy są stosowane dwa z nich:
+\begin{itemize}
+	\item Jako \textit{\textless typ użytkownika \textgreater} mogę \textit{\textless nazwa zadania\textgreater}.
+	\item Jako \textit{\textless typ użytkownika \textgreater} mogę \textit{\textless nazwa zadania\textgreater} w celu \textit{\textless cel \textgreater}\cite{SCRUM}
+\end{itemize} 
+
+W projektowanym systemie występują cztery rodzaje użytkowników (administrator, product owner, scrum master oraz developer) z różnymi uprawnieniami. Teraz szczegółowo zostaną opisane uprawnienia każdego z nich w postaci \textit{user stories}.
 	\newline
 	\newline
 	\textbf{Administrator}
@@ -83,6 +96,7 @@ TODO opis co to jest
 		\item Jako developer mogę dodawać komentarze do zadań oraz retrospektyw.
 		\item Jako developer mogę usuwać swoje komentarze do zadań oraz retrospektyw.
 		\item Jako developer mogę edytować zadania.
+		\item Jako developer mogę edytować swój profil.
 	\end{enumerate}
 	
 
