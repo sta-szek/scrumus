@@ -14,15 +14,11 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "retrospective")
-@NamedQueries({@NamedQuery(name = RetrospectiveEntity.FIND_ALL, query = RetrospectiveEntity.FIND_ALL_QUERY),
-               @NamedQuery(name = RetrospectiveEntity.DELETE_BY_ID, query = RetrospectiveEntity.DELETE_BY_KEY_QUERY)})
+@NamedQueries({@NamedQuery(name = RetrospectiveEntity.FIND_ALL, query = RetrospectiveEntity.FIND_ALL_QUERY)})
 public class RetrospectiveEntity {
 
     public static final String FIND_ALL = "findAllRetrospectives";
     public static final String FIND_ALL_QUERY = "SELECT p FROM RetrospectiveEntity p";
-    public static final String DELETE_BY_ID = "deleteRetrospectiveByKey";
-    public static final String ID = "key";
-    protected static final String DELETE_BY_KEY_QUERY = "DELETE FROM RetrospectiveEntity p WHERE p.id=:" + ID;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

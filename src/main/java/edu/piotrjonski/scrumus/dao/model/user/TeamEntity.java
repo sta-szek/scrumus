@@ -14,16 +14,11 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "team")
-@NamedQueries({@NamedQuery(name = TeamEntity.FIND_ALL, query = TeamEntity.FIND_ALL_QUERY),
-               @NamedQuery(name = TeamEntity.DELETE_BY_ID, query = TeamEntity.DELETE_BY_ID_QUERY)})
+@NamedQueries({@NamedQuery(name = TeamEntity.FIND_ALL, query = TeamEntity.FIND_ALL_QUERY)})
 public class TeamEntity {
 
     public static final String FIND_ALL = "findAllTeams";
-    public static final String DELETE_BY_ID = "deleteTeamById";
-    public static final String ID = "id";
-
     protected static final String FIND_ALL_QUERY = "SELECT d FROM TeamEntity d";
-    protected static final String DELETE_BY_ID_QUERY = "DELETE FROM TeamEntity d WHERE d.id=:" + ID;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
