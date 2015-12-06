@@ -8,4 +8,5 @@ out
 .gradle
 build/
 lib
+*.log
 

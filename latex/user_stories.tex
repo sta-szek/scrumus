@@ -1,0 +1,121 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{latexsym}
+\usepackage[MeX]{polski}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[pdftex]{graphicx}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+	backgroundcolor=\color{white},  
+	basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+	breakatwhitespace=true,          % sets if automatic breaks should only happen at whitespace
+	breaklines=false,                % sets automatic line breaking
+	captionpos=b,                    % sets the caption-position to bottom
+	commentstyle=\color{mygreen},    % comment style
+	deletekeywords={},            	 % if you want to delete keywords from the given language
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	frame=single,                    % adds a frame around the code
+	keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+	keywordstyle=\color{blue},       % keyword style
+	language=Java,                 	 % the language of the code
+	otherkeywords={},           	 % if you want to add more keywords to the set
+	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+	numbersep=-10pt,                 % how far the line-numbers are from the code
+	numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+	rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+	showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+	showstringspaces=false,          % underline spaces within strings only
+	showtabs=false,                  % show tabs within strings adding particular underscores
+	stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+	stringstyle=\color{mymauve},     % string literal style
+	tabsize=2,                       % sets default tabsize to 2 spaces
+	title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+\newenvironment{italicquote}
+{\begin{quote}\itshape}
+{\end{quote}}
+
+\author{Piotr Joński}
+\title{Historyjki użytkownika}
+%\frenchspacing - Wyłączenie większych odstępów na końcu zdań
+
+\begin{document}
+% Autor i tytuł
+\maketitle
+% Spis tresci
+\tableofcontents
+\newpage
+
+\section{Historyjki użytkownika}
+Jednym ze sposobów na prowadzenie dokumentacji projektu, jak i zbioru wymagań jest utrzymywanie rejestru historyjek użytkownika. Historyjki użytkownika są częścią zwinnych metody prowadzenia projektu. Jako że wytwarzanemu systemowi towarzyszy metodyka Scrum, nie mogło tutaj zabraknąć tego elementu.
+
+\begin{italicquote}
+	Historyjka jest jednostką funkcjonalności w projektach XP. Pokazujemy postęp prac, dostarczając przetestowany i zintegrowany kod, który składa się na implementację danej historyjki. Historyjka powinna być zrozumiała i wartościowa dla klientów, testowalna przez programistów i na tyle mała, żeby programiści mogli zaimplementować sześć historyjek w takcie jednej iteracji\footnote{K. Beck, M. Fowler, \textit{Planning Extreme Programming}, Addison-Wesley, Boston 2000, s.42}.
+\end{italicquote}
+
+Historyjki mogą mieć wiele wzorców. W tej pracy są stosowane dwa z nich:
+\begin{itemize}
+	\item Jako \textit{\textless typ użytkownika \textgreater} mogę \textit{\textless nazwa zadania\textgreater}.
+	\item Jako \textit{\textless typ użytkownika \textgreater} mogę \textit{\textless nazwa zadania\textgreater} w celu \textit{\textless cel \textgreater}\cite{SCRUM}
+\end{itemize} 
+
+W projektowanym systemie występują cztery rodzaje użytkowników (administrator, product owner, scrum master oraz developer) z różnymi uprawnieniami. Teraz szczegółowo zostaną opisane uprawnienia każdego z nich w postaci \textit{user story}. Warto pamiętać, że w systemie występuje uproszczony model użytkowników. Dodatkowo każdy z nich jest developerem, a co za tym idzie, może wykonywać akcje użytkownika developer oraz własne.
+	\newline
+	\newline
+	\textbf{Administrator}
+	\begin{enumerate}		
+		\item Jako administrator mogę utworzyć projekt w celu dodania go do systemu.
+		\item Jako administrator mogę usunąć projekt w celu usunięcia z systemu oraz powiązanych z nim elementów t.j. sprint, story, backlog oraz inne. Operacja usuwania odbywa się kaskadowo.
+		\item Jako administrator mogę tworzyć nowych użytkowników w celu dodania ich do systemu.
+		\item Jako administrator mogę usuwać użytkowników w celu usunięcia z systemu.
+		\item Jako administrator mogę nadawać dowolne uprawnienia wszystkim użytkownikom.
+		\item Jako administrator mogę tworzyć nowe grupy w celu dodania ich do systemu.
+		\item Jako administrator mogę dodawać użytkowników do grup oraz usuwać z nich w celu modyfikacji zespołu.		 
+	\end{enumerate}		
+	\textbf{Product owner}
+	\begin{enumerate}		
+		\item Jako product owner mogę tworzyć nowe zadania w projekcie, w celu dodania ich do backlogu.
+		\item Jako product owner mogę nadawać priorytety poszczególnym zadaniom w projekcie.
+		\item Jako product owner mam wgląd w cały projekt, do którego jestem przypisany.
+	\end{enumerate}	
+	\textbf{Scrum master}
+	\begin{enumerate}		
+		\item Co "specjalnego" scrum master może robić w moim systemie?
+	\end{enumerate}
+	\textbf{Developer}
+	\begin{enumerate}		
+		\item Jako developer mogę tworzyć i edytować zadania.
+		\item Jako developer mogę dodawać komentarze do zadań oraz retrospektyw.
+		\item Jako developer mogę usuwać swoje komentarze do zadań oraz retrospektyw.
+		\item Jako developer mogę edytować zadania.
+		\item Jako developer mogę edytować swój profil.
+	\end{enumerate}
+	
+
+\newpage
+\begin{thebibliography}{99}
+	\bibitem{JSF} JavaServer Faces i Eclipse Galileo. Tworzenie aplikacji WWW \emph{Andrzej Marciniak} Helion 2010
+	\bibitem{JSF_CORE} Core JavaServer Faces. Wydanie II \emph{David Geary, Cay S. Horstmann} Helion 2008
+	\bibitem{EJB_3.0} Enterprise JavaBeans 3.0 \emph{Bill Burke \& Richard Monson-Haefel} Helion 2007
+	\bibitem{JBOSS_7} JBoss AS 7. Tworzenie aplikacji \emph{Francesco Marchioni} Helion 2014
+	\bibitem{J2EE} Core J2EE. Wzorce projektowe \emph{Deepak Alur, John Crupi, Dan Malks} Helion 2004
+	\bibitem{SCRUM} Scrum. O zwinnym zarządzaniu projektami. Wydanie II rozszerzone \emph{Mariusz Chrapko} Helion 2015
+	\bibitem{JAVA} Java. Kompedium programisty. Wydanie VIII \emph{Herbert Schildt} Helion 2012
+	\bibitem{CI} Zwinne wytwarzanie oprogramowania. Najlepsze zasady, wzorce i praktyki \emph{Robert C. Martin} Helion 2015
+	\bibitem{GIT} Git. Rozproszony system kontroli wersji \emph{Włodzimierz Gajda} Helion 2013
+	\bibitem{CLEAN_CODE_MASTER} Mistrz czystego kodu. Kodeks postępowania profesjonalnych programistów \emph{Robert C. Martin} Helion 2013
+	\bibitem{CLEAN_CODE} Czysty kod. Podręcznik dobrego programisty \emph{Robert C. Martin} Helion 2010
+	\bibitem{WZORCE} Rusz głową! Wzorce projektowe \emph{Eric Freeman, Elisabeth Freeman, Bert Bates, Kathy Sierra} Helion 2011
+	\bibitem{REFACTOR} Refaktoryzacja do wzorców projektowych \emph{Joshua Kerievsky} Helion 2005
+	
+\end{thebibliography}
+
+\end{document}
