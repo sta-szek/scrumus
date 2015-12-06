@@ -1,5 +1,7 @@
 package edu.piotrjonski.scrumus.dao;
 
+import org.apache.commons.collections4.ListUtils;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -40,27 +42,22 @@ public abstract class AbstractDAO<T, V> {
     }
 
     public void delete(List<V> domainObjects) {
-        domainObjects.forEach(this::delete);
+        List<V> objectsToDelete = ListUtils.emptyIfNull(domainObjects);
+        objectsToDelete.forEach(this::delete);
     }
 
     public List<T> mapToDatabaseModel(List<V> domainModels) {
-        if (domainModels != null) {
-            return domainModels.stream()
-                               .map(this::mapToDatabaseModelIfNotNull)
-                               .collect(Collectors.toList());
-        } else {
-            return null;
-        }
+        List<V> objectsToMap = ListUtils.emptyIfNull(domainModels);
+        return objectsToMap.stream()
+                           .map(this::mapToDatabaseModelIfNotNull)
+                           .collect(Collectors.toList());
     }
 
     public List<V> mapToDomainModel(List<T> dbModels) {
-        if (dbModels != null) {
-            return dbModels.stream()
+        List<T> objectsToMap = ListUtils.emptyIfNull(dbModels);
+        return objectsToMap.stream()
                            .map(this::mapToDomainModelIfNotNull)
                            .collect(Collectors.toList());
-        } else {
-            return null;
-        }
     }
 
     public T mapToDatabaseModelIfNotNull(V domainModel) {

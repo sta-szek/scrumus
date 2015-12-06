@@ -4,6 +4,7 @@ package edu.piotrjonski.scrumus.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,6 +17,6 @@ public class Story {
     private String name;
     private String definitionOfDone;
     private int points;
-    private List<Issue> issues;
+    private List<Issue> issues = new ArrayList<>();
     private int sprintId;
 }

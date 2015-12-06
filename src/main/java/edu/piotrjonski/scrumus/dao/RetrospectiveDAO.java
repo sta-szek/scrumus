@@ -101,5 +101,4 @@ public class RetrospectiveDAO extends AbstractDAO<RetrospectiveEntity, Retrospec
         return RetrospectiveItemType.valueOf(retrospectiveItemTypeEnum.name());
     }
 
-
 }
