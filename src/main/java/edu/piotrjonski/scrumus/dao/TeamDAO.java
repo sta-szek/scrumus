@@ -44,13 +44,4 @@ public class TeamDAO extends AbstractDAO<TeamEntity, Team> {
         return entityManager.createNamedQuery(TeamEntity.FIND_ALL, TeamEntity.class);
     }
 
-    @Override
-    protected Query getDeleteByIdQuery() {
-        return entityManager.createNamedQuery(TeamEntity.DELETE_BY_ID);
-    }
-
-    @Override
-    protected String getId() {
-        return TeamEntity.ID;
-    }
 }

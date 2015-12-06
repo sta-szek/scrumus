@@ -44,13 +44,4 @@ public class ProjectDAO extends AbstractDAO<ProjectEntity, Project> {
         return entityManager.createNamedQuery(ProjectEntity.FIND_ALL, ProjectEntity.class);
     }
 
-    @Override
-    protected Query getDeleteByIdQuery() {
-        return entityManager.createNamedQuery(ProjectEntity.DELETE_BY_KEY);
-    }
-
-    @Override
-    protected String getId() {
-        return ProjectEntity.KEY;
-    }
 }

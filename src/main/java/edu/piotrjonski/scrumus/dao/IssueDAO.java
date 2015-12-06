@@ -70,16 +70,6 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
         return entityManager.createNamedQuery(IssueEntity.FIND_ALL, IssueEntity.class);
     }
 
-    @Override
-    protected Query getDeleteByIdQuery() {
-        return entityManager.createNamedQuery(IssueEntity.DELETE_BY_ID);
-    }
-
-    @Override
-    protected String getId() {
-        return IssueEntity.ID;
-    }
-
     private int getDeveloperId(final IssueEntity dbModel) {
         DeveloperEntity reporter = dbModel.getReporter();
         return reporter != null

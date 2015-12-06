@@ -53,16 +53,6 @@ public class RetrospectiveDAO extends AbstractDAO<RetrospectiveEntity, Retrospec
         return entityManager.createNamedQuery(RetrospectiveEntity.FIND_ALL, RetrospectiveEntity.class);
     }
 
-    @Override
-    protected Query getDeleteByIdQuery() {
-        return entityManager.createNamedQuery(RetrospectiveEntity.DELETE_BY_ID);
-    }
-
-    @Override
-    protected String getId() {
-        return RetrospectiveEntity.ID;
-    }
-
     private List<RetrospectiveItem> mapRetroItemToDomainModel(List<RetrospectiveItemEmbeddable> items) {
         List<RetrospectiveItemEmbeddable> retrospectiveItemEmbeddables = ListUtils.emptyIfNull(items);
         return retrospectiveItemEmbeddables.stream()

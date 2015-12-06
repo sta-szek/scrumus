@@ -40,13 +40,4 @@ public class PictureDAO extends AbstractDAO<PictureEntity, Picture> {
         return entityManager.createNamedQuery(PictureEntity.FIND_ALL, PictureEntity.class);
     }
 
-    @Override
-    protected Query getDeleteByIdQuery() {
-        return entityManager.createNamedQuery(PictureEntity.DELETE_BY_ID);
-    }
-
-    @Override
-    protected String getId() {
-        return PictureEntity.ID;
-    }
 }

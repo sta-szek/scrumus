@@ -51,16 +51,6 @@ public class SprintDAO extends AbstractDAO<SprintEntity, Sprint> {
         return entityManager.createNamedQuery(SprintEntity.FIND_ALL, SprintEntity.class);
     }
 
-    @Override
-    protected Query getDeleteByIdQuery() {
-        return entityManager.createNamedQuery(SprintEntity.DELETE_BY_ID);
-    }
-
-    @Override
-    protected String getId() {
-        return SprintEntity.ID;
-    }
-
     private int getRetrospectiveId(final SprintEntity dbModel) {
         RetrospectiveEntity retrospectiveEntity = dbModel.getRetrospectiveEntity();
         return retrospectiveEntity != null

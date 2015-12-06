@@ -45,13 +45,4 @@ public class DeveloperDAO extends AbstractDAO<DeveloperEntity, Developer> {
         return entityManager.createNamedQuery(DeveloperEntity.FIND_ALL, DeveloperEntity.class);
     }
 
-    @Override
-    protected Query getDeleteByIdQuery() {
-        return entityManager.createNamedQuery(DeveloperEntity.DELETE_BY_ID);
-    }
-
-    @Override
-    protected String getId() {
-        return DeveloperEntity.ID;
-    }
 }

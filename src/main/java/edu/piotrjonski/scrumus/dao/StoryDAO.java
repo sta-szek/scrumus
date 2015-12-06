@@ -67,16 +67,6 @@ public class StoryDAO extends AbstractDAO<StoryEntity, Story> {
         return entityManager.createNamedQuery(StoryEntity.FIND_ALL, StoryEntity.class);
     }
 
-    @Override
-    protected Query getDeleteByIdQuery() {
-        return entityManager.createNamedQuery(StoryEntity.DELETE_BY_ID);
-    }
-
-    @Override
-    protected String getId() {
-        return StoryEntity.ID;
-    }
-
     private int getSprintId(final StoryEntity dbModel) {
         SprintEntity sprint = dbModel.getSprint();
         return sprint != null

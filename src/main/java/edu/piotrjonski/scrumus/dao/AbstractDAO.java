@@ -75,8 +75,4 @@ public abstract class AbstractDAO<T, V> {
 
     protected abstract Query getFindAllQuery();
 
-    protected abstract Query getDeleteByIdQuery();
-
-    protected abstract String getId();
-
 }
