@@ -16,8 +16,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.util.Lists.newArrayList;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.MockitoAnnotations.initMocks;

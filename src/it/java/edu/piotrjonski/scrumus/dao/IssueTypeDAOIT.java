@@ -16,7 +16,6 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +24,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Arquillian.class)
 public class IssueTypeDAOIT {
     public static final String NAME = "abcdge";
-    public static final LocalDateTime NOW = LocalDateTime.now();
     public static int nextUniqueValue = 0;
 
     @Inject
