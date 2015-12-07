@@ -1,3 +1,7 @@
+plugins {
+    id 'org.unbroken-dome.test-sets' version '1.2.0'
+}
+
 ext.libraryVersions = [
         javaee                  : '7.0',
         wildfly                 : '8.0.0.Final',
@@ -8,7 +12,6 @@ ext.libraryVersions = [
 ]
 
 ext.jbossHome = hasProperty('jbossHome') ? jbossHome : "${rootDir}\\wildfly-8.0.0.Final"
-println jbossHome
 
 apply plugin: 'java'
 apply plugin: 'war'
@@ -32,25 +35,30 @@ repositories {
     maven { url 'http://repo.jfrog.org/artifactory/repo' }
 }
 
-//dependencies {
-//    providedCompile "javax:javaee-api:${libraryVersions.javaee}"
-//    providedCompile 'org.projectlombok:lombok:1.16.6'
-//
-//    testCompile "junit:junit:${libraryVersions.junit}"
-//    testCompile "org.jboss.arquillian.junit:arquillian-junit-container:${libraryVersions.arquillian}"
-//    testCompile "org.jboss.arquillian.protocol:arquillian-protocol-servlet:${libraryVersions.arquillian}"
-//    testCompile "org.wildfly:wildfly-arquillian-container-managed:${libraryVersions.wildfly}"
-//    testCompile "org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-gradle-depchain:${libraryVersions.shrinkWrapResolverGradle}"
-//
-//
-//}
-//
-//test {
-//    testLogging {
-//        events 'passed', 'skipped', 'failed'
-//        exceptionFormat = 'full'
-//    }
-//}
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
+testSets {
+    integrationTest { dirName = 'src/it/java' }
+}
+
+sourceSets {
+    integrationTest {
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+        java.srcDir file('src/it/java')
+        resources.srcDir file('src/it/resources')
+    }
+}
+
+project.integrationTest {
+    outputs.upToDateWhen { false }
+}
+
+check.dependsOn integrationTest
+integrationTest.mustRunAfter test
 dependencies {
     providedCompile 'org.projectlombok:lombok:1.16.6'
     compile 'org.wildfly:wildfly-spec-api:8.0.0.Final'
@@ -62,24 +70,15 @@ dependencies {
 
     testCompile "junit:junit:${libraryVersions.junit}"
     testCompile "org.assertj:assertj-core:${libraryVersions.assertj}"
-    testCompile 'org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-depchain:2.1.0'
-    testCompile 'org.jboss.arquillian:arquillian-bom:1.1.10.Final'
-    testCompile 'org.jboss.arquillian.junit:arquillian-junit-container:1.1.10.Final'
-    testCompile 'org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-impl-gradle-embedded-archive:2.2.0'
-
-
-
-    testRuntime 'org.jboss.logging:jboss-logging:3.1.4.GA'
-    // testCompile 'org.jboss.arquillian.protocol:arquillian-protocol-servlet:1.1.10.Final'
-
-    /**
-     * Embedded means it runs in the same JVM, it still needs the full installation
-     */
-    //testRuntime 'org.wildfly:wildfly-arquillian-container-embedded:8.0.0.Final'
-    testRuntime 'org.wildfly:wildfly-arquillian-container-managed:8.2.1.Final'
+    integrationTestCompile 'org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-depchain:2.1.0'
+    integrationTestCompile 'org.jboss.arquillian:arquillian-bom:1.1.10.Final'
+    integrationTestCompile 'org.jboss.arquillian.junit:arquillian-junit-container:1.1.10.Final'
+    integrationTestCompile 'org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-impl-gradle-embedded-archive:2.2.0'
+    integrationTestCompile 'org.jboss.logging:jboss-logging:3.1.4.GA'
+    integrationTestCompile 'org.wildfly:wildfly-arquillian-container-managed:8.2.1.Final'
 }
 
-test {
+integrationTest {
     jvmArgs '-XX:MaxPermSize=256m'
 
     /**
@@ -92,3 +91,4 @@ test {
      */
     systemProperty 'java.util.logging.manager', 'org.jboss.logmanager.LogManager'
 }
+
