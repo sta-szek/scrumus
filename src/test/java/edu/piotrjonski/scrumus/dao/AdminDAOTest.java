@@ -4,13 +4,29 @@ import edu.piotrjonski.scrumus.dao.model.user.AdminEntity;
 import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.domain.Admin;
 import edu.piotrjonski.scrumus.domain.Developer;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Spy;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.MockitoAnnotations.initMocks;
 
+@RunWith(PowerMockRunner.class)
 public class AdminDAOTest {
 
-    private AdminDAO adminDAO = new AdminDAO();
+    @Spy
+    private DeveloperDAO developerDAO = new DeveloperDAO();
+
+    @InjectMocks
+    private AdminDAO adminDAO;
+
+    @Before
+    public void before() {
+        initMocks(this);
+    }
 
     @Test
     public void shouldMapToDatabaseModel() {

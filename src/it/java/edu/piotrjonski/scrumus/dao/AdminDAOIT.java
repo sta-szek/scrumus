@@ -25,10 +25,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Arquillian.class)
 public class AdminDAOIT {
 
-    public static int nextUniqueValue = 0;
+    private int lastDeveloperId = 0;
 
     @Inject
     private AdminDAO adminDAO;
+
+    @Inject
+    private DeveloperDAO developerDAO;
 
     @Inject
     private UserTransaction userTransaction;
@@ -103,9 +106,9 @@ public class AdminDAOIT {
 
         // then
         assertThat(admins).hasSize(3)
-                              .contains(admin1)
-                              .contains(admin2)
-                              .contains(admin3);
+                          .contains(admin1)
+                          .contains(admin2)
+                          .contains(admin3);
     }
 
     @Test
@@ -120,7 +123,7 @@ public class AdminDAOIT {
 
         // when
         Admin admin = adminDAO.findByKey(id)
-                                          .get();
+                              .get();
 
         // then
         assertThat(admin).isEqualTo(admin1);
@@ -147,14 +150,23 @@ public class AdminDAOIT {
         entityManager.joinTransaction();
         entityManager.createQuery("DELETE FROM AdminEntity")
                      .executeUpdate();
+        entityManager.createQuery("DELETE FROM DeveloperEntity")
+                     .executeUpdate();
         userTransaction.commit();
         entityManager.clear();
     }
 
     private Admin createAdmin() {
         Admin admin = new Admin();
-        admin.setDeveloper(new Developer());
-        nextUniqueValue++;
+        Developer developer = new Developer();
+        developer.setEmail("ds");
+        developer.setFirstName("ds");
+        developer.setSurname("ds");
+        developer.setUsername("ds");
+        Developer developer1 = developerDAO.saveOrUpdate(developer)
+                                           .get();
+        admin.setDeveloper(developer1);
+        lastDeveloperId = developer1.getId();
         return admin;
     }
 
