@@ -33,7 +33,7 @@ public class AdminDAO extends AbstractDAO<AdminEntity, Admin> {
     @Override
     protected Admin mapToDomainModel(final AdminEntity dbModel) {
         Admin admin = new Admin();
-        admin.setDeveloper(developerDAO.mapToDomainModel(dbModel.getDeveloperEntity()));
+        admin.setDeveloper(developerDAO.mapToDomainModelIfNotNull(dbModel.getDeveloperEntity()));
         admin.setId(dbModel.getId());
         return admin;
     }

@@ -15,8 +15,8 @@ import javax.persistence.*;
 @NamedQueries({@NamedQuery(name = AdminEntity.FIND_ALL, query = AdminEntity.FIND_ALL_QUERY)})
 public class AdminEntity {
 
-    public static final String FIND_ALL = "findAllDevelopers";
-    protected static final String FIND_ALL_QUERY = "SELECT d FROM DeveloperEntity d";
+    public static final String FIND_ALL = "findAllAdmins";
+    protected static final String FIND_ALL_QUERY = "SELECT d FROM AdminEntity d";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

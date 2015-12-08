@@ -86,39 +86,27 @@ public class AdminDAOIT {
     @Test
     public void shouldFindAll() {
         // given
-        Admin admin1 = createAdmin();
-        Admin admin2 = createAdmin();
-        Admin admin3 = createAdmin();
+        Admin admin = createAdmin();
 
-        int id1 = entityManager.merge(adminDAO.mapToDatabaseModelIfNotNull(admin1))
-                               .getId();
-        int id2 = entityManager.merge(adminDAO.mapToDatabaseModelIfNotNull(admin2))
-                               .getId();
-        int id3 = entityManager.merge(adminDAO.mapToDatabaseModelIfNotNull(admin3))
+        int id1 = entityManager.merge(adminDAO.mapToDatabaseModelIfNotNull(admin))
                                .getId();
 
-        admin1.setId(id1);
-        admin2.setId(id2);
-        admin3.setId(id3);
+        admin.setId(id1);
 
         // when
         List<Admin> admins = adminDAO.findAll();
 
         // then
-        assertThat(admins).hasSize(3)
-                          .contains(admin1)
-                          .contains(admin2)
-                          .contains(admin3);
+        assertThat(admins).hasSize(1)
+                          .contains(admin);
     }
 
     @Test
     public void shouldFindByKey() {
         // given
         Admin admin1 = createAdmin();
-        Admin admin2 = createAdmin();
         int id = entityManager.merge(adminDAO.mapToDatabaseModelIfNotNull(admin1))
                               .getId();
-        entityManager.merge(adminDAO.mapToDatabaseModelIfNotNull(admin2));
         admin1.setId(id);
 
         // when
@@ -143,6 +131,14 @@ public class AdminDAOIT {
     private void startTransaction() throws SystemException, NotSupportedException {
         userTransaction.begin();
         entityManager.joinTransaction();
+        Developer developer = new Developer();
+        developer.setEmail("ds");
+        developer.setFirstName("ds");
+        developer.setSurname("ds");
+        developer.setUsername("ds");
+        Developer developer1 = developerDAO.saveOrUpdate(developer)
+                                           .get();
+        lastDeveloperId = developer1.getId();
     }
 
     private void clearData() throws Exception {
@@ -158,15 +154,8 @@ public class AdminDAOIT {
 
     private Admin createAdmin() {
         Admin admin = new Admin();
-        Developer developer = new Developer();
-        developer.setEmail("ds");
-        developer.setFirstName("ds");
-        developer.setSurname("ds");
-        developer.setUsername("ds");
-        Developer developer1 = developerDAO.saveOrUpdate(developer)
-                                           .get();
-        admin.setDeveloper(developer1);
-        lastDeveloperId = developer1.getId();
+        admin.setDeveloper(developerDAO.findByKey(lastDeveloperId)
+                                       .get());
         return admin;
     }
 
