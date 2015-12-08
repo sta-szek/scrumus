@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.project.ProjectEntity;
 import edu.piotrjonski.scrumus.domain.Project;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -181,7 +182,7 @@ public class ProjectDAOIT {
         return project;
     }
 
-    private List<Project> findAll() {
+    private List<ProjectEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM ProjectEntity d")
                             .getResultList();
     }

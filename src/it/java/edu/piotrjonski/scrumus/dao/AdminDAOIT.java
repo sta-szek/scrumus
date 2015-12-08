@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.user.AdminEntity;
 import edu.piotrjonski.scrumus.domain.Admin;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
@@ -159,7 +160,7 @@ public class AdminDAOIT {
         return admin;
     }
 
-    private List<Admin> findAll() {
+    private List<AdminEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM AdminEntity d")
                             .getResultList();
     }

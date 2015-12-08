@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.project.IssueTypeEntity;
 import edu.piotrjonski.scrumus.domain.IssueType;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -174,7 +175,7 @@ public class IssueTypeDAOIT {
         return issueType;
     }
 
-    private List<IssueType> findAll() {
+    private List<IssueTypeEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM IssueTypeEntity d")
                             .getResultList();
     }

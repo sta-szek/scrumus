@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.project.StoryEntity;
 import edu.piotrjonski.scrumus.dao.model.project.TimeRange;
 import edu.piotrjonski.scrumus.domain.Sprint;
 import edu.piotrjonski.scrumus.domain.Story;
@@ -231,7 +232,7 @@ public class StoryDAOIT {
         return story;
     }
 
-    private List<Story> findAll() {
+    private List<StoryEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM StoryEntity d")
                             .getResultList();
     }

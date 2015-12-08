@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.project.IssueEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Issue;
 import edu.piotrjonski.scrumus.domain.IssueType;
@@ -215,7 +216,7 @@ public class IssueDAOIT {
         return issue;
     }
 
-    private List<Issue> findAll() {
+    private List<IssueEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM IssueEntity d")
                             .getResultList();
     }

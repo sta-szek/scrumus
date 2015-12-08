@@ -182,7 +182,7 @@ public class RetrospectiveDAOIT {
         return retrospective;
     }
 
-    private List<Retrospective> findAll() {
+    private List<RetrospectiveEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM RetrospectiveEntity d")
                             .getResultList();
     }

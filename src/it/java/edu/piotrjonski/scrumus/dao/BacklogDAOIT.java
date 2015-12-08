@@ -1,6 +1,7 @@
 package edu.piotrjonski.scrumus.dao;
 
 
+import edu.piotrjonski.scrumus.dao.model.project.BacklogEntity;
 import edu.piotrjonski.scrumus.domain.Backlog;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Issue;
@@ -212,7 +213,7 @@ public class BacklogDAOIT {
         return new Backlog();
     }
 
-    private List<Backlog> findAll() {
+    private List<BacklogEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM BacklogEntity d")
                             .getResultList();
     }

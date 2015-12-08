@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.user.ScrumMasterEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.ScrumMaster;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
@@ -77,10 +78,9 @@ public class ScrumMasterDAOIT {
 
         // when
         scrumMasterDAO.delete(scrumMaster.getId());
-        int allUsers = findAll().size();
 
         // then
-        assertThat(allUsers).isEqualTo(0);
+        assertThat(findAll().size()).isEqualTo(0);
     }
 
     @Test
@@ -98,7 +98,7 @@ public class ScrumMasterDAOIT {
 
         // then
         assertThat(scrumMasters).hasSize(1)
-                                 .contains(scrumMaster);
+                                .contains(scrumMaster);
     }
 
     @Test
@@ -111,7 +111,7 @@ public class ScrumMasterDAOIT {
 
         // when
         ScrumMaster scrumMaster = scrumMasterDAO.findByKey(id)
-                                                   .get();
+                                                .get();
 
         // then
         assertThat(scrumMaster).isEqualTo(scrumMaster1);
@@ -155,11 +155,11 @@ public class ScrumMasterDAOIT {
     private ScrumMaster createScrumMaster() {
         ScrumMaster scrumMaster = new ScrumMaster();
         scrumMaster.setDeveloper(developerDAO.findByKey(lastDeveloperId)
-                                              .get());
+                                             .get());
         return scrumMaster;
     }
 
-    private List<ScrumMaster> findAll() {
+    private List<ScrumMasterEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM ScrumMasterEntity d")
                             .getResultList();
     }

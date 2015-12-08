@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.user.ProductOwnerEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.ProductOwner;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
@@ -159,7 +160,7 @@ public class ProductOwnerDAOIT {
         return productOwner;
     }
 
-    private List<ProductOwner> findAll() {
+    private List<ProductOwnerEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM ProductOwnerEntity d")
                             .getResultList();
     }

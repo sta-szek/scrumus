@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.user.TeamEntity;
 import edu.piotrjonski.scrumus.domain.Project;
 import edu.piotrjonski.scrumus.domain.Team;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
@@ -190,7 +191,7 @@ public class TeamDAOIT {
         return Lists.newArrayList(project);
     }
 
-    private List<Team> findAll() {
+    private List<TeamEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM TeamEntity d")
                             .getResultList();
     }

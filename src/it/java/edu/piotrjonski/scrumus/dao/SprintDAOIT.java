@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.project.SprintEntity;
 import edu.piotrjonski.scrumus.dao.model.project.TimeRange;
 import edu.piotrjonski.scrumus.domain.Sprint;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
@@ -179,7 +180,7 @@ public class SprintDAOIT {
         return sprint;
     }
 
-    private List<Sprint> findAll() {
+    private List<SprintEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM SprintEntity d")
                             .getResultList();
     }

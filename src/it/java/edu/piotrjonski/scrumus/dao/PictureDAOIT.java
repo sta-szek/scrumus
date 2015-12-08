@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.user.PictureEntity;
 import edu.piotrjonski.scrumus.domain.Picture;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -179,7 +180,7 @@ public class PictureDAOIT {
         return picture;
     }
 
-    private List<Picture> findAll() {
+    private List<PictureEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM PictureEntity d")
                             .getResultList();
     }

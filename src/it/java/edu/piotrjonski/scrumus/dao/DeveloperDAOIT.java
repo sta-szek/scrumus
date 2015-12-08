@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -181,7 +182,7 @@ public class DeveloperDAOIT {
         return developer;
     }
 
-    private List<Developer> findAll() {
+    private List<DeveloperEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM DeveloperEntity d")
                             .getResultList();
     }
