@@ -20,7 +20,7 @@ public class UserManager {
                            .orElse(developer);
     }
 
-    public void delete(int developerId){
+    public void delete(int developerId) {
         developerDAO.delete(developerId);
     }
 
