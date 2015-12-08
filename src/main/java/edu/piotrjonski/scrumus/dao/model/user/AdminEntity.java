@@ -18,6 +18,6 @@ public class AdminEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private DeveloperEntity developerEntity;
 }
