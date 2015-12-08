@@ -1,9 +1,7 @@
 package edu.piotrjonski.scrumus.dao;
 
 
-import edu.piotrjonski.scrumus.dao.model.user.AdminEntity;
 import edu.piotrjonski.scrumus.dao.model.user.ProductOwnerEntity;
-import edu.piotrjonski.scrumus.domain.Admin;
 import edu.piotrjonski.scrumus.domain.ProductOwner;
 
 import javax.ejb.Stateless;

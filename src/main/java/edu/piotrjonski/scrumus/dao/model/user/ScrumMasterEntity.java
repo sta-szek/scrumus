@@ -13,7 +13,11 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "scrum_master")
+@NamedQueries({@NamedQuery(name = ScrumMasterEntity.FIND_ALL, query = ScrumMasterEntity.FIND_ALL_QUERY)})
 public class ScrumMasterEntity {
+
+    public static final String FIND_ALL = "findAllScrumMaster";
+    protected static final String FIND_ALL_QUERY = "SELECT d FROM ScrumMasterEntity d";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
