@@ -1,7 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
 
-import edu.piotrjonski.scrumus.dao.model.user.ProductOwnerEntity;
 import edu.piotrjonski.scrumus.dao.model.user.ScrumMasterEntity;
 import edu.piotrjonski.scrumus.domain.ScrumMaster;
 
@@ -19,7 +18,7 @@ public class ScrumMasterDAO extends AbstractDAO<ScrumMasterEntity, ScrumMaster> 
     private TeamDAO teamDAO;
 
     public ScrumMasterDAO() {
-        this(ProductOwnerEntity.class);
+        this(ScrumMasterEntity.class);
     }
 
     private ScrumMasterDAO(final Class entityClass) {

@@ -74,7 +74,10 @@ public class SprintDAOTest {
         assertThat(result.getRetrospectiveEntity()
                          .getId()).isEqualTo(1);
         assertThat(result.getName()).isEqualTo(name);
-        assertThat(result.getTimeRange()).isEqualTo(timeRange);
+        assertThat(result.getTimeRange()
+                         .getEndDate()).isEqualTo(timeRange.getEndDate());
+        assertThat(result.getTimeRange()
+                         .getStartDate()).isEqualTo(timeRange.getStartDate());
     }
 
     @Test

@@ -16,7 +16,7 @@ import java.util.List;
 @NamedQueries({@NamedQuery(name = ScrumMasterEntity.FIND_ALL, query = ScrumMasterEntity.FIND_ALL_QUERY)})
 public class ScrumMasterEntity {
 
-    public static final String FIND_ALL = "findAllScrumMaster";
+    public static final String FIND_ALL = "findAllScrumMasters";
     protected static final String FIND_ALL_QUERY = "SELECT d FROM ScrumMasterEntity d";
 
     @Id

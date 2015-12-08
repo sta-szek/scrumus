@@ -3,6 +3,7 @@ package edu.piotrjonski.scrumus.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,5 +14,5 @@ import java.util.List;
 public class ScrumMaster {
     private int id;
     private Developer developer;
-    private List<Team> teams;
+    private List<Team> teams = new ArrayList<>();
 }
