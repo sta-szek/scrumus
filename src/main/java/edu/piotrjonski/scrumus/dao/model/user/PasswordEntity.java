@@ -25,6 +25,6 @@ public class PasswordEntity {
     @Column(nullable = false, length = 1024, unique = false)
     private String password;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
     private DeveloperEntity developerEntity;
 }
