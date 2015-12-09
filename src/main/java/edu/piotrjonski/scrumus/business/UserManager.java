@@ -12,6 +12,9 @@ public class UserManager {
     @Inject
     private DeveloperDAO developerDAO;
 
+    @Inject
+    private PermissionManager permissionManager;
+
     public Developer create(Developer developer) throws AlreadyExistException {
         if (exists(developer)) {
             throw new AlreadyExistException("User already exists.");
@@ -20,8 +23,15 @@ public class UserManager {
                            .orElse(developer);
     }
 
-    public void delete(int developerId) {
-        developerDAO.delete(developerId);
+    public void delete(int userId) {
+        developerDAO.delete(userId);
+    }
+
+    public boolean grantPermission(Developer user, PermissionType permissionType) {
+        if (exists(user)) {
+            permissionManager.grantPermission(user, permissionType);
+        }
+        return false;
     }
 
     private boolean exists(Developer developer) {
