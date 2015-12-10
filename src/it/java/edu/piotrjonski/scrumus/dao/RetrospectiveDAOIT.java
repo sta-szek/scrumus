@@ -71,6 +71,32 @@ public class RetrospectiveDAOIT {
     }
 
     @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        Retrospective retrospective = createRetrospective();
+        int entityId = retrospectiveDAO.saveOrUpdate(retrospective)
+                                       .get()
+                                       .getId();
+
+        // when
+        boolean result = retrospectiveDAO.exist(entityId);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = retrospectiveDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
     public void shouldUpdate() {
         // given
         String retrospectiveBody = "updatedBody";

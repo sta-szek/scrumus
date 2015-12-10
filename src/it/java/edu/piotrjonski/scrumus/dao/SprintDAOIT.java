@@ -66,6 +66,32 @@ public class SprintDAOIT {
     }
 
     @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        Sprint sprint = createSprint();
+        int entityId = sprintDAO.saveOrUpdate(sprint)
+                                .get()
+                                .getId();
+
+        // when
+        boolean result = sprintDAO.exist(entityId);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = sprintDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
     public void shouldUpdate() {
         // given
         String updatedName = "UpdatedName";

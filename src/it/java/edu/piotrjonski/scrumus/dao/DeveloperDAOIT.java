@@ -59,7 +59,7 @@ public class DeveloperDAOIT {
     @Test
     public void shouldSave() {
         // given
-        Developer developer = createDevloper();
+        Developer developer = createDeveloper();
 
         // when
         developerDAO.saveOrUpdate(developer);
@@ -70,10 +70,36 @@ public class DeveloperDAOIT {
     }
 
     @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        Developer developer = createDeveloper();
+        int entityId = developerDAO.saveOrUpdate(developer)
+                                   .get()
+                                   .getId();
+
+        // when
+        boolean result = developerDAO.exist(entityId);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = developerDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
     public void shouldUpdate() {
         // given
         String updatedUserName = "UpdatedUser";
-        Developer developer = createDevloper();
+        Developer developer = createDeveloper();
         developer = developerDAO.mapToDomainModelIfNotNull(entityManager.merge(developerDAO.mapToDatabaseModelIfNotNull(
                 developer)));
         developer.setFirstName(updatedUserName);
@@ -89,7 +115,7 @@ public class DeveloperDAOIT {
     @Test
     public void shouldDelete() {
         // given
-        Developer developer = createDevloper();
+        Developer developer = createDeveloper();
         developer = developerDAO.mapToDomainModelIfNotNull(entityManager.merge(developerDAO.mapToDatabaseModelIfNotNull(
                 developer)));
 
@@ -104,9 +130,9 @@ public class DeveloperDAOIT {
     @Test
     public void shouldFindAll() {
         // given
-        Developer developer1 = createDevloper();
-        Developer developer2 = createDevloper();
-        Developer developer3 = createDevloper();
+        Developer developer1 = createDeveloper();
+        Developer developer2 = createDeveloper();
+        Developer developer3 = createDeveloper();
 
         int id1 = entityManager.merge(developerDAO.mapToDatabaseModelIfNotNull(developer1))
                                .getId();
@@ -132,8 +158,8 @@ public class DeveloperDAOIT {
     @Test
     public void shouldFindByKey() {
         // given
-        Developer developer1 = createDevloper();
-        Developer developer2 = createDevloper();
+        Developer developer1 = createDeveloper();
+        Developer developer2 = createDeveloper();
         int id = entityManager.merge(developerDAO.mapToDatabaseModelIfNotNull(developer1))
                               .getId();
         entityManager.merge(developerDAO.mapToDatabaseModelIfNotNull(developer2));
@@ -172,7 +198,7 @@ public class DeveloperDAOIT {
         entityManager.clear();
     }
 
-    private Developer createDevloper() {
+    private Developer createDeveloper() {
         Developer developer = new Developer();
         developer.setFirstName(FIRSTNAME + nextUniqueValue);
         developer.setSurname(SURNAME + nextUniqueValue);

@@ -69,6 +69,32 @@ public class PictureDAOIT {
     }
 
     @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        Picture picture = createPicture();
+        int entityId = pictureDAO.saveOrUpdate(picture)
+                                 .get()
+                                 .getId();
+
+        // when
+        boolean result = pictureDAO.exist(entityId);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = pictureDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
     public void shouldUpdate() {
         // given
         String updatedName = "UpdatedName";

@@ -70,6 +70,57 @@ public class AdminDAOIT {
     }
 
     @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        Admin admin = createAdmin();
+        int entityId = adminDAO.saveOrUpdate(admin)
+                               .get()
+                               .getId();
+
+        // when
+        boolean result = adminDAO.exist(entityId);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = adminDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    public void shouldReturnAdminIfExistByDeveloperId() {
+        // given
+        Admin admin = createAdmin();
+        Admin expectedResult = adminDAO.saveOrUpdate(admin)
+                                       .get();
+
+        // when
+        Optional<Admin> result = adminDAO.findByDeveloperId(lastDeveloperId);
+
+        // then
+        assertThat(result.get()).isEqualTo(expectedResult);
+    }
+
+    @Test
+    public void shouldReturnEmptyOptionalIfNotExistByDeveloperId() {
+        // given
+
+        // when
+        Optional<Admin> result = adminDAO.findByDeveloperId(1);
+
+        // then
+        assertThat(result).isEmpty();
+    }
+
+    @Test
     public void shouldDelete() {
         // given
         Admin admin = createAdmin();

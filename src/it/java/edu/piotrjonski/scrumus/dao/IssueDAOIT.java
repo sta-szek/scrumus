@@ -81,6 +81,32 @@ public class IssueDAOIT {
     }
 
     @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        Issue issue = createIssue();
+        int entityId = issueDAO.saveOrUpdate(issue)
+                               .get()
+                               .getId();
+
+        // when
+        boolean result = issueDAO.exist(entityId);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = issueDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
     public void shouldUpdate() {
         // given
         String updatedName = "UpdatedName";

@@ -70,6 +70,32 @@ public class CommentDAOIT {
     }
 
     @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        Comment comment = createComment();
+        int entityId = commentDAO.saveOrUpdate(comment)
+                                 .get()
+                                 .getId();
+
+        // when
+        boolean result = commentDAO.exist(entityId);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = commentDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
     public void shouldUpdate() {
         // given
         String commentBody = "updatedBody";

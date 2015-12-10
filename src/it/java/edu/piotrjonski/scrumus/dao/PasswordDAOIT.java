@@ -72,6 +72,32 @@ public class PasswordDAOIT {
     }
 
     @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        Password password = createPassword();
+        int entityId = passwordDAO.saveOrUpdate(password)
+                                  .get()
+                                  .getId();
+
+        // when
+        boolean result = passwordDAO.exist(entityId);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = passwordDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
     public void shouldUpdate() {
         // given
         String passwordString = "updatedPassword";

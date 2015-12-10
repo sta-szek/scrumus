@@ -70,6 +70,32 @@ public class ProductOwnerDAOIT {
     }
 
     @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        ProductOwner productOwner = createProductOwner();
+        int entityId = productOwnerDAO.saveOrUpdate(productOwner)
+                                      .get()
+                                      .getId();
+
+        // when
+        boolean result = productOwnerDAO.exist(entityId);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = productOwnerDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
     public void shouldDelete() {
         // given
         ProductOwner productOwner = createProductOwner();

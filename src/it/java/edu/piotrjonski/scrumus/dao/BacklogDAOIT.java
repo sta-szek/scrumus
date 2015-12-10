@@ -78,6 +78,32 @@ public class BacklogDAOIT {
     }
 
     @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        Backlog backlog = createBacklog();
+        int entityId = backlogDAO.saveOrUpdate(backlog)
+                                 .get()
+                                 .getId();
+
+        // when
+        boolean result = backlogDAO.exist(entityId);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = backlogDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
     public void shouldUpdate() {
         // given
         IssueType issueType = new IssueType();

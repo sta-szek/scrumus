@@ -72,6 +72,32 @@ public class StoryDAOIT {
     }
 
     @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        Story story = createStory();
+        int entityId = storyDAO.saveOrUpdate(story)
+                               .get()
+                               .getId();
+
+        // when
+        boolean result = storyDAO.exist(entityId);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = storyDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
     public void shouldFindStoriesForSprint() {
         // given
         String name = "bame";
@@ -107,7 +133,6 @@ public class StoryDAOIT {
                           .contains(story3)
                           .contains(story4);
     }
-
 
     @Test
     public void shouldUpdate() {

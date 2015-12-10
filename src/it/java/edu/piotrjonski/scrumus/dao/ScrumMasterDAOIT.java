@@ -70,6 +70,32 @@ public class ScrumMasterDAOIT {
     }
 
     @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        ScrumMaster scrumMaster = createScrumMaster();
+        int entityId = scrumMasterDAO.saveOrUpdate(scrumMaster)
+                                     .get()
+                                     .getId();
+
+        // when
+        boolean result = scrumMasterDAO.exist(entityId);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = scrumMasterDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
     public void shouldDelete() {
         // given
         ScrumMaster scrumMaster = createScrumMaster();

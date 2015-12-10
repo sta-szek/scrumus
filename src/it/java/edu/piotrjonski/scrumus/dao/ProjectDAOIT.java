@@ -70,6 +70,32 @@ public class ProjectDAOIT {
     }
 
     @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        Project project = createProject();
+        String entityKey = projectDAO.saveOrUpdate(project)
+                                     .get()
+                                     .getKey();
+
+        // when
+        boolean result = projectDAO.exist(entityKey);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = projectDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
     public void shouldUpdate() {
         // given
         String updatedName = "UpdatedName";
