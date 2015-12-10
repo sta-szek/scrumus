@@ -1,6 +1,5 @@
 package edu.piotrjonski.scrumus.domain;
 
-import edu.piotrjonski.scrumus.business.Permissionable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +11,7 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
-public class ScrumMaster implements Permissionable {
+public class ScrumMaster {
     private int id;
     private Developer developer;
     private List<Team> teams = new ArrayList<>();

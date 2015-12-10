@@ -7,6 +7,7 @@ import edu.piotrjonski.scrumus.domain.Admin;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.Query;
+import java.util.Optional;
 
 @Stateless
 public class AdminDAO extends AbstractDAO<AdminEntity, Admin> {
@@ -20,6 +21,12 @@ public class AdminDAO extends AbstractDAO<AdminEntity, Admin> {
 
     private AdminDAO(final Class entityClass) {
         super(entityClass);
+    }
+
+    public Optional<Admin> findByDeveloperId(int developerId) {
+        AdminEntity adminEntity = entityManager.createNamedQuery(AdminEntity.FIND_ALL, AdminEntity.class)
+                                               .getSingleResult();
+        return Optional.ofNullable(mapToDomainModelIfNotNull(adminEntity));
     }
 
     @Override

@@ -36,6 +36,10 @@ public abstract class AbstractDAO<T, V> {
         return Optional.ofNullable(mapToDomainModelIfNotNull(dbEntity));
     }
 
+    public boolean exist(Object key) {
+        return findByKey(key).isPresent();
+    }
+
     public void delete(Object id) {
         T objectToDelete = entityManager.find(entityClass, id);
         if (objectToDelete != null) {

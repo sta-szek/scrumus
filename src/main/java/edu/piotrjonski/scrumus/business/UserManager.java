@@ -27,16 +27,15 @@ public class UserManager {
         developerDAO.delete(userId);
     }
 
-    public boolean grantPermission(Developer user, PermissionType permissionType) {
+    public boolean grantAdminPermission(Developer user) {
         if (exists(user)) {
-            permissionManager.grantPermission(user, permissionType);
+            permissionManager.grantAdminPermission(user);
         }
         return false;
     }
 
     private boolean exists(Developer developer) {
-        return developerDAO.findByKey(developer.getId())
-                           .isPresent();
+        return developerDAO.exist(developer.getId());
     }
 
 }
