@@ -89,7 +89,7 @@ public class ProjectDAOIT {
         // given
 
         // when
-        boolean result = projectDAO.exist(1);
+        boolean result = projectDAO.exist("das");
 
         // then
         assertThat(result).isFalse();
