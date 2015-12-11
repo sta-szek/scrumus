@@ -30,4 +30,13 @@ public class PermissionManager {
             adminDAO.saveOrUpdate(admin);
         }
     }
+
+    public void removeAdminPermission(Developer user) {
+        if (isAdmin(user)) {
+            int adminId = adminDAO.findByDeveloperId(user.getId())
+                                  .get()
+                                  .getId();
+            adminDAO.delete(adminId);
+        }
+    }
 }
