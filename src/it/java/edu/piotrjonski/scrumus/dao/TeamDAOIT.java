@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.user.TeamEntity;
 import edu.piotrjonski.scrumus.domain.Project;
 import edu.piotrjonski.scrumus.domain.Team;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
@@ -70,6 +71,32 @@ public class TeamDAOIT {
         // then
         assertThat(findAll().size()).isEqualTo(1);
 
+    }
+
+    @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        Team team = createTeam();
+        int entityId = teamDAO.saveOrUpdate(team)
+                              .get()
+                              .getId();
+
+        // when
+        boolean result = teamDAO.exist(entityId);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = teamDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -190,7 +217,7 @@ public class TeamDAOIT {
         return Lists.newArrayList(project);
     }
 
-    private List<Team> findAll() {
+    private List<TeamEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM TeamEntity d")
                             .getResultList();
     }

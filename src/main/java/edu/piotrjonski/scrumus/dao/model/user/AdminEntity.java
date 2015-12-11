@@ -12,12 +12,20 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "admin")
+@NamedQueries({@NamedQuery(name = AdminEntity.FIND_ALL, query = AdminEntity.FIND_ALL_QUERY),
+               @NamedQuery(name = AdminEntity.FIND_BY_DEVELOPER_ID, query = AdminEntity.FIND_BY_DEVELOPER_ID_QUERY)})
 public class AdminEntity {
+
+    public static final String FIND_ALL = "findAllAdmins";
+    public static final String FIND_BY_DEVELOPER_ID = "findAdminByDeveloperId";
+    public static final String ID = "id";
+    protected static final String FIND_ALL_QUERY = "SELECT d FROM AdminEntity d";
+    protected static final String FIND_BY_DEVELOPER_ID_QUERY = "SELECT d FROM AdminEntity d WHERE d.developerEntity.id=:" + ID;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
     private DeveloperEntity developerEntity;
 }

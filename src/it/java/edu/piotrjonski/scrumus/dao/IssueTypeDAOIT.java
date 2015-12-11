@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.project.IssueTypeEntity;
 import edu.piotrjonski.scrumus.domain.IssueType;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -62,6 +63,32 @@ public class IssueTypeDAOIT {
         // then
         assertThat(findAll().size()).isEqualTo(1);
 
+    }
+
+    @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        IssueType issueType = createIssueType();
+        int entityId = issueTypeDAO.saveOrUpdate(issueType)
+                                   .get()
+                                   .getId();
+
+        // when
+        boolean result = issueTypeDAO.exist(entityId);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = issueTypeDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -174,7 +201,7 @@ public class IssueTypeDAOIT {
         return issueType;
     }
 
-    private List<IssueType> findAll() {
+    private List<IssueTypeEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM IssueTypeEntity d")
                             .getResultList();
     }

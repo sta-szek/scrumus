@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.project.ProjectEntity;
 import edu.piotrjonski.scrumus.domain.Project;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -66,6 +67,32 @@ public class ProjectDAOIT {
         // then
         assertThat(findAll().size()).isEqualTo(1);
 
+    }
+
+    @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        Project project = createProject();
+        String entityKey = projectDAO.saveOrUpdate(project)
+                                     .get()
+                                     .getKey();
+
+        // when
+        boolean result = projectDAO.exist(entityKey);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = projectDAO.exist("das");
+
+        // then
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -181,7 +208,7 @@ public class ProjectDAOIT {
         return project;
     }
 
-    private List<Project> findAll() {
+    private List<ProjectEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM ProjectEntity d")
                             .getResultList();
     }

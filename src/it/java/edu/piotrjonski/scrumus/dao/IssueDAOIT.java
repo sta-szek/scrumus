@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.project.IssueEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Issue;
 import edu.piotrjonski.scrumus.domain.IssueType;
@@ -77,6 +78,32 @@ public class IssueDAOIT {
         // then
         assertThat(findAll().size()).isEqualTo(1);
 
+    }
+
+    @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        Issue issue = createIssue();
+        int entityId = issueDAO.saveOrUpdate(issue)
+                               .get()
+                               .getId();
+
+        // when
+        boolean result = issueDAO.exist(entityId);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = issueDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -215,7 +242,7 @@ public class IssueDAOIT {
         return issue;
     }
 
-    private List<Issue> findAll() {
+    private List<IssueEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM IssueEntity d")
                             .getResultList();
     }

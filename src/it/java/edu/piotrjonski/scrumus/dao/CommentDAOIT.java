@@ -1,6 +1,7 @@
 package edu.piotrjonski.scrumus.dao;
 
 
+import edu.piotrjonski.scrumus.dao.model.project.CommentEntity;
 import edu.piotrjonski.scrumus.domain.Comment;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -66,6 +67,32 @@ public class CommentDAOIT {
         // then
         assertThat(findAll().size()).isEqualTo(1);
 
+    }
+
+    @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        Comment comment = createComment();
+        int entityId = commentDAO.saveOrUpdate(comment)
+                                 .get()
+                                 .getId();
+
+        // when
+        boolean result = commentDAO.exist(entityId);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = commentDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -179,7 +206,7 @@ public class CommentDAOIT {
         return comment;
     }
 
-    private List<Comment> findAll() {
+    private List<CommentEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM CommentEntity d")
                             .getResultList();
     }

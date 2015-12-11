@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.project.SprintEntity;
 import edu.piotrjonski.scrumus.dao.model.project.TimeRange;
 import edu.piotrjonski.scrumus.domain.Sprint;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
@@ -62,6 +63,32 @@ public class SprintDAOIT {
         // then
         assertThat(findAll().size()).isEqualTo(1);
 
+    }
+
+    @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        Sprint sprint = createSprint();
+        int entityId = sprintDAO.saveOrUpdate(sprint)
+                                .get()
+                                .getId();
+
+        // when
+        boolean result = sprintDAO.exist(entityId);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = sprintDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -179,7 +206,7 @@ public class SprintDAOIT {
         return sprint;
     }
 
-    private List<Sprint> findAll() {
+    private List<SprintEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM SprintEntity d")
                             .getResultList();
     }

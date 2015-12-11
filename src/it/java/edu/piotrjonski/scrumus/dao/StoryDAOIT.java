@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.project.StoryEntity;
 import edu.piotrjonski.scrumus.dao.model.project.TimeRange;
 import edu.piotrjonski.scrumus.domain.Sprint;
 import edu.piotrjonski.scrumus.domain.Story;
@@ -71,6 +72,32 @@ public class StoryDAOIT {
     }
 
     @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        Story story = createStory();
+        int entityId = storyDAO.saveOrUpdate(story)
+                               .get()
+                               .getId();
+
+        // when
+        boolean result = storyDAO.exist(entityId);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = storyDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
     public void shouldFindStoriesForSprint() {
         // given
         String name = "bame";
@@ -106,7 +133,6 @@ public class StoryDAOIT {
                           .contains(story3)
                           .contains(story4);
     }
-
 
     @Test
     public void shouldUpdate() {
@@ -231,7 +257,7 @@ public class StoryDAOIT {
         return story;
     }
 
-    private List<Story> findAll() {
+    private List<StoryEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM StoryEntity d")
                             .getResultList();
     }

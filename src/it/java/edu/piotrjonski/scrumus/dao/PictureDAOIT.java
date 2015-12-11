@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.user.PictureEntity;
 import edu.piotrjonski.scrumus.domain.Picture;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -65,6 +66,32 @@ public class PictureDAOIT {
         // then
         assertThat(findAll().size()).isEqualTo(1);
 
+    }
+
+    @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        Picture picture = createPicture();
+        int entityId = pictureDAO.saveOrUpdate(picture)
+                                 .get()
+                                 .getId();
+
+        // when
+        boolean result = pictureDAO.exist(entityId);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = pictureDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -179,7 +206,7 @@ public class PictureDAOIT {
         return picture;
     }
 
-    private List<Picture> findAll() {
+    private List<PictureEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM PictureEntity d")
                             .getResultList();
     }

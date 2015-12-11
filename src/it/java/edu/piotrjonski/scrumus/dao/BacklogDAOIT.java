@@ -1,6 +1,7 @@
 package edu.piotrjonski.scrumus.dao;
 
 
+import edu.piotrjonski.scrumus.dao.model.project.BacklogEntity;
 import edu.piotrjonski.scrumus.domain.Backlog;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Issue;
@@ -74,6 +75,32 @@ public class BacklogDAOIT {
         // then
         assertThat(findAll().size()).isEqualTo(1);
 
+    }
+
+    @Test
+    public void shouldReturnTrueIfExist() {
+        // given
+        Backlog backlog = createBacklog();
+        int entityId = backlogDAO.saveOrUpdate(backlog)
+                                 .get()
+                                 .getId();
+
+        // when
+        boolean result = backlogDAO.exist(entityId);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExist() {
+        // given
+
+        // when
+        boolean result = backlogDAO.exist(1);
+
+        // then
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -212,7 +239,7 @@ public class BacklogDAOIT {
         return new Backlog();
     }
 
-    private List<Backlog> findAll() {
+    private List<BacklogEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM BacklogEntity d")
                             .getResultList();
     }

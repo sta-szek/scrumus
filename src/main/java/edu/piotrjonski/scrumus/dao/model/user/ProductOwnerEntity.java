@@ -13,13 +13,17 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "product_owner")
+@NamedQueries({@NamedQuery(name = ProductOwnerEntity.FIND_ALL, query = ProductOwnerEntity.FIND_ALL_QUERY)})
 public class ProductOwnerEntity {
+
+    public static final String FIND_ALL = "findAllProductOwners";
+    protected static final String FIND_ALL_QUERY = "SELECT d FROM ProductOwnerEntity d";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
     private DeveloperEntity developerEntity;
 
     @OneToOne
