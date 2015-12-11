@@ -30,6 +30,7 @@ public class UserManager {
     public boolean grantAdminPermission(Developer user) {
         if (exists(user)) {
             permissionManager.grantAdminPermission(user);
+            return true;
         }
         return false;
     }

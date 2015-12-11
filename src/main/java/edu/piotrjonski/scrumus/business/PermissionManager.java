@@ -24,7 +24,7 @@ public class PermissionManager {
     }
 
     public void grantAdminPermission(Developer user) {
-        if (developerDAO.exist(user.getId())) {
+        if (developerExist(user) && isNotAdmin(user)) {
             Admin admin = new Admin();
             admin.setDeveloper(user);
             adminDAO.saveOrUpdate(admin);
@@ -39,4 +39,8 @@ public class PermissionManager {
             adminDAO.delete(adminId);
         }
     }
+
+    private boolean isNotAdmin(final Developer user) {return !isAdmin(user);}
+
+    private boolean developerExist(final Developer user) {return developerDAO.exist(user.getId());}
 }
