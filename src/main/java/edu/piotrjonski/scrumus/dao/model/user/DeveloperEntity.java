@@ -17,6 +17,7 @@ import java.util.List;
 public class DeveloperEntity {
 
     public static final String FIND_ALL = "findAllDevelopers";
+    public static final String ID = "id";
     protected static final String FIND_ALL_QUERY = "SELECT d FROM DeveloperEntity d";
 
     @Id

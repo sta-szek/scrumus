@@ -20,7 +20,8 @@ public class AdminEntity {
     public static final String FIND_BY_DEVELOPER_ID = "findAdminByDeveloperId";
     public static final String ID = "id";
     protected static final String FIND_ALL_QUERY = "SELECT d FROM AdminEntity d";
-    protected static final String FIND_BY_DEVELOPER_ID_QUERY = "SELECT d FROM AdminEntity d WHERE d.developerEntity.id=:" + ID;
+    protected static final String FIND_BY_DEVELOPER_ID_QUERY =
+            "SELECT d FROM AdminEntity d WHERE d.developerEntity.id=:" + DeveloperEntity.ID;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
