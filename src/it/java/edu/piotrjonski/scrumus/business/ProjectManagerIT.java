@@ -20,6 +20,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -110,7 +111,7 @@ public class ProjectManagerIT {
     @Test
     public void shouldCreateBacklogForProject() throws AlreadyExistException {
         // given
-        Project project = new Project();
+        Project project = createProject();
         Project savedProject = projectManager.create(project);
 
         // when
@@ -141,6 +142,9 @@ public class ProjectManagerIT {
         Project project = new Project();
         project.setKey("key" + nextUniqueValue);
         project.setName("name" + nextUniqueValue);
+        project.setCreationDate(LocalDateTime.now());
+        project.setDescription("desc");
+        project.setDefinitionOfDone("dod");
         nextUniqueValue++;
         return project;
     }
