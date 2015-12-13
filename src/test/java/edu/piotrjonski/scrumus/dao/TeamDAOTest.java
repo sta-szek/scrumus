@@ -27,6 +27,9 @@ public class TeamDAOTest {
     @Spy
     private ProjectDAO projectDAO = new ProjectDAO();
 
+    @Spy
+    private DeveloperDAO developerDAO = new DeveloperDAO();
+
     @InjectMocks
     private TeamDAO teamDAO;
 
