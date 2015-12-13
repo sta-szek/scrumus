@@ -2,9 +2,10 @@ package edu.piotrjonski.scrumus.business;
 
 import edu.piotrjonski.scrumus.dao.BacklogDAO;
 import edu.piotrjonski.scrumus.dao.IssueDAO;
-import edu.piotrjonski.scrumus.dao.model.user.IssueEntity;
+import edu.piotrjonski.scrumus.dao.IssueTypeDAO;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Issue;
+import edu.piotrjonski.scrumus.domain.IssueType;
 import edu.piotrjonski.scrumus.domain.Project;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -35,12 +36,16 @@ public class IssueManagerIT {
 
     private Project lastProject;
     private Developer lastDeveloper;
+    private IssueType lastIssueType;
 
     @Inject
     private ProjectManager projectManager;
 
     @Inject
     private IssueDAO issueDAO;
+
+    @Inject
+    private IssueTypeDAO issueTypeDAO;
 
     @Inject
     private BacklogDAO backlogDAO;
@@ -119,8 +124,17 @@ public class IssueManagerIT {
         entityManager.joinTransaction();
         Developer developer = createDeveloper();
         Project project = createProject();
+        IssueType issueType = createIssueType();
         lastDeveloper = userManager.create(developer);
         lastProject = projectManager.create(project);
+        lastIssueType = issueTypeDAO.saveOrUpdate(issueType)
+                                    .get();
+    }
+
+    private IssueType createIssueType() {
+        IssueType issueType = new IssueType();
+        issueType.setName("task");
+        return issueType;
     }
 
     private Project createProject() {
@@ -134,24 +148,29 @@ public class IssueManagerIT {
     private void clearData() throws Exception {
         userTransaction.begin();
         entityManager.joinTransaction();
-        entityManager.createQuery("DELETE FROM DeveloperEntity ")
+        entityManager.createQuery("DELETE FROM ProjectEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM BacklogEntity")
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM IssueEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM IssueTypeEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM DeveloperEntity ")
                      .executeUpdate();
         userTransaction.commit();
         entityManager.clear();
     }
 
     private Issue createIssue() {
-        Issue Issue = new Issue();
-        Issue.set("name" + nextUniqueValue);
+        Issue issue = new Issue();
+        issue.setAssigneeId(lastDeveloper.getId());
+        issue.setKey("some-key");
+        issue.setReporterId(lastDeveloper.getId());
+        issue.setIssueType(lastIssueType);
+        issue.setSummary("summary");
         nextUniqueValue++;
-        return Issue;
+        return issue;
     }
 
-    private int findAllIssuesSize() {
-        return entityManager.createNamedQuery(IssueEntity.FIND_ALL, IssueEntity.class)
-                            .getResultList()
-                            .size();
-    }
 }
