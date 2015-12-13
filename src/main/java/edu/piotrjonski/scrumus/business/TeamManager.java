@@ -34,14 +34,14 @@ public class TeamManager {
 
     public void addUserToTeam(Developer developer, Team team) {
         if (exists(team) && exists(developer)) {
-            team.addUserToTeam(developer);
+            team.addDeveloper(developer);
             teamDAO.saveOrUpdate(team);
         }
     }
 
     public void removeUserFromTeam(Developer developer, Team team) {
         if (exists(team) && exists(developer)) {
-            team.removeUserFromTeam(developer);
+            team.removeDeveloper(developer);
             teamDAO.saveOrUpdate(team);
         }
     }

@@ -13,7 +13,7 @@ public class TeamTest {
         Team team = new Team();
 
         // when
-        team.addUserToTeam(developer);
+        team.addDeveloper(developer);
 
         // then
         assertThat(team.getDevelopers()).contains(developer);
@@ -24,12 +24,39 @@ public class TeamTest {
         // given
         Developer developer = new Developer();
         Team team = new Team();
-        team.addUserToTeam(developer);
+        team.addDeveloper(developer);
 
         // when
-        team.removeUserFromTeam(developer);
+        team.removeDeveloper(developer);
 
         // then
         assertThat(team.getDevelopers()).doesNotContain(developer);
+    }
+
+    @Test
+    public void shouldAddProject() {
+        // given
+        Project project = new Project();
+        Team team = new Team();
+
+        // when
+        team.addProject(project);
+
+        // then
+        assertThat(team.getProjects()).contains(project);
+    }
+
+    @Test
+    public void shouldRemoveProject() {
+        // given
+        Project project = new Project();
+        Team team = new Team();
+        team.addProject(project);
+
+        // when
+        team.removeProject(project);
+
+        // then
+        assertThat(team.getProjects()).doesNotContain(project);
     }
 }

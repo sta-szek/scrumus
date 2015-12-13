@@ -14,11 +14,15 @@ public class Team {
     private List<Project> projects = new ArrayList<>();
     private List<Developer> developers = new ArrayList<>();
 
-    public void addUserToTeam(Developer developer) {
+    public void addDeveloper(Developer developer) {
         developers.add(developer);
     }
 
-    public void removeUserFromTeam(Developer developer) {
+    public void removeDeveloper(Developer developer) {
         developers.remove(developer);
     }
+
+    public void addProject(Project project) {projects.add(project);}
+
+    public void removeProject(Project project) {projects.remove(project);}
 }

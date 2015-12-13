@@ -2,9 +2,13 @@ package edu.piotrjonski.scrumus.business;
 
 import edu.piotrjonski.scrumus.dao.AdminDAO;
 import edu.piotrjonski.scrumus.dao.DeveloperDAO;
+import edu.piotrjonski.scrumus.dao.ProjectDAO;
+import edu.piotrjonski.scrumus.dao.TeamDAO;
 import edu.piotrjonski.scrumus.dao.model.user.AdminEntity;
 import edu.piotrjonski.scrumus.domain.Admin;
 import edu.piotrjonski.scrumus.domain.Developer;
+import edu.piotrjonski.scrumus.domain.Project;
+import edu.piotrjonski.scrumus.domain.Team;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -20,6 +24,8 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,6 +43,12 @@ public class PermissionManagerIT {
 
     @Inject
     private AdminDAO adminDAO;
+
+    @Inject
+    private TeamDAO teamDAO;
+
+    @Inject
+    private ProjectDAO projectDAO;
 
     @Inject
     private PermissionManager permissionManager;
@@ -132,6 +144,52 @@ public class PermissionManagerIT {
         assertThat(result).isEqualTo(0);
     }
 
+    @Test
+    public void shouldAddTeamToProject() {
+        // given
+        Team team = createTeam();
+        Project project = createProject();
+        Team savedTeam = teamDAO.saveOrUpdate(team)
+                                .get();
+        Project savedProject = projectDAO.saveOrUpdate(project)
+                                         .get();
+        // when
+        permissionManager.addTeamToProject(savedTeam, savedProject);
+        List<Project> result = teamDAO.findByKey(savedTeam.getId())
+                                      .get()
+                                      .getProjects();
+        // then
+        assertThat(result).contains(savedProject);
+    }
+
+    @Test
+    public void shouldRemoveTeamFromProject() {
+        // given
+        Team team = createTeam();
+        Project project = createProject();
+        Team savedTeam = teamDAO.saveOrUpdate(team)
+                                .get();
+        Project savedProject = projectDAO.saveOrUpdate(project)
+                                         .get();
+        permissionManager.addTeamToProject(savedTeam, savedProject);
+
+        // when
+        permissionManager.removeTeamFromProject(savedTeam, savedProject);
+        List<Project> result = teamDAO.findByKey(savedTeam.getId())
+                                      .get()
+                                      .getProjects();
+        // then
+        assertThat(result).doesNotContain(savedProject);
+    }
+
+    private Project createProject() {
+        Project project = new Project();
+        project.setCreationDate(LocalDateTime.now());
+        project.setKey("key");
+        project.setName("name");
+        return project;
+    }
+
     private void startTransaction() throws SystemException, NotSupportedException {
         userTransaction.begin();
         entityManager.joinTransaction();
@@ -142,7 +200,11 @@ public class PermissionManagerIT {
         entityManager.joinTransaction();
         entityManager.createQuery("DELETE FROM AdminEntity")
                      .executeUpdate();
+        entityManager.createQuery("DELETE FROM TeamEntity ")
+                     .executeUpdate();
         entityManager.createQuery("DELETE FROM DeveloperEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM ProjectEntity ")
                      .executeUpdate();
         userTransaction.commit();
         entityManager.clear();
@@ -156,6 +218,12 @@ public class PermissionManagerIT {
         developer.setEmail(EMAIL + nextUniqueValue);
         nextUniqueValue++;
         return developer;
+    }
+
+    private Team createTeam() {
+        Team team = new Team();
+        team.setName("name");
+        return team;
     }
 
     private Admin createAdmin(Developer developer) {
