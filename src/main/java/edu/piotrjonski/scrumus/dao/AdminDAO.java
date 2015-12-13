@@ -2,6 +2,7 @@ package edu.piotrjonski.scrumus.dao;
 
 
 import edu.piotrjonski.scrumus.dao.model.user.AdminEntity;
+import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.domain.Admin;
 
 import javax.ejb.Stateless;
@@ -26,7 +27,8 @@ public class AdminDAO extends AbstractDAO<AdminEntity, Admin> {
 
     public Optional<Admin> findByDeveloperId(int developerId) {
         try {
-            AdminEntity adminEntity = entityManager.createNamedQuery(AdminEntity.FIND_ALL, AdminEntity.class)
+            AdminEntity adminEntity = entityManager.createNamedQuery(AdminEntity.FIND_BY_DEVELOPER_ID, AdminEntity.class)
+                                                   .setParameter(DeveloperEntity.ID, developerId)
                                                    .getSingleResult();
             return Optional.of(mapToDomainModelIfNotNull(adminEntity));
         } catch (NoResultException e) {
