@@ -21,8 +21,8 @@ public class TeamManager {
     private PermissionManager permissionManager;
 
     public Team create(Team team) throws AlreadyExistException {
-        if (exists(team)) {
-            throw new AlreadyExistException("User already exists.");
+        if (teamExist(team)) {
+            throw new AlreadyExistException("Team already exist.");
         }
         return teamDAO.saveOrUpdate(team)
                       .orElse(team);
@@ -33,24 +33,24 @@ public class TeamManager {
     }
 
     public void addUserToTeam(Developer developer, Team team) {
-        if (exists(team) && exists(developer)) {
+        if (teamExist(team) && developerExist(developer)) {
             team.addDeveloper(developer);
             teamDAO.saveOrUpdate(team);
         }
     }
 
     public void removeUserFromTeam(Developer developer, Team team) {
-        if (exists(team) && exists(developer)) {
+        if (teamExist(team) && developerExist(developer)) {
             team.removeDeveloper(developer);
             teamDAO.saveOrUpdate(team);
         }
     }
 
-    private boolean exists(Team team) {
+    private boolean teamExist(Team team) {
         return teamDAO.exist(team.getId());
     }
 
-    private boolean exists(Developer developer) {
+    private boolean developerExist(Developer developer) {
         return developerDAO.exist(developer.getId());
     }
 
