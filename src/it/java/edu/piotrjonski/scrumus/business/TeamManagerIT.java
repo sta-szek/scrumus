@@ -137,7 +137,12 @@ public class TeamManagerIT {
     }
 
     private Developer createDeveloper() {
-        return new Developer();
+        Developer developer = new Developer();
+        developer.setEmail("email");
+        developer.setFirstName("email");
+        developer.setSurname("email");
+        developer.setUsername("email");
+        return developer;
     }
 
     private void startTransaction() throws SystemException, NotSupportedException {
@@ -148,6 +153,8 @@ public class TeamManagerIT {
     private void clearData() throws Exception {
         userTransaction.begin();
         entityManager.joinTransaction();
+        entityManager.createQuery("DELETE FROM DeveloperEntity ")
+                     .executeUpdate();
         entityManager.createQuery("DELETE FROM TeamEntity")
                      .executeUpdate();
         userTransaction.commit();
