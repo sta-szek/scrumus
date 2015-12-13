@@ -16,8 +16,8 @@ public class UserManager {
     private PermissionManager permissionManager;
 
     public Developer create(Developer developer) throws AlreadyExistException {
-        if (exists(developer)) {
-            throw new AlreadyExistException("User already exists.");
+        if (developerExist(developer)) {
+            throw new AlreadyExistException("User already exist.");
         }
         return developerDAO.saveOrUpdate(developer)
                            .orElse(developer);
@@ -28,14 +28,14 @@ public class UserManager {
     }
 
     public boolean grantAdminPermission(Developer user) {
-        if (exists(user)) {
+        if (developerExist(user)) {
             permissionManager.grantAdminPermission(user);
             return true;
         }
         return false;
     }
 
-    private boolean exists(Developer developer) {
+    private boolean developerExist(Developer developer) {
         return developerDAO.exist(developer.getId());
     }
 

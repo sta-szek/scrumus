@@ -37,6 +37,7 @@ public class ScrumMasterDAOTest {
     public void before() {
         initMocks(this);
         setInternalState(teamDAO, "projectDAO", projectDAO);
+        setInternalState(teamDAO, "developerDAO", developerDAO);
     }
 
     @Test
