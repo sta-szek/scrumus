@@ -1,0 +1,157 @@
+package edu.piotrjonski.scrumus.business;
+
+import edu.piotrjonski.scrumus.dao.BacklogDAO;
+import edu.piotrjonski.scrumus.dao.IssueDAO;
+import edu.piotrjonski.scrumus.dao.model.user.IssueEntity;
+import edu.piotrjonski.scrumus.domain.Developer;
+import edu.piotrjonski.scrumus.domain.Issue;
+import edu.piotrjonski.scrumus.domain.Project;
+import edu.piotrjonski.scrumus.utils.UtilsTest;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.NotSupportedException;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
+
+@RunWith(Arquillian.class)
+public class IssueManagerIT {
+
+    public static final String PROJECT_KEY = "key";
+    public static int nextUniqueValue = 0;
+
+    private Project lastProject;
+    private Developer lastDeveloper;
+
+    @Inject
+    private ProjectManager projectManager;
+
+    @Inject
+    private IssueDAO issueDAO;
+
+    @Inject
+    private BacklogDAO backlogDAO;
+
+    @Inject
+    private UserManager userManager;
+
+    @Inject
+    private IssueManager issueManager;
+
+    @Inject
+    private UserTransaction userTransaction;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Deployment
+    public static WebArchive createDeployment() {
+        return UtilsTest.createDeployment();
+    }
+
+    @Before
+    public void dropAllIssuesAndStartTransaction() throws Exception {
+        clearData();
+        startTransaction();
+    }
+
+    @After
+    public void commitTransaction() throws Exception {
+        userTransaction.commit();
+    }
+
+    @Test
+    public void shouldCreateIssue() throws AlreadyExistException {
+        // given
+        Issue issue = createIssue();
+
+        // when
+        Issue savedIssue = issueManager.create(issue, lastProject);
+        boolean result = issueDAO.exist(savedIssue.getId());
+        List<Issue> issues = backlogDAO.findBacklogForProject(lastProject.getKey())
+                                       .get()
+                                       .getIssues();
+
+
+        // then
+        assertThat(result).isTrue();
+        assertThat(savedIssue.getKey()).isEqualTo(PROJECT_KEY + "-" + savedIssue.getId());
+        assertThat(issues).contains(savedIssue);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenIssueAlreadyExist() throws AlreadyExistException {
+        // given
+        Issue issue = createIssue();
+        Issue savedIssue = issueManager.create(issue, lastProject);
+
+        // when
+        Throwable throwable = catchThrowable(() -> issueManager.create(savedIssue, lastProject));
+
+        // then
+        assertThat(throwable).isInstanceOf(AlreadyExistException.class);
+    }
+
+    private Developer createDeveloper() {
+        Developer developer = new Developer();
+        developer.setEmail("email");
+        developer.setFirstName("email");
+        developer.setSurname("email");
+        developer.setUsername("email");
+        return developer;
+    }
+
+    private void startTransaction() throws SystemException, NotSupportedException, AlreadyExistException {
+        userTransaction.begin();
+        entityManager.joinTransaction();
+        Developer developer = createDeveloper();
+        Project project = createProject();
+        lastDeveloper = userManager.create(developer);
+        lastProject = projectManager.create(project);
+    }
+
+    private Project createProject() {
+        Project project = new Project();
+        project.setCreationDate(LocalDateTime.now());
+        project.setKey(PROJECT_KEY);
+        project.setName("NAME");
+        return project;
+    }
+
+    private void clearData() throws Exception {
+        userTransaction.begin();
+        entityManager.joinTransaction();
+        entityManager.createQuery("DELETE FROM DeveloperEntity ")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM IssueEntity")
+                     .executeUpdate();
+        userTransaction.commit();
+        entityManager.clear();
+    }
+
+    private Issue createIssue() {
+        Issue Issue = new Issue();
+        Issue.set("name" + nextUniqueValue);
+        nextUniqueValue++;
+        return Issue;
+    }
+
+    private int findAllIssuesSize() {
+        return entityManager.createNamedQuery(IssueEntity.FIND_ALL, IssueEntity.class)
+                            .getResultList()
+                            .size();
+    }
+}
