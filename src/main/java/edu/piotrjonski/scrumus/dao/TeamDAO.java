@@ -13,6 +13,9 @@ public class TeamDAO extends AbstractDAO<TeamEntity, Team> {
     @Inject
     private ProjectDAO projectDAO;
 
+    @Inject
+    private DeveloperDAO developerDAO;
+
     public TeamDAO() {
         this(TeamEntity.class);
     }
@@ -26,6 +29,7 @@ public class TeamDAO extends AbstractDAO<TeamEntity, Team> {
         TeamEntity teamEntity = new TeamEntity();
         teamEntity.setName(domainModel.getName());
         teamEntity.setId(domainModel.getId());
+        teamEntity.setDeveloperEntities(developerDAO.mapToDatabaseModel(domainModel.getDevelopers()));
         teamEntity.setProjectEntities(projectDAO.mapToDatabaseModel(domainModel.getProjects()));
         return teamEntity;
     }
@@ -35,6 +39,7 @@ public class TeamDAO extends AbstractDAO<TeamEntity, Team> {
         Team team = new Team();
         team.setId(dbModel.getId());
         team.setName(dbModel.getName());
+        team.setDevelopers(developerDAO.mapToDomainModel(dbModel.getDeveloperEntities()));
         team.setProjects(projectDAO.mapToDomainModel(dbModel.getProjectEntities()));
         return team;
     }

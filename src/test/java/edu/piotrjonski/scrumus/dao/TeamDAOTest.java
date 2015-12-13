@@ -3,6 +3,7 @@ package edu.piotrjonski.scrumus.dao;
 import edu.piotrjonski.scrumus.dao.model.project.ProjectEntity;
 import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.dao.model.user.TeamEntity;
+import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Project;
 import edu.piotrjonski.scrumus.domain.Team;
 import org.assertj.core.util.Lists;
@@ -47,8 +48,8 @@ public class TeamDAOTest {
         Team team = new Team();
         team.setId(id);
         team.setName(name);
-        Project project = new Project();
-        team.setProjects(Lists.newArrayList(project));
+        team.setProjects(Lists.newArrayList(new Project()));
+        team.setDevelopers(Lists.newArrayList(new Developer()));
 
         // when
         TeamEntity result = teamDAO.mapToDatabaseModel(team);
@@ -57,6 +58,7 @@ public class TeamDAOTest {
         assertThat(result.getId()).isEqualTo(id);
         assertThat(result.getName()).isEqualTo(name);
         assertThat(result.getProjectEntities()).hasSize(1);
+        assertThat(result.getDeveloperEntities()).hasSize(1);
     }
 
     @Test
@@ -77,6 +79,7 @@ public class TeamDAOTest {
         assertThat(result.getId()).isEqualTo(id);
         assertThat(result.getName()).isEqualTo(name);
         assertThat(result.getProjects()).hasSize(1);
+        assertThat(result.getDevelopers()).hasSize(1);
     }
 
     private Project createDomainProject() {
