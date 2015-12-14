@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 @RunWith(Arquillian.class)
 public class IssueManagerIT {
 
-    public static final String PROJECT_KEY = "projectKey";
+    public static final String PROJECT_KEY = "projKey";
     public static int nextUniqueValue = 0;
 
     private Project lastProject;
@@ -129,10 +129,10 @@ public class IssueManagerIT {
         IssueType issueType = createIssueType();
         Priority priority = createPriority();
 
-        lastDeveloper = userManager.create(developer);
-        lastProject = projectManager.create(project);
         lastIssueType = issueTypeDAO.saveOrUpdate(issueType)
                                     .get();
+        lastDeveloper = userManager.create(developer);
+        lastProject = projectManager.create(project);
         lastPriority = priorityDAO.saveOrUpdate(priority)
                                   .get();
     }
