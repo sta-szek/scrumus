@@ -47,7 +47,7 @@ public class StoryDAOTest {
         doReturn(Lists.newArrayList(new IssueEntity())).when(issueDAO)
                                                        .mapToDatabaseModel(anyList());
         doReturn(Optional.empty()).when(sprintDAO)
-                                  .findByKey(anyObject());
+                                  .findById(anyObject());
     }
 
     @Test

@@ -83,7 +83,7 @@ public class TeamManagerIT {
 
         // when
         teamManager.addUserToTeam(savedDeveloper, savedTeam);
-        List<Developer> result = teamDAO.findByKey(savedTeam.getId())
+        List<Developer> result = teamDAO.findById(savedTeam.getId())
                                         .get()
                                         .getDevelopers();
         // then
@@ -101,7 +101,7 @@ public class TeamManagerIT {
 
         // when
         teamManager.removeUserFromTeam(savedDeveloper, savedTeam);
-        List<Developer> result = teamDAO.findByKey(savedTeam.getId())
+        List<Developer> result = teamDAO.findById(savedTeam.getId())
                                         .get()
                                         .getDevelopers();
         // then

@@ -155,7 +155,7 @@ public class PermissionManagerIT {
                                          .get();
         // when
         permissionManager.addTeamToProject(savedTeam, savedProject);
-        List<Project> result = teamDAO.findByKey(savedTeam.getId())
+        List<Project> result = teamDAO.findById(savedTeam.getId())
                                       .get()
                                       .getProjects();
         // then
@@ -175,7 +175,7 @@ public class PermissionManagerIT {
 
         // when
         permissionManager.removeTeamFromProject(savedTeam, savedProject);
-        List<Project> result = teamDAO.findByKey(savedTeam.getId())
+        List<Project> result = teamDAO.findById(savedTeam.getId())
                                       .get()
                                       .getProjects();
         // then
@@ -185,7 +185,7 @@ public class PermissionManagerIT {
     private Project createProject() {
         Project project = new Project();
         project.setCreationDate(LocalDateTime.now());
-        project.setKey("key");
+        project.setKey("projKey");
         project.setName("name");
         return project;
     }

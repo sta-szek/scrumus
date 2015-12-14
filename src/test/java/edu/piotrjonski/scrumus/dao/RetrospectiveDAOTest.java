@@ -52,7 +52,7 @@ public class RetrospectiveDAOTest {
         initMocks(this);
         setInternalState(commentDAO, "developerDAO", developerDAO);
         doReturn(Optional.of(createDeveloper())).when(developerDAO)
-                                                .findByKey(anyObject());
+                                                .findById(anyObject());
     }
 
     @Test

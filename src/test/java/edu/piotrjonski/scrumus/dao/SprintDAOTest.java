@@ -52,7 +52,7 @@ public class SprintDAOTest {
         doReturn(createRetrospectiveEntity()).when(retrospectiveDAO)
                                              .mapToDatabaseModelIfNotNull(anyObject());
         doReturn(Optional.of(createRetrospective())).when(retrospectiveDAO)
-                                                    .findByKey(anyObject());
+                                                    .findById(anyObject());
         timeRange = new TimeRange();
         timeRange.setEndDate(LocalDateTime.now());
         timeRange.setStartDate(LocalDateTime.now());

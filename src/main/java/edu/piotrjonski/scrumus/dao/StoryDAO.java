@@ -76,7 +76,7 @@ public class StoryDAO extends AbstractDAO<StoryEntity, Story> {
 
     private SprintEntity findSprintById(int id) {
         if (id != 0) {
-            Optional<Sprint> sprintOptional = sprintDAO.findByKey(id);
+            Optional<Sprint> sprintOptional = sprintDAO.findById(id);
             if (sprintOptional.isPresent()) {
                 return sprintDAO.mapToDatabaseModelIfNotNull(sprintOptional.get());
             }

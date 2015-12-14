@@ -41,7 +41,7 @@ public class PasswordDAOTest {
         Developer developer = new Developer();
         developer.setId(DEVELOPER_ID);
         doReturn(Optional.of(developer)).when(developerDAO)
-                                        .findByKey(DEVELOPER_ID);
+                                        .findById(DEVELOPER_ID);
     }
 
     @Test

@@ -162,7 +162,7 @@ public class PriorityDAOIT {
         priority1.setId(id);
 
         // when
-        Priority priority = priorityDAO.findByKey(id)
+        Priority priority = priorityDAO.findById(id)
                                        .get();
 
         // then
@@ -174,7 +174,7 @@ public class PriorityDAOIT {
         // given
 
         // when
-        Optional<Priority> user = priorityDAO.findByKey(0);
+        Optional<Priority> user = priorityDAO.findById(0);
 
         // then
         assertThat(user).isEmpty();

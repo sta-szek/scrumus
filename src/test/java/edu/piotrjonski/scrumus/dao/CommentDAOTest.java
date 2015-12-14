@@ -46,7 +46,7 @@ public class CommentDAOTest {
                                                              .mapToDomainModel(any(List.class));
 
         doReturn(Optional.of(createDatabaseDeveloper())).when(developerDAO)
-                                                        .findByKey(anyObject());
+                                                        .findById(anyObject());
 
         doReturn(createDatabaseDeveloper()).when(developerDAO)
                                            .mapToDatabaseModelIfNotNull(anyObject());

@@ -19,7 +19,7 @@ import java.util.List;
 public class ProjectEntity {
 
     public static final String FIND_ALL = "findAllProjects";
-    public static final String KEY = "key";
+    public static final String KEY = "projectKey";
     public static final String FIND_ALL_QUERY = "SELECT p FROM ProjectEntity p";
 
     @Id

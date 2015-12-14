@@ -26,8 +26,8 @@ public class IssueEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(length = 16, nullable = false, unique = true)
-    private String key;
+    @Column(length = 8, nullable = false, updatable = false)
+    private String projectKey;
 
     @Column(length = 255, nullable = false)
     private String summary;

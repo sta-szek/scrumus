@@ -181,7 +181,7 @@ public class IssueDAOIT {
         issue1.setId(id);
 
         // when
-        Issue issue = issueDAO.findByKey(id)
+        Issue issue = issueDAO.findById(id)
                               .get();
 
         // then
@@ -193,7 +193,7 @@ public class IssueDAOIT {
         // given
 
         // when
-        Optional<Issue> user = issueDAO.findByKey(0);
+        Optional<Issue> user = issueDAO.findById(0);
 
         // then
         assertThat(user).isEmpty();
@@ -237,7 +237,7 @@ public class IssueDAOIT {
     private Issue createIssue() {
         Issue issue = new Issue();
         issue.setCreationDate(NOW);
-        issue.setKey(KEY + nextUniqueValue);
+        issue.setProjectKey(KEY + nextUniqueValue);
         issue.setDescription(DESCRIPTION);
         issue.setDefinitionOfDone(DOD);
         IssueType issueType = new IssueType();

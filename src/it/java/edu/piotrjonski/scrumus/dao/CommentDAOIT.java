@@ -166,7 +166,7 @@ public class CommentDAOIT {
         comment1.setId(id);
 
         // when
-        Comment comment = commentDAO.findByKey(id)
+        Comment comment = commentDAO.findById(id)
                                     .get();
 
         // then
@@ -178,7 +178,7 @@ public class CommentDAOIT {
         // given
 
         // when
-        Optional<Comment> user = commentDAO.findByKey(0);
+        Optional<Comment> user = commentDAO.findById(0);
 
         // then
         assertThat(user).isEmpty();

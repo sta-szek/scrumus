@@ -56,7 +56,7 @@ public class IssueDAOTest {
         Developer developer = new Developer();
         developer.setId(DEVELOPER_ID);
         doReturn(Optional.of(developer)).when(developerDAO)
-                                        .findByKey(DEVELOPER_ID);
+                                        .findById(DEVELOPER_ID);
     }
 
     @Test
@@ -78,14 +78,14 @@ public class IssueDAOTest {
         int id = 1;
         String summary = "summary";
         String dod = "dod";
-        String key = "key";
+        String key = "projectKey";
         String description = "description";
         LocalDateTime now = LocalDateTime.now();
         Issue issue = new Issue();
         issue.setAssigneeId(DEVELOPER_ID);
         issue.setComments(Lists.newArrayList(comment));
         issue.setCreationDate(now);
-        issue.setKey(key);
+        issue.setProjectKey(key);
         issue.setDescription(description);
         issue.setDefinitionOfDone(dod);
         issue.setId(id);
@@ -105,7 +105,7 @@ public class IssueDAOTest {
         assertThat(result.getId()).isEqualTo(id);
         assertThat(result.getIssueTypeEntity()).isNotNull();
         assertThat(result.getPriorityEntity()).isNotNull();
-        assertThat(result.getKey()).isEqualTo(key);
+        assertThat(result.getProjectKey()).isEqualTo(key);
         assertThat(result.getSummary()).isEqualTo(summary);
         assertThat(result.getReporter()
                          .getId()).isEqualTo(DEVELOPER_ID);
@@ -123,14 +123,14 @@ public class IssueDAOTest {
         int id = 1;
         String summary = "summary";
         String dod = "dod";
-        String key = "key";
+        String key = "projectKey";
         String description = "description";
         LocalDateTime now = LocalDateTime.now();
         IssueEntity issueEntity = new IssueEntity();
         issueEntity.setAssignee(createDeveloperEntity());
         issueEntity.setCommentEntities(Lists.newArrayList(commentEntity));
         issueEntity.setCreationDate(now);
-        issueEntity.setKey(key);
+        issueEntity.setProjectKey(key);
         issueEntity.setDescription(description);
         issueEntity.setDefinitionOfDone(dod);
         issueEntity.setId(id);
@@ -151,7 +151,7 @@ public class IssueDAOTest {
         assertThat(result.getId()).isEqualTo(id);
         assertThat(result.getIssueType()).isNotNull();
         assertThat(result.getPriority()).isNotNull();
-        assertThat(result.getKey()).isEqualTo(key);
+        assertThat(result.getProjectKey()).isEqualTo(key);
         assertThat(result.getReporterId()).isEqualTo(DEVELOPER_ID);
         assertThat(result.getSummary()).isEqualTo(summary);
     }

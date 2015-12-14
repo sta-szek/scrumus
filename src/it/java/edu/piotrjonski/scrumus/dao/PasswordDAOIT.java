@@ -152,7 +152,7 @@ public class PasswordDAOIT {
         password1.setId(id);
 
         // when
-        Password password = passwordDAO.findByKey(id)
+        Password password = passwordDAO.findById(id)
                                        .get();
 
         // then
@@ -164,7 +164,7 @@ public class PasswordDAOIT {
         // given
 
         // when
-        Optional<Password> user = passwordDAO.findByKey(0);
+        Optional<Password> user = passwordDAO.findById(0);
 
         // then
         assertThat(user).isEmpty();

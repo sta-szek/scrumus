@@ -48,7 +48,7 @@ public class ProjectDAOTest {
         LocalDateTime now = LocalDateTime.now();
         String dod = "dod";
         String description = "Description";
-        String key = "key";
+        String key = "projectKey";
         Project project = new Project();
         project.setCreationDate(now);
         project.setDefinitionOfDone(dod);
@@ -74,7 +74,7 @@ public class ProjectDAOTest {
         LocalDateTime now = LocalDateTime.now();
         String dod = "dod";
         String description = "Description";
-        String key = "key";
+        String key = "projectKey";
         ProjectEntity projectEntity = new ProjectEntity();
         projectEntity.setName(name);
         projectEntity.setCreationDate(now);

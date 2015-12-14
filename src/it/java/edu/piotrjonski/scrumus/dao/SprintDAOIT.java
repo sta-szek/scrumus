@@ -162,7 +162,7 @@ public class SprintDAOIT {
         sprint1.setId(id);
 
         // when
-        Sprint sprint = sprintDAO.findByKey(id)
+        Sprint sprint = sprintDAO.findById(id)
                                  .get();
 
         // then
@@ -174,7 +174,7 @@ public class SprintDAOIT {
         // given
 
         // when
-        Optional<Sprint> user = sprintDAO.findByKey(0);
+        Optional<Sprint> user = sprintDAO.findById(0);
 
         // then
         assertThat(user).isEmpty();

@@ -115,7 +115,7 @@ public class BacklogDAOIT {
         priority.setName("name");
 
         Issue issue = new Issue();
-        issue.setKey("testkey");
+        issue.setProjectKey("testkey");
         issue.setSummary("summary");
         issue.setIssueType(issueType);
         issue.setPriority(priority);
@@ -203,7 +203,7 @@ public class BacklogDAOIT {
         backlog1.setId(id);
 
         // when
-        Backlog backlog = backlogDAO.findByKey(id)
+        Backlog backlog = backlogDAO.findById(id)
                                     .get();
 
         // then
@@ -215,7 +215,7 @@ public class BacklogDAOIT {
         // given
 
         // when
-        Optional<Backlog> user = backlogDAO.findByKey(0);
+        Optional<Backlog> user = backlogDAO.findById(0);
 
         // then
         assertThat(user).isEmpty();

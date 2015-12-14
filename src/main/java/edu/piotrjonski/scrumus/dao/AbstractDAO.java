@@ -22,8 +22,8 @@ public abstract class AbstractDAO<T, V> {
         this.entityClass = entityClass;
     }
 
-    public Optional<V> findByKey(Object key) {
-        return Optional.ofNullable(mapToDomainModelIfNotNull(entityManager.find(entityClass, key)));
+    public Optional<V> findById(Object id) {
+        return Optional.ofNullable(mapToDomainModelIfNotNull(entityManager.find(entityClass, id)));
     }
 
     public List<V> findAll() {
@@ -32,12 +32,13 @@ public abstract class AbstractDAO<T, V> {
     }
 
     public Optional<V> saveOrUpdate(V domainObject) {
+        System.err.println(domainObject);
         T dbEntity = entityManager.merge(mapToDatabaseModelIfNotNull(domainObject));
         return Optional.ofNullable(mapToDomainModelIfNotNull(dbEntity));
     }
 
     public boolean exist(Object key) {
-        return findByKey(key).isPresent();
+        return findById(key).isPresent();
     }
 
     public void delete(Object id) {

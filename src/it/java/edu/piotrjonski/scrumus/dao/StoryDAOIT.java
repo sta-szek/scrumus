@@ -205,7 +205,7 @@ public class StoryDAOIT {
         story1.setId(id);
 
         // when
-        Story story = storyDAO.findByKey(id)
+        Story story = storyDAO.findById(id)
                               .get();
 
         // then
@@ -217,7 +217,7 @@ public class StoryDAOIT {
         // given
 
         // when
-        Optional<Story> user = storyDAO.findByKey(0);
+        Optional<Story> user = storyDAO.findById(0);
 
         // then
         assertThat(user).isEmpty();

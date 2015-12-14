@@ -162,7 +162,7 @@ public class AdminDAOIT {
         admin1.setId(id);
 
         // when
-        Admin admin = adminDAO.findByKey(id)
+        Admin admin = adminDAO.findById(id)
                               .get();
 
         // then
@@ -174,7 +174,7 @@ public class AdminDAOIT {
         // given
 
         // when
-        Optional<Admin> user = adminDAO.findByKey(0);
+        Optional<Admin> user = adminDAO.findById(0);
 
         // then
         assertThat(user).isEmpty();
@@ -206,7 +206,7 @@ public class AdminDAOIT {
 
     private Admin createAdmin() {
         Admin admin = new Admin();
-        admin.setDeveloper(developerDAO.findByKey(lastDeveloperId)
+        admin.setDeveloper(developerDAO.findById(lastDeveloperId)
                                        .get());
         return admin;
     }

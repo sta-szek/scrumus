@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 @RunWith(Arquillian.class)
 public class IssueManagerIT {
 
-    public static final String PROJECT_KEY = "key";
+    public static final String PROJECT_KEY = "projectKey";
     public static int nextUniqueValue = 0;
 
     private Project lastProject;
@@ -81,7 +81,7 @@ public class IssueManagerIT {
     }
 
     @Test
-    public void shouldCreateIssue() throws AlreadyExistException {
+    public void shouldCreateIssue() throws Exception {
         // given
         Issue issue = createIssue();
 
@@ -95,12 +95,12 @@ public class IssueManagerIT {
 
         // then
         assertThat(result).isTrue();
-        assertThat(savedIssue.getKey()).isEqualTo(PROJECT_KEY + "-" + savedIssue.getId());
+        assertThat(savedIssue.getProjectKey()).isEqualTo(PROJECT_KEY);
         assertThat(issues).contains(savedIssue);
     }
 
     @Test
-    public void shouldThrowExceptionWhenIssueAlreadyExist() throws AlreadyExistException {
+    public void shouldThrowExceptionWhenIssueAlreadyExist() throws Exception {
         // given
         Issue issue = createIssue();
         Issue savedIssue = issueManager.create(issue, lastProject);
@@ -129,23 +129,23 @@ public class IssueManagerIT {
         IssueType issueType = createIssueType();
         Priority priority = createPriority();
 
-        lastPriority = priorityDAO.saveOrUpdate(priority)
-                                  .get();
         lastDeveloper = userManager.create(developer);
         lastProject = projectManager.create(project);
         lastIssueType = issueTypeDAO.saveOrUpdate(issueType)
                                     .get();
+        lastPriority = priorityDAO.saveOrUpdate(priority)
+                                  .get();
     }
 
     private IssueType createIssueType() {
         IssueType issueType = new IssueType();
-        issueType.setName("task");
+        issueType.setName("task" + nextUniqueValue);
         return issueType;
     }
 
     private Priority createPriority() {
         Priority priority = new Priority();
-        priority.setName("name");
+        priority.setName("name" + nextUniqueValue);
         return priority;
     }
 
@@ -179,7 +179,7 @@ public class IssueManagerIT {
     private Issue createIssue() {
         Issue issue = new Issue();
         issue.setAssigneeId(lastDeveloper.getId());
-        issue.setKey("some-key");
+        issue.setProjectKey("projKey");
         issue.setReporterId(lastDeveloper.getId());
         issue.setIssueType(lastIssueType);
         issue.setPriority(lastPriority);
