@@ -3,10 +3,8 @@ package edu.piotrjonski.scrumus.business;
 import edu.piotrjonski.scrumus.dao.BacklogDAO;
 import edu.piotrjonski.scrumus.dao.IssueDAO;
 import edu.piotrjonski.scrumus.dao.IssueTypeDAO;
-import edu.piotrjonski.scrumus.domain.Developer;
-import edu.piotrjonski.scrumus.domain.Issue;
-import edu.piotrjonski.scrumus.domain.IssueType;
-import edu.piotrjonski.scrumus.domain.Project;
+import edu.piotrjonski.scrumus.dao.PriorityDAO;
+import edu.piotrjonski.scrumus.domain.*;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -37,6 +35,7 @@ public class IssueManagerIT {
     private Project lastProject;
     private Developer lastDeveloper;
     private IssueType lastIssueType;
+    private Priority lastPriority;
 
     @Inject
     private ProjectManager projectManager;
@@ -55,6 +54,9 @@ public class IssueManagerIT {
 
     @Inject
     private IssueManager issueManager;
+
+    @Inject
+    private PriorityDAO priorityDAO;
 
     @Inject
     private UserTransaction userTransaction;
@@ -125,6 +127,10 @@ public class IssueManagerIT {
         Developer developer = createDeveloper();
         Project project = createProject();
         IssueType issueType = createIssueType();
+        Priority priority = createPriority();
+
+        lastPriority = priorityDAO.saveOrUpdate(priority)
+                                  .get();
         lastDeveloper = userManager.create(developer);
         lastProject = projectManager.create(project);
         lastIssueType = issueTypeDAO.saveOrUpdate(issueType)
@@ -135,6 +141,12 @@ public class IssueManagerIT {
         IssueType issueType = new IssueType();
         issueType.setName("task");
         return issueType;
+    }
+
+    private Priority createPriority() {
+        Priority priority = new Priority();
+        priority.setName("name");
+        return priority;
     }
 
     private Project createProject() {
@@ -156,6 +168,8 @@ public class IssueManagerIT {
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM IssueTypeEntity")
                      .executeUpdate();
+        entityManager.createQuery("DELETE FROM PriorityEntity")
+                     .executeUpdate();
         entityManager.createQuery("DELETE FROM DeveloperEntity ")
                      .executeUpdate();
         userTransaction.commit();
@@ -168,6 +182,7 @@ public class IssueManagerIT {
         issue.setKey("some-key");
         issue.setReporterId(lastDeveloper.getId());
         issue.setIssueType(lastIssueType);
+        issue.setPriority(lastPriority);
         issue.setSummary("summary");
         nextUniqueValue++;
         return issue;
