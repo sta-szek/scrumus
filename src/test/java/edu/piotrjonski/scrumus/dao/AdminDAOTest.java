@@ -8,10 +8,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Spy;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import javax.persistence.EntityManager;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(PowerMockRunner.class)
@@ -23,9 +27,23 @@ public class AdminDAOTest {
     @InjectMocks
     private AdminDAO adminDAO;
 
+    @Mock
+    private EntityManager entityManager;
+
     @Before
     public void before() {
         initMocks(this);
+    }
+
+    @Test
+    public void shouldCallCreateNamedQueryWithValidParameters() {
+        // given
+
+        // when
+        adminDAO.getFindAllQuery();
+
+        // then
+        verify(entityManager).createNamedQuery(AdminEntity.FIND_ALL, AdminEntity.class);
     }
 
     @Test

@@ -11,10 +11,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Spy;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import javax.persistence.EntityManager;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
 
@@ -30,6 +34,9 @@ public class ScrumMasterDAOTest {
     @Spy
     private ProjectDAO projectDAO = new ProjectDAO();
 
+    @Mock
+    private EntityManager entityManager;
+
     @InjectMocks
     private ScrumMasterDAO scrumMasterDAO;
 
@@ -38,6 +45,17 @@ public class ScrumMasterDAOTest {
         initMocks(this);
         setInternalState(teamDAO, "projectDAO", projectDAO);
         setInternalState(teamDAO, "developerDAO", developerDAO);
+    }
+
+    @Test
+    public void shouldCallCreateNamedQueryWithValidParameters() {
+        // given
+
+        // when
+        scrumMasterDAO.getFindAllQuery();
+
+        // then
+        verify(entityManager).createNamedQuery(ScrumMasterEntity.FIND_ALL, ScrumMasterEntity.class);
     }
 
     @Test

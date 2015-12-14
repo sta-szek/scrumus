@@ -2,13 +2,43 @@ package edu.piotrjonski.scrumus.dao;
 
 import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import javax.persistence.EntityManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
 
+@RunWith(PowerMockRunner.class)
 public class DeveloperDAOTest {
 
+    @InjectMocks
     private DeveloperDAO developerDAO = new DeveloperDAO();
+
+    @Mock
+    private EntityManager entityManager;
+
+    @Before
+    public void before() {
+        initMocks(this);
+    }
+
+    @Test
+    public void shouldCallCreateNamedQueryWithValidParameters() {
+        // given
+
+        // when
+        developerDAO.getFindAllQuery();
+
+        // then
+        verify(entityManager).createNamedQuery(DeveloperEntity.FIND_ALL, DeveloperEntity.class);
+    }
 
     @Test
     public void shouldMapToDatabaseModel() {

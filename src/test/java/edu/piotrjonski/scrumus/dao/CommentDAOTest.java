@@ -9,9 +9,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Spy;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(PowerMockRunner.class)
@@ -29,6 +32,9 @@ public class CommentDAOTest {
 
     @Spy
     private DeveloperDAO developerDAO = new DeveloperDAO();
+
+    @Mock
+    private EntityManager entityManager;
 
     @InjectMocks
     private CommentDAO commentDAO;
@@ -44,6 +50,17 @@ public class CommentDAOTest {
 
         doReturn(createDatabaseDeveloper()).when(developerDAO)
                                            .mapToDatabaseModelIfNotNull(anyObject());
+    }
+
+    @Test
+    public void shouldCallCreateNamedQueryWithValidParameters() {
+        // given
+
+        // when
+        commentDAO.getFindAllQuery();
+
+        // then
+        verify(entityManager).createNamedQuery(CommentEntity.FIND_ALL, CommentEntity.class);
     }
 
     @Test
