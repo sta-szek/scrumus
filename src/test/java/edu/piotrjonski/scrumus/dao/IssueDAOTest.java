@@ -4,11 +4,9 @@ package edu.piotrjonski.scrumus.dao;
 import edu.piotrjonski.scrumus.dao.model.project.CommentEntity;
 import edu.piotrjonski.scrumus.dao.model.project.IssueEntity;
 import edu.piotrjonski.scrumus.dao.model.project.IssueTypeEntity;
+import edu.piotrjonski.scrumus.dao.model.project.PriorityEntity;
 import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
-import edu.piotrjonski.scrumus.domain.Comment;
-import edu.piotrjonski.scrumus.domain.Developer;
-import edu.piotrjonski.scrumus.domain.Issue;
-import edu.piotrjonski.scrumus.domain.IssueType;
+import edu.piotrjonski.scrumus.domain.*;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,6 +39,9 @@ public class IssueDAOTest {
 
     @Spy
     private IssueTypeDAO issueTypeDAO = new IssueTypeDAO();
+
+    @Spy
+    private PriorityDAO priorityDAO = new PriorityDAO();
 
     @Mock
     private EntityManager entityManager;
@@ -89,6 +90,7 @@ public class IssueDAOTest {
         issue.setDefinitionOfDone(dod);
         issue.setId(id);
         issue.setIssueType(new IssueType());
+        issue.setPriority(new Priority());
         issue.setReporterId(DEVELOPER_ID);
         issue.setSummary(summary);
 
@@ -102,6 +104,7 @@ public class IssueDAOTest {
         assertThat(result.getDescription()).isEqualTo(description);
         assertThat(result.getId()).isEqualTo(id);
         assertThat(result.getIssueTypeEntity()).isNotNull();
+        assertThat(result.getPriorityEntity()).isNotNull();
         assertThat(result.getKey()).isEqualTo(key);
         assertThat(result.getSummary()).isEqualTo(summary);
         assertThat(result.getReporter()
@@ -132,6 +135,7 @@ public class IssueDAOTest {
         issueEntity.setDefinitionOfDone(dod);
         issueEntity.setId(id);
         issueEntity.setIssueTypeEntity(new IssueTypeEntity());
+        issueEntity.setPriorityEntity(new PriorityEntity());
         issueEntity.setReporter(createDeveloperEntity());
         issueEntity.setSummary(summary);
 
@@ -146,6 +150,7 @@ public class IssueDAOTest {
         assertThat(result.getDescription()).isEqualTo(description);
         assertThat(result.getId()).isEqualTo(id);
         assertThat(result.getIssueType()).isNotNull();
+        assertThat(result.getPriority()).isNotNull();
         assertThat(result.getKey()).isEqualTo(key);
         assertThat(result.getReporterId()).isEqualTo(DEVELOPER_ID);
         assertThat(result.getSummary()).isEqualTo(summary);

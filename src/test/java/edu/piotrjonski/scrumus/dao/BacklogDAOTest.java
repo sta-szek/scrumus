@@ -36,6 +36,9 @@ public class BacklogDAOTest {
     @Spy
     private IssueDAO issueDAO = new IssueDAO();
 
+    @Spy
+    private PriorityDAO priorityDAO = new PriorityDAO();
+
     @Mock
     private EntityManager entityManager;
 
@@ -59,6 +62,7 @@ public class BacklogDAOTest {
         initMocks(this);
         setInternalState(issueDAO, "commentDAO", commentDAO);
         setInternalState(issueDAO, "issueTypeDAO", issueTypeDAO);
+        setInternalState(issueDAO, "priorityDAO", priorityDAO);
         doReturn(Lists.newArrayList(new IssueEntity())).when(issueDAO)
                                                        .mapToDomainModel(anyList());
     }

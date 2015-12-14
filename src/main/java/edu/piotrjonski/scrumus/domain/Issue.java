@@ -21,6 +21,7 @@ public class Issue {
     private LocalDateTime creationDate = LocalDateTime.now();
     private List<Comment> comments = new ArrayList<>();
     private IssueType issueType;
+    private Priority priority;
     private int reporterId;
     private int assigneeId;
 }

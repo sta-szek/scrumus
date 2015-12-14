@@ -47,6 +47,9 @@ public class IssueEntity {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private IssueTypeEntity issueTypeEntity;
 
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    private PriorityEntity priorityEntity;
+
     @ManyToOne(optional = false)
     private DeveloperEntity reporter;
 

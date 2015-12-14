@@ -21,6 +21,9 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
     private CommentDAO commentDAO;
 
     @Inject
+    private PriorityDAO priorityDAO;
+
+    @Inject
     private IssueTypeDAO issueTypeDAO;
 
     public IssueDAO() {
@@ -45,6 +48,7 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
         issueEntity.setKey(domainModel.getKey());
         issueEntity.setReporter(findDeveloperEntity(domainModel.getReporterId()));
         issueEntity.setSummary(domainModel.getSummary());
+        issueEntity.setPriorityEntity(priorityDAO.mapToDatabaseModelIfNotNull(domainModel.getPriority()));
         return issueEntity;
     }
 
@@ -62,6 +66,7 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
         issue.setSummary(dbModel.getSummary());
         issue.setAssigneeId(getDeveloperId(dbModel));
         issue.setReporterId(getDeveloperId(dbModel));
+        issue.setPriority(priorityDAO.mapToDomainModelIfNotNull(dbModel.getPriorityEntity()));
         return issue;
     }
 

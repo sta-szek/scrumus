@@ -4,6 +4,7 @@ import edu.piotrjonski.scrumus.dao.model.project.IssueEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Issue;
 import edu.piotrjonski.scrumus.domain.IssueType;
+import edu.piotrjonski.scrumus.domain.Priority;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -44,6 +45,9 @@ public class IssueDAOIT {
 
     @Inject
     private IssueTypeDAO issueTypeDAO;
+
+    @Inject
+    private PriorityDAO priorityDAO;
 
     @Inject
     private UserTransaction userTransaction;
@@ -210,6 +214,11 @@ public class IssueDAOIT {
         IssueType issueType = new IssueType();
         issueType.setId(0);
         issueType.setName("name" + nextUniqueValue);
+
+        Priority priority = new Priority();
+        priority.setName("name" + nextUniqueValue);
+
+        priorityDAO.saveOrUpdate(priority);
         issueTypeDAO.saveOrUpdate(issueType);
         nextUniqueValue++;
     }
@@ -234,6 +243,10 @@ public class IssueDAOIT {
         IssueType issueType = new IssueType();
         issueType.setId(1);
         issueType.setName("name0");
+        Priority priority = new Priority();
+        priority.setId(1);
+        priority.setName("name0");
+        issue.setPriority(priority);
         issue.setIssueType(issueType);
         issue.setReporterId(currentlySavedDeveloperId);
         issue.setAssigneeId(currentlySavedDeveloperId);
