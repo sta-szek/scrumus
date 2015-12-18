@@ -1,9 +1,6 @@
 package edu.piotrjonski.scrumus.business;
 
-import edu.piotrjonski.scrumus.dao.BacklogDAO;
-import edu.piotrjonski.scrumus.dao.IssueDAO;
-import edu.piotrjonski.scrumus.dao.IssueTypeDAO;
-import edu.piotrjonski.scrumus.dao.PriorityDAO;
+import edu.piotrjonski.scrumus.dao.*;
 import edu.piotrjonski.scrumus.domain.*;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -50,7 +47,16 @@ public class IssueManagerIT {
     private BacklogDAO backlogDAO;
 
     @Inject
+    private ProjectDAO projectDAO;
+
+    @Inject
     private UserManager userManager;
+
+    @Inject
+    private DeveloperDAO developerDAO;
+
+    @Inject
+    private ProductOwnerDAO productOwnerDAO;
 
     @Inject
     private IssueManager issueManager;
@@ -112,6 +118,35 @@ public class IssueManagerIT {
         assertThat(throwable).isInstanceOf(AlreadyExistException.class);
     }
 
+    @Test
+    public void shouldChangePriorityIfUserIsProductOwner() {
+        // given
+        Priority priority = new Priority();
+        priority.setName("changedPriority");
+        Issue issue = createIssue();
+
+        priority = priorityDAO.saveOrUpdate(priority)
+                              .get();
+        issue = issueDAO.saveOrUpdate(issue)
+                        .get();
+
+        ProductOwner productOwner = new ProductOwner();
+        productOwner.setDeveloper(lastDeveloper);
+        productOwner.setProject(lastProject);
+
+        productOwnerDAO.saveOrUpdate(productOwner);
+
+        // when
+        issueManager.changePriority(issue, priority, lastDeveloper);
+        String result = issueDAO.findById(issue.getId())
+                                .get()
+                                .getPriority()
+                                .getName();
+
+        // then
+        assertThat(result).isEqualTo(priority.getName());
+    }
+
     private Developer createDeveloper() {
         Developer developer = new Developer();
         developer.setEmail("email");
@@ -160,6 +195,8 @@ public class IssueManagerIT {
     private void clearData() throws Exception {
         userTransaction.begin();
         entityManager.joinTransaction();
+        entityManager.createQuery("DELETE FROM ProductOwnerEntity")
+                     .executeUpdate();
         entityManager.createQuery("DELETE FROM ProjectEntity")
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM BacklogEntity")
@@ -179,7 +216,7 @@ public class IssueManagerIT {
     private Issue createIssue() {
         Issue issue = new Issue();
         issue.setAssigneeId(lastDeveloper.getId());
-        issue.setProjectKey("projKey");
+        issue.setProjectKey(PROJECT_KEY);
         issue.setReporterId(lastDeveloper.getId());
         issue.setIssueType(lastIssueType);
         issue.setPriority(lastPriority);
