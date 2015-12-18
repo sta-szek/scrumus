@@ -34,39 +34,26 @@ public class CommentManagerIT {
     private Priority lastPriority;
 
     @Inject
-    private CommentDAO commentDAO;
-
-    @Inject
     private PriorityDAO priorityDAO;
 
     @Inject
     private IssueTypeDAO issueTypeDAO;
 
     @Inject
-    private BacklogDAO backlogDAO;
-
-    @Inject
-    private ProjectDAO projectDAO;
-
-    @Inject
     private IssueDAO issueDAO;
 
     @Inject
-    private UserManager userManager;
-
-    @Inject
     private DeveloperDAO developerDAO;
-
-    @Inject
-    private ProductOwnerDAO productOwnerDAO;
 
     @Inject
     private CommentManager commentManager;
 
     @Inject
     private RetrospectiveDAO retrospectiveDAO;
+
     @Inject
     private UserTransaction userTransaction;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -158,42 +145,25 @@ public class CommentManagerIT {
         return retrospective;
     }
 
-    private Developer createDeveloper() {
-        Developer developer = new Developer();
-        developer.setEmail("email");
-        developer.setFirstName("email");
-        developer.setSurname("email");
-        developer.setUsername("email");
-        return developer;
-    }
-
     private void startTransaction() throws SystemException, NotSupportedException, AlreadyExistException {
         userTransaction.begin();
         entityManager.joinTransaction();
-        Developer developer = createDeveloper();
-        Retrospective retrospective = createRetrospective();
-        Issue issue = createIssue();
-        IssueType issueType = createIssueType();
-        Priority priority = createPriority();
 
-        lastPriority = priorityDAO.saveOrUpdate(priority)
-                                  .get();
-        lastIssueType = issueTypeDAO.saveOrUpdate(issueType)
+        lastDeveloper = developerDAO.saveOrUpdate(createDeveloper())
                                     .get();
-        lastRetrospective = retrospectiveDAO.saveOrUpdate(retrospective)
+        lastPriority = priorityDAO.saveOrUpdate(createPriority())
+                                  .get();
+        lastIssueType = issueTypeDAO.saveOrUpdate(createIssueType())
+                                    .get();
+        lastRetrospective = retrospectiveDAO.saveOrUpdate(createRetrospective())
                                             .get();
-        lastDeveloper = userManager.create(developer);
-        lastIssue = issueDAO.saveOrUpdate(issue)
+        lastIssue = issueDAO.saveOrUpdate(createIssue())
                             .get();
-
-
     }
 
     private void clearData() throws Exception {
         userTransaction.begin();
         entityManager.joinTransaction();
-        entityManager.createQuery("DELETE FROM CommentEntity ")
-                     .executeUpdate();
         entityManager.createQuery("DELETE FROM RetrospectiveEntity ")
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM IssueEntity")
@@ -202,8 +172,21 @@ public class CommentManagerIT {
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM PriorityEntity")
                      .executeUpdate();
+        entityManager.createQuery("DELETE FROM CommentEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM DeveloperEntity ")
+                     .executeUpdate();
         userTransaction.commit();
         entityManager.clear();
+    }
+
+    private Developer createDeveloper() {
+        Developer developer = new Developer();
+        developer.setEmail("email");
+        developer.setFirstName("email");
+        developer.setSurname("email");
+        developer.setUsername("email");
+        return developer;
     }
 
     private Comment createComment() {
