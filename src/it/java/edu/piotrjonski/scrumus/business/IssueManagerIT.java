@@ -147,6 +147,29 @@ public class IssueManagerIT {
         assertThat(result).isEqualTo(priority.getName());
     }
 
+    @Test
+    public void shouldUpdateIssue() throws Exception {
+        // given
+        Issue issue = createIssue();
+        issue = issueManager.create(issue, lastProject);
+
+        String newDesc = "newDesc";
+        String dod = "dod";
+        String summary = "summary";
+        issue.setDescription(newDesc);
+        issue.setDefinitionOfDone(dod);
+        issue.setSummary(summary);
+
+        // when
+        Issue result = issueManager.update(issue)
+                                   .get();
+
+        // then
+        assertThat(result.getDescription()).isEqualTo(newDesc);
+        assertThat(result.getDefinitionOfDone()).isEqualTo(dod);
+        assertThat(result.getSummary()).isEqualTo(summary);
+    }
+
     private Developer createDeveloper() {
         Developer developer = new Developer();
         developer.setEmail("email");

@@ -49,6 +49,13 @@ public class IssueManager {
         return savedIssue;
     }
 
+    public Optional<Issue> update(Issue issue) {
+        if (issueExist(issue)) {
+            return issueDAO.saveOrUpdate(issue);
+        }
+        return Optional.empty();
+    }
+
     private boolean allValuesExist(final Issue issue, final Priority newPriority, final Optional<Project> project) {
         return project.isPresent() && issueExist(issue) && priorityExist(newPriority);
     }
