@@ -21,6 +21,9 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
     private CommentDAO commentDAO;
 
     @Inject
+    private PriorityDAO priorityDAO;
+
+    @Inject
     private IssueTypeDAO issueTypeDAO;
 
     public IssueDAO() {
@@ -42,9 +45,10 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
         issueEntity.setDescription(domainModel.getDescription());
         issueEntity.setId(domainModel.getId());
         issueEntity.setIssueTypeEntity(issueTypeDAO.mapToDatabaseModelIfNotNull(domainModel.getIssueType()));
-        issueEntity.setKey(domainModel.getKey());
+        issueEntity.setProjectKey(domainModel.getProjectKey());
         issueEntity.setReporter(findDeveloperEntity(domainModel.getReporterId()));
         issueEntity.setSummary(domainModel.getSummary());
+        issueEntity.setPriorityEntity(priorityDAO.mapToDatabaseModelIfNotNull(domainModel.getPriority()));
         return issueEntity;
     }
 
@@ -58,10 +62,11 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
         issue.setDescription(dbModel.getDescription());
         issue.setId(dbModel.getId());
         issue.setIssueType(issueTypeDAO.mapToDomainModelIfNotNull(dbModel.getIssueTypeEntity()));
-        issue.setKey(dbModel.getKey());
+        issue.setProjectKey(dbModel.getProjectKey());
         issue.setSummary(dbModel.getSummary());
         issue.setAssigneeId(getDeveloperId(dbModel));
         issue.setReporterId(getDeveloperId(dbModel));
+        issue.setPriority(priorityDAO.mapToDomainModelIfNotNull(dbModel.getPriorityEntity()));
         return issue;
     }
 
@@ -79,7 +84,7 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
 
     private DeveloperEntity findDeveloperEntity(final int id) {
         if (id != 0) {
-            Optional<Developer> developer = developerDAO.findByKey(id);
+            Optional<Developer> developer = developerDAO.findById(id);
             if (developer.isPresent()) {
                 return developerDAO.mapToDatabaseModelIfNotNull(developer.get());
             }

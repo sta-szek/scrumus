@@ -4,6 +4,7 @@ import edu.piotrjonski.scrumus.dao.model.project.IssueEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Issue;
 import edu.piotrjonski.scrumus.domain.IssueType;
+import edu.piotrjonski.scrumus.domain.Priority;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -44,6 +45,9 @@ public class IssueDAOIT {
 
     @Inject
     private IssueTypeDAO issueTypeDAO;
+
+    @Inject
+    private PriorityDAO priorityDAO;
 
     @Inject
     private UserTransaction userTransaction;
@@ -177,7 +181,7 @@ public class IssueDAOIT {
         issue1.setId(id);
 
         // when
-        Issue issue = issueDAO.findByKey(id)
+        Issue issue = issueDAO.findById(id)
                               .get();
 
         // then
@@ -189,7 +193,7 @@ public class IssueDAOIT {
         // given
 
         // when
-        Optional<Issue> user = issueDAO.findByKey(0);
+        Optional<Issue> user = issueDAO.findById(0);
 
         // then
         assertThat(user).isEmpty();
@@ -210,6 +214,11 @@ public class IssueDAOIT {
         IssueType issueType = new IssueType();
         issueType.setId(0);
         issueType.setName("name" + nextUniqueValue);
+
+        Priority priority = new Priority();
+        priority.setName("name" + nextUniqueValue);
+
+        priorityDAO.saveOrUpdate(priority);
         issueTypeDAO.saveOrUpdate(issueType);
         nextUniqueValue++;
     }
@@ -228,12 +237,16 @@ public class IssueDAOIT {
     private Issue createIssue() {
         Issue issue = new Issue();
         issue.setCreationDate(NOW);
-        issue.setKey(KEY + nextUniqueValue);
+        issue.setProjectKey(KEY + nextUniqueValue);
         issue.setDescription(DESCRIPTION);
         issue.setDefinitionOfDone(DOD);
         IssueType issueType = new IssueType();
         issueType.setId(1);
         issueType.setName("name0");
+        Priority priority = new Priority();
+        priority.setId(1);
+        priority.setName("name0");
+        issue.setPriority(priority);
         issue.setIssueType(issueType);
         issue.setReporterId(currentlySavedDeveloperId);
         issue.setAssigneeId(currentlySavedDeveloperId);

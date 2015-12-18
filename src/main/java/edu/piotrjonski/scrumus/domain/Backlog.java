@@ -15,4 +15,11 @@ public class Backlog {
     private int id;
     private List<Issue> issues = new ArrayList<>();
 
+    public void addIssue(Issue issue) {
+        issues.add(issue);
+    }
+
+    public void removeIssue(Issue issue) {
+        issues.remove(issue);
+    }
 }

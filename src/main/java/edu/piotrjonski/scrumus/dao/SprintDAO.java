@@ -60,7 +60,7 @@ public class SprintDAO extends AbstractDAO<SprintEntity, Sprint> {
 
     private RetrospectiveEntity findRetrospectiveEntity(final int id) {
         if (id != 0) {
-            Optional<Retrospective> retrospective = retrospectiveDAO.findByKey(id);
+            Optional<Retrospective> retrospective = retrospectiveDAO.findById(id);
             if (retrospective.isPresent()) {
                 return retrospectiveDAO.mapToDatabaseModelIfNotNull(retrospective.get());
             }

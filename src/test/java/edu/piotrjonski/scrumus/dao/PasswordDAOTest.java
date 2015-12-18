@@ -9,13 +9,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Spy;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import javax.persistence.EntityManager;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(PowerMockRunner.class)
@@ -26,6 +29,9 @@ public class PasswordDAOTest {
     @Spy
     private DeveloperDAO developerDAO = new DeveloperDAO();
 
+    @Mock
+    private EntityManager entityManager;
+
     @InjectMocks
     private PasswordDAO passwordDAO;
 
@@ -35,7 +41,18 @@ public class PasswordDAOTest {
         Developer developer = new Developer();
         developer.setId(DEVELOPER_ID);
         doReturn(Optional.of(developer)).when(developerDAO)
-                                        .findByKey(DEVELOPER_ID);
+                                        .findById(DEVELOPER_ID);
+    }
+
+    @Test
+    public void shouldCallCreateNamedQueryWithValidParameters() {
+        // given
+
+        // when
+        passwordDAO.getFindAllQuery();
+
+        // then
+        verify(entityManager).createNamedQuery(PasswordEntity.FIND_ALL, PasswordEntity.class);
     }
 
     @Test

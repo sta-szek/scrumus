@@ -168,7 +168,7 @@ public class TeamDAOIT {
         team1.setId(id);
 
         // when
-        Team team = teamDAO.findByKey(id)
+        Team team = teamDAO.findById(id)
                            .get();
 
         // then
@@ -180,7 +180,7 @@ public class TeamDAOIT {
         // given
 
         // when
-        Optional<Team> user = teamDAO.findByKey(0);
+        Optional<Team> user = teamDAO.findById(0);
 
         // then
         assertThat(user).isEmpty();

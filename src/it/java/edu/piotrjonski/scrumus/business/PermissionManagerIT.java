@@ -1,14 +1,8 @@
 package edu.piotrjonski.scrumus.business;
 
-import edu.piotrjonski.scrumus.dao.AdminDAO;
-import edu.piotrjonski.scrumus.dao.DeveloperDAO;
-import edu.piotrjonski.scrumus.dao.ProjectDAO;
-import edu.piotrjonski.scrumus.dao.TeamDAO;
+import edu.piotrjonski.scrumus.dao.*;
 import edu.piotrjonski.scrumus.dao.model.user.AdminEntity;
-import edu.piotrjonski.scrumus.domain.Admin;
-import edu.piotrjonski.scrumus.domain.Developer;
-import edu.piotrjonski.scrumus.domain.Project;
-import edu.piotrjonski.scrumus.domain.Team;
+import edu.piotrjonski.scrumus.domain.*;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -49,6 +43,9 @@ public class PermissionManagerIT {
 
     @Inject
     private ProjectDAO projectDAO;
+
+    @Inject
+    private ProductOwnerDAO productOwnerDAO;
 
     @Inject
     private PermissionManager permissionManager;
@@ -155,7 +152,7 @@ public class PermissionManagerIT {
                                          .get();
         // when
         permissionManager.addTeamToProject(savedTeam, savedProject);
-        List<Project> result = teamDAO.findByKey(savedTeam.getId())
+        List<Project> result = teamDAO.findById(savedTeam.getId())
                                       .get()
                                       .getProjects();
         // then
@@ -175,17 +172,56 @@ public class PermissionManagerIT {
 
         // when
         permissionManager.removeTeamFromProject(savedTeam, savedProject);
-        List<Project> result = teamDAO.findByKey(savedTeam.getId())
+        List<Project> result = teamDAO.findById(savedTeam.getId())
                                       .get()
                                       .getProjects();
         // then
         assertThat(result).doesNotContain(savedProject);
     }
 
+    @Test
+    public void shouldReturnTrueIfIsProductOwner() {
+        // given
+        Project project = createProject();
+        Developer developer = createDeveloper();
+        developer = developerDAO.saveOrUpdate(developer)
+                                .get();
+        project = projectDAO.saveOrUpdate(project)
+                            .get();
+
+        ProductOwner productOwner = new ProductOwner();
+        productOwner.setDeveloper(developer);
+        productOwner.setProject(project);
+
+        productOwnerDAO.saveOrUpdate(productOwner);
+
+        // when
+        boolean result = permissionManager.isProductOwner(project, developer);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfIsNotProductOwner() {
+        // given
+        Project project = createProject();
+        Developer developer = createDeveloper();
+        developer = developerDAO.saveOrUpdate(developer)
+                                .get();
+        project = projectDAO.saveOrUpdate(project)
+                            .get();
+        // when
+        boolean result = permissionManager.isProductOwner(project, developer);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
     private Project createProject() {
         Project project = new Project();
         project.setCreationDate(LocalDateTime.now());
-        project.setKey("key");
+        project.setKey("projKey");
         project.setName("name");
         return project;
     }
@@ -201,6 +237,8 @@ public class PermissionManagerIT {
         entityManager.createQuery("DELETE FROM AdminEntity")
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM TeamEntity ")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM ProductOwnerEntity")
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM DeveloperEntity")
                      .executeUpdate();

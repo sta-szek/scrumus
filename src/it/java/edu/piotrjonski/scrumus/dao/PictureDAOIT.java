@@ -165,7 +165,7 @@ public class PictureDAOIT {
         picture1.setId(id);
 
         // when
-        Picture picture = pictureDAO.findByKey(id)
+        Picture picture = pictureDAO.findById(id)
                                     .get();
 
         // then
@@ -177,7 +177,7 @@ public class PictureDAOIT {
         // given
 
         // when
-        Optional<Picture> user = pictureDAO.findByKey(0);
+        Optional<Picture> user = pictureDAO.findById(0);
 
         // then
         assertThat(user).isEmpty();

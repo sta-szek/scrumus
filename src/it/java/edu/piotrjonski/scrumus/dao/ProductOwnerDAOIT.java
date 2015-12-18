@@ -137,7 +137,7 @@ public class ProductOwnerDAOIT {
         productOwner1.setId(id);
 
         // when
-        ProductOwner productOwner = productOwnerDAO.findByKey(id)
+        ProductOwner productOwner = productOwnerDAO.findById(id)
                                                    .get();
 
         // then
@@ -149,7 +149,7 @@ public class ProductOwnerDAOIT {
         // given
 
         // when
-        Optional<ProductOwner> user = productOwnerDAO.findByKey(0);
+        Optional<ProductOwner> user = productOwnerDAO.findById(0);
 
         // then
         assertThat(user).isEmpty();
@@ -181,7 +181,7 @@ public class ProductOwnerDAOIT {
 
     private ProductOwner createProductOwner() {
         ProductOwner productOwner = new ProductOwner();
-        productOwner.setDeveloper(developerDAO.findByKey(lastDeveloperId)
+        productOwner.setDeveloper(developerDAO.findById(lastDeveloperId)
                                               .get());
         return productOwner;
     }

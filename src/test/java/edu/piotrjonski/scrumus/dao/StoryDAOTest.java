@@ -10,15 +10,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Spy;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import javax.persistence.EntityManager;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(PowerMockRunner.class)
@@ -29,6 +32,9 @@ public class StoryDAOTest {
 
     @Spy
     private SprintDAO sprintDAO = new SprintDAO();
+
+    @Mock
+    private EntityManager entityManager;
 
     @InjectMocks
     private StoryDAO storyDAO;
@@ -41,7 +47,18 @@ public class StoryDAOTest {
         doReturn(Lists.newArrayList(new IssueEntity())).when(issueDAO)
                                                        .mapToDatabaseModel(anyList());
         doReturn(Optional.empty()).when(sprintDAO)
-                                  .findByKey(anyObject());
+                                  .findById(anyObject());
+    }
+
+    @Test
+    public void shouldCallCreateNamedQueryWithValidParameters() {
+        // given
+
+        // when
+        storyDAO.getFindAllQuery();
+
+        // then
+        verify(entityManager).createNamedQuery(StoryEntity.FIND_ALL, StoryEntity.class);
     }
 
     @Test

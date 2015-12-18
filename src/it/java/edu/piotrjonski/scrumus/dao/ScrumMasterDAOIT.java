@@ -136,7 +136,7 @@ public class ScrumMasterDAOIT {
         scrumMaster1.setId(id);
 
         // when
-        ScrumMaster scrumMaster = scrumMasterDAO.findByKey(id)
+        ScrumMaster scrumMaster = scrumMasterDAO.findById(id)
                                                 .get();
 
         // then
@@ -148,7 +148,7 @@ public class ScrumMasterDAOIT {
         // given
 
         // when
-        Optional<ScrumMaster> user = scrumMasterDAO.findByKey(0);
+        Optional<ScrumMaster> user = scrumMasterDAO.findById(0);
 
         // then
         assertThat(user).isEmpty();
@@ -180,7 +180,7 @@ public class ScrumMasterDAOIT {
 
     private ScrumMaster createScrumMaster() {
         ScrumMaster scrumMaster = new ScrumMaster();
-        scrumMaster.setDeveloper(developerDAO.findByKey(lastDeveloperId)
+        scrumMaster.setDeveloper(developerDAO.findById(lastDeveloperId)
                                              .get());
         return scrumMaster;
     }

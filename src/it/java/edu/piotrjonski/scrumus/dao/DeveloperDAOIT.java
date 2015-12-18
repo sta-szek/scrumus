@@ -166,7 +166,7 @@ public class DeveloperDAOIT {
         developer1.setId(id);
 
         // when
-        Developer developer = developerDAO.findByKey(id)
+        Developer developer = developerDAO.findById(id)
                                           .get();
 
         // then
@@ -178,7 +178,7 @@ public class DeveloperDAOIT {
         // given
 
         // when
-        Optional<Developer> user = developerDAO.findByKey(0);
+        Optional<Developer> user = developerDAO.findById(0);
 
         // then
         assertThat(user).isEmpty();

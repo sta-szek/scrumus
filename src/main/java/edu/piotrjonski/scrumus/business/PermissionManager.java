@@ -1,17 +1,12 @@
 package edu.piotrjonski.scrumus.business;
 
 
-import edu.piotrjonski.scrumus.dao.AdminDAO;
-import edu.piotrjonski.scrumus.dao.DeveloperDAO;
-import edu.piotrjonski.scrumus.dao.ProjectDAO;
-import edu.piotrjonski.scrumus.dao.TeamDAO;
-import edu.piotrjonski.scrumus.domain.Admin;
-import edu.piotrjonski.scrumus.domain.Developer;
-import edu.piotrjonski.scrumus.domain.Project;
-import edu.piotrjonski.scrumus.domain.Team;
+import edu.piotrjonski.scrumus.dao.*;
+import edu.piotrjonski.scrumus.domain.*;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.Optional;
 
 @Stateless
 public class PermissionManager {
@@ -28,9 +23,22 @@ public class PermissionManager {
     @Inject
     private AdminDAO adminDAO;
 
+    @Inject
+    private ProductOwnerDAO productOwnerDAO;
+
     public boolean isAdmin(Developer user) {
         return adminDAO.findByDeveloperId(user.getId())
                        .isPresent();
+    }
+
+    public boolean isProductOwner(Project project, Developer user) {
+        if (developerExist(user) && projectExist(project)) {
+            Optional<ProductOwner> productOwner = productOwnerDAO.findByDeveloperId(user.getId());
+            if (productOwner.isPresent()) {
+                return hasProjectPermission(project, productOwner);
+            }
+        }
+        return false;
     }
 
     public void grantAdminPermission(Developer user) {
@@ -62,6 +70,13 @@ public class PermissionManager {
             team.removeProject(project);
             teamDAO.saveOrUpdate(team);
         }
+    }
+
+    private boolean hasProjectPermission(final Project project, final Optional<ProductOwner> productOwner) {
+        return productOwner.get()
+                           .getProject()
+                           .getKey()
+                           .equals(project.getKey());
     }
 
     private boolean isNotAdmin(final Developer user) {return !isAdmin(user);}

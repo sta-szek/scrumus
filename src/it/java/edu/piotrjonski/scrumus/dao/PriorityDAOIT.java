@@ -1,8 +1,7 @@
 package edu.piotrjonski.scrumus.dao;
 
-import edu.piotrjonski.scrumus.dao.model.project.SprintEntity;
-import edu.piotrjonski.scrumus.dao.model.project.TimeRange;
-import edu.piotrjonski.scrumus.domain.Sprint;
+import edu.piotrjonski.scrumus.dao.model.project.PriorityEntity;
+import edu.piotrjonski.scrumus.domain.Priority;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -18,17 +17,18 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
-public class SprintDAOIT {
+public class PriorityDAOIT {
+    public static final String NAME = "abcdge";
+    public static int nextUniqueValue = 0;
 
     @Inject
-    private SprintDAO sprintDAO;
+    private PriorityDAO priorityDAO;
 
     @Inject
     private UserTransaction userTransaction;
@@ -55,10 +55,10 @@ public class SprintDAOIT {
     @Test
     public void shouldSave() {
         // given
-        Sprint sprint = createSprint();
+        Priority priority = createPriority();
 
         // when
-        sprintDAO.saveOrUpdate(sprint);
+        priorityDAO.saveOrUpdate(priority);
 
         // then
         assertThat(findAll().size()).isEqualTo(1);
@@ -68,13 +68,13 @@ public class SprintDAOIT {
     @Test
     public void shouldReturnTrueIfExist() {
         // given
-        Sprint sprint = createSprint();
-        int entityId = sprintDAO.saveOrUpdate(sprint)
-                                .get()
-                                .getId();
+        Priority priority = createPriority();
+        int entityId = priorityDAO.saveOrUpdate(priority)
+                                  .get()
+                                  .getId();
 
         // when
-        boolean result = sprintDAO.exist(entityId);
+        boolean result = priorityDAO.exist(entityId);
 
         // then
         assertThat(result).isTrue();
@@ -85,7 +85,7 @@ public class SprintDAOIT {
         // given
 
         // when
-        boolean result = sprintDAO.exist(1);
+        boolean result = priorityDAO.exist(1);
 
         // then
         assertThat(result).isFalse();
@@ -95,28 +95,28 @@ public class SprintDAOIT {
     public void shouldUpdate() {
         // given
         String updatedName = "UpdatedName";
-        Sprint sprint = createSprint();
-        sprint = sprintDAO.mapToDomainModelIfNotNull(entityManager.merge(sprintDAO.mapToDatabaseModelIfNotNull(
-                sprint)));
-        sprint.setName(updatedName);
+        Priority priority = createPriority();
+        priority = priorityDAO.mapToDomainModelIfNotNull(entityManager.merge(priorityDAO.mapToDatabaseModelIfNotNull(
+                priority)));
+        priority.setName(updatedName);
 
         // when
-        sprint = sprintDAO.saveOrUpdate(sprint)
-                          .get();
+        priority = priorityDAO.saveOrUpdate(priority)
+                              .get();
 
         // then
-        assertThat(sprint.getName()).isEqualTo(updatedName);
+        assertThat(priority.getName()).isEqualTo(updatedName);
     }
 
     @Test
     public void shouldDelete() {
         // given
-        Sprint sprint = createSprint();
-        sprint = sprintDAO.mapToDomainModelIfNotNull(entityManager.merge(sprintDAO.mapToDatabaseModelIfNotNull(
-                sprint)));
+        Priority priority = createPriority();
+        priority = priorityDAO.mapToDomainModelIfNotNull(entityManager.merge(priorityDAO.mapToDatabaseModelIfNotNull(
+                priority)));
 
         // when
-        sprintDAO.delete(sprint.getId());
+        priorityDAO.delete(priority.getId());
         int allUsers = findAll().size();
 
         // then
@@ -126,47 +126,47 @@ public class SprintDAOIT {
     @Test
     public void shouldFindAll() {
         // given
-        Sprint sprint1 = createSprint();
-        Sprint sprint2 = createSprint();
-        Sprint sprint3 = createSprint();
+        Priority priority1 = createPriority();
+        Priority priority2 = createPriority();
+        Priority priority3 = createPriority();
 
-        int id1 = entityManager.merge(sprintDAO.mapToDatabaseModelIfNotNull(sprint1))
+        int id1 = entityManager.merge(priorityDAO.mapToDatabaseModelIfNotNull(priority1))
                                .getId();
-        int id2 = entityManager.merge(sprintDAO.mapToDatabaseModelIfNotNull(sprint2))
+        int id2 = entityManager.merge(priorityDAO.mapToDatabaseModelIfNotNull(priority2))
                                .getId();
-        int id3 = entityManager.merge(sprintDAO.mapToDatabaseModelIfNotNull(sprint3))
+        int id3 = entityManager.merge(priorityDAO.mapToDatabaseModelIfNotNull(priority3))
                                .getId();
 
-        sprint1.setId(id1);
-        sprint2.setId(id2);
-        sprint3.setId(id3);
+        priority1.setId(id1);
+        priority2.setId(id2);
+        priority3.setId(id3);
 
         // when
-        List<Sprint> sprints = sprintDAO.findAll();
+        List<Priority> prioritys = priorityDAO.findAll();
 
         // then
-        assertThat(sprints).hasSize(3)
-                           .contains(sprint1)
-                           .contains(sprint2)
-                           .contains(sprint3);
+        assertThat(prioritys).hasSize(3)
+                             .contains(priority1)
+                             .contains(priority2)
+                             .contains(priority3);
     }
 
     @Test
     public void shouldFindByKey() {
         // given
-        Sprint sprint1 = createSprint();
-        Sprint sprint2 = createSprint();
-        int id = entityManager.merge(sprintDAO.mapToDatabaseModelIfNotNull(sprint1))
+        Priority priority1 = createPriority();
+        Priority priority2 = createPriority();
+        int id = entityManager.merge(priorityDAO.mapToDatabaseModelIfNotNull(priority1))
                               .getId();
-        entityManager.merge(sprintDAO.mapToDatabaseModelIfNotNull(sprint2));
-        sprint1.setId(id);
+        entityManager.merge(priorityDAO.mapToDatabaseModelIfNotNull(priority2));
+        priority1.setId(id);
 
         // when
-        Sprint sprint = sprintDAO.findById(id)
-                                 .get();
+        Priority priority = priorityDAO.findById(id)
+                                       .get();
 
         // then
-        assertThat(sprint).isEqualTo(sprint1);
+        assertThat(priority).isEqualTo(priority1);
     }
 
     @Test
@@ -174,7 +174,7 @@ public class SprintDAOIT {
         // given
 
         // when
-        Optional<Sprint> user = sprintDAO.findById(0);
+        Optional<Priority> user = priorityDAO.findById(0);
 
         // then
         assertThat(user).isEmpty();
@@ -188,26 +188,21 @@ public class SprintDAOIT {
     private void clearData() throws Exception {
         userTransaction.begin();
         entityManager.joinTransaction();
-        entityManager.createQuery("DELETE FROM SprintEntity")
+        entityManager.createQuery("DELETE FROM PriorityEntity")
                      .executeUpdate();
         userTransaction.commit();
         entityManager.clear();
     }
 
-    private Sprint createSprint() {
-        Sprint sprint = new Sprint();
-        sprint.setDefinitionOfDone("dod");
-        sprint.setName("name");
-        TimeRange timeRange = new TimeRange();
-        timeRange.setStartDate(LocalDateTime.now());
-        timeRange.setEndDate(LocalDateTime.now()
-                                          .plusDays(14));
-        sprint.setTimeRange(timeRange);
-        return sprint;
+    private Priority createPriority() {
+        Priority priority = new Priority();
+        priority.setName(NAME + nextUniqueValue);
+        nextUniqueValue++;
+        return priority;
     }
 
-    private List<SprintEntity> findAll() {
-        return entityManager.createQuery("SELECT d FROM SprintEntity d")
+    private List<PriorityEntity> findAll() {
+        return entityManager.createQuery("SELECT d FROM PriorityEntity d")
                             .getResultList();
     }
 }

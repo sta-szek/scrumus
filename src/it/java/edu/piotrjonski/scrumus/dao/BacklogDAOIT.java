@@ -2,10 +2,7 @@ package edu.piotrjonski.scrumus.dao;
 
 
 import edu.piotrjonski.scrumus.dao.model.project.BacklogEntity;
-import edu.piotrjonski.scrumus.domain.Backlog;
-import edu.piotrjonski.scrumus.domain.Developer;
-import edu.piotrjonski.scrumus.domain.Issue;
-import edu.piotrjonski.scrumus.domain.IssueType;
+import edu.piotrjonski.scrumus.domain.*;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.assertj.core.util.Lists;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -38,6 +35,9 @@ public class BacklogDAOIT {
 
     @Inject
     private IssueTypeDAO issueTypeDAO;
+
+    @Inject
+    private PriorityDAO priorityDAO;
 
     @Inject
     private DeveloperDAO developerDAO;
@@ -110,10 +110,15 @@ public class BacklogDAOIT {
         issueType.setId(1);
         issueType.setName("task");
 
+        Priority priority = new Priority();
+        priority.setId(1);
+        priority.setName("name");
+
         Issue issue = new Issue();
-        issue.setKey("testkey");
+        issue.setProjectKey("testkey");
         issue.setSummary("summary");
         issue.setIssueType(issueType);
+        issue.setPriority(priority);
 
         Developer developer = new Developer();
         developer.setId(1);
@@ -127,6 +132,7 @@ public class BacklogDAOIT {
         issue.setReporterId(developer.getId());
 
         issueTypeDAO.saveOrUpdate(issueType);
+        priorityDAO.saveOrUpdate(priority);
         issue = issueDAO.saveOrUpdate(issue)
                         .get();
 
@@ -197,7 +203,7 @@ public class BacklogDAOIT {
         backlog1.setId(id);
 
         // when
-        Backlog backlog = backlogDAO.findByKey(id)
+        Backlog backlog = backlogDAO.findById(id)
                                     .get();
 
         // then
@@ -209,7 +215,7 @@ public class BacklogDAOIT {
         // given
 
         // when
-        Optional<Backlog> user = backlogDAO.findByKey(0);
+        Optional<Backlog> user = backlogDAO.findById(0);
 
         // then
         assertThat(user).isEmpty();
@@ -226,6 +232,8 @@ public class BacklogDAOIT {
         entityManager.createQuery("DELETE FROM BacklogEntity")
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM IssueEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM PriorityEntity")
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM IssueTypeEntity ")
                      .executeUpdate();

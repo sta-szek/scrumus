@@ -11,14 +11,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Spy;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(PowerMockRunner.class)
@@ -29,6 +32,9 @@ public class TeamDAOTest {
 
     @Spy
     private DeveloperDAO developerDAO = new DeveloperDAO();
+
+    @Mock
+    private EntityManager entityManager;
 
     @InjectMocks
     private TeamDAO teamDAO;
@@ -41,6 +47,17 @@ public class TeamDAOTest {
 
         doReturn(Lists.newArrayList(createDatabaseProject())).when(projectDAO)
                                                              .mapToDatabaseModel(any(List.class));
+    }
+
+    @Test
+    public void shouldCallCreateNamedQueryWithValidParameters() {
+        // given
+
+        // when
+        teamDAO.getFindAllQuery();
+
+        // then
+        verify(entityManager).createNamedQuery(TeamEntity.FIND_ALL, TeamEntity.class);
     }
 
     @Test

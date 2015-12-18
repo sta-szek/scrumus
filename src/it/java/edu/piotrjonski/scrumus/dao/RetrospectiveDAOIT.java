@@ -167,7 +167,7 @@ public class RetrospectiveDAOIT {
         retrospective1.setId(id);
 
         // when
-        Retrospective retrospective = retrospectiveDAO.findByKey(id)
+        Retrospective retrospective = retrospectiveDAO.findById(id)
                                                       .get();
 
         // then
@@ -179,7 +179,7 @@ public class RetrospectiveDAOIT {
         // given
 
         // when
-        Optional<Retrospective> user = retrospectiveDAO.findByKey(0);
+        Optional<Retrospective> user = retrospectiveDAO.findById(0);
 
         // then
         assertThat(user).isEmpty();

@@ -14,13 +14,14 @@ import java.util.List;
 @NoArgsConstructor
 public class Issue {
     private int id;
-    private String key;
+    private String projectKey;
     private String summary;
     private String description;
     private String definitionOfDone;
     private LocalDateTime creationDate = LocalDateTime.now();
     private List<Comment> comments = new ArrayList<>();
     private IssueType issueType;
+    private Priority priority;
     private int reporterId;
     private int assigneeId;
 }

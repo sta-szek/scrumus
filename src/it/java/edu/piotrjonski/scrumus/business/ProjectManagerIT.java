@@ -140,7 +140,7 @@ public class ProjectManagerIT {
 
     private Project createProject() {
         Project project = new Project();
-        project.setKey("key" + nextUniqueValue);
+        project.setKey("proj" + nextUniqueValue);
         project.setName("name" + nextUniqueValue);
         project.setCreationDate(LocalDateTime.now());
         project.setDescription("desc");

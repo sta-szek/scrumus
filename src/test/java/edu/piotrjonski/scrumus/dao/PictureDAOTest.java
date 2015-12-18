@@ -3,13 +3,43 @@ package edu.piotrjonski.scrumus.dao;
 
 import edu.piotrjonski.scrumus.dao.model.user.PictureEntity;
 import edu.piotrjonski.scrumus.domain.Picture;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import javax.persistence.EntityManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
 
+@RunWith(PowerMockRunner.class)
 public class PictureDAOTest {
 
+    @InjectMocks
     private PictureDAO pictureDAO = new PictureDAO();
+
+    @Mock
+    private EntityManager entityManager;
+
+    @Before
+    public void before() {
+        initMocks(this);
+    }
+
+    @Test
+    public void shouldCallCreateNamedQueryWithValidParameters() {
+        // given
+
+        // when
+        pictureDAO.getFindAllQuery();
+
+        // then
+        verify(entityManager).createNamedQuery(PictureEntity.FIND_ALL, PictureEntity.class);
+    }
 
     @Test
     public void shouldMapToDatabaseModel() {

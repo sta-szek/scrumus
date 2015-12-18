@@ -59,7 +59,7 @@ public class PasswordDAO extends AbstractDAO<PasswordEntity, Password> {
 
     private DeveloperEntity findDeveloperEntity(final int id) {
         if (id != 0) {
-            Optional<Developer> developer = developerDAO.findByKey(id);
+            Optional<Developer> developer = developerDAO.findById(id);
             if (developer.isPresent()) {
                 return developerDAO.mapToDatabaseModelIfNotNull(developer.get());
             }

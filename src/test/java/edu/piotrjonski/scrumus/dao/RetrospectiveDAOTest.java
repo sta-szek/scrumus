@@ -10,9 +10,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Spy;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -20,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Lists.newArrayList;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
 
@@ -38,6 +41,9 @@ public class RetrospectiveDAOTest {
     @Spy
     private CommentDAO commentDAO = new CommentDAO();
 
+    @Mock
+    private EntityManager entityManager;
+
     @InjectMocks
     private RetrospectiveDAO retrospectiveDAO;
 
@@ -46,7 +52,18 @@ public class RetrospectiveDAOTest {
         initMocks(this);
         setInternalState(commentDAO, "developerDAO", developerDAO);
         doReturn(Optional.of(createDeveloper())).when(developerDAO)
-                                                .findByKey(anyObject());
+                                                .findById(anyObject());
+    }
+
+    @Test
+    public void shouldCallCreateNamedQueryWithValidParameters() {
+        // given
+
+        // when
+        retrospectiveDAO.getFindAllQuery();
+
+        // then
+        verify(entityManager).createNamedQuery(RetrospectiveEntity.FIND_ALL, RetrospectiveEntity.class);
     }
 
     @Test

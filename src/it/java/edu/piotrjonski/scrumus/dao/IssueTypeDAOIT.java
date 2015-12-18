@@ -162,7 +162,7 @@ public class IssueTypeDAOIT {
         issueType1.setId(id);
 
         // when
-        IssueType issueType = issueTypeDAO.findByKey(id)
+        IssueType issueType = issueTypeDAO.findById(id)
                                           .get();
 
         // then
@@ -174,7 +174,7 @@ public class IssueTypeDAOIT {
         // given
 
         // when
-        Optional<IssueType> user = issueTypeDAO.findByKey(0);
+        Optional<IssueType> user = issueTypeDAO.findById(0);
 
         // then
         assertThat(user).isEmpty();

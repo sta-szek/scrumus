@@ -1,8 +1,8 @@
 package edu.piotrjonski.scrumus.dao;
 
 
-import edu.piotrjonski.scrumus.dao.model.project.IssueTypeEntity;
-import edu.piotrjonski.scrumus.domain.IssueType;
+import edu.piotrjonski.scrumus.dao.model.project.PriorityEntity;
+import edu.piotrjonski.scrumus.domain.Priority;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,10 +17,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(PowerMockRunner.class)
-public class IssueTypeDAOTest {
+public class PriorityDAOTest {
 
     @InjectMocks
-    private IssueTypeDAO issueTypeDAO = new IssueTypeDAO();
+    private PriorityDAO priorityDAO = new PriorityDAO();
 
     @Mock
     private EntityManager entityManager;
@@ -35,26 +35,26 @@ public class IssueTypeDAOTest {
         // given
 
         // when
-        issueTypeDAO.getFindAllQuery();
+        priorityDAO.getFindAllQuery();
 
         // then
-        verify(entityManager).createNamedQuery(IssueTypeEntity.FIND_ALL, IssueTypeEntity.class);
+        verify(entityManager).createNamedQuery(PriorityEntity.FIND_ALL, PriorityEntity.class);
     }
 
     @Test
     public void shouldMapToDatabaseModel() {
         // given
         int id = 1;
-        String issueTypeName = "issueTypeName";
-        IssueType issueType = new IssueType();
-        issueType.setId(id);
-        issueType.setName(issueTypeName);
+        String priorityName = "priorityName";
+        Priority priority = new Priority();
+        priority.setId(id);
+        priority.setName(priorityName);
 
         // when
-        IssueTypeEntity result = issueTypeDAO.mapToDatabaseModel(issueType);
+        PriorityEntity result = priorityDAO.mapToDatabaseModel(priority);
 
         // then
-        assertThat(result.getName()).isEqualTo(issueTypeName);
+        assertThat(result.getName()).isEqualTo(priorityName);
         assertThat(result.getId()).isEqualTo(id);
     }
 
@@ -62,16 +62,17 @@ public class IssueTypeDAOTest {
     public void shouldMapToDomainModel() {
         // given
         int id = 1;
-        String issueTypeName = "issueTypeName";
-        IssueTypeEntity issueType = new IssueTypeEntity();
-        issueType.setId(id);
-        issueType.setName(issueTypeName);
+        String priorityName = "priorityName";
+        PriorityEntity priority = new PriorityEntity();
+        priority.setId(id);
+        priority.setName(priorityName);
 
         // when
-        IssueType result = issueTypeDAO.mapToDomainModel(issueType);
+        Priority result = priorityDAO.mapToDomainModel(priority);
 
         // then
-        assertThat(result.getName()).isEqualTo(issueTypeName);
+        assertThat(result.getName()).isEqualTo(priorityName);
         assertThat(result.getId()).isEqualTo(id);
     }
+
 }

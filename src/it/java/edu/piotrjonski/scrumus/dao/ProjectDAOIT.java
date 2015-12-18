@@ -166,7 +166,7 @@ public class ProjectDAOIT {
         project1.setKey(id);
 
         // when
-        Project project = projectDAO.findByKey(id)
+        Project project = projectDAO.findById(id)
                                     .get();
 
         // then
@@ -178,7 +178,7 @@ public class ProjectDAOIT {
         // given
 
         // when
-        Optional<Project> user = projectDAO.findByKey("");
+        Optional<Project> user = projectDAO.findById("");
 
         // then
         assertThat(user).isEmpty();
