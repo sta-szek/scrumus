@@ -24,4 +24,12 @@ public class Issue {
     private Priority priority;
     private int reporterId;
     private int assigneeId;
+
+    public void addComment(final Comment comment) {
+        comments.add(comment);
+    }
+
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
+    }
 }

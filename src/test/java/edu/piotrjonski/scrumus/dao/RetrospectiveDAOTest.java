@@ -75,7 +75,7 @@ public class RetrospectiveDAOTest {
         retrospective.setId(id);
         retrospective.setRetrospectiveItems(newArrayList(createDomainRetrospectiveItem()));
         retrospective.setDescription(retrospectiveDescription);
-        retrospective.setCommentEntities(newArrayList(createComment()));
+        retrospective.setComments(newArrayList(createComment()));
 
         // when
         RetrospectiveEntity result = retrospectiveDAO.mapToDatabaseModel(retrospective);
@@ -104,7 +104,7 @@ public class RetrospectiveDAOTest {
         // then
         assertThat(result.getId()).isEqualTo(id);
         assertThat(result.getDescription()).isEqualTo(retrospectiveDescription);
-        assertThat(result.getCommentEntities()).containsOnly(createComment());
+        assertThat(result.getComments()).containsOnly(createComment());
         assertThat(result.getRetrospectiveItems()).containsOnly(createDomainRetrospectiveItem());
     }
 

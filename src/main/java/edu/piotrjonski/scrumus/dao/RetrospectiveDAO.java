@@ -31,7 +31,7 @@ public class RetrospectiveDAO extends AbstractDAO<RetrospectiveEntity, Retrospec
     @Override
     protected RetrospectiveEntity mapToDatabaseModel(final Retrospective domainModel) {
         RetrospectiveEntity retrospectiveEntity = new RetrospectiveEntity();
-        retrospectiveEntity.setCommentEntities(commentDAO.mapToDatabaseModel(domainModel.getCommentEntities()));
+        retrospectiveEntity.setCommentEntities(commentDAO.mapToDatabaseModel(domainModel.getComments()));
         retrospectiveEntity.setDescription(domainModel.getDescription());
         retrospectiveEntity.setId(domainModel.getId());
         retrospectiveEntity.setRetrospectiveItemEmbeddables(mapRetroItemToDatabaseModel(domainModel.getRetrospectiveItems()));
@@ -41,7 +41,7 @@ public class RetrospectiveDAO extends AbstractDAO<RetrospectiveEntity, Retrospec
     @Override
     protected Retrospective mapToDomainModel(final RetrospectiveEntity dbModel) {
         Retrospective retrospective = new Retrospective();
-        retrospective.setCommentEntities(commentDAO.mapToDomainModel(dbModel.getCommentEntities()));
+        retrospective.setComments(commentDAO.mapToDomainModel(dbModel.getCommentEntities()));
         retrospective.setDescription(dbModel.getDescription());
         retrospective.setId(dbModel.getId());
         retrospective.setRetrospectiveItems(mapRetroItemToDomainModel(dbModel.getRetrospectiveItemEmbeddables()));

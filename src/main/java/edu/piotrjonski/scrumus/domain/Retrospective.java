@@ -16,5 +16,13 @@ public class Retrospective {
     private int id;
     private String description;
     private List<RetrospectiveItem> retrospectiveItems = new ArrayList<>();
-    private List<Comment> commentEntities = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
+
+    public void addComment(final Comment comment) {
+        comments.add(comment);
+    }
+
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
+    }
 }
