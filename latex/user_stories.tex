@@ -51,7 +51,7 @@
 % Autor i tytuł
 \maketitle
 % Spis tresci
-\tableofcontents
+\tableofcontents 
 \newpage
 
 \section{Historyjki użytkownika}
@@ -71,15 +71,18 @@ W projektowanym systemie występują cztery rodzaje użytkowników (administrato
 	\newline
 	\newline
 	\textbf{Administrator}
-	\begin{enumerate}		
+	\begin{enumerate}	
+		\item Jako administrator mogę tworzyć nowych użytkowników w celu dodania ich do systemu.
+		\item Jako administrator mogę usuwać użytkowników z systemu.
+		\item Jako administrator mogę dodawać użytkowników do grup oraz usuwać z nich w celu modyfikacji zespołu.
+		\item Jako administrator mogę nadawać dowolne uprawnienia wszystkim użytkownikom.		
 		\item Jako administrator mogę utworzyć projekt w celu dodania go do systemu.
 		\item Jako administrator mogę usunąć projekt w celu usunięcia z systemu oraz powiązanych z nim elementów t.j. sprint, story, backlog oraz inne. Operacja usuwania odbywa się kaskadowo.
-		\item Jako administrator mogę tworzyć nowych użytkowników w celu dodania ich do systemu.
-		\item Jako administrator mogę usuwać użytkowników w celu usunięcia z systemu.
-		\item Jako administrator mogę nadawać dowolne uprawnienia wszystkim użytkownikom.
-		\item Jako administrator mogę tworzyć nowe grupy w celu dodania ich do systemu.
-		\item Jako administrator mogę dodawać użytkowników do grup oraz usuwać z nich w celu modyfikacji zespołu.
-		\item Jako administrator mogę dodawać dodawać/usuwać grupy do/z projektów w celu przydzielenia uprawnień.
+		\item Jako administrator mogę modyfikować projekt.		
+		\item Jako administrator mogę tworzyć nowe grupy w celu dodania ich do systemu.		
+		\item Jako administrator mogę dodawać i usuwać grupy z projektów w celu przydzielenia uprawnień.
+		\item Jako administrator mogę tworzyć, usuwać oraz edytować statusy zadań.
+		\item Jako administrator mogę tworzyć, usuwać oraz edytować priorytety zadań.
 	\end{enumerate}		
 	\textbf{Product owner}
 	\begin{enumerate}		
@@ -89,14 +92,17 @@ W projektowanym systemie występują cztery rodzaje użytkowników (administrato
 	\end{enumerate}	
 	\textbf{Scrum master}
 	\begin{enumerate}		
-		\item Co "specjalnego" scrum master może robić w moim systemie?
+		\item Jako scrum master mogę tworzyć nowe sprinty w projekcie.
+		\item Jako scrum master mogę tworzyć nowe story w sprintach.
+		\item Jako scrum master mogę dodawać i usuwać zadania ze story.
+		\item Jako scrum master mogę tworzyć retrospektywy.
+		\item Jako scrum master mam wgląd we wszystkie projekty zespołów, w których jestem scrum masterem.
 	\end{enumerate}
 	\textbf{Developer}
 	\begin{enumerate}		
 		\item Jako developer mogę tworzyć i edytować zadania.
 		\item Jako developer mogę dodawać komentarze do zadań oraz retrospektyw.
 		\item Jako developer mogę usuwać swoje komentarze do zadań oraz retrospektyw.
-		\item Jako developer mogę edytować zadania.
 		\item Jako developer mogę edytować swój profil.
 	\end{enumerate}
 	
@@ -115,8 +121,7 @@ W projektowanym systemie występują cztery rodzaje użytkowników (administrato
 	\bibitem{CLEAN_CODE_MASTER} Mistrz czystego kodu. Kodeks postępowania profesjonalnych programistów \emph{Robert C. Martin} Helion 2013
 	\bibitem{CLEAN_CODE} Czysty kod. Podręcznik dobrego programisty \emph{Robert C. Martin} Helion 2010
 	\bibitem{WZORCE} Rusz głową! Wzorce projektowe \emph{Eric Freeman, Elisabeth Freeman, Bert Bates, Kathy Sierra} Helion 2011
-	\bibitem{REFACTOR} Refaktoryzacja do wzorców projektowych \emph{Joshua Kerievsky} Helion 2005
-	
+	\bibitem{REFACTOR} Refaktoryzacja do wzorców projektowych \emph{Joshua Kerievsky} Helion 2005	
 \end{thebibliography}
 
 \end{document}
