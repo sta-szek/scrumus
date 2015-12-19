@@ -316,7 +316,8 @@ public class IssueManagerIT {
         // given
         State state = new State();
         state.setName("oldName");
-        stateDAO.saveOrUpdate(state);
+        state = stateDAO.saveOrUpdate(state)
+                        .get();
         String newName = "newName";
         state.setName(newName);
 
@@ -332,7 +333,8 @@ public class IssueManagerIT {
         // given
         Priority priority = new Priority();
         priority.setName("oldName");
-        priorityDAO.saveOrUpdate(priority);
+        priority = priorityDAO.saveOrUpdate(priority)
+                              .get();
         String newName = "newName";
         priority.setName(newName);
 
