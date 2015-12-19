@@ -32,7 +32,6 @@ public abstract class AbstractDAO<T, V> {
     }
 
     public Optional<V> saveOrUpdate(V domainObject) {
-        System.err.println(domainObject);
         T dbEntity = entityManager.merge(mapToDatabaseModelIfNotNull(domainObject));
         return Optional.ofNullable(mapToDomainModelIfNotNull(dbEntity));
     }

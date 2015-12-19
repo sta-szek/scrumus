@@ -3,7 +3,6 @@ package edu.piotrjonski.scrumus.business;
 import edu.piotrjonski.scrumus.dao.DeveloperDAO;
 import edu.piotrjonski.scrumus.dao.model.user.AdminEntity;
 import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
-import edu.piotrjonski.scrumus.domain.Admin;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -131,6 +130,40 @@ public class UserManagerIT {
         assertThat(result).isEqualTo(0);
     }
 
+    @Test
+    public void shouldUpdateUserIfExist() throws AlreadyExistException, NotExistException {
+        // given
+        Developer developer = createDeveloper();
+        Developer savedDeveloper = userManager.create(developer);
+
+        String newEmail = "newEmail";
+        String newFirstname = "newFirstname";
+        String newSurname = "newSurname";
+        savedDeveloper.setEmail(newEmail);
+        savedDeveloper.setFirstName(newFirstname);
+        savedDeveloper.setSurname(newSurname);
+
+        // when
+        Developer updatedDeveloper = userManager.update(savedDeveloper);
+
+        // then
+        assertThat(updatedDeveloper.getEmail()).isEqualTo(newEmail);
+        assertThat(updatedDeveloper.getFirstName()).isEqualTo(newFirstname);
+        assertThat(updatedDeveloper.getSurname()).isEqualTo(newSurname);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenUserDoesNotExist() throws AlreadyExistException, NotExistException {
+        // given
+        Developer developer = createDeveloper();
+
+        // when
+        Throwable throwable = catchThrowable(() -> userManager.update(developer));
+
+        // then
+        assertThat(throwable).isInstanceOf(NotExistException.class);
+    }
+
     private void startTransaction() throws SystemException, NotSupportedException {
         userTransaction.begin();
         entityManager.joinTransaction();
@@ -155,12 +188,6 @@ public class UserManagerIT {
         developer.setEmail(EMAIL + nextUniqueValue);
         nextUniqueValue++;
         return developer;
-    }
-
-    private Admin createAdmin(Developer developer) {
-        Admin admin = new Admin();
-        admin.setDeveloper(developer);
-        return admin;
     }
 
     private int findAllAdminsSize() {
