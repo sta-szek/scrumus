@@ -1,9 +1,6 @@
 package edu.piotrjonski.scrumus.business;
 
-import edu.piotrjonski.scrumus.dao.BacklogDAO;
-import edu.piotrjonski.scrumus.dao.IssueDAO;
-import edu.piotrjonski.scrumus.dao.PriorityDAO;
-import edu.piotrjonski.scrumus.dao.ProjectDAO;
+import edu.piotrjonski.scrumus.dao.*;
 import edu.piotrjonski.scrumus.domain.*;
 
 import javax.ejb.Stateless;
@@ -21,6 +18,9 @@ public class IssueManager {
 
     @Inject
     private PriorityDAO priorityDAO;
+
+    @Inject
+    private StateDAO stateDAO;
 
     @Inject
     private PermissionManager permissionManager;
@@ -56,6 +56,52 @@ public class IssueManager {
         return Optional.empty();
     }
 
+    public Priority createPriority(Priority priority) throws AlreadyExistException {
+        if (priorityExist(priority)) {
+            throw new AlreadyExistException("Priorytet już istnieje.");
+        }
+        return priorityDAO.saveOrUpdate(priority)
+                          .get();
+    }
+
+    public void deletePriority(Priority priority) throws NotExistException {
+        if (!priorityExist(priority)) {
+            throw new NotExistException("Priorytet nie istnieje.");
+        }
+        priorityDAO.delete(priority.getId());
+    }
+
+    public Priority editPriority(Priority newPriority) throws NotExistException {
+        if (!priorityExist(newPriority)) {
+            throw new NotExistException("Priorytet nie istnieje.");
+        }
+        return priorityDAO.saveOrUpdate(newPriority)
+                          .get();
+    }
+
+    public State createState(State state) throws AlreadyExistException {
+        if (stateExist(state)) {
+            throw new AlreadyExistException("Stan już istnieje.");
+        }
+        return stateDAO.saveOrUpdate(state)
+                       .get();
+    }
+
+    public void deleteState(State state) throws NotExistException {
+        if (!stateExist(state)) {
+            throw new NotExistException("Stan nie istnieje.");
+        }
+        stateDAO.delete(state.getId());
+    }
+
+    public State editState(State state) throws NotExistException {
+        if (!stateExist(state)) {
+            throw new NotExistException("Stan nie istnieje.");
+        }
+        return stateDAO.saveOrUpdate(state)
+                       .get();
+    }
+
     private boolean allValuesExist(final Issue issue, final Priority newPriority, final Optional<Project> project) {
         return project.isPresent() && issueExist(issue) && priorityExist(newPriority);
     }
@@ -82,6 +128,10 @@ public class IssueManager {
 
     private boolean priorityExist(final Priority priority) {
         return priorityDAO.exist(priority.getId());
+    }
+
+    private boolean stateExist(final State state) {
+        return stateDAO.exist(state.getId());
     }
 
 }

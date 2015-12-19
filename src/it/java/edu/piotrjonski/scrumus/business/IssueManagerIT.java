@@ -19,6 +19,7 @@ import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -31,6 +32,7 @@ public class IssueManagerIT {
 
     private Project lastProject;
     private Developer lastDeveloper;
+    private State lastState;
     private IssueType lastIssueType;
     private Priority lastPriority;
 
@@ -63,6 +65,9 @@ public class IssueManagerIT {
 
     @Inject
     private PriorityDAO priorityDAO;
+
+    @Inject
+    private StateDAO stateDAO;
 
     @Inject
     private UserTransaction userTransaction;
@@ -170,13 +175,172 @@ public class IssueManagerIT {
         assertThat(result.getSummary()).isEqualTo(summary);
     }
 
-    private Developer createDeveloper() {
-        Developer developer = new Developer();
-        developer.setEmail("email");
-        developer.setFirstName("email");
-        developer.setSurname("email");
-        developer.setUsername("email");
-        return developer;
+    @Test
+    public void shouldCreatePriorityIfNotExist() throws AlreadyExistException {
+        // given
+        String name = "Major";
+        Priority priority = new Priority();
+        priority.setName(name);
+
+        // when
+        Priority result = issueManager.createPriority(priority);
+
+        // then
+        assertThat(result.getName()).isEqualTo(name);
+        assertThat(result.getId()).isNotZero();
+    }
+
+    @Test
+    public void shouldThrowExceptionIfPriorityAlreadyExist() {
+        // given
+        Priority priority = new Priority();
+        priority.setName("name");
+        Priority savedPriority = priorityDAO.saveOrUpdate(priority)
+                                            .get();
+
+        // when
+        Throwable throwable = catchThrowable(() -> issueManager.createPriority(savedPriority));
+
+        // then
+        assertThat(throwable).isInstanceOf(AlreadyExistException.class);
+    }
+
+    @Test
+    public void shouldCreateStatusIfNotExist() throws AlreadyExistException {
+        // given
+        String name = "To Do";
+        State state = new State();
+        state.setName(name);
+
+        // when
+        State result = issueManager.createState(state);
+
+        // then
+        assertThat(result.getName()).isEqualTo(name);
+        assertThat(result.getId()).isNotZero();
+    }
+
+    @Test
+    public void shouldThrowExceptionIfStatusAlreadyExist() {
+        // given
+        State state = new State();
+        state.setName("state");
+        State savedState = stateDAO.saveOrUpdate(state)
+                                   .get();
+
+        // when
+        Throwable throwable = catchThrowable(() -> issueManager.createState(savedState));
+
+        // then
+        assertThat(throwable).isInstanceOf(AlreadyExistException.class);
+    }
+
+    @Test
+    public void shouldDeletePriorityIfExist() throws NotExistException {
+        // given
+        Priority priority = new Priority();
+        priority.setName("name");
+        priority = priorityDAO.saveOrUpdate(priority)
+                              .get();
+
+        // when
+        issueManager.deletePriority(priority);
+        Optional<Priority> result = priorityDAO.findById(priority.getId());
+
+        // then
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void shouldThrowExceptionIfPriorityDoesNotExistWhenDelete() {
+        // given
+
+        // when
+        Throwable throwable = catchThrowable(() -> issueManager.deletePriority(new Priority()));
+
+        // then
+        assertThat(throwable).isInstanceOf(NotExistException.class);
+    }
+
+    @Test
+    public void shouldDeleteStateIfExist() throws NotExistException {
+        // given
+        State state = new State();
+        state.setName("name");
+        state = stateDAO.saveOrUpdate(state)
+                        .get();
+
+        // when
+        issueManager.deleteState(state);
+        Optional<State> result = stateDAO.findById(state.getId());
+
+        // then
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void shouldThrowExceptionIfStateDoesNotExistWhenDelete() {
+        // given
+
+        // when
+        Throwable throwable = catchThrowable(() -> issueManager.deleteState(createState()));
+
+        // then
+        assertThat(throwable).isInstanceOf(NotExistException.class);
+    }
+
+    @Test
+    public void shouldThrowExceptionIfStateDoesNotExistWhenEdit() {
+        // given
+
+        // when
+        Throwable throwable = catchThrowable(() -> issueManager.editState(new State()));
+
+        // then
+        assertThat(throwable).isInstanceOf(NotExistException.class);
+    }
+
+    @Test
+    public void shouldThrowExceptionIfPriorityDoesNotExistWhenEdit() {
+        // given
+
+        // when
+        Throwable throwable = catchThrowable(() -> issueManager.editPriority(new Priority()));
+
+        // then
+        assertThat(throwable).isInstanceOf(NotExistException.class);
+    }
+
+    @Test
+    public void shouldEditState() throws NotExistException {
+        // given
+        State state = new State();
+        state.setName("oldName");
+        stateDAO.saveOrUpdate(state);
+        String newName = "newName";
+        state.setName(newName);
+
+        // when
+        State result = issueManager.editState(state);
+
+        // then
+        assertThat(result.getName()).isEqualTo(newName);
+    }
+
+    @Test
+    public void shouldEditPriority() throws NotExistException {
+        // given
+        Priority priority = new Priority();
+        priority.setName("oldName");
+        priorityDAO.saveOrUpdate(priority);
+        String newName = "newName";
+        priority.setName(newName);
+
+        // when
+        Priority result = issueManager.editPriority(priority);
+
+        // then
+        assertThat(result.getName()).isEqualTo(newName);
     }
 
     private void startTransaction() throws SystemException, NotSupportedException, AlreadyExistException {
@@ -193,6 +357,17 @@ public class IssueManagerIT {
         lastProject = projectManager.create(project);
         lastPriority = priorityDAO.saveOrUpdate(priority)
                                   .get();
+        lastState = stateDAO.saveOrUpdate(createState())
+                            .get();
+    }
+
+    private Developer createDeveloper() {
+        Developer developer = new Developer();
+        developer.setEmail("email");
+        developer.setFirstName("email");
+        developer.setSurname("email");
+        developer.setUsername("email");
+        return developer;
     }
 
     private IssueType createIssueType() {
@@ -207,12 +382,30 @@ public class IssueManagerIT {
         return priority;
     }
 
+    private State createState() {
+        State state = new State();
+        state.setName("name" + nextUniqueValue);
+        return state;
+    }
+
     private Project createProject() {
         Project project = new Project();
         project.setCreationDate(LocalDateTime.now());
         project.setKey(PROJECT_KEY);
         project.setName("NAME");
         return project;
+    }
+
+    private Issue createIssue() {
+        Issue issue = new Issue();
+        issue.setAssigneeId(lastDeveloper.getId());
+        issue.setProjectKey(PROJECT_KEY);
+        issue.setReporterId(lastDeveloper.getId());
+        issue.setIssueType(lastIssueType);
+        issue.setPriority(lastPriority);
+        issue.setSummary("summary");
+        nextUniqueValue++;
+        return issue;
     }
 
     private void clearData() throws Exception {
@@ -230,22 +423,12 @@ public class IssueManagerIT {
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM PriorityEntity")
                      .executeUpdate();
+        entityManager.createQuery("DELETE FROM StateEntity")
+                     .executeUpdate();
         entityManager.createQuery("DELETE FROM DeveloperEntity ")
                      .executeUpdate();
         userTransaction.commit();
         entityManager.clear();
-    }
-
-    private Issue createIssue() {
-        Issue issue = new Issue();
-        issue.setAssigneeId(lastDeveloper.getId());
-        issue.setProjectKey(PROJECT_KEY);
-        issue.setReporterId(lastDeveloper.getId());
-        issue.setIssueType(lastIssueType);
-        issue.setPriority(lastPriority);
-        issue.setSummary("summary");
-        nextUniqueValue++;
-        return issue;
     }
 
 }
