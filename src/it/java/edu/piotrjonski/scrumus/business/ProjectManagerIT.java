@@ -122,6 +122,20 @@ public class ProjectManagerIT {
         assertThat(result).isNotNull();
     }
 
+    @Test
+    public void shouldFindProject() {
+        // given
+        Project project = createProject();
+        Project savedProject = projectDAO.saveOrUpdate(project)
+                                         .get();
+        String key = savedProject.getKey();
+        // when
+        Project result = projectManager.findProject(key);
+
+        // then
+        assertThat(result).isEqualTo(savedProject);
+    }
+
     private void startTransaction() throws SystemException, NotSupportedException {
         userTransaction.begin();
         entityManager.joinTransaction();

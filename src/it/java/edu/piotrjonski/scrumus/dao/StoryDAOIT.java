@@ -2,6 +2,7 @@ package edu.piotrjonski.scrumus.dao;
 
 import edu.piotrjonski.scrumus.dao.model.project.StoryEntity;
 import edu.piotrjonski.scrumus.dao.model.project.TimeRange;
+import edu.piotrjonski.scrumus.domain.Project;
 import edu.piotrjonski.scrumus.domain.Sprint;
 import edu.piotrjonski.scrumus.domain.Story;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
@@ -28,11 +29,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Arquillian.class)
 public class StoryDAOIT {
 
+    public static final String NAME = "name";
+    public static final LocalDateTime NOW = LocalDateTime.now();
+    public static final String DESCRIPTION = "Descritpion";
+    public static int nextUniqueValue = 0;
+    private Project lastProject;
+
     @Inject
     private StoryDAO storyDAO;
 
     @Inject
     private SprintDAO sprintDAO;
+
+    @Inject
+    private ProjectDAO projectDAO;
 
     @Inject
     private UserTransaction userTransaction;
@@ -232,6 +242,9 @@ public class StoryDAOIT {
         Sprint sprint = new Sprint();
         sprint.setName("name");
         sprint.setTimeRange(timeRange);
+        lastProject = projectDAO.saveOrUpdate(createProject())
+                                .get();
+        sprint.setProjectKey(lastProject.getKey());
         currentSprintId = sprintDAO.saveOrUpdate(sprint)
                                    .get()
                                    .getId();
@@ -243,6 +256,8 @@ public class StoryDAOIT {
         entityManager.createQuery("DELETE FROM StoryEntity")
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM SprintEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM ProjectEntity")
                      .executeUpdate();
         userTransaction.commit();
         entityManager.clear();
@@ -260,5 +275,15 @@ public class StoryDAOIT {
     private List<StoryEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM StoryEntity d")
                             .getResultList();
+    }
+
+    private Project createProject() {
+        Project project = new Project();
+        project.setName(NAME + nextUniqueValue);
+        project.setCreationDate(NOW);
+        project.setKey(NAME + nextUniqueValue);
+        project.setDescription(DESCRIPTION + nextUniqueValue);
+        nextUniqueValue++;
+        return project;
     }
 }

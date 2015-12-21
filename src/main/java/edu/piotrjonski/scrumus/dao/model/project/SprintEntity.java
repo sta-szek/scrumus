@@ -13,14 +13,14 @@ import javax.persistence.*;
 @Entity
 @Table(name = "sprint")
 @NamedQueries({@NamedQuery(name = SprintEntity.FIND_ALL, query = SprintEntity.FIND_ALL_QUERY),
-               @NamedQuery(name = SprintEntity.FIND_ALL_STORIES, query = SprintEntity.FIND_ALL_STORIES_QUERY)})
+               @NamedQuery(name = SprintEntity.FIND_ALL_STORIES_FOR_SPRINT, query = SprintEntity.FIND_ALL_STORIES_FOR_SPRINT_QUERY)})
 public class SprintEntity {
 
     public static final String FIND_ALL = "findAllSprints";
-    public static final String FIND_ALL_QUERY = "SELECT p FROM SprintEntity p";
-    public static final String FIND_ALL_STORIES = "findAllSprintStories";
+    public static final String FIND_ALL_STORIES_FOR_SPRINT = "findAllSprintStories";
     public static final String ID = "id";
-    public static final String FIND_ALL_STORIES_QUERY = "SELECT story FROM StoryEntity story WHERE story.sprint.id=:" + ID;
+    protected static final String FIND_ALL_QUERY = "SELECT p FROM SprintEntity p";
+    protected static final String FIND_ALL_STORIES_FOR_SPRINT_QUERY = "SELECT story FROM StoryEntity story WHERE story.sprint.id=:" + ID;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,4 +38,6 @@ public class SprintEntity {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private RetrospectiveEntity retrospectiveEntity;
 
+    @ManyToOne(optional = false)
+    private ProjectEntity projectEntity;
 }

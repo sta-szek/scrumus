@@ -15,5 +15,5 @@ public class Sprint {
     private String definitionOfDone;
     private TimeRange timeRange;
     private int retrospectiveId;
-
+    private String projectKey;
 }

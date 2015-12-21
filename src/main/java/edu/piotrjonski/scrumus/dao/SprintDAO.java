@@ -1,13 +1,16 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.project.ProjectEntity;
 import edu.piotrjonski.scrumus.dao.model.project.RetrospectiveEntity;
 import edu.piotrjonski.scrumus.dao.model.project.SprintEntity;
+import edu.piotrjonski.scrumus.domain.Project;
 import edu.piotrjonski.scrumus.domain.Retrospective;
 import edu.piotrjonski.scrumus.domain.Sprint;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.Query;
+import java.util.List;
 import java.util.Optional;
 
 @Stateless
@@ -16,12 +19,21 @@ public class SprintDAO extends AbstractDAO<SprintEntity, Sprint> {
     @Inject
     private RetrospectiveDAO retrospectiveDAO;
 
+    @Inject
+    private ProjectDAO projectDAO;
+
     public SprintDAO() {
         this(SprintEntity.class);
     }
 
     private SprintDAO(final Class entityClass) {
         super(entityClass);
+    }
+
+    public List<Sprint> findAllSprints(String projectKey) {
+        return mapToDomainModel(entityManager.createNamedQuery(ProjectEntity.FIND_ALL_SPRINTS)
+                                             .setParameter(ProjectEntity.KEY, projectKey)
+                                             .getResultList());
     }
 
     @Override
@@ -32,6 +44,7 @@ public class SprintDAO extends AbstractDAO<SprintEntity, Sprint> {
         sprintEntity.setName(domainModel.getName());
         sprintEntity.setRetrospectiveEntity(findRetrospectiveEntity(domainModel.getRetrospectiveId()));
         sprintEntity.setTimeRange(domainModel.getTimeRange());
+        sprintEntity.setProjectEntity(findProjectEntity(domainModel.getProjectKey()));
         return sprintEntity;
     }
 
@@ -43,6 +56,7 @@ public class SprintDAO extends AbstractDAO<SprintEntity, Sprint> {
         sprint.setName(dbModel.getName());
         sprint.setTimeRange(dbModel.getTimeRange());
         sprint.setRetrospectiveId(getRetrospectiveId(dbModel));
+        sprint.setProjectKey(getProjectKey(dbModel));
         return sprint;
     }
 
@@ -63,6 +77,23 @@ public class SprintDAO extends AbstractDAO<SprintEntity, Sprint> {
             Optional<Retrospective> retrospective = retrospectiveDAO.findById(id);
             if (retrospective.isPresent()) {
                 return retrospectiveDAO.mapToDatabaseModelIfNotNull(retrospective.get());
+            }
+        }
+        return null;
+    }
+
+    private String getProjectKey(final SprintEntity dbModel) {
+        ProjectEntity projectEntity = dbModel.getProjectEntity();
+        return projectEntity != null
+               ? projectEntity.getKey()
+               : null;
+    }
+
+    private ProjectEntity findProjectEntity(final String projetKey) {
+        if (projetKey != null) {
+            Optional<Project> project = projectDAO.findById(projetKey);
+            if (project.isPresent()) {
+                return projectDAO.mapToDatabaseModelIfNotNull(project.get());
             }
         }
         return null;
