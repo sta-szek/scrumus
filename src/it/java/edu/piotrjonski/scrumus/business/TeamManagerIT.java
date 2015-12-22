@@ -74,6 +74,19 @@ public class TeamManagerIT {
     }
 
     @Test
+    public void shouldThrowExceptionWhenTeamAlreadyExist() throws AlreadyExistException {
+        // given
+        Team team = createTeam();
+        Team savedTeam = teamManager.create(team);
+
+        // when
+        Throwable throwable = catchThrowable(() -> teamManager.create(savedTeam));
+
+        // then
+        assertThat(throwable).isInstanceOf(AlreadyExistException.class);
+    }
+
+    @Test
     public void shouldAddUserToTeam() throws AlreadyExistException {
         // given
         Team team = createTeam();
@@ -106,19 +119,6 @@ public class TeamManagerIT {
                                         .getDevelopers();
         // then
         assertThat(result).doesNotContain(savedDeveloper);
-    }
-
-    @Test
-    public void shouldThrowExceptionWhenTeamAlreadyExist() throws AlreadyExistException {
-        // given
-        Team team = createTeam();
-        Team savedTeam = teamManager.create(team);
-
-        // when
-        Throwable throwable = catchThrowable(() -> teamManager.create(savedTeam));
-
-        // then
-        assertThat(throwable).isInstanceOf(AlreadyExistException.class);
     }
 
     @Test
