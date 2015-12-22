@@ -2,9 +2,11 @@ package edu.piotrjonski.scrumus.business;
 
 import edu.piotrjonski.scrumus.dao.ProjectDAO;
 import edu.piotrjonski.scrumus.dao.SprintDAO;
+import edu.piotrjonski.scrumus.dao.StoryDAO;
 import edu.piotrjonski.scrumus.dao.model.project.TimeRange;
 import edu.piotrjonski.scrumus.domain.Project;
 import edu.piotrjonski.scrumus.domain.Sprint;
+import edu.piotrjonski.scrumus.domain.Story;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -27,18 +29,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
 @RunWith(Arquillian.class)
-public class SprintManagerIT {
+public class StoryManagerIT {
     public static final String NAME = "name";
     public static final LocalDateTime NOW = LocalDateTime.now();
     public static final String DESCRIPTION = "Descritpion";
     public static int nextUniqueValue = 0;
     private Project lastProject;
+    private Sprint lastSprint;
+
+    @Inject
+    private StoryDAO storyDAO;
 
     @Inject
     private SprintDAO sprintDAO;
 
     @Inject
-    private SprintManager sprintManager;
+    private StoryManager storyManager;
 
     @Inject
     private ProjectDAO projectDAO;
@@ -55,7 +61,7 @@ public class SprintManagerIT {
     }
 
     @Before
-    public void dropAllSprintsAndStartTransaction() throws Exception {
+    public void dropAllStoriesAndStartTransaction() throws Exception {
         clearData();
         startTransaction();
     }
@@ -66,13 +72,13 @@ public class SprintManagerIT {
     }
 
     @Test
-    public void shouldCreateSprint() throws AlreadyExistException {
+    public void shouldCreateStory() throws AlreadyExistException {
         // given
-        Sprint sprint = createSprint();
+        Story story = createStory();
 
         // when
-        Sprint savedSprint = sprintManager.createSprint(sprint);
-        boolean result = sprintDAO.exist(savedSprint.getId());
+        Story savedStory = storyManager.createStory(story);
+        boolean result = storyDAO.exist(savedStory.getId());
 
         // then
         assertThat(result).isTrue();
@@ -81,27 +87,27 @@ public class SprintManagerIT {
     @Test
     public void shouldThrowExceptionIfSprintAlreadyExist() throws AlreadyExistException {
         // given
-        Sprint sprint = createSprint();
-        Sprint savedSprint = sprintManager.createSprint(sprint);
+        Story story = createStory();
+        Story savedStory = storyManager.createStory(story);
 
         // when
-        Throwable result = catchThrowable(() -> sprintManager.createSprint(savedSprint));
+        Throwable result = catchThrowable(() -> storyManager.createStory(savedStory));
 
         // then
         assertThat(result).isInstanceOf(AlreadyExistException.class);
     }
 
     @Test
-    public void shouldFindSprint() throws AlreadyExistException {
+    public void shouldFindStory() throws AlreadyExistException {
         // given
-        Sprint sprint = createSprint();
-        Sprint savedSprint = sprintManager.createSprint(sprint);
+        Story story = createStory();
+        Story savedStory = storyManager.createStory(story);
 
         // when
-        Sprint result = sprintManager.findSprint(savedSprint.getId());
+        Story result = storyManager.findStory(savedStory.getId());
 
         // then
-        assertThat(result).isEqualTo(savedSprint);
+        assertThat(result).isEqualTo(savedStory);
     }
 
     @Test
@@ -109,27 +115,34 @@ public class SprintManagerIT {
         // given
 
         // when
-        Sprint result = sprintManager.findSprint(0);
+        Story result = storyManager.findStory(0);
 
         // then
         assertThat(result.getId()).isEqualTo(0);
     }
 
     @Test
-    public void shouldFindAllSprintsForProject() throws AlreadyExistException {
+    public void shouldFindAllStoriesForProject() throws AlreadyExistException {
         // given
-        Sprint sprint1 = createSprint();
-        Sprint sprint2 = createSprint();
-        sprint1 = sprintManager.createSprint(sprint1);
-        sprint2 = sprintManager.createSprint(sprint2);
+        Sprint sprint = createSprint();
+        sprint = sprintDAO.saveOrUpdate(sprint)
+                          .get();
+        Story story1 = createStory();
+        Story story2 = createStory();
+        Story story3 = createStory();
+        story3.setSprintId(sprint.getId());
+        story1 = storyManager.createStory(story1);
+        story2 = storyManager.createStory(story2);
+        story3 = storyManager.createStory(story3);
 
         // when
-        List<Sprint> result = sprintManager.findAllSprintsForProject(lastProject.getKey());
+        List<Story> result = storyManager.findAllStoriesForSprint(lastSprint.getId());
 
         // then
         assertThat(result).hasSize(2)
-                          .contains(sprint1)
-                          .contains(sprint2);
+                          .contains(story1)
+                          .contains(story2)
+                          .doesNotContain(story3);
     }
 
     private void startTransaction() throws SystemException, NotSupportedException {
@@ -137,26 +150,46 @@ public class SprintManagerIT {
         entityManager.joinTransaction();
         lastProject = projectDAO.saveOrUpdate(createProject())
                                 .get();
+
+        lastSprint = sprintDAO.saveOrUpdate(createSprint())
+                              .get();
     }
 
     private void clearData() throws Exception {
         userTransaction.begin();
         entityManager.joinTransaction();
+        entityManager.createQuery("DELETE FROM StoryEntity")
+                     .executeUpdate();
         entityManager.createQuery("DELETE FROM SprintEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM ProjectEntity")
                      .executeUpdate();
         userTransaction.commit();
         entityManager.clear();
+    }
+
+    private Story createStory() {
+        Story story = new Story();
+        story.setDefinitionOfDone("dod");
+        story.setName("name" + nextUniqueValue);
+        story.setSprintId(lastSprint.getId());
+        TimeRange timeRange = new TimeRange();
+        timeRange.setEndDate(LocalDateTime.now());
+        timeRange.setStartDate(LocalDateTime.now());
+        nextUniqueValue++;
+        return story;
     }
 
     private Sprint createSprint() {
         Sprint sprint = new Sprint();
         sprint.setDefinitionOfDone("dod");
         sprint.setName("name" + nextUniqueValue);
+        sprint.setProjectKey(lastProject.getKey());
         TimeRange timeRange = new TimeRange();
         timeRange.setEndDate(LocalDateTime.now());
         timeRange.setStartDate(LocalDateTime.now());
         sprint.setTimeRange(timeRange);
-        sprint.setProjectKey(lastProject.getKey());
+        nextUniqueValue++;
         return sprint;
     }
 

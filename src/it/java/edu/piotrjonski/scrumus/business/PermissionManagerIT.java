@@ -20,6 +20,7 @@ import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -157,6 +158,36 @@ public class PermissionManagerIT {
                                       .getProjects();
         // then
         assertThat(result).contains(savedProject);
+    }
+
+    @Test
+    public void shouldNotAddTeamToProjectIfTeamDoesNotExist() {
+        // given
+        Team team = createTeam();
+        Project project = createProject();
+        Project savedProject = projectDAO.saveOrUpdate(project)
+                                         .get();
+        // when
+        permissionManager.addTeamToProject(team, savedProject);
+        Optional<Team> result = teamDAO.findById(team.getId());
+        // then
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void shouldNotAddTeamToProjectIfProjectDoesNotExist() {
+        // given
+        Team team = createTeam();
+        Project project = createProject();
+        Team savedTeam = teamDAO.saveOrUpdate(team)
+                                .get();
+        // when
+        permissionManager.addTeamToProject(savedTeam, project);
+        List<Project> result = teamDAO.findById(savedTeam.getId())
+                                      .get()
+                                      .getProjects();
+        // then
+        assertThat(result).doesNotContain(project);
     }
 
     @Test
