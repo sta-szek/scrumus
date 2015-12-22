@@ -19,4 +19,12 @@ public class Story {
     private int points;
     private List<Issue> issues = new ArrayList<>();
     private int sprintId;
+
+    public void addIssue(final Issue issue) {
+        issues.add(issue);
+    }
+
+    public void removeIssue(final Issue issue) {
+        issues.remove(issue);
+    }
 }

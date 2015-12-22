@@ -1,12 +1,8 @@
 package edu.piotrjonski.scrumus.business;
 
-import edu.piotrjonski.scrumus.dao.ProjectDAO;
-import edu.piotrjonski.scrumus.dao.SprintDAO;
-import edu.piotrjonski.scrumus.dao.StoryDAO;
+import edu.piotrjonski.scrumus.dao.*;
 import edu.piotrjonski.scrumus.dao.model.project.TimeRange;
-import edu.piotrjonski.scrumus.domain.Project;
-import edu.piotrjonski.scrumus.domain.Sprint;
-import edu.piotrjonski.scrumus.domain.Story;
+import edu.piotrjonski.scrumus.domain.*;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -31,11 +27,20 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 @RunWith(Arquillian.class)
 public class StoryManagerIT {
     public static final String NAME = "name";
+    public static final String PROJECT_KEY = "projKey";
     public static final LocalDateTime NOW = LocalDateTime.now();
     public static final String DESCRIPTION = "Descritpion";
     public static int nextUniqueValue = 0;
-    private Project lastProject;
     private Sprint lastSprint;
+    private Project lastProject;
+    private Developer lastDeveloper;
+    private Backlog lastBacklog;
+    private Issue lastIssue;
+    private State lastState;
+
+    private IssueType lastIssueType;
+
+    private Priority lastPriority;
 
     @Inject
     private StoryDAO storyDAO;
@@ -50,8 +55,27 @@ public class StoryManagerIT {
     private ProjectDAO projectDAO;
 
     @Inject
-    private UserTransaction userTransaction;
+    private BacklogDAO backlogDAO;
 
+    @Inject
+    private PriorityDAO priorityDAO;
+
+    @Inject
+    private StateDAO stateDAO;
+
+    @Inject
+    private IssueDAO issueDAO;
+
+    @Inject
+    private IssueTypeDAO issueTypeDAO;
+
+    @Inject
+    private UserManager userManager;
+
+    @Inject
+    private ProjectManager projectManager;
+    @Inject
+    private UserTransaction userTransaction;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -145,14 +169,64 @@ public class StoryManagerIT {
                           .doesNotContain(story3);
     }
 
-    private void startTransaction() throws SystemException, NotSupportedException {
+    @Test
+    public void shouldAddIssueToStoryAndRemoveFromBacklog() throws AlreadyExistException {
+        // given
+        Story story = storyManager.createStory(createStory());
+        lastBacklog.addIssue(lastIssue);
+        backlogDAO.saveOrUpdate(lastBacklog);
+
+        // when
+        storyManager.addIssueToStory(lastIssue, story);
+        List<Issue> storyIssues = storyManager.findStory(story.getId())
+                                              .getIssues();
+        List<Issue> backlogIssues = backlogDAO.findBacklogForProject(PROJECT_KEY)
+                                              .get()
+                                              .getIssues();
+
+        // then
+        assertThat(storyIssues).contains(lastIssue);
+        assertThat(backlogIssues).doesNotContain(lastIssue);
+    }
+
+    @Test
+    public void shouldRemoveIssueFromStoryAndAddToBacklog() throws AlreadyExistException {
+        // given
+        Story story = storyManager.createStory(createStory());
+        story.addIssue(lastIssue);
+        storyDAO.saveOrUpdate(story);
+
+        // when
+        storyManager.removeIssueFromStory(lastIssue, story);
+        List<Issue> storyIssues = storyManager.findStory(story.getId())
+                                              .getIssues();
+        List<Issue> backlogIssues = backlogDAO.findBacklogForProject(PROJECT_KEY)
+                                              .get()
+                                              .getIssues();
+
+        // then
+        assertThat(storyIssues).doesNotContain(lastIssue);
+        assertThat(backlogIssues).contains(lastIssue);
+    }
+
+    private void startTransaction() throws SystemException, NotSupportedException, AlreadyExistException {
         userTransaction.begin();
         entityManager.joinTransaction();
-        lastProject = projectDAO.saveOrUpdate(createProject())
-                                .get();
+        lastIssueType = issueTypeDAO.saveOrUpdate(createIssueType())
+                                    .get();
+        lastDeveloper = userManager.create(createDeveloper());
+        lastProject = projectManager.create(createProject());
+        lastPriority = priorityDAO.saveOrUpdate(createPriority())
+                                  .get();
+        lastState = stateDAO.saveOrUpdate(createState())
+                            .get();
 
         lastSprint = sprintDAO.saveOrUpdate(createSprint())
                               .get();
+        lastIssue = issueDAO.saveOrUpdate(createIssue())
+                            .get();
+        lastBacklog = backlogDAO.findBacklogForProject(lastProject.getKey())
+                                .get();
     }
 
     private void clearData() throws Exception {
@@ -163,6 +237,18 @@ public class StoryManagerIT {
         entityManager.createQuery("DELETE FROM SprintEntity")
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM ProjectEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM BacklogEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM IssueEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM IssueTypeEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM PriorityEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM StateEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM DeveloperEntity ")
                      .executeUpdate();
         userTransaction.commit();
         entityManager.clear();
@@ -197,9 +283,48 @@ public class StoryManagerIT {
         Project project = new Project();
         project.setName(NAME + nextUniqueValue);
         project.setCreationDate(NOW);
-        project.setKey(NAME + nextUniqueValue);
+        project.setKey(PROJECT_KEY);
         project.setDescription(DESCRIPTION + nextUniqueValue);
         nextUniqueValue++;
         return project;
+    }
+
+    private Developer createDeveloper() {
+        Developer developer = new Developer();
+        developer.setEmail("email");
+        developer.setFirstName("email");
+        developer.setSurname("email");
+        developer.setUsername("email");
+        return developer;
+    }
+
+    private IssueType createIssueType() {
+        IssueType issueType = new IssueType();
+        issueType.setName("task" + nextUniqueValue);
+        return issueType;
+    }
+
+    private Priority createPriority() {
+        Priority priority = new Priority();
+        priority.setName("name" + nextUniqueValue);
+        return priority;
+    }
+
+    private Issue createIssue() {
+        Issue issue = new Issue();
+        issue.setAssigneeId(lastDeveloper.getId());
+        issue.setProjectKey(PROJECT_KEY);
+        issue.setReporterId(lastDeveloper.getId());
+        issue.setIssueType(lastIssueType);
+        issue.setPriority(lastPriority);
+        issue.setSummary("summary");
+        nextUniqueValue++;
+        return issue;
+    }
+
+    private State createState() {
+        State state = new State();
+        state.setName("name" + nextUniqueValue);
+        return state;
     }
 }
