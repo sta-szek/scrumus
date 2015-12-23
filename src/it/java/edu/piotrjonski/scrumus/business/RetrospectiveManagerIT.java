@@ -162,7 +162,7 @@ public class RetrospectiveManagerIT {
                                                            .get();
 
         // when
-        retrospectiveManager.removeRetrospectiveItemFromRetrospective(retrospectiveItem, retrospective);
+        retrospectiveManager.removeRetrospectiveItemFromRetrospective(retrospectiveItem, savedRetrospective);
         List<RetrospectiveItem> result = retrospectiveManager.findRetrospective(savedRetrospective.getId())
                                                              .getRetrospectiveItems();
 
