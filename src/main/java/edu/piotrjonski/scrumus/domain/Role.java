@@ -14,4 +14,12 @@ public class Role {
     private int id;
     private String name;
     private List<Developer> developers;
+
+    public void addDeveloper(Developer developer) {
+        developers.add(developer);
+    }
+
+    public void removeDeveloper(Developer developer) {
+        developers.remove(developer);
+    }
 }
