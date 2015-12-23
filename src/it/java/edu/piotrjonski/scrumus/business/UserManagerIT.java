@@ -104,33 +104,6 @@ public class UserManagerIT {
     }
 
     @Test
-    public void shouldGrantAdminPermission() {
-        // given
-        Developer developer = developerDAO.saveOrUpdate(createDeveloper())
-                                          .get();
-
-        // when
-        userManager.grantAdminPermission(developer);
-        int result = findAllAdminsSize();
-
-        // then
-        assertThat(result).isEqualTo(1);
-    }
-
-    @Test
-    public void shouldNotGrantAdminPermissionIfUserDoesNotExist() {
-        // given
-        Developer developer = createDeveloper();
-
-        // when
-        userManager.grantAdminPermission(developer);
-        int result = findAllAdminsSize();
-
-        // then
-        assertThat(result).isEqualTo(0);
-    }
-
-    @Test
     public void shouldUpdateUserIfExist() throws AlreadyExistException, NotExistException {
         // given
         Developer developer = createDeveloper();

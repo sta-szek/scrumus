@@ -35,6 +35,9 @@ public class ProjectDAOIT {
     private ProjectDAO projectDAO;
 
     @Inject
+    private SprintDAO sprintDAO;
+
+    @Inject
     private UserTransaction userTransaction;
 
     @PersistenceContext
@@ -194,6 +197,8 @@ public class ProjectDAOIT {
         entityManager.joinTransaction();
         entityManager.createQuery("DELETE FROM ProjectEntity")
                      .executeUpdate();
+        entityManager.createQuery("DELETE FROM SprintEntity")
+                     .executeUpdate();
         userTransaction.commit();
         entityManager.clear();
     }
@@ -212,4 +217,6 @@ public class ProjectDAOIT {
         return entityManager.createQuery("SELECT d FROM ProjectEntity d")
                             .getResultList();
     }
+
+
 }

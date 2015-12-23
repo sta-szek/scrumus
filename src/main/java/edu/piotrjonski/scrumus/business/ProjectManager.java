@@ -23,6 +23,11 @@ public class ProjectManager {
                          .orElse(project);
     }
 
+    public Project findProject(String projectKey) {
+        return projectDAO.findById(projectKey)
+                         .get();
+    }
+
     public void delete(String projectKey) {
         projectDAO.delete(projectKey);
     }

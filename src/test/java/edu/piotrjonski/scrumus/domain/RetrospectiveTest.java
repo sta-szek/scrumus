@@ -34,4 +34,31 @@ public class RetrospectiveTest {
         assertThat(retrospective.getComments()).doesNotContain(comment);
     }
 
+    @Test
+    public void shouldAddRetrospectiveItemToRetrospective() {
+        // given
+        Retrospective retrospective = new Retrospective();
+        RetrospectiveItem retrospectiveItem = new RetrospectiveItem();
+
+        // when
+        retrospective.addRetrospectiveItem(retrospectiveItem);
+
+        // then
+        assertThat(retrospective.getRetrospectiveItems()).contains(retrospectiveItem);
+    }
+
+    @Test
+    public void shouldRemoveRetrospectiveItemFromRetrospective() {
+        // given
+        Retrospective retrospective = new Retrospective();
+        RetrospectiveItem retrospectiveItem = new RetrospectiveItem();
+        retrospective.addRetrospectiveItem(retrospectiveItem);
+
+        // when
+        retrospective.removeRetrospectiveItem(retrospectiveItem);
+
+        // then
+        assertThat(retrospective.getRetrospectiveItems()).doesNotContain(retrospectiveItem);
+    }
+
 }

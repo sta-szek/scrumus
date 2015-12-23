@@ -39,14 +39,6 @@ public class UserManager {
         developerDAO.delete(userId);
     }
 
-    public boolean grantAdminPermission(Developer user) {
-        if (developerExist(user)) {
-            permissionManager.grantAdminPermission(user);
-            return true;
-        }
-        return false;
-    }
-
     private boolean developerExist(Developer developer) {
         return developerDAO.exist(developer.getId());
     }

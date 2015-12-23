@@ -1,9 +1,11 @@
 package edu.piotrjonski.scrumus.dao;
 
 
+import edu.piotrjonski.scrumus.dao.model.project.ProjectEntity;
 import edu.piotrjonski.scrumus.dao.model.project.RetrospectiveEntity;
 import edu.piotrjonski.scrumus.dao.model.project.SprintEntity;
 import edu.piotrjonski.scrumus.dao.model.project.TimeRange;
+import edu.piotrjonski.scrumus.domain.Project;
 import edu.piotrjonski.scrumus.domain.Retrospective;
 import edu.piotrjonski.scrumus.domain.Sprint;
 import edu.piotrjonski.scrumus.domain.Story;
@@ -30,6 +32,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @RunWith(PowerMockRunner.class)
 public class SprintDAOTest {
 
+    public static final String PROJ_KEY = "projKey";
     private static TimeRange timeRange;
 
     @Spy
@@ -37,6 +40,9 @@ public class SprintDAOTest {
 
     @Spy
     private RetrospectiveDAO retrospectiveDAO = new RetrospectiveDAO();
+
+    @Spy
+    private ProjectDAO projectDAO = new ProjectDAO();
 
     @Mock
     private EntityManager entityManager;
@@ -53,6 +59,9 @@ public class SprintDAOTest {
                                              .mapToDatabaseModelIfNotNull(anyObject());
         doReturn(Optional.of(createRetrospective())).when(retrospectiveDAO)
                                                     .findById(anyObject());
+        doReturn(Optional.of(createProject())).when(projectDAO)
+                                              .findById(PROJ_KEY);
+
         timeRange = new TimeRange();
         timeRange.setEndDate(LocalDateTime.now());
         timeRange.setStartDate(LocalDateTime.now());
@@ -81,6 +90,7 @@ public class SprintDAOTest {
         sprint.setName(name);
         sprint.setRetrospectiveId(1);
         sprint.setTimeRange(timeRange);
+        sprint.setProjectKey(PROJ_KEY);
 
         // when
         SprintEntity result = sprintDAO.mapToDatabaseModel(sprint);
@@ -95,6 +105,8 @@ public class SprintDAOTest {
                          .getEndDate()).isEqualTo(timeRange.getEndDate());
         assertThat(result.getTimeRange()
                          .getStartDate()).isEqualTo(timeRange.getStartDate());
+        assertThat(result.getProjectEntity()
+                         .getKey()).isEqualTo(PROJ_KEY);
     }
 
     @Test
@@ -109,6 +121,7 @@ public class SprintDAOTest {
         sprint.setName(name);
         sprint.setRetrospectiveEntity(createRetrospectiveEntity());
         sprint.setTimeRange(timeRange);
+        sprint.setProjectEntity(createProjectEntity());
 
         // when
         Sprint result = sprintDAO.mapToDomainModel(sprint);
@@ -119,6 +132,7 @@ public class SprintDAOTest {
         assertThat(result.getRetrospectiveId()).isEqualTo(1);
         assertThat(result.getName()).isEqualTo(name);
         assertThat(result.getTimeRange()).isEqualTo(timeRange);
+        assertThat(result.getProjectKey()).isEqualTo(PROJ_KEY);
     }
 
     private RetrospectiveEntity createRetrospectiveEntity() {
@@ -131,6 +145,18 @@ public class SprintDAOTest {
         Retrospective retrospective = new Retrospective();
         retrospective.setId(1);
         return retrospective;
+    }
+
+    private Project createProject() {
+        Project project = new Project();
+        project.setKey(PROJ_KEY);
+        return project;
+    }
+
+    private ProjectEntity createProjectEntity() {
+        ProjectEntity project = new ProjectEntity();
+        project.setKey(PROJ_KEY);
+        return project;
     }
 
 }

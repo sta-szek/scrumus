@@ -19,6 +19,7 @@ import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -90,6 +91,17 @@ public class CommentManagerIT {
     }
 
     @Test
+    public void shouldReturnEmptyOptionalWhenIssueDoesNotExist() {
+        // given
+
+        // when
+        Optional<Comment> result = commentManager.addCommentToIssue(createComment(), createIssue());
+
+        // then
+        assertThat(result).isEmpty();
+    }
+
+    @Test
     public void shouldRemoveCommentFromIssue() {
         // given
         Comment comment = createComment();
@@ -120,6 +132,17 @@ public class CommentManagerIT {
 
         // then
         assertThat(result).contains(savedComment);
+    }
+
+    @Test
+    public void shouldReturnEmptyOptionalWhenRetrospectiveDoesNotExist() {
+        // given
+
+        // when
+        Optional<Comment> result = commentManager.addCommentToRetrospective(createComment(), createRetrospective());
+
+        // then
+        assertThat(result).isEmpty();
     }
 
     @Test

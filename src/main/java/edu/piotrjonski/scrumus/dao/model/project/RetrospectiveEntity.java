@@ -14,11 +14,17 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "retrospective")
-@NamedQueries({@NamedQuery(name = RetrospectiveEntity.FIND_ALL, query = RetrospectiveEntity.FIND_ALL_QUERY)})
+@NamedQueries({@NamedQuery(name = RetrospectiveEntity.FIND_ALL, query = RetrospectiveEntity.FIND_ALL_QUERY),
+               @NamedQuery(name = RetrospectiveEntity.FIND_RETROSPECTIVE_FOR_SPRINT,
+                           query = RetrospectiveEntity.FIND_RETROSPECTIVE_FOR_SPRINT_QUERY)})
 public class RetrospectiveEntity {
 
     public static final String FIND_ALL = "findAllRetrospectives";
     public static final String FIND_ALL_QUERY = "SELECT p FROM RetrospectiveEntity p";
+    public static final String ID = "id";
+    public static final String FIND_RETROSPECTIVE_FOR_SPRINT = "findRetrospectiveForSprint";
+    protected static final String FIND_RETROSPECTIVE_FOR_SPRINT_QUERY =
+            "SELECT s.retrospectiveEntity FROM SprintEntity s WHERE s.id=:" + SprintEntity.ID;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

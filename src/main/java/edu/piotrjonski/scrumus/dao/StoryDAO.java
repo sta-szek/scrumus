@@ -30,7 +30,7 @@ public class StoryDAO extends AbstractDAO<StoryEntity, Story> {
     }
 
     public List<Story> findStoriesForSprint(int sprintId) {
-        return entityManager.createNamedQuery(SprintEntity.FIND_ALL_STORIES, StoryEntity.class)
+        return entityManager.createNamedQuery(SprintEntity.FIND_ALL_STORIES_FOR_SPRINT, StoryEntity.class)
                             .setParameter(SprintEntity.ID, sprintId)
                             .getResultList()
                             .stream()

@@ -3,6 +3,7 @@ package edu.piotrjonski.scrumus.dao;
 import edu.piotrjonski.scrumus.dao.model.project.RetrospectiveEntity;
 import edu.piotrjonski.scrumus.dao.model.project.RetrospectiveItemEmbeddable;
 import edu.piotrjonski.scrumus.dao.model.project.RetrospectiveItemTypeEnum;
+import edu.piotrjonski.scrumus.dao.model.project.SprintEntity;
 import edu.piotrjonski.scrumus.domain.Retrospective;
 import edu.piotrjonski.scrumus.domain.RetrospectiveItem;
 import edu.piotrjonski.scrumus.domain.RetrospectiveItemType;
@@ -10,8 +11,11 @@ import org.apache.commons.collections4.ListUtils;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Stateless
@@ -26,6 +30,19 @@ public class RetrospectiveDAO extends AbstractDAO<RetrospectiveEntity, Retrospec
 
     private RetrospectiveDAO(final Class entityClass) {
         super(entityClass);
+    }
+
+
+    public Optional<Retrospective> findRetrospectiveForSprint(int sprintId) {
+        try {
+            TypedQuery<RetrospectiveEntity> namedQuery = entityManager.createNamedQuery(RetrospectiveEntity.FIND_RETROSPECTIVE_FOR_SPRINT,
+                                                                                        RetrospectiveEntity.class)
+                                                                      .setParameter(SprintEntity.ID, sprintId);
+            Retrospective retrospective = mapToDomainModelIfNotNull(namedQuery.getSingleResult());
+            return Optional.of(retrospective);
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
