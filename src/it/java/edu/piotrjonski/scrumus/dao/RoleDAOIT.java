@@ -73,8 +73,8 @@ public class RoleDAOIT {
         // given
         Role role = createRole();
         int entityId = roleDAO.saveOrUpdate(role)
-                                 .get()
-                                 .getId();
+                              .get()
+                              .getId();
 
         // when
         boolean result = roleDAO.exist(entityId);
@@ -105,7 +105,7 @@ public class RoleDAOIT {
 
         // when
         role = roleDAO.saveOrUpdate(role)
-                            .get();
+                      .get();
 
         // then
         assertThat(role.getName()).isEqualTo(updatedName);
@@ -149,9 +149,9 @@ public class RoleDAOIT {
 
         // then
         assertThat(roles).hasSize(3)
-                            .contains(role1)
-                            .contains(role2)
-                            .contains(role3);
+                         .contains(role1)
+                         .contains(role2)
+                         .contains(role3);
     }
 
     @Test
@@ -166,7 +166,7 @@ public class RoleDAOIT {
 
         // when
         Role role = roleDAO.findById(id)
-                                    .get();
+                           .get();
 
         // then
         assertThat(role).isEqualTo(role1);

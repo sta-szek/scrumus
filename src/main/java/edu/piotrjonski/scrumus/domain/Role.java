@@ -3,6 +3,7 @@ package edu.piotrjonski.scrumus.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
 public class Role {
     private int id;
     private String name;
-    private List<Developer> developers;
+    private List<Developer> developers = new ArrayList<>();
 
     public void addDeveloper(Developer developer) {
         developers.add(developer);
