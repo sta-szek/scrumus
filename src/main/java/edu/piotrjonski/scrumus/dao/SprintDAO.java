@@ -36,6 +36,11 @@ public class SprintDAO extends AbstractDAO<SprintEntity, Sprint> {
                                              .getResultList());
     }
 
+    public boolean hasRetrospective(int sprintId) {
+        return retrospectiveDAO.findRetrospectiveForSprint(sprintId)
+                               .isPresent();
+    }
+
     @Override
     protected SprintEntity mapToDatabaseModel(final Sprint domainModel) {
         SprintEntity sprintEntity = new SprintEntity();

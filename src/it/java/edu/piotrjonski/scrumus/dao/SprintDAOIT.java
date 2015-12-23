@@ -3,6 +3,7 @@ package edu.piotrjonski.scrumus.dao;
 import edu.piotrjonski.scrumus.dao.model.project.SprintEntity;
 import edu.piotrjonski.scrumus.dao.model.project.TimeRange;
 import edu.piotrjonski.scrumus.domain.Project;
+import edu.piotrjonski.scrumus.domain.Retrospective;
 import edu.piotrjonski.scrumus.domain.Sprint;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -34,12 +35,16 @@ public class SprintDAOIT {
     public static final String DESCRIPTION = "Descritpion";
     public static int nextUniqueValue = 0;
     private Project lastProject;
+    private Retrospective lastRetrospective;
 
     @Inject
     private SprintDAO sprintDAO;
 
     @Inject
     private ProjectDAO projectDAO;
+
+    @Inject
+    private RetrospectiveDAO retrospectiveDAO;
 
     @Inject
     private UserTransaction userTransaction;
@@ -212,17 +217,49 @@ public class SprintDAOIT {
         assertThat(user).isEmpty();
     }
 
+    @Test
+    public void shouldReturnTrueIfSprintHasRetrospective() {
+        // given
+        Sprint sprint = sprintDAO.saveOrUpdate(createSprint())
+                                 .get();
+        sprint.setRetrospectiveId(lastRetrospective.getId());
+        sprintDAO.saveOrUpdate(sprint);
+
+        // when
+        boolean result = sprintDAO.hasRetrospective(sprint.getId());
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfSprintDoesNotHaveRetrospective() {
+        // given
+        Sprint sprint = sprintDAO.saveOrUpdate(createSprint())
+                                 .get();
+
+        // when
+        boolean result = sprintDAO.hasRetrospective(sprint.getId());
+
+        // then
+        assertThat(result).isFalse();
+    }
+
     private void startTransaction() throws SystemException, NotSupportedException {
         userTransaction.begin();
         entityManager.joinTransaction();
         lastProject = projectDAO.saveOrUpdate(createProject())
                                 .get();
+        lastRetrospective = retrospectiveDAO.saveOrUpdate(createRetrospective())
+                                            .get();
     }
 
     private void clearData() throws Exception {
         userTransaction.begin();
         entityManager.joinTransaction();
         entityManager.createQuery("DELETE FROM SprintEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM RetrospectiveEntity ")
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM ProjectEntity")
                      .executeUpdate();
@@ -276,5 +313,11 @@ public class SprintDAOIT {
         project.setDescription(DESCRIPTION + nextUniqueValue);
         nextUniqueValue++;
         return project;
+    }
+
+    private Retrospective createRetrospective() {
+        Retrospective retrospective = new Retrospective();
+        retrospective.setDescription("desc");
+        return retrospective;
     }
 }

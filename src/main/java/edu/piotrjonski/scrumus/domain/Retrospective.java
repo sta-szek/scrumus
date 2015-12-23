@@ -25,4 +25,12 @@ public class Retrospective {
     public void removeComment(Comment comment) {
         comments.remove(comment);
     }
+
+    public void addRetrospectiveItem(RetrospectiveItem retrospectiveItem) {
+        retrospectiveItems.add(retrospectiveItem);
+    }
+
+    public void removeRetrospectiveItem(RetrospectiveItem retrospectiveItem) {
+        retrospectiveItems.remove(retrospectiveItem);
+    }
 }

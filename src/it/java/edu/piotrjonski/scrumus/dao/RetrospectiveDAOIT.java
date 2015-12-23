@@ -2,9 +2,8 @@ package edu.piotrjonski.scrumus.dao;
 
 
 import edu.piotrjonski.scrumus.dao.model.project.RetrospectiveEntity;
-import edu.piotrjonski.scrumus.domain.Retrospective;
-import edu.piotrjonski.scrumus.domain.RetrospectiveItem;
-import edu.piotrjonski.scrumus.domain.RetrospectiveItemType;
+import edu.piotrjonski.scrumus.dao.model.project.TimeRange;
+import edu.piotrjonski.scrumus.domain.*;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.assertj.core.util.Lists;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -21,6 +20,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,14 +29,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Arquillian.class)
 public class RetrospectiveDAOIT {
 
-    public static final String COMMENT_BODY = "retrospectivebody";
-    public static int nextUniqueValue = 1;
+    private static final String COMMENT_BODY = "retrospectivebody";
+    private static final String PROJ_KEY = "projKey";
+    private static int nextUniqueValue = 1;
+    private Project lastProject;
+    private Sprint lastSprint;
 
     @Inject
     private RetrospectiveDAO retrospectiveDAO;
 
     @Inject
     private UserTransaction userTransaction;
+
+    @Inject
+    private ProjectDAO projectDAO;
+
+    @Inject
+    private SprintDAO sprintDAO;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -185,17 +194,52 @@ public class RetrospectiveDAOIT {
         assertThat(user).isEmpty();
     }
 
+    @Test
+    public void shouldFindRetrospectiveForSprint() {
+        // given
+        Retrospective retrospective = createRetrospective();
+        retrospective = retrospectiveDAO.saveOrUpdate(retrospective)
+                                        .get();
+        lastSprint.setRetrospectiveId(retrospective.getId());
+        sprintDAO.saveOrUpdate(lastSprint);
+
+        // when
+        Retrospective result = retrospectiveDAO.findRetrospectiveForSprint(lastSprint.getId())
+                                               .get();
+        // then
+        assertThat(result).isEqualTo(retrospective);
+    }
+
+    @Test
+    public void shouldReturnEmptyOptionalWhenSprintDoesNotHaveRetrospective() {
+        // given
+
+        // when
+        Optional<Retrospective> result = retrospectiveDAO.findRetrospectiveForSprint(lastSprint.getId());
+
+        // then
+        assertThat(result).isEmpty();
+    }
+
     private void startTransaction() throws SystemException, NotSupportedException {
         userTransaction.begin();
         entityManager.joinTransaction();
+        lastProject = projectDAO.saveOrUpdate(createProject())
+                                .get();
+        lastSprint = sprintDAO.saveOrUpdate(createSprint())
+                              .get();
     }
 
     private void clearData() throws Exception {
         userTransaction.begin();
         entityManager.joinTransaction();
-        List<RetrospectiveEntity> resultList = entityManager.createQuery("SELECT r FROM RetrospectiveEntity r", RetrospectiveEntity.class)
-                                                            .getResultList();
-        resultList.forEach(x -> entityManager.remove(x));
+        entityManager.createQuery("DELETE FROM SprintEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM ProjectEntity")
+                     .executeUpdate();
+        entityManager.createQuery("SELECT r FROM RetrospectiveEntity r", RetrospectiveEntity.class)
+                     .getResultList()
+                     .forEach(entityManager::remove);
         userTransaction.commit();
         entityManager.clear();
     }
@@ -232,5 +276,24 @@ public class RetrospectiveDAOIT {
         retrospectiveItem4.setRetrospectiveItemType(RetrospectiveItemType.MINUS);
 
         return Lists.newArrayList(retrospectiveItem1, retrospectiveItem2, retrospectiveItem3, retrospectiveItem4);
+    }
+
+    private Sprint createSprint() {
+        Sprint sprint = new Sprint();
+        sprint.setDefinitionOfDone("dod");
+        sprint.setProjectKey(lastProject.getKey());
+        sprint.setName("name");
+        TimeRange timeRange = new TimeRange();
+        timeRange.setStartDate(LocalDateTime.now());
+        timeRange.setEndDate(LocalDateTime.now());
+        sprint.setTimeRange(timeRange);
+        return sprint;
+    }
+
+    private Project createProject() {
+        Project project = new Project();
+        project.setKey(PROJ_KEY);
+        project.setName("name");
+        return project;
     }
 }
