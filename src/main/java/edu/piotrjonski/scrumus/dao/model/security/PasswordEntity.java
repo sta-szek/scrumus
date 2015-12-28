@@ -1,5 +1,6 @@
-package edu.piotrjonski.scrumus.dao.model.user;
+package edu.piotrjonski.scrumus.dao.model.security;
 
+import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

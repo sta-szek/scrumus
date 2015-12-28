@@ -28,14 +28,6 @@ public class IssueManager {
     @Inject
     private BacklogDAO backlogDAO;
 
-    public void changePriority(Issue issue, Priority newPriority, Developer user) {
-        Optional<Project> project = projectDAO.findById(issue.getProjectKey());
-        if (allValuesExist(issue, newPriority, project) && permissionManager.isProductOwner(project.get(), user)) {
-            issue.setPriority(newPriority);
-            issueDAO.saveOrUpdate(issue);
-        }
-    }
-
     public Issue create(Issue issue, Project project) throws Exception {
         if (issueExist(issue)) {
             throw new AlreadyExistException("Issue already exist.");
@@ -100,10 +92,6 @@ public class IssueManager {
         }
         return stateDAO.saveOrUpdate(state)
                        .get();
-    }
-
-    private boolean allValuesExist(final Issue issue, final Priority newPriority, final Optional<Project> project) {
-        return project.isPresent() && issueExist(issue) && priorityExist(newPriority);
     }
 
     private void addIssueToBacklog(final Issue issue, Project project) {

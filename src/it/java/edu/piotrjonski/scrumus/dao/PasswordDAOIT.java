@@ -1,6 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
-import edu.piotrjonski.scrumus.dao.model.user.PasswordEntity;
+import edu.piotrjonski.scrumus.dao.model.security.PasswordEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Password;
 import edu.piotrjonski.scrumus.utils.UtilsTest;

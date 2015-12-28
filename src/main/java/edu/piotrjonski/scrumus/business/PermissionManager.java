@@ -2,6 +2,7 @@ package edu.piotrjonski.scrumus.business;
 
 
 import edu.piotrjonski.scrumus.dao.*;
+import edu.piotrjonski.scrumus.dao.model.security.RoleType;
 import edu.piotrjonski.scrumus.domain.*;
 
 import javax.ejb.Stateless;
@@ -24,18 +25,21 @@ public class PermissionManager {
     private AdminDAO adminDAO;
 
     @Inject
+    private RoleDAO roleDAO;
+
+    @Inject
     private ProductOwnerDAO productOwnerDAO;
 
     public boolean isAdmin(Developer user) {
         return adminDAO.findByDeveloperId(user.getId())
-                       .isPresent();
+                       .isPresent() && hasRole(RoleType.ADMIN, user);
     }
 
     public boolean isProductOwner(Project project, Developer user) {
         if (developerExist(user) && projectExist(project)) {
             Optional<ProductOwner> productOwner = productOwnerDAO.findByDeveloperId(user.getId());
             if (productOwner.isPresent()) {
-                return hasProjectPermission(project, productOwner);
+                return hasProjectPermission(project, productOwner) && hasRole(RoleType.PRODUCT_OWNER, user);
             }
         }
         return false;
@@ -43,18 +47,16 @@ public class PermissionManager {
 
     public void grantAdminPermission(Developer user) {
         if (developerExist(user) && isNotAdmin(user)) {
-            Admin admin = new Admin();
-            admin.setDeveloper(user);
-            adminDAO.saveOrUpdate(admin);
+            Role role = createRoleIfNotExist(RoleType.ADMIN);
+            saveAdmin(user);
+            grantRole(role, user);
         }
     }
 
     public void removeAdminPermission(Developer user) {
         if (isAdmin(user)) {
-            int adminId = adminDAO.findByDeveloperId(user.getId())
-                                  .get()
-                                  .getId();
-            adminDAO.delete(adminId);
+            deleteAdmin(user);
+            removeRole(RoleType.ADMIN, user);
         }
     }
 
@@ -71,6 +73,43 @@ public class PermissionManager {
             teamDAO.saveOrUpdate(team);
         }
     }
+
+    private void removeRole(final RoleType roleType, final Developer user) {
+        Role role = roleDAO.findRoleByRoleType(roleType)
+                           .get();
+        role.removeDeveloper(user);
+        roleDAO.saveOrUpdate(role);
+    }
+
+    private void deleteAdmin(final Developer user) {
+        int adminId = adminDAO.findByDeveloperId(user.getId())
+                              .get()
+                              .getId();
+        adminDAO.delete(adminId);
+    }
+
+    private void grantRole(Role role, final Developer user) {
+        role.addDeveloper(user);
+        roleDAO.saveOrUpdate(role);
+    }
+
+    private void saveAdmin(final Developer user) {
+        Admin admin = new Admin();
+        admin.setDeveloper(user);
+        adminDAO.saveOrUpdate(admin);
+    }
+
+    private Role createRoleIfNotExist(final RoleType roleType) {
+        if (!roleDAO.existByRoleType(roleType)) {
+            Role role = new Role();
+            role.setRoleType(roleType);
+            return roleDAO.saveOrUpdate(role)
+                          .get();
+        }
+        return null;
+    }
+
+    private boolean hasRole(RoleType roleType, final Developer user) {return roleDAO.existByRoleTypeAndDeveloperId(roleType, user.getId());}
 
     private boolean hasProjectPermission(final Project project, final Optional<ProductOwner> productOwner) {
         return productOwner.get()

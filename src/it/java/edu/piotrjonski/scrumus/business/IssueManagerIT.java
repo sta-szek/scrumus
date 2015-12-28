@@ -124,35 +124,6 @@ public class IssueManagerIT {
     }
 
     @Test
-    public void shouldChangePriorityIfUserIsProductOwner() {
-        // given
-        Priority priority = new Priority();
-        priority.setName("changedPriority");
-        Issue issue = createIssue();
-
-        priority = priorityDAO.saveOrUpdate(priority)
-                              .get();
-        issue = issueDAO.saveOrUpdate(issue)
-                        .get();
-
-        ProductOwner productOwner = new ProductOwner();
-        productOwner.setDeveloper(lastDeveloper);
-        productOwner.setProject(lastProject);
-
-        productOwnerDAO.saveOrUpdate(productOwner);
-
-        // when
-        issueManager.changePriority(issue, priority, lastDeveloper);
-        String result = issueDAO.findById(issue.getId())
-                                .get()
-                                .getPriority()
-                                .getName();
-
-        // then
-        assertThat(result).isEqualTo(priority.getName());
-    }
-
-    @Test
     public void shouldUpdateIssue() throws Exception {
         // given
         Issue issue = createIssue();
