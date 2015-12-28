@@ -1,6 +1,8 @@
 package edu.piotrjonski.scrumus.dao;
 
 import edu.piotrjonski.scrumus.dao.model.security.RoleEntity;
+import edu.piotrjonski.scrumus.dao.model.security.RoleType;
+import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Role;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -27,11 +29,16 @@ public class RoleDAOIT {
 
     public static final String NAME = "name";
     public static final int ID = 1;
-    public static final byte[] DATA = new byte[5];
+    public static final String EMAIL = "jako@company.com";
+    public static final String USERNAME = "jako";
+    public static final String SURNAME = "Kowalski";
+    public static final String FIRSTNAME = "Jan";
     public static int nextUniqueValue = 0;
-
     @Inject
     private RoleDAO roleDAO;
+
+    @Inject
+    private DeveloperDAO developerDAO;
 
     @Inject
     private UserTransaction userTransaction;
@@ -69,7 +76,7 @@ public class RoleDAOIT {
     }
 
     @Test
-    public void shouldReturnTrueIfExist() {
+    public void shouldReturnTrueIfExistById() {
         // given
         Role role = createRole();
         int entityId = roleDAO.saveOrUpdate(role)
@@ -84,7 +91,7 @@ public class RoleDAOIT {
     }
 
     @Test
-    public void shouldReturnFalseIfDoesNotExist() {
+    public void shouldReturnFalseIfDoesNotExistById() {
         // given
 
         // when
@@ -95,20 +102,71 @@ public class RoleDAOIT {
     }
 
     @Test
+    public void shouldReturnTrueIfExistByRoleType() {
+        // given
+        Role role = createRole();
+        roleDAO.saveOrUpdate(role);
+
+        // when
+        boolean result = roleDAO.existByRoleType(RoleType.ADMIN);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExistByRoleType() {
+        // given
+
+        // when
+        boolean result = roleDAO.existByRoleType(null);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    public void shouldReturnTrueIfExistByRoleTypeAndDeveloperId() {
+        // given
+        Role role = createRole();
+        Developer developer = developerDAO.saveOrUpdate(createDeveloper())
+                                          .get();
+
+        role.addDeveloper(developer);
+        roleDAO.saveOrUpdate(role);
+
+        // when
+        boolean result = roleDAO.existByRoleTypeAndDeveloperId(RoleType.ADMIN, developer.getId());
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotExistByRoleTypeAndDeveloperId() {
+        // given
+
+        // when
+        boolean result = roleDAO.existByRoleTypeAndDeveloperId(RoleType.ADMIN, 0);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
     public void shouldUpdate() {
         // given
-        String updatedName = "UpdatedName";
         Role role = createRole();
         role = roleDAO.mapToDomainModelIfNotNull(entityManager.merge(roleDAO.mapToDatabaseModelIfNotNull(
                 role)));
-        role.setName(updatedName);
+        role.setRoleType(RoleType.DEVELOPER);
 
         // when
         role = roleDAO.saveOrUpdate(role)
                       .get();
 
         // then
-        assertThat(role.getName()).isEqualTo(updatedName);
+        assertThat(role.getRoleType()).isEqualTo(RoleType.DEVELOPER);
     }
 
     @Test
@@ -131,7 +189,9 @@ public class RoleDAOIT {
         // given
         Role role1 = createRole();
         Role role2 = createRole();
+        role2.setRoleType(RoleType.DEVELOPER);
         Role role3 = createRole();
+        role3.setRoleType(RoleType.PRODUCT_OWNER);
 
         int id1 = entityManager.merge(roleDAO.mapToDatabaseModelIfNotNull(role1))
                                .getId();
@@ -159,6 +219,7 @@ public class RoleDAOIT {
         // given
         Role role1 = createRole();
         Role role2 = createRole();
+        role2.setRoleType(RoleType.DEVELOPER);
         int id = entityManager.merge(roleDAO.mapToDatabaseModelIfNotNull(role1))
                               .getId();
         entityManager.merge(roleDAO.mapToDatabaseModelIfNotNull(role2));
@@ -166,6 +227,25 @@ public class RoleDAOIT {
 
         // when
         Role role = roleDAO.findById(id)
+                           .get();
+
+        // then
+        assertThat(role).isEqualTo(role1);
+    }
+
+    @Test
+    public void shouldFindByName() {
+        // given
+        Role role1 = createRole();
+        Role role2 = createRole();
+        role2.setRoleType(RoleType.DEVELOPER);
+        int id = entityManager.merge(roleDAO.mapToDatabaseModelIfNotNull(role1))
+                              .getId();
+        entityManager.merge(roleDAO.mapToDatabaseModelIfNotNull(role2));
+        role1.setId(id);
+
+        // when
+        Role role = roleDAO.findRoleByRoleType(role1.getRoleType())
                            .get();
 
         // then
@@ -193,16 +273,28 @@ public class RoleDAOIT {
         entityManager.joinTransaction();
         entityManager.createQuery("DELETE FROM RoleEntity")
                      .executeUpdate();
+        entityManager.createQuery("DELETE FROM DeveloperEntity")
+                     .executeUpdate();
         userTransaction.commit();
         entityManager.clear();
     }
 
     private Role createRole() {
         Role role = new Role();
-        role.setName(NAME + nextUniqueValue);
+        role.setRoleType(RoleType.ADMIN);
         role.setId(ID + nextUniqueValue);
         nextUniqueValue++;
         return role;
+    }
+
+    private Developer createDeveloper() {
+        Developer developer = new Developer();
+        developer.setFirstName(FIRSTNAME + nextUniqueValue);
+        developer.setSurname(SURNAME + nextUniqueValue);
+        developer.setUsername(USERNAME + nextUniqueValue);
+        developer.setEmail(EMAIL + nextUniqueValue);
+        nextUniqueValue++;
+        return developer;
     }
 
     private List<RoleEntity> findAll() {

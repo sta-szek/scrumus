@@ -1,6 +1,7 @@
 package edu.piotrjonski.scrumus.business;
 
 import edu.piotrjonski.scrumus.dao.*;
+import edu.piotrjonski.scrumus.dao.model.security.RoleType;
 import edu.piotrjonski.scrumus.dao.model.user.AdminEntity;
 import edu.piotrjonski.scrumus.domain.*;
 import edu.piotrjonski.scrumus.utils.UtilsTest;
@@ -54,6 +55,9 @@ public class PermissionManagerIT {
     @Inject
     private UserTransaction userTransaction;
 
+    @Inject
+    private RoleDAO roleDAO;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -79,6 +83,10 @@ public class PermissionManagerIT {
         Developer developer = developerDAO.saveOrUpdate(createDeveloper())
                                           .get();
         adminDAO.saveOrUpdate(createAdmin(developer));
+        Role role = roleDAO.saveOrUpdate(createAdminRole())
+                           .get();
+        role.addDeveloper(developer);
+        roleDAO.saveOrUpdate(role);
 
         // when
         boolean result = permissionManager.isAdmin(developer);
@@ -133,6 +141,10 @@ public class PermissionManagerIT {
         Developer developer = developerDAO.saveOrUpdate(createDeveloper())
                                           .get();
         adminDAO.saveOrUpdate(createAdmin(developer));
+        Role role = roleDAO.saveOrUpdate(createAdminRole())
+                           .get();
+        role.addDeveloper(developer);
+        roleDAO.saveOrUpdate(role);
 
         // when
         permissionManager.removeAdminPermission(developer);
@@ -226,6 +238,11 @@ public class PermissionManagerIT {
 
         productOwnerDAO.saveOrUpdate(productOwner);
 
+        Role role = roleDAO.saveOrUpdate(createProductOwnerRole())
+                           .get();
+        role.addDeveloper(developer);
+        roleDAO.saveOrUpdate(role);
+
         // when
         boolean result = permissionManager.isProductOwner(project, developer);
 
@@ -265,6 +282,8 @@ public class PermissionManagerIT {
     private void clearData() throws Exception {
         userTransaction.begin();
         entityManager.joinTransaction();
+        entityManager.createQuery("DELETE FROM RoleEntity")
+                     .executeUpdate();
         entityManager.createQuery("DELETE FROM AdminEntity")
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM TeamEntity ")
@@ -299,6 +318,18 @@ public class PermissionManagerIT {
         Admin admin = new Admin();
         admin.setDeveloper(developer);
         return admin;
+    }
+
+    private Role createAdminRole() {
+        Role role = new Role();
+        role.setRoleType(RoleType.ADMIN);
+        return role;
+    }
+
+    private Role createProductOwnerRole() {
+        Role role = new Role();
+        role.setRoleType(RoleType.PRODUCT_OWNER);
+        return role;
     }
 
     private int findAllAdminsSize() {

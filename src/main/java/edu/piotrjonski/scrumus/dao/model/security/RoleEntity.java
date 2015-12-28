@@ -14,18 +14,23 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "role")
-@NamedQueries({@NamedQuery(name = RoleEntity.FIND_ALL, query = RoleEntity.FIND_ALL_QUERY)})
+@NamedQueries({@NamedQuery(name = RoleEntity.FIND_ALL, query = RoleEntity.FIND_ALL_QUERY),
+               @NamedQuery(name = RoleEntity.FIND_BY_NAME, query = RoleEntity.FIND_BY_NAME_QUERY)})
 public class RoleEntity {
 
     public static final String FIND_ALL = "findAllRoles";
+    public static final String FIND_BY_NAME = "findRoleByName";
+    public static final String NAME = "name";
     protected static final String FIND_ALL_QUERY = "SELECT r FROM RoleEntity r";
+    protected static final String FIND_BY_NAME_QUERY = "SELECT r FROM RoleEntity r WHERE r.roleType=:" + NAME;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, length = 32, unique = false)
-    private String name;
+    @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false, unique = true)
+    private RoleType roleType;
 
     @ManyToMany
     private List<DeveloperEntity> developerEntities;
