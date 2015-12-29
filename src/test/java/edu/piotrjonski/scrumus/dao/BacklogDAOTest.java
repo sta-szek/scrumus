@@ -39,12 +39,14 @@ public class BacklogDAOTest {
     @Spy
     private PriorityDAO priorityDAO = new PriorityDAO();
 
+    @Spy
+    private StateDAO stateDAO = new StateDAO();
+
     @Mock
     private EntityManager entityManager;
 
     @InjectMocks
     private BacklogDAO backlogDAO = new BacklogDAO();
-
 
     @Test
     public void shouldCallCreateNamedQueryWithValidParameters() {
@@ -63,6 +65,7 @@ public class BacklogDAOTest {
         setInternalState(issueDAO, "commentDAO", commentDAO);
         setInternalState(issueDAO, "issueTypeDAO", issueTypeDAO);
         setInternalState(issueDAO, "priorityDAO", priorityDAO);
+        setInternalState(issueDAO, "stateDAO", stateDAO);
         doReturn(Lists.newArrayList(new IssueEntity())).when(issueDAO)
                                                        .mapToDomainModel(anyList());
     }
