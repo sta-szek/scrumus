@@ -258,6 +258,7 @@ public class IssueDAOIT {
         issue.setReporterId(currentlySavedDeveloperId);
         issue.setAssigneeId(currentlySavedDeveloperId);
         issue.setSummary(SUMMARY);
+        issue.setState(state);
         nextUniqueValue++;
         return issue;
     }
