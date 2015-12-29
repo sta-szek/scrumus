@@ -1,0 +1,3 @@
+<jboss-web>
+    <security-domain>scrumusSecurity</security-domain>
+</jboss-web>
