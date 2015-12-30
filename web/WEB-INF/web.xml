@@ -8,14 +8,18 @@
         <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
         <param-value>*.xhtml</param-value>
     </context-param>
+    <context-param>
+        <param-name>com.sun.faces.enableRestoreView11Compatibility</param-name>
+        <param-value>true</param-value>
+    </context-param>
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>HtmlAuth</web-resource-name>
+            <web-resource-name>scrumusSecurity</web-resource-name>
             <description>zasady bezpieczeństwa aplikacji</description>
-            <url-pattern>/*</url-pattern>
+            <url-pattern>/admin/*</url-pattern>
             <http-method>GET</http-method>
-            <!--<http-method>POST</http-method>-->
+            <http-method>POST</http-method>
             <http-method>HEAD</http-method>
             <http-method>PUT</http-method>
             <http-method>OPTIONS</http-method>
