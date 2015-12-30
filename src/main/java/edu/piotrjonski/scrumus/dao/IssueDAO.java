@@ -26,6 +26,9 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
     @Inject
     private IssueTypeDAO issueTypeDAO;
 
+    @Inject
+    private StateDAO stateDAO;
+
     public IssueDAO() {
         this(IssueEntity.class);
     }
@@ -49,6 +52,7 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
         issueEntity.setReporter(findDeveloperEntity(domainModel.getReporterId()));
         issueEntity.setSummary(domainModel.getSummary());
         issueEntity.setPriorityEntity(priorityDAO.mapToDatabaseModelIfNotNull(domainModel.getPriority()));
+        issueEntity.setStateEntity(stateDAO.mapToDatabaseModelIfNotNull(domainModel.getState()));
         return issueEntity;
     }
 
@@ -67,6 +71,7 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
         issue.setAssigneeId(getDeveloperId(dbModel));
         issue.setReporterId(getDeveloperId(dbModel));
         issue.setPriority(priorityDAO.mapToDomainModelIfNotNull(dbModel.getPriorityEntity()));
+        issue.setState(stateDAO.mapToDomainModelIfNotNull(dbModel.getStateEntity()));
         return issue;
     }
 

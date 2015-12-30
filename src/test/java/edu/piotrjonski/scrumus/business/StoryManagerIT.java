@@ -314,6 +314,7 @@ public class StoryManagerIT {
         Issue issue = new Issue();
         issue.setAssigneeId(lastDeveloper.getId());
         issue.setProjectKey(PROJECT_KEY);
+        issue.setState(lastState);
         issue.setReporterId(lastDeveloper.getId());
         issue.setIssueType(lastIssueType);
         issue.setPriority(lastPriority);

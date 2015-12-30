@@ -377,6 +377,7 @@ public class IssueManagerIT {
         issue.setIssueType(lastIssueType);
         issue.setPriority(lastPriority);
         issue.setSummary("summary");
+        issue.setState(lastState);
         nextUniqueValue++;
         return issue;
     }

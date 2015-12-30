@@ -1,10 +1,7 @@
 package edu.piotrjonski.scrumus.dao;
 
 
-import edu.piotrjonski.scrumus.dao.model.project.CommentEntity;
-import edu.piotrjonski.scrumus.dao.model.project.IssueEntity;
-import edu.piotrjonski.scrumus.dao.model.project.IssueTypeEntity;
-import edu.piotrjonski.scrumus.dao.model.project.PriorityEntity;
+import edu.piotrjonski.scrumus.dao.model.project.*;
 import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.domain.*;
 import org.assertj.core.util.Lists;
@@ -42,6 +39,9 @@ public class IssueDAOTest {
 
     @Spy
     private PriorityDAO priorityDAO = new PriorityDAO();
+
+    @Spy
+    private StateDAO stateDAO = new StateDAO();
 
     @Mock
     private EntityManager entityManager;
@@ -93,6 +93,7 @@ public class IssueDAOTest {
         issue.setPriority(new Priority());
         issue.setReporterId(DEVELOPER_ID);
         issue.setSummary(summary);
+        issue.setState(new State());
 
         // when
         IssueEntity result = issueDAO.mapToDatabaseModel(issue);
@@ -105,6 +106,7 @@ public class IssueDAOTest {
         assertThat(result.getId()).isEqualTo(id);
         assertThat(result.getIssueTypeEntity()).isNotNull();
         assertThat(result.getPriorityEntity()).isNotNull();
+        assertThat(result.getStateEntity()).isNotNull();
         assertThat(result.getProjectKey()).isEqualTo(key);
         assertThat(result.getSummary()).isEqualTo(summary);
         assertThat(result.getReporter()
@@ -138,6 +140,7 @@ public class IssueDAOTest {
         issueEntity.setPriorityEntity(new PriorityEntity());
         issueEntity.setReporter(createDeveloperEntity());
         issueEntity.setSummary(summary);
+        issueEntity.setStateEntity(new StateEntity());
 
         // when
         Issue result = issueDAO.mapToDomainModel(issueEntity);
@@ -151,6 +154,7 @@ public class IssueDAOTest {
         assertThat(result.getId()).isEqualTo(id);
         assertThat(result.getIssueType()).isNotNull();
         assertThat(result.getPriority()).isNotNull();
+        assertThat(result.getState()).isNotNull();
         assertThat(result.getProjectKey()).isEqualTo(key);
         assertThat(result.getReporterId()).isEqualTo(DEVELOPER_ID);
         assertThat(result.getSummary()).isEqualTo(summary);

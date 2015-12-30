@@ -33,9 +33,13 @@ public class CommentManagerIT {
     private IssueType lastIssueType;
     private Issue lastIssue;
     private Priority lastPriority;
+    private State lastState;
 
     @Inject
     private PriorityDAO priorityDAO;
+
+    @Inject
+    private StateDAO stateDAO;
 
     @Inject
     private IssueTypeDAO issueTypeDAO;
@@ -176,6 +180,8 @@ public class CommentManagerIT {
                                     .get();
         lastPriority = priorityDAO.saveOrUpdate(createPriority())
                                   .get();
+        lastState = stateDAO.saveOrUpdate(createState())
+                            .get();
         lastIssueType = issueTypeDAO.saveOrUpdate(createIssueType())
                                     .get();
         lastRetrospective = retrospectiveDAO.saveOrUpdate(createRetrospective())
@@ -194,6 +200,8 @@ public class CommentManagerIT {
         entityManager.createQuery("DELETE FROM IssueTypeEntity")
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM PriorityEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM StateEntity")
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM CommentEntity")
                      .executeUpdate();
@@ -227,6 +235,7 @@ public class CommentManagerIT {
         issue.setReporterId(lastDeveloper.getId());
         issue.setIssueType(lastIssueType);
         issue.setPriority(lastPriority);
+        issue.setState(lastState);
         issue.setSummary("summary");
         return issue;
     }
@@ -241,6 +250,12 @@ public class CommentManagerIT {
         Priority priority = new Priority();
         priority.setName("name");
         return priority;
+    }
+
+    private State createState() {
+        State state = new State();
+        state.setName("name");
+        return state;
     }
 
 }

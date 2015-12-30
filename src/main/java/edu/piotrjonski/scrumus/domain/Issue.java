@@ -22,6 +22,7 @@ public class Issue {
     private List<Comment> comments = new ArrayList<>();
     private IssueType issueType;
     private Priority priority;
+    private State state;
     private int reporterId;
     private int assigneeId;
 

@@ -40,6 +40,9 @@ public class BacklogDAOIT {
     private PriorityDAO priorityDAO;
 
     @Inject
+    private StateDAO stateDAO;
+
+    @Inject
     private DeveloperDAO developerDAO;
 
     @Inject
@@ -114,11 +117,16 @@ public class BacklogDAOIT {
         priority.setId(1);
         priority.setName("name");
 
+        State state = new State();
+        state.setId(1);
+        state.setName("name");
+
         Issue issue = new Issue();
         issue.setProjectKey("testkey");
         issue.setSummary("summary");
         issue.setIssueType(issueType);
         issue.setPriority(priority);
+        issue.setState(state);
 
         Developer developer = new Developer();
         developer.setId(1);
@@ -133,6 +141,7 @@ public class BacklogDAOIT {
 
         issueTypeDAO.saveOrUpdate(issueType);
         priorityDAO.saveOrUpdate(priority);
+        stateDAO.saveOrUpdate(state);
         issue = issueDAO.saveOrUpdate(issue)
                         .get();
 
@@ -239,6 +248,8 @@ public class BacklogDAOIT {
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM DeveloperEntity ")
                      .executeUpdate();
+        entityManager.createQuery("DELETE FROM StateEntity")
+                     .executeUpdate();
         userTransaction.commit();
         entityManager.clear();
     }
@@ -250,5 +261,11 @@ public class BacklogDAOIT {
     private List<BacklogEntity> findAll() {
         return entityManager.createQuery("SELECT d FROM BacklogEntity d")
                             .getResultList();
+    }
+
+    private State createState() {
+        State state = new State();
+        state.setName("name");
+        return state;
     }
 }
