@@ -68,7 +68,8 @@ public class UserManagerIT {
         Developer developer = createDeveloper();
 
         // when
-        Developer savedDeveloper = userManager.create(developer);
+        Developer savedDeveloper = userManager.create(developer)
+                                              .get();
         boolean result = developerDAO.exist(savedDeveloper.getId());
 
         // then
@@ -79,7 +80,8 @@ public class UserManagerIT {
     public void shouldThrowExceptionWhenUserAlreadyExist() throws AlreadyExistException {
         // given
         Developer developer = createDeveloper();
-        Developer savedDeveloper = userManager.create(developer);
+        Developer savedDeveloper = userManager.create(developer)
+                                              .get();
 
         // when
         Throwable throwable = catchThrowable(() -> userManager.create(savedDeveloper));
@@ -93,6 +95,7 @@ public class UserManagerIT {
         // given
         Developer developer = createDeveloper();
         int id = userManager.create(developer)
+                            .get()
                             .getId();
 
         // when
@@ -107,7 +110,8 @@ public class UserManagerIT {
     public void shouldUpdateUserIfExist() throws AlreadyExistException, NotExistException {
         // given
         Developer developer = createDeveloper();
-        Developer savedDeveloper = userManager.create(developer);
+        Developer savedDeveloper = userManager.create(developer)
+                                              .get();
 
         String newEmail = "newEmail";
         String newFirstname = "newFirstname";
@@ -117,7 +121,8 @@ public class UserManagerIT {
         savedDeveloper.setSurname(newSurname);
 
         // when
-        Developer updatedDeveloper = userManager.update(savedDeveloper);
+        Developer updatedDeveloper = userManager.update(savedDeveloper)
+                                                .get();
 
         // then
         assertThat(updatedDeveloper.getEmail()).isEqualTo(newEmail);

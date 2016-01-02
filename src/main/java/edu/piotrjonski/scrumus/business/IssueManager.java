@@ -28,7 +28,7 @@ public class IssueManager {
     @Inject
     private BacklogDAO backlogDAO;
 
-    public Issue create(Issue issue, Project project) throws Exception {
+    public Optional<Issue> create(Issue issue, Project project) throws Exception {
         if (issueExist(issue)) {
             throw new AlreadyExistException("Issue already exist.");
         }
@@ -38,7 +38,7 @@ public class IssueManager {
         issue.setProjectKey(project.getKey());
         Issue savedIssue = saveIssue(issue);
         addIssueToBacklog(savedIssue, project);
-        return savedIssue;
+        return Optional.of(savedIssue);
     }
 
     public Optional<Issue> update(Issue issue) {
@@ -48,12 +48,11 @@ public class IssueManager {
         return Optional.empty();
     }
 
-    public Priority createPriority(Priority priority) throws AlreadyExistException {
+    public Optional<Priority> createPriority(Priority priority) throws AlreadyExistException {
         if (priorityExist(priority)) {
             throw new AlreadyExistException("Priorytet już istnieje.");
         }
-        return priorityDAO.saveOrUpdate(priority)
-                          .get();
+        return priorityDAO.saveOrUpdate(priority);
     }
 
     public void deletePriority(Priority priority) throws NotExistException {
@@ -63,20 +62,18 @@ public class IssueManager {
         priorityDAO.delete(priority.getId());
     }
 
-    public Priority editPriority(Priority newPriority) throws NotExistException {
+    public Optional<Priority> updatePriority(Priority newPriority) throws NotExistException {
         if (!priorityExist(newPriority)) {
             throw new NotExistException("Priorytet nie istnieje.");
         }
-        return priorityDAO.saveOrUpdate(newPriority)
-                          .get();
+        return priorityDAO.saveOrUpdate(newPriority);
     }
 
-    public State createState(State state) throws AlreadyExistException {
+    public Optional<State> createState(State state) throws AlreadyExistException {
         if (stateExist(state)) {
             throw new AlreadyExistException("Stan już istnieje.");
         }
-        return stateDAO.saveOrUpdate(state)
-                       .get();
+        return stateDAO.saveOrUpdate(state);
     }
 
     public void deleteState(State state) throws NotExistException {
@@ -86,12 +83,11 @@ public class IssueManager {
         stateDAO.delete(state.getId());
     }
 
-    public State editState(State state) throws NotExistException {
+    public Optional<State> updateState(State state) throws NotExistException {
         if (!stateExist(state)) {
             throw new NotExistException("Stan nie istnieje.");
         }
-        return stateDAO.saveOrUpdate(state)
-                       .get();
+        return stateDAO.saveOrUpdate(state);
     }
 
     private void addIssueToBacklog(final Issue issue, Project project) {

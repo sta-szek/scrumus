@@ -22,6 +22,7 @@ import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -71,7 +72,8 @@ public class SprintManagerIT {
         Sprint sprint = createSprint();
 
         // when
-        Sprint savedSprint = sprintManager.createSprint(sprint);
+        Sprint savedSprint = sprintManager.createSprint(sprint)
+                                          .get();
         boolean result = sprintDAO.exist(savedSprint.getId());
 
         // then
@@ -82,7 +84,8 @@ public class SprintManagerIT {
     public void shouldThrowExceptionIfSprintAlreadyExist() throws AlreadyExistException {
         // given
         Sprint sprint = createSprint();
-        Sprint savedSprint = sprintManager.createSprint(sprint);
+        Sprint savedSprint = sprintManager.createSprint(sprint)
+                                          .get();
 
         // when
         Throwable result = catchThrowable(() -> sprintManager.createSprint(savedSprint));
@@ -95,10 +98,12 @@ public class SprintManagerIT {
     public void shouldFindSprint() throws AlreadyExistException {
         // given
         Sprint sprint = createSprint();
-        Sprint savedSprint = sprintManager.createSprint(sprint);
+        Sprint savedSprint = sprintManager.createSprint(sprint)
+                                          .get();
 
         // when
-        Sprint result = sprintManager.findSprint(savedSprint.getId());
+        Sprint result = sprintManager.findSprint(savedSprint.getId())
+                                     .get();
 
         // then
         assertThat(result).isEqualTo(savedSprint);
@@ -109,10 +114,10 @@ public class SprintManagerIT {
         // given
 
         // when
-        Sprint result = sprintManager.findSprint(0);
+        Optional<Sprint> result = sprintManager.findSprint(0);
 
         // then
-        assertThat(result.getId()).isEqualTo(0);
+        assertThat(result).isEmpty();
     }
 
     @Test
@@ -120,8 +125,10 @@ public class SprintManagerIT {
         // given
         Sprint sprint1 = createSprint();
         Sprint sprint2 = createSprint();
-        sprint1 = sprintManager.createSprint(sprint1);
-        sprint2 = sprintManager.createSprint(sprint2);
+        sprint1 = sprintManager.createSprint(sprint1)
+                               .get();
+        sprint2 = sprintManager.createSprint(sprint2)
+                               .get();
 
         // when
         List<Sprint> result = sprintManager.findAllSprintsForProject(lastProject.getKey());

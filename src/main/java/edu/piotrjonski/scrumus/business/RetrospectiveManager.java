@@ -8,6 +8,7 @@ import edu.piotrjonski.scrumus.domain.Sprint;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.Optional;
 
 @Stateless
 public class RetrospectiveManager {
@@ -18,7 +19,7 @@ public class RetrospectiveManager {
     @Inject
     private SprintDAO sprintDAO;
 
-    public Retrospective createRetrospectiveForSprint(Retrospective retrospective, Sprint sprint) throws AlreadyExistException {
+    public Optional<Retrospective> createRetrospectiveForSprint(Retrospective retrospective, Sprint sprint) throws AlreadyExistException {
         if (retrospectiveExist(retrospective)) {
             throw new AlreadyExistException("Retrospektywa już istnieje");
         } else if (sprintHasRetrospective(sprint)) {
@@ -27,9 +28,8 @@ public class RetrospectiveManager {
         return createRetrospectiveAndUpdateSprint(retrospective, sprint);
     }
 
-    public Retrospective findRetrospective(int retrospectiveId) {
-        return retrospectiveDAO.findById(retrospectiveId)
-                               .orElse(new Retrospective());
+    public Optional<Retrospective> findRetrospective(int retrospectiveId) {
+        return retrospectiveDAO.findById(retrospectiveId);
     }
 
     public void addRetrospectiveItemToRetrospective(RetrospectiveItem retrospectiveItem, Retrospective retrospective)
@@ -50,11 +50,13 @@ public class RetrospectiveManager {
         retrospectiveDAO.saveOrUpdate(retrospective);
     }
 
-    private Retrospective createRetrospectiveAndUpdateSprint(final Retrospective retrospective, final Sprint sprint) {
-        Retrospective savedRetrospective = retrospectiveDAO.saveOrUpdate(retrospective)
-                                                           .get();
-        sprint.setRetrospectiveId(savedRetrospective.getId());
-        sprintDAO.saveOrUpdate(sprint);
+    private Optional<Retrospective> createRetrospectiveAndUpdateSprint(final Retrospective retrospective, final Sprint sprint) {
+        Optional<Retrospective> savedRetrospective = retrospectiveDAO.saveOrUpdate(retrospective);
+        if (savedRetrospective.isPresent()) {
+            sprint.setRetrospectiveId(savedRetrospective.get()
+                                                        .getId());
+            sprintDAO.saveOrUpdate(sprint);
+        }
         return savedRetrospective;
     }
 

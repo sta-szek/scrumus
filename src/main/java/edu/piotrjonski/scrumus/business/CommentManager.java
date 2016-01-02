@@ -24,37 +24,51 @@ public class CommentManager {
     private RetrospectiveDAO retrospectiveDAO;
 
     public Optional<Comment> addCommentToIssue(Comment comment, Issue issue) {
-        if (issueDAO.exist(issue.getId())) {
-            Optional<Comment> savedComment = commentDAO.saveOrUpdate(comment);
-            issue.addComment(savedComment.get());
-            issueDAO.saveOrUpdate(issue);
+        if (issueExist(issue)) {
+            Optional<Comment> savedComment = saveCommentAndAddToIssue(comment, issue);
             return savedComment;
         }
         return Optional.empty();
     }
 
     public Optional<Comment> addCommentToRetrospective(Comment comment, Retrospective retrospective) {
-        if (retrospectiveDAO.exist(retrospective.getId())) {
-            Optional<Comment> savedComment = commentDAO.saveOrUpdate(comment);
-            retrospective.addComment(savedComment.get());
-            retrospectiveDAO.saveOrUpdate(retrospective);
+        if (retrospectiveExist(retrospective)) {
+            Optional<Comment> savedComment = saveCommentAndAddToRetrospective(comment, retrospective);
             return savedComment;
         }
         return Optional.empty();
     }
 
     public void removeCommentFromIssue(Comment comment, Issue issue) {
-        if (issueDAO.exist(issue.getId())) {
+        if (issueExist(issue)) {
             issue.removeComment(comment);
             issueDAO.saveOrUpdate(issue);
         }
     }
 
     public void removeCommentFromRetrospective(Comment comment, Retrospective retrospective) {
-        if (retrospectiveDAO.exist(retrospective.getId())) {
+        if (retrospectiveExist(retrospective)) {
             retrospective.removeComment(comment);
             retrospectiveDAO.saveOrUpdate(retrospective);
         }
     }
+
+    private Optional<Comment> saveCommentAndAddToRetrospective(final Comment comment, final Retrospective retrospective) {
+        Optional<Comment> savedComment = commentDAO.saveOrUpdate(comment);
+        retrospective.addComment(savedComment.get());
+        retrospectiveDAO.saveOrUpdate(retrospective);
+        return savedComment;
+    }
+
+    private Optional<Comment> saveCommentAndAddToIssue(final Comment comment, final Issue issue) {
+        Optional<Comment> savedComment = commentDAO.saveOrUpdate(comment);
+        issue.addComment(savedComment.get());
+        issueDAO.saveOrUpdate(issue);
+        return savedComment;
+    }
+
+    private boolean issueExist(final Issue issue) {return issueDAO.exist(issue.getId());}
+
+    private boolean retrospectiveExist(final Retrospective retrospective) {return retrospectiveDAO.exist(retrospective.getId());}
 
 }

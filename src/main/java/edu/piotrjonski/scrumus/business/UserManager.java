@@ -6,6 +6,7 @@ import edu.piotrjonski.scrumus.domain.Developer;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.Optional;
 
 @Stateless
 public class UserManager {
@@ -19,20 +20,18 @@ public class UserManager {
     @Inject
     private PermissionManager permissionManager;
 
-    public Developer create(Developer developer) throws AlreadyExistException {
+    public Optional<Developer> create(Developer developer) throws AlreadyExistException {
         if (developerExist(developer)) {
             throw new AlreadyExistException("User already exist.");
         }
-        return developerDAO.saveOrUpdate(developer)
-                           .orElse(developer);
+        return developerDAO.saveOrUpdate(developer);
     }
 
-    public Developer update(Developer developer) throws NotExistException {
+    public Optional<Developer> update(Developer developer) throws NotExistException {
         if (!developerExist(developer)) {
             throw new NotExistException("User does not exist.");
         }
-        return developerDAO.saveOrUpdate(developer)
-                           .get();
+        return developerDAO.saveOrUpdate(developer);
     }
 
     public void delete(int userId) {

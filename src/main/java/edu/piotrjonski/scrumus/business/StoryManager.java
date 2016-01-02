@@ -10,6 +10,7 @@ import edu.piotrjonski.scrumus.domain.Story;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Optional;
 
 @Stateless
 public class StoryManager {
@@ -26,17 +27,15 @@ public class StoryManager {
     @Inject
     private PermissionManager permissionManager;
 
-    public Story createStory(Story story) throws AlreadyExistException {
+    public Optional<Story> createStory(Story story) throws AlreadyExistException {
         if (storyExist(story)) {
             throw new AlreadyExistException("Story już istnieje");
         }
-        return storyDAO.saveOrUpdate(story)
-                       .get();
+        return storyDAO.saveOrUpdate(story);
     }
 
-    public Story findStory(int storyId) {
-        return storyDAO.findById(storyId)
-                       .orElse(new Story());
+    public Optional<Story> findStory(int storyId) {
+        return storyDAO.findById(storyId);
     }
 
     public List<Story> findAllStoriesForSprint(int sprintId) {

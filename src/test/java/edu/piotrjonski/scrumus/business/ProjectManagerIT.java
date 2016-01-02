@@ -73,7 +73,8 @@ public class ProjectManagerIT {
         Project project = createProject();
 
         // when
-        Project savedProject = projectManager.create(project);
+        Project savedProject = projectManager.create(project)
+                                             .get();
         boolean result = projectDAO.exist(savedProject.getKey());
 
         // then
@@ -84,7 +85,8 @@ public class ProjectManagerIT {
     public void shouldThrowExceptionWhenProjectAlreadyExist() throws AlreadyExistException {
         // given
         Project project = createProject();
-        Project savedProject = projectManager.create(project);
+        Project savedProject = projectManager.create(project)
+                                             .get();
 
         // when
         Throwable throwable = catchThrowable(() -> projectManager.create(savedProject));
@@ -98,6 +100,7 @@ public class ProjectManagerIT {
         // given
         Project project = createProject();
         String key = projectManager.create(project)
+                                   .get()
                                    .getKey();
 
         // when
@@ -112,7 +115,8 @@ public class ProjectManagerIT {
     public void shouldCreateBacklogForProject() throws AlreadyExistException {
         // given
         Project project = createProject();
-        Project savedProject = projectManager.create(project);
+        Project savedProject = projectManager.create(project)
+                                             .get();
 
         // when
         Backlog result = backlogDAO.findBacklogForProject(savedProject.getKey())
@@ -130,7 +134,8 @@ public class ProjectManagerIT {
                                          .get();
         String key = savedProject.getKey();
         // when
-        Project result = projectManager.findProject(key);
+        Project result = projectManager.findProject(key)
+                                       .get();
 
         // then
         assertThat(result).isEqualTo(savedProject);

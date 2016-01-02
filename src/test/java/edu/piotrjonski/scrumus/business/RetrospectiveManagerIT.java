@@ -123,7 +123,8 @@ public class RetrospectiveManagerIT {
                                         .get();
 
         // when
-        Retrospective result = retrospectiveManager.findRetrospective(retrospective.getId());
+        Retrospective result = retrospectiveManager.findRetrospective(retrospective.getId())
+                                                   .get();
 
         // then
         assertThat(result).isEqualTo(retrospective);
@@ -142,6 +143,7 @@ public class RetrospectiveManagerIT {
         // when
         retrospectiveManager.addRetrospectiveItemToRetrospective(retrospectiveItem, retrospective);
         List<RetrospectiveItem> result = retrospectiveManager.findRetrospective(retrospective.getId())
+                                                             .get()
                                                              .getRetrospectiveItems();
 
         // then
@@ -164,6 +166,7 @@ public class RetrospectiveManagerIT {
         // when
         retrospectiveManager.removeRetrospectiveItemFromRetrospective(retrospectiveItem, savedRetrospective);
         List<RetrospectiveItem> result = retrospectiveManager.findRetrospective(savedRetrospective.getId())
+                                                             .get()
                                                              .getRetrospectiveItems();
 
         // then
