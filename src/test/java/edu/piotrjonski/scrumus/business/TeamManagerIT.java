@@ -19,6 +19,8 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -89,7 +91,7 @@ public class TeamManagerIT {
     }
 
     @Test
-    public void shouldAddUserToTeam() throws AlreadyExistException {
+    public void shouldAddUserToTeam() throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
         // given
         Team team = createTeam();
         Developer developer = createDeveloper();
@@ -108,7 +110,7 @@ public class TeamManagerIT {
     }
 
     @Test
-    public void shouldRemoveUserFromTeam() throws AlreadyExistException {
+    public void shouldRemoveUserFromTeam() throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
         // given
         Team team = createTeam();
         Developer developer = createDeveloper();

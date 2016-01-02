@@ -5,6 +5,7 @@ import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
 
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 @Stateless
@@ -16,6 +17,18 @@ public class DeveloperDAO extends AbstractDAO<DeveloperEntity, Developer> {
 
     private DeveloperDAO(final Class entityClass) {
         super(entityClass);
+    }
+
+    public boolean emailExist(String email) {
+        try {
+            entityManager.createNamedQuery(DeveloperEntity.FIND_BY_MAIL, DeveloperEntity.class)
+                         .setParameter(DeveloperEntity.EMAIL, email)
+                         .getSingleResult();
+            return true;
+        } catch (NoResultException e) {
+            return false;
+        }
+        //TODO TESTY
     }
 
     @Override

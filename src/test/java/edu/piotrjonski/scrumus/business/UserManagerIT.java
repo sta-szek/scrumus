@@ -19,6 +19,8 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -63,7 +65,7 @@ public class UserManagerIT {
     }
 
     @Test
-    public void shouldCreateDeveloper() throws AlreadyExistException {
+    public void shouldCreateDeveloper() throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
         // given
         Developer developer = createDeveloper();
 
@@ -77,7 +79,8 @@ public class UserManagerIT {
     }
 
     @Test
-    public void shouldThrowExceptionWhenUserAlreadyExist() throws AlreadyExistException {
+    public void shouldThrowExceptionWhenUserAlreadyExist()
+            throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
         // given
         Developer developer = createDeveloper();
         Developer savedDeveloper = userManager.create(developer)
@@ -91,7 +94,7 @@ public class UserManagerIT {
     }
 
     @Test
-    public void shouldDeleteUser() throws AlreadyExistException {
+    public void shouldDeleteUser() throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
         // given
         Developer developer = createDeveloper();
         int id = userManager.create(developer)
@@ -107,7 +110,8 @@ public class UserManagerIT {
     }
 
     @Test
-    public void shouldUpdateUserIfExist() throws AlreadyExistException, NotExistException {
+    public void shouldUpdateUserIfExist()
+            throws AlreadyExistException, NotExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
         // given
         Developer developer = createDeveloper();
         Developer savedDeveloper = userManager.create(developer)

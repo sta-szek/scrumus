@@ -18,6 +18,8 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -221,7 +223,8 @@ public class StoryManagerIT {
         assertThat(backlogIssues).contains(lastIssue);
     }
 
-    private void startTransaction() throws SystemException, NotSupportedException, AlreadyExistException {
+    private void startTransaction()
+            throws SystemException, NotSupportedException, AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
         userTransaction.begin();
         entityManager.joinTransaction();
         lastIssueType = issueTypeDAO.saveOrUpdate(createIssueType())
