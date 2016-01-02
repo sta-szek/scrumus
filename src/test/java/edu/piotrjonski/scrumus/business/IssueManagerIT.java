@@ -97,7 +97,8 @@ public class IssueManagerIT {
         Issue issue = createIssue();
 
         // when
-        Issue savedIssue = issueManager.create(issue, lastProject);
+        Issue savedIssue = issueManager.create(issue, lastProject)
+                                       .get();
         boolean result = issueDAO.exist(savedIssue.getId());
         List<Issue> issues = backlogDAO.findBacklogForProject(lastProject.getKey())
                                        .get()
@@ -114,7 +115,8 @@ public class IssueManagerIT {
     public void shouldThrowExceptionWhenIssueAlreadyExist() throws Exception {
         // given
         Issue issue = createIssue();
-        Issue savedIssue = issueManager.create(issue, lastProject);
+        Issue savedIssue = issueManager.create(issue, lastProject)
+                                       .get();
 
         // when
         Throwable throwable = catchThrowable(() -> issueManager.create(savedIssue, lastProject));
@@ -127,7 +129,8 @@ public class IssueManagerIT {
     public void shouldUpdateIssue() throws Exception {
         // given
         Issue issue = createIssue();
-        issue = issueManager.create(issue, lastProject);
+        issue = issueManager.create(issue, lastProject)
+                            .get();
 
         String newDesc = "newDesc";
         String dod = "dod";
@@ -154,7 +157,8 @@ public class IssueManagerIT {
         priority.setName(name);
 
         // when
-        Priority result = issueManager.createPriority(priority);
+        Priority result = issueManager.createPriority(priority)
+                                      .get();
 
         // then
         assertThat(result.getName()).isEqualTo(name);
@@ -184,7 +188,8 @@ public class IssueManagerIT {
         state.setName(name);
 
         // when
-        State result = issueManager.createState(state);
+        State result = issueManager.createState(state)
+                                   .get();
 
         // then
         assertThat(result.getName()).isEqualTo(name);
@@ -265,7 +270,7 @@ public class IssueManagerIT {
         // given
 
         // when
-        Throwable throwable = catchThrowable(() -> issueManager.editState(new State()));
+        Throwable throwable = catchThrowable(() -> issueManager.updateState(new State()));
 
         // then
         assertThat(throwable).isInstanceOf(NotExistException.class);
@@ -276,7 +281,7 @@ public class IssueManagerIT {
         // given
 
         // when
-        Throwable throwable = catchThrowable(() -> issueManager.editPriority(new Priority()));
+        Throwable throwable = catchThrowable(() -> issueManager.updatePriority(new Priority()));
 
         // then
         assertThat(throwable).isInstanceOf(NotExistException.class);
@@ -293,7 +298,8 @@ public class IssueManagerIT {
         state.setName(newName);
 
         // when
-        State result = issueManager.editState(state);
+        State result = issueManager.updateState(state)
+                                   .get();
 
         // then
         assertThat(result.getName()).isEqualTo(newName);
@@ -310,7 +316,8 @@ public class IssueManagerIT {
         priority.setName(newName);
 
         // when
-        Priority result = issueManager.editPriority(priority);
+        Priority result = issueManager.updatePriority(priority)
+                                      .get();
 
         // then
         assertThat(result.getName()).isEqualTo(newName);
@@ -326,8 +333,10 @@ public class IssueManagerIT {
 
         lastIssueType = issueTypeDAO.saveOrUpdate(issueType)
                                     .get();
-        lastDeveloper = userManager.create(developer);
-        lastProject = projectManager.create(project);
+        lastDeveloper = userManager.create(developer)
+                                   .get();
+        lastProject = projectManager.create(project)
+                                    .get();
         lastPriority = priorityDAO.saveOrUpdate(priority)
                                   .get();
         lastState = stateDAO.saveOrUpdate(createState())

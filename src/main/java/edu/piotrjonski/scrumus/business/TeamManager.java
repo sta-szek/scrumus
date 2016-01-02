@@ -7,6 +7,7 @@ import edu.piotrjonski.scrumus.domain.Team;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.Optional;
 
 @Stateless
 public class TeamManager {
@@ -20,12 +21,11 @@ public class TeamManager {
     @Inject
     private PermissionManager permissionManager;
 
-    public Team create(Team team) throws AlreadyExistException {
+    public Optional<Team> create(Team team) throws AlreadyExistException {
         if (teamExist(team)) {
             throw new AlreadyExistException("Team already exist.");
         }
-        return teamDAO.saveOrUpdate(team)
-                      .orElse(team);
+        return teamDAO.saveOrUpdate(team);
     }
 
     public void delete(int userId) {

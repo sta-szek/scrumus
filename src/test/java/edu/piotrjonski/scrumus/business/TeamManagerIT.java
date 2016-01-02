@@ -66,7 +66,8 @@ public class TeamManagerIT {
         Team team = createTeam();
 
         // when
-        Team savedTeam = teamManager.create(team);
+        Team savedTeam = teamManager.create(team)
+                                    .get();
         boolean result = teamDAO.exist(savedTeam.getId());
 
         // then
@@ -77,7 +78,8 @@ public class TeamManagerIT {
     public void shouldThrowExceptionWhenTeamAlreadyExist() throws AlreadyExistException {
         // given
         Team team = createTeam();
-        Team savedTeam = teamManager.create(team);
+        Team savedTeam = teamManager.create(team)
+                                    .get();
 
         // when
         Throwable throwable = catchThrowable(() -> teamManager.create(savedTeam));
@@ -91,8 +93,10 @@ public class TeamManagerIT {
         // given
         Team team = createTeam();
         Developer developer = createDeveloper();
-        Team savedTeam = teamManager.create(team);
-        Developer savedDeveloper = userManager.create(developer);
+        Team savedTeam = teamManager.create(team)
+                                    .get();
+        Developer savedDeveloper = userManager.create(developer)
+                                              .get();
 
         // when
         teamManager.addUserToTeam(savedDeveloper, savedTeam);
@@ -108,8 +112,10 @@ public class TeamManagerIT {
         // given
         Team team = createTeam();
         Developer developer = createDeveloper();
-        Team savedTeam = teamManager.create(team);
-        Developer savedDeveloper = userManager.create(developer);
+        Team savedTeam = teamManager.create(team)
+                                    .get();
+        Developer savedDeveloper = userManager.create(developer)
+                                              .get();
         teamManager.addUserToTeam(savedDeveloper, savedTeam);
 
         // when
@@ -126,6 +132,7 @@ public class TeamManagerIT {
         // given
         Team team = createTeam();
         int id = teamManager.create(team)
+                            .get()
                             .getId();
 
         // when

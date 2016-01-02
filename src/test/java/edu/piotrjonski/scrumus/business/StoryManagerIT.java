@@ -20,6 +20,7 @@ import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -101,7 +102,8 @@ public class StoryManagerIT {
         Story story = createStory();
 
         // when
-        Story savedStory = storyManager.createStory(story);
+        Story savedStory = storyManager.createStory(story)
+                                       .get();
         boolean result = storyDAO.exist(savedStory.getId());
 
         // then
@@ -112,7 +114,8 @@ public class StoryManagerIT {
     public void shouldThrowExceptionIfSprintAlreadyExist() throws AlreadyExistException {
         // given
         Story story = createStory();
-        Story savedStory = storyManager.createStory(story);
+        Story savedStory = storyManager.createStory(story)
+                                       .get();
 
         // when
         Throwable result = catchThrowable(() -> storyManager.createStory(savedStory));
@@ -125,10 +128,12 @@ public class StoryManagerIT {
     public void shouldFindStory() throws AlreadyExistException {
         // given
         Story story = createStory();
-        Story savedStory = storyManager.createStory(story);
+        Story savedStory = storyManager.createStory(story)
+                                       .get();
 
         // when
-        Story result = storyManager.findStory(savedStory.getId());
+        Story result = storyManager.findStory(savedStory.getId())
+                                   .get();
 
         // then
         assertThat(result).isEqualTo(savedStory);
@@ -139,10 +144,10 @@ public class StoryManagerIT {
         // given
 
         // when
-        Story result = storyManager.findStory(0);
+        Optional<Story> result = storyManager.findStory(0);
 
         // then
-        assertThat(result.getId()).isEqualTo(0);
+        assertThat(result).isEmpty();
     }
 
     @Test
@@ -155,9 +160,12 @@ public class StoryManagerIT {
         Story story2 = createStory();
         Story story3 = createStory();
         story3.setSprintId(sprint.getId());
-        story1 = storyManager.createStory(story1);
-        story2 = storyManager.createStory(story2);
-        story3 = storyManager.createStory(story3);
+        story1 = storyManager.createStory(story1)
+                             .get();
+        story2 = storyManager.createStory(story2)
+                             .get();
+        story3 = storyManager.createStory(story3)
+                             .get();
 
         // when
         List<Story> result = storyManager.findAllStoriesForSprint(lastSprint.getId());
@@ -172,13 +180,15 @@ public class StoryManagerIT {
     @Test
     public void shouldAddIssueToStoryAndRemoveFromBacklog() throws AlreadyExistException {
         // given
-        Story story = storyManager.createStory(createStory());
+        Story story = storyManager.createStory(createStory())
+                                  .get();
         lastBacklog.addIssue(lastIssue);
         backlogDAO.saveOrUpdate(lastBacklog);
 
         // when
         storyManager.addIssueToStory(lastIssue, story);
         List<Issue> storyIssues = storyManager.findStory(story.getId())
+                                              .get()
                                               .getIssues();
         List<Issue> backlogIssues = backlogDAO.findBacklogForProject(PROJECT_KEY)
                                               .get()
@@ -192,13 +202,15 @@ public class StoryManagerIT {
     @Test
     public void shouldRemoveIssueFromStoryAndAddToBacklog() throws AlreadyExistException {
         // given
-        Story story = storyManager.createStory(createStory());
+        Story story = storyManager.createStory(createStory())
+                                  .get();
         story.addIssue(lastIssue);
         storyDAO.saveOrUpdate(story);
 
         // when
         storyManager.removeIssueFromStory(lastIssue, story);
         List<Issue> storyIssues = storyManager.findStory(story.getId())
+                                              .get()
                                               .getIssues();
         List<Issue> backlogIssues = backlogDAO.findBacklogForProject(PROJECT_KEY)
                                               .get()
@@ -214,8 +226,10 @@ public class StoryManagerIT {
         entityManager.joinTransaction();
         lastIssueType = issueTypeDAO.saveOrUpdate(createIssueType())
                                     .get();
-        lastDeveloper = userManager.create(createDeveloper());
-        lastProject = projectManager.create(createProject());
+        lastDeveloper = userManager.create(createDeveloper())
+                                   .get();
+        lastProject = projectManager.create(createProject())
+                                    .get();
         lastPriority = priorityDAO.saveOrUpdate(createPriority())
                                   .get();
         lastState = stateDAO.saveOrUpdate(createState())

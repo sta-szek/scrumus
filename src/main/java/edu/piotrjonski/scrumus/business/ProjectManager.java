@@ -5,6 +5,7 @@ import edu.piotrjonski.scrumus.domain.Project;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.Optional;
 
 @Stateless
 public class ProjectManager {
@@ -15,17 +16,15 @@ public class ProjectManager {
     @Inject
     private PermissionManager permissionManager;
 
-    public Project create(Project project) throws AlreadyExistException {
+    public Optional<Project> create(Project project) throws AlreadyExistException {
         if (exists(project)) {
             throw new AlreadyExistException("Project already exists.");
         }
-        return projectDAO.saveOrUpdate(project)
-                         .orElse(project);
+        return projectDAO.saveOrUpdate(project);
     }
 
-    public Project findProject(String projectKey) {
-        return projectDAO.findById(projectKey)
-                         .get();
+    public Optional<Project> findProject(String projectKey) {
+        return projectDAO.findById(projectKey);
     }
 
     public void delete(String projectKey) {
