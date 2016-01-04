@@ -11,6 +11,7 @@ public class UtilsTest {
                          .addPackages(true, "edu.piotrjonski.scrumus.domain")
                          .addPackages(true, "edu.piotrjonski.scrumus.dao")
                          .addPackages(true, "edu.piotrjonski.scrumus.business")
+                         .addPackages(true, "edu.piotrjonski.scrumus.services")
                          .addPackages(true, "org.assertj.core")
                          .addPackages(true, "org.apache.commons.collections4")
                          .addAsResource("META-INF/persistence.xml")
