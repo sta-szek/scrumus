@@ -39,6 +39,14 @@ public class TeamManager {
         }
     }
 
+    public void removeUserFromAllTeams(Developer developer) {
+        teamDAO.findAllDeveloperTeams(developer)
+               .forEach(team -> {
+                   team.removeDeveloper(developer);
+                   teamDAO.saveOrUpdate(team);
+               });
+    }
+
     public void removeUserFromTeam(Developer developer, Team team) {
         if (teamExist(team) && developerExist(developer)) {
             team.removeDeveloper(developer);

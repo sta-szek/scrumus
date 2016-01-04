@@ -27,7 +27,7 @@ public class ProductOwnerEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
+    @OneToOne(fetch = FetchType.EAGER, optional = false)
     private DeveloperEntity developerEntity;
 
     @OneToOne

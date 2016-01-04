@@ -16,11 +16,15 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "issue")
-@NamedQueries({@NamedQuery(name = IssueEntity.FIND_ALL, query = IssueEntity.FIND_ALL_QUERY)})
+@NamedQueries({@NamedQuery(name = IssueEntity.FIND_ALL, query = IssueEntity.FIND_ALL_QUERY),
+               @NamedQuery(name = IssueEntity.FIND_ALL_DEVELOPER_ISSUES, query = IssueEntity.FIND_ALL_DEVELOPER_ISSUES_QUERY)})
 public class IssueEntity {
 
     public static final String FIND_ALL = "findAllIssues";
+    public static final String FIND_ALL_DEVELOPER_ISSUES = "findAllDeveloperIssues";
     protected static final String FIND_ALL_QUERY = "SELECT i FROM IssueEntity i";
+    protected static final String FIND_ALL_DEVELOPER_ISSUES_QUERY =
+            "SELECT i FROM IssueEntity i WHERE i.reporter.id=:" + DeveloperEntity.ID + " OR i.assignee.id=:" + DeveloperEntity.ID;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,7 +57,7 @@ public class IssueEntity {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private StateEntity stateEntity;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private DeveloperEntity reporter;
 
     @ManyToOne

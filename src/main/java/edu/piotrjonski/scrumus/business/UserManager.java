@@ -33,6 +33,9 @@ public class UserManager {
     @Inject
     private MailSender mailSender;
 
+    @Inject
+    private TeamManager teamManager;
+
     public List<Developer> findAllUsers() {
         return developerDAO.findAll();
         //TODO testy
@@ -58,8 +61,10 @@ public class UserManager {
         return developerDAO.saveOrUpdate(developer);
     }
 
-    public void delete(int userId) {
-        developerDAO.delete(userId);
+    public void delete(Developer developer) {
+        permissionManager.removeAllRolesFromUser(developer);
+        teamManager.removeUserFromAllTeams(developer);
+        developerDAO.delete(developer.getId());
     }
 
     private Optional<Developer> createUserAndSendPassword(final Developer developer)

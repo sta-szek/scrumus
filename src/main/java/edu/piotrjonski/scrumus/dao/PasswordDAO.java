@@ -34,6 +34,13 @@ public class PasswordDAO extends AbstractDAO<PasswordEntity, Password> {
         return new ArrayList<>();
     }
 
+    public void deleteUserPassword(int userId) {
+        PasswordEntity password = entityManager.createNamedQuery(PasswordEntity.FIND_USER_PASSWORD, PasswordEntity.class)
+                                               .setParameter(DeveloperEntity.ID, userId)
+                                               .getSingleResult();
+        entityManager.remove(password);
+    }
+
     @Override
     protected PasswordEntity mapToDatabaseModel(final Password domainModel) {
         PasswordEntity passwordEntity = new PasswordEntity();

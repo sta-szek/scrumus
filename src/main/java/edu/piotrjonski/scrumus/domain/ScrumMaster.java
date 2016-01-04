@@ -3,6 +3,7 @@ package edu.piotrjonski.scrumus.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
-public class ScrumMaster {
+public class ScrumMaster implements Serializable {
     private int id;
     private Developer developer;
     private List<Team> teams = new ArrayList<>();

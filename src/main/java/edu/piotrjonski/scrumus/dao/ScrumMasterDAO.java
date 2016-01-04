@@ -1,12 +1,15 @@
 package edu.piotrjonski.scrumus.dao;
 
 
+import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.dao.model.user.ScrumMasterEntity;
 import edu.piotrjonski.scrumus.domain.ScrumMaster;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import java.util.Optional;
 
 @Stateless
 public class ScrumMasterDAO extends AbstractDAO<ScrumMasterEntity, ScrumMaster> {
@@ -23,6 +26,18 @@ public class ScrumMasterDAO extends AbstractDAO<ScrumMasterEntity, ScrumMaster> 
 
     private ScrumMasterDAO(final Class entityClass) {
         super(entityClass);
+    }
+
+    public Optional<ScrumMaster> findByDeveloperId(int developerId) {
+        try {
+            ScrumMasterEntity scrumMasterEntity = entityManager.createNamedQuery(ScrumMasterEntity.FIND_BY_DEVELOPER_ID,
+                                                                                 ScrumMasterEntity.class)
+                                                               .setParameter(DeveloperEntity.ID, developerId)
+                                                               .getSingleResult();
+            return Optional.of(mapToDomainModelIfNotNull(scrumMasterEntity));
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     @Override

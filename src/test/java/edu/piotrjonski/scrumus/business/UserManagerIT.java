@@ -97,12 +97,11 @@ public class UserManagerIT {
     public void shouldDeleteUser() throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
         // given
         Developer developer = createDeveloper();
-        int id = userManager.create(developer)
-                            .get()
-                            .getId();
+        developer = userManager.create(developer)
+                               .get();
 
         // when
-        userManager.delete(id);
+        userManager.delete(developer);
         int result = findAllUsersSize();
 
         // then

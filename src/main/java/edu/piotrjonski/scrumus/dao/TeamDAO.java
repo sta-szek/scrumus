@@ -1,11 +1,16 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.dao.model.user.TeamEntity;
+import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Team;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Stateless
 public class TeamDAO extends AbstractDAO<TeamEntity, Team> {
@@ -22,6 +27,17 @@ public class TeamDAO extends AbstractDAO<TeamEntity, Team> {
 
     private TeamDAO(final Class entityClass) {
         super(entityClass);
+    }
+
+    public List<Team> findAllDeveloperTeams(Developer developer) {
+        Optional<Developer> savedDeveloper = developerDAO.findById(developer.getId());
+        if (savedDeveloper.isPresent()) {
+            DeveloperEntity developerEntity = developerDAO.mapToDatabaseModelIfNotNull(savedDeveloper.get());
+            return mapToDomainModel(entityManager.createNamedQuery(TeamEntity.FIND_ALL_DEVELOPER_TEAMS)
+                                                 .setParameter(TeamEntity.DEVELOPER, developerEntity)
+                                                 .getResultList());
+        }
+        return new ArrayList<>();
     }
 
     @Override

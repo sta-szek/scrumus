@@ -17,8 +17,8 @@
         <param-value>true</param-value>
     </context-param>
     <context-param>
-        <param-name>javax.faces.CONFIG_FILES</param-name>
-        <param-value>/WEB-INF/validators.xml</param-value>
+        <param-name>primefaces.FONT_AWSOME</param-name>
+        <param-value>true</param-value>
     </context-param>
 
     <security-constraint>

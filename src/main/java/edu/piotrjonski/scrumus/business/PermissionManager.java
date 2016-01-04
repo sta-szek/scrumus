@@ -4,6 +4,8 @@ package edu.piotrjonski.scrumus.business;
 import edu.piotrjonski.scrumus.dao.*;
 import edu.piotrjonski.scrumus.dao.model.security.RoleType;
 import edu.piotrjonski.scrumus.domain.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -11,6 +13,7 @@ import java.util.Optional;
 
 @Stateless
 public class PermissionManager {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Inject
     private DeveloperDAO developerDAO;
@@ -26,6 +29,9 @@ public class PermissionManager {
 
     @Inject
     private RoleDAO roleDAO;
+
+    @Inject
+    private ScrumMasterDAO scrumMasterDAO;
 
     @Inject
     private ProductOwnerDAO productOwnerDAO;
@@ -46,7 +52,9 @@ public class PermissionManager {
     }
 
     public void grantAdminPermission(Developer user) {
-        if (developerExist(user) && isNotAdmin(user)) {
+        logger.info("grant");
+        if (isNotAdmin(user)) {
+            logger.info("grant2");
             Role role = createRoleIfNotExist(RoleType.ADMIN);
             saveAdmin(user);
             grantRole(role, user);
@@ -74,6 +82,16 @@ public class PermissionManager {
         }
     }
 
+    public void removeAllRolesFromUser(Developer user) {
+        removeRole(RoleType.ADMIN, user);
+        removeRole(RoleType.DEVELOPER, user);
+        removeRole(RoleType.PRODUCT_OWNER, user);
+        removeRole(RoleType.SCRUM_MASTER, user);
+        deleteAdmin(user);
+        deleteProductOwner(user);
+        deleteScrumMaster(user);
+    }
+
     private void removeRole(final RoleType roleType, final Developer user) {
         Role role = roleDAO.findRoleByRoleType(roleType)
                            .get();
@@ -82,10 +100,21 @@ public class PermissionManager {
     }
 
     private void deleteAdmin(final Developer user) {
-        int adminId = adminDAO.findByDeveloperId(user.getId())
-                              .get()
-                              .getId();
-        adminDAO.delete(adminId);
+        adminDAO.findByDeveloperId(user.getId())
+                .map(Admin::getId)
+                .ifPresent(adminDAO::delete);
+    }
+
+    private void deleteProductOwner(final Developer user) {
+        productOwnerDAO.findByDeveloperId(user.getId())
+                       .map(ProductOwner::getId)
+                       .ifPresent(productOwnerDAO::delete);
+    }
+
+    private void deleteScrumMaster(final Developer user) {
+        scrumMasterDAO.findByDeveloperId(user.getId())
+                      .map(ScrumMaster::getId)
+                      .ifPresent(scrumMasterDAO::delete);
     }
 
     private void grantRole(Role role, final Developer user) {
@@ -106,7 +135,8 @@ public class PermissionManager {
             return roleDAO.saveOrUpdate(role)
                           .get();
         }
-        return null;
+        return roleDAO.findRoleByRoleType(roleType)
+                      .get();
     }
 
     private boolean hasRole(RoleType roleType, final Developer user) {return roleDAO.existByRoleTypeAndDeveloperId(roleType, user.getId());}

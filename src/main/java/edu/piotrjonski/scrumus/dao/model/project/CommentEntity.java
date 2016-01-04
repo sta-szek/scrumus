@@ -14,11 +14,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "comment")
-@NamedQueries({@NamedQuery(name = CommentEntity.FIND_ALL, query = CommentEntity.FIND_ALL_QUERY)})
+@NamedQueries({@NamedQuery(name = CommentEntity.FIND_ALL, query = CommentEntity.FIND_ALL_QUERY),
+               @NamedQuery(name = CommentEntity.FIND_ALL_DEVELOPER_COMMENTS, query = CommentEntity.FIND_ALL_DEVELOPER_COMMENTS_QUERY)})
 public class CommentEntity {
 
     public static final String FIND_ALL = "findAllComments";
+    public static final String FIND_ALL_DEVELOPER_COMMENTS = "findAllDeveloperComments";
     protected static final String FIND_ALL_QUERY = "SELECT c FROM CommentEntity c";
+    protected static final String FIND_ALL_DEVELOPER_COMMENTS_QUERY =
+            "SELECT c FROM CommentEntity c where c.developerEntity.id=:" + DeveloperEntity.ID;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
