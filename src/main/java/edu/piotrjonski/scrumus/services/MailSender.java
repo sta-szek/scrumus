@@ -1,9 +1,14 @@
 package edu.piotrjonski.scrumus.services;
 
 
-import javax.annotation.Resource;
+import edu.piotrjonski.scrumus.configuration.EmailConfiguration;
+
 import javax.ejb.Stateless;
-import javax.mail.*;
+import javax.inject.Inject;
+import javax.mail.Address;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.ws.rs.GET;
@@ -18,8 +23,11 @@ public class MailSender {
     private static final long serialVersionUID = 1L;
     private static final String FROM = "pojo@staszek.me";
 
-    @Resource(lookup = "java:jboss/mail/Default")
-    private Session mailSession;
+//    @Resource(lookup = "java:jboss/mail/Default")
+//    private Session mailSession;
+
+    @Inject
+    private EmailConfiguration emailConfiguration;
 
     @GET
     @Path("/test")
@@ -42,7 +50,7 @@ public class MailSender {
     }
 
     private MimeMessage createMimeMessage(final String email, String subject, String content) throws MessagingException {
-        MimeMessage mimeMessage = new MimeMessage(mailSession);
+        MimeMessage mimeMessage = new MimeMessage(emailConfiguration.createSession());
         Address[] to = new InternetAddress[]{new InternetAddress(email)};
         mimeMessage.setFrom(FROM);
         mimeMessage.setRecipients(Message.RecipientType.TO, to);

@@ -28,12 +28,12 @@ public class IssueManager {
     @Inject
     private BacklogDAO backlogDAO;
 
-    public Optional<Issue> create(Issue issue, Project project) throws Exception {
+    public Optional<Issue> create(Issue issue, Project project) throws AlreadyExistException, NotExistException {
         if (issueExist(issue)) {
             throw new AlreadyExistException("Issue already exist.");
         }
         if (!projectExist(project)) {
-            throw new Exception("Project does not exist");
+            throw new NotExistException("Project does not exist");
         }
         issue.setProjectKey(project.getKey());
         Issue savedIssue = saveIssue(issue);

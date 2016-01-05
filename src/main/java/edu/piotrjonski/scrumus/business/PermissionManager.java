@@ -5,7 +5,6 @@ import edu.piotrjonski.scrumus.dao.*;
 import edu.piotrjonski.scrumus.dao.model.security.RoleType;
 import edu.piotrjonski.scrumus.domain.*;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -13,7 +12,9 @@ import java.util.Optional;
 
 @Stateless
 public class PermissionManager {
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Inject
+    private transient Logger logger;
 
     @Inject
     private DeveloperDAO developerDAO;
@@ -52,12 +53,12 @@ public class PermissionManager {
     }
 
     public void grantAdminPermission(Developer user) {
-        logger.info("grant");
         if (isNotAdmin(user)) {
-            logger.info("grant2");
             Role role = createRoleIfNotExist(RoleType.ADMIN);
             saveAdmin(user);
             grantRole(role, user);
+            logger.info("User " + user.getUsername() + " (" + user.getFirstName() + " " + user.getSurname() +
+                        ") was granted admin permission.");
         }
     }
 
@@ -65,6 +66,7 @@ public class PermissionManager {
         if (isAdmin(user)) {
             deleteAdmin(user);
             removeRole(RoleType.ADMIN, user);
+            logger.info("User " + user.getUsername() + " (" + user.getFirstName() + " " + user.getSurname() + ") lost admin permission.");
         }
     }
 
@@ -148,7 +150,7 @@ public class PermissionManager {
                            .equals(project.getKey());
     }
 
-    private boolean isNotAdmin(final Developer user) {return !isAdmin(user);}
+    private boolean isNotAdmin(final Developer user) {return developerExist(user) && !isAdmin(user);}
 
     private boolean developerExist(final Developer user) {return developerDAO.exist(user.getId());}
 

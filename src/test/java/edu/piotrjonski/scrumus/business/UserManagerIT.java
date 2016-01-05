@@ -4,7 +4,7 @@ import edu.piotrjonski.scrumus.dao.DeveloperDAO;
 import edu.piotrjonski.scrumus.dao.model.user.AdminEntity;
 import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
-import edu.piotrjonski.scrumus.utils.UtilsTest;
+import edu.piotrjonski.scrumus.utils.TestUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.NotSupportedException;
@@ -50,7 +51,7 @@ public class UserManagerIT {
 
     @Deployment
     public static WebArchive createDeployment() {
-        return UtilsTest.createDeployment();
+        return TestUtils.createDeployment();
     }
 
     @Before
@@ -65,7 +66,8 @@ public class UserManagerIT {
     }
 
     @Test
-    public void shouldCreateDeveloper() throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void shouldCreateDeveloper()
+            throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException, MessagingException {
         // given
         Developer developer = createDeveloper();
 
@@ -154,6 +156,8 @@ public class UserManagerIT {
         userTransaction.begin();
         entityManager.joinTransaction();
         entityManager.createQuery("DELETE FROM AdminEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM PasswordEntity")
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM DeveloperEntity")
                      .executeUpdate();

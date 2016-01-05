@@ -9,6 +9,10 @@
         <param-value>*.xhtml</param-value>
     </context-param>
     <context-param>
+        <param-name>javax.faces.CONFIG_FILES</param-name>
+        <param-value>/WEB-INF/global-config.xml</param-value>
+    </context-param>
+    <context-param>
         <param-name>com.sun.faces.enableRestoreView11Compatibility</param-name>
         <param-value>true</param-value>
     </context-param>
@@ -16,10 +20,7 @@
         <param-name>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
         <param-value>true</param-value>
     </context-param>
-    <context-param>
-        <param-name>primefaces.FONT_AWSOME</param-name>
-        <param-value>true</param-value>
-    </context-param>
+
 
     <security-constraint>
         <web-resource-collection>

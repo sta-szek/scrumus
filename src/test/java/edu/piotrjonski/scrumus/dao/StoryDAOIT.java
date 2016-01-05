@@ -5,7 +5,7 @@ import edu.piotrjonski.scrumus.dao.model.project.TimeRange;
 import edu.piotrjonski.scrumus.domain.Project;
 import edu.piotrjonski.scrumus.domain.Sprint;
 import edu.piotrjonski.scrumus.domain.Story;
-import edu.piotrjonski.scrumus.utils.UtilsTest;
+import edu.piotrjonski.scrumus.utils.TestUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -54,7 +54,7 @@ public class StoryDAOIT {
 
     @Deployment
     public static WebArchive createDeployment() {
-        return UtilsTest.createDeployment();
+        return TestUtils.createDeployment();
     }
 
     @Before

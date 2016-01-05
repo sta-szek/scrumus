@@ -6,6 +6,7 @@ import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Password;
 import edu.piotrjonski.scrumus.services.HashGenerator;
 import edu.piotrjonski.scrumus.services.MailSender;
+import org.slf4j.Logger;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -17,6 +18,9 @@ import java.util.Optional;
 
 @Stateless
 public class UserManager {
+
+    @Inject
+    private transient Logger logger;
 
     @Inject
     private DeveloperDAO developerDAO;
@@ -67,24 +71,32 @@ public class UserManager {
         developerDAO.delete(developer.getId());
     }
 
-    private Optional<Developer> createUserAndSendPassword(final Developer developer)
+    private Optional<Developer> createUserAndSendPassword(final Developer user)
             throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        Optional<Developer> savedDeveloper = developerDAO.saveOrUpdate(developer);
+        Optional<Developer> savedDeveloper = developerDAO.saveOrUpdate(user);
         if (savedDeveloper.isPresent()) {
             if (generatePasswordAndSendEmail(savedDeveloper)) {
                 return savedDeveloper;
             }
         }
+        logger.info("Couldn't create user " + user);
         return Optional.empty();
     }
 
-    private boolean generatePasswordAndSendEmail(final Optional<Developer> savedDeveloper)
-            throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        String stringPassword = hashGenerator.generateHash();
-        String encodedPassword = hashGenerator.encodeWithSHA256(stringPassword);
-        if (savePasswordAndSendEmail(savedDeveloper, stringPassword, encodedPassword)) {
-            return true;
+    private boolean generatePasswordAndSendEmail(final Optional<Developer> savedDeveloper) {
+        final String stringPassword;
+        final String encodedPassword;
+
+        try {
+            stringPassword = hashGenerator.generateHash();
+            encodedPassword = hashGenerator.encodeWithSHA256(stringPassword);
+            if (savePasswordAndSendEmail(savedDeveloper, stringPassword, encodedPassword)) {
+                return true;
+            }
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            logger.info("Couldn't encode text because of:  " + e.getMessage());
         }
+
         return false;
     }
 
@@ -93,25 +105,28 @@ public class UserManager {
                                              final String encodedPassword) {
         Optional<Password> savedPassword = createAndSavePassword(savedDeveloper.get(), encodedPassword);
         if (savedPassword.isPresent()) {
-            sendMessage(savedDeveloper, stringPassword);
+            sendMessage(savedDeveloper.get(), stringPassword);
             return true;
         } else {
             developerDAO.delete(savedDeveloper.get()
                                               .getId());
+            logger.info("Couldn't save user password. User was deleted.");
         }
         return false;
     }
 
-    private void sendMessage(final Optional<Developer> savedDeveloper, final String stringPassword) {
+    private void sendMessage(final Developer savedDeveloper, final String stringPassword) {
         String subject = "Witamy w scrumus!";
-        String message = "Twoje hasło to " + stringPassword;
-        String email = savedDeveloper.get()
-                                     .getEmail();
+        String message = "Twoje hasło to " + stringPassword + "\n Pamiętaj aby je zmienić zaraz po zalogowaniu.";
+        String email = savedDeveloper.getEmail();
         try {
             mailSender.sendMail(email, subject, message);
+            logger.info("Message with password has been sent");
         } catch (MessagingException e) {
-            developerDAO.delete(savedDeveloper.get()
-                                              .getId());
+            developerDAO.delete(savedDeveloper.getId());
+            logger.info("Couldn't send email with password. User was deleted.");
+            logger.error(mailSender.getClass()
+                                   .getName());
         }
     }
 
