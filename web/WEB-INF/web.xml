@@ -10,7 +10,7 @@
     </context-param>
     <context-param>
         <param-name>javax.faces.CONFIG_FILES</param-name>
-        <param-value>/WEB-INF/global-config.xml</param-value>
+        <param-value>/WEB-INF/beans.xml, /WEB-INF/global-config.xml</param-value>
     </context-param>
     <context-param>
         <param-name>com.sun.faces.enableRestoreView11Compatibility</param-name>

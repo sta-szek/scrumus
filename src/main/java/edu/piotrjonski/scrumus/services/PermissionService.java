@@ -10,9 +10,9 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-@Named
-@RequestScoped
 @Data
+@RequestScoped
+@Named
 public class PermissionService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Inject

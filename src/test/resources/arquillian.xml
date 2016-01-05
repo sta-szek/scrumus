@@ -17,4 +17,7 @@
             <property name="password">admin</property>
         </configuration>
     </container>
+    <engine>
+        <property name="deploymentExportPath">out/artifacts</property>
+    </engine>
 </arquillian>

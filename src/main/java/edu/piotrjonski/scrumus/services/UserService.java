@@ -16,9 +16,9 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-@Named
-@RequestScoped
 @Data
+@RequestScoped
+@Named
 public class UserService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());

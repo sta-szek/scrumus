@@ -1,4 +1,4 @@
-package edu.piotrjonski.scrumus.services;
+package edu.piotrjonski.scrumus.configuration;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

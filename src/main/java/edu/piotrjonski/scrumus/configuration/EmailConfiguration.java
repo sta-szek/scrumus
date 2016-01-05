@@ -23,7 +23,7 @@ public class EmailConfiguration {
     public static final String EMAIL_AUTH = "email.auth";
 
     @Inject
-    private ConfigurationService configurationService;
+    private ConfigurationProvider configurationProvider;
 
     public Session createSession() {
         return Session.getInstance(createProperties(), createAuthenticator());
@@ -31,10 +31,10 @@ public class EmailConfiguration {
 
     private Properties createProperties() {
         Properties properties = new Properties();
-        properties.put(MAIL_SMTP_AUTH, configurationService.getProperty(EMAIL_AUTH));
-        properties.put(MAIL_SMTP_STARTTLS_ENABLE, configurationService.getProperty(EMAIL_TLS));
-        properties.put(MAIL_SMTP_HOST, configurationService.getProperty(EMAIL_SMTP_HOST));
-        properties.put(MAIL_SMTP_PORT, configurationService.getProperty(EMAIL_SMTP_PORT));
+        properties.put(MAIL_SMTP_AUTH, configurationProvider.getProperty(EMAIL_AUTH));
+        properties.put(MAIL_SMTP_STARTTLS_ENABLE, configurationProvider.getProperty(EMAIL_TLS));
+        properties.put(MAIL_SMTP_HOST, configurationProvider.getProperty(EMAIL_SMTP_HOST));
+        properties.put(MAIL_SMTP_PORT, configurationProvider.getProperty(EMAIL_SMTP_PORT));
         return properties;
     }
 
@@ -42,8 +42,8 @@ public class EmailConfiguration {
         return new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(configurationService.getProperty(EMAIL_FROM),
-                                                  configurationService.getProperty(EMAIL_PASSWORD));
+                return new PasswordAuthentication(configurationProvider.getProperty(EMAIL_FROM),
+                                                  configurationProvider.getProperty(EMAIL_PASSWORD));
             }
         };
     }

@@ -50,11 +50,17 @@ public class UserManager {
         //TODO TESTY
     }
 
+    public void setMailSender(MailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+
     public Optional<Developer> create(Developer developer)
             throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
         if (developerExist(developer)) {
             throw new AlreadyExistException("User already exist.");
         }
+        logger.info(mailSender.getClass()
+                              .getName());
         return createUserAndSendPassword(developer);
     }
 
