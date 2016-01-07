@@ -1,7 +1,6 @@
 package edu.piotrjonski.scrumus.business;
 
 import edu.piotrjonski.scrumus.dao.DeveloperDAO;
-import edu.piotrjonski.scrumus.dao.model.user.AdminEntity;
 import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.utils.TestUtils;
@@ -28,7 +27,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 
 @RunWith(Arquillian.class)
 public class UserManagerIT {
-    public static final String EMAIL = "pojo@staszek.me";
+    public static final String EMAIL = "yoyo@wp.eu";
     public static final String USERNAME = "jako";
     public static final String SURNAME = "Kowalski";
     public static final String FIRSTNAME = "Jan";
@@ -173,12 +172,6 @@ public class UserManagerIT {
         developer.setEmail(EMAIL);
         nextUniqueValue++;
         return developer;
-    }
-
-    private int findAllAdminsSize() {
-        return entityManager.createNamedQuery(AdminEntity.FIND_ALL, AdminEntity.class)
-                            .getResultList()
-                            .size();
     }
 
     private int findAllUsersSize() {

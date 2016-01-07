@@ -147,7 +147,7 @@ public class TeamManagerIT {
 
     private Developer createDeveloper() {
         Developer developer = new Developer();
-        developer.setEmail("pojo@staszek.me");
+        developer.setEmail("yoyo@wp.eu");
         developer.setFirstName("email");
         developer.setSurname("email");
         developer.setUsername("email");
@@ -162,7 +162,9 @@ public class TeamManagerIT {
     private void clearData() throws Exception {
         userTransaction.begin();
         entityManager.joinTransaction();
-        entityManager.createQuery("DELETE FROM DeveloperEntity ")
+        entityManager.createQuery("DELETE FROM PasswordEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM DeveloperEntity")
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM TeamEntity")
                      .executeUpdate();

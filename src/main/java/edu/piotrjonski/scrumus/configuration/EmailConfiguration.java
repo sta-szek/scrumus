@@ -40,11 +40,6 @@ public class EmailConfiguration {
         properties.put(MAIL_SMTP_STARTTLS_ENABLE, configurationProvider.getProperty(EMAIL_TLS));
         properties.put(MAIL_SMTP_HOST, configurationProvider.getProperty(EMAIL_SMTP_HOST));
         properties.put(MAIL_SMTP_PORT, configurationProvider.getProperty(EMAIL_SMTP_PORT));
-
-        logger.info(configurationProvider.getProperty(EMAIL_AUTH));
-        logger.info(configurationProvider.getProperty(EMAIL_TLS));
-        logger.info(configurationProvider.getProperty(EMAIL_SMTP_HOST));
-        logger.info(configurationProvider.getProperty(EMAIL_SMTP_PORT));
         return properties;
     }
 
