@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -25,6 +26,7 @@ public class EmailConfiguration {
     public static final String EMAIL_AUTH = "email.auth";
 
     @Inject
+    @Named(value = "configurationProvider")
     private ConfigurationProvider configurationProvider;
 
     @Inject

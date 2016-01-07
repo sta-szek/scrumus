@@ -3,7 +3,7 @@ package edu.piotrjonski.scrumus.ui.configuration;
 
 import edu.piotrjonski.scrumus.configuration.ConfigurationProvider;
 
-import javax.faces.bean.ApplicationScoped;
+import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class PathProvider extends ConfigurationProvider {

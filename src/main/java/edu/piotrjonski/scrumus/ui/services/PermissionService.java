@@ -1,4 +1,4 @@
-package edu.piotrjonski.scrumus.services;
+package edu.piotrjonski.scrumus.ui.services;
 
 import edu.piotrjonski.scrumus.business.PermissionManager;
 import edu.piotrjonski.scrumus.domain.Developer;

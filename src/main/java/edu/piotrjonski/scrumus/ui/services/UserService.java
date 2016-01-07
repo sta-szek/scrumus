@@ -1,8 +1,9 @@
-package edu.piotrjonski.scrumus.services;
+package edu.piotrjonski.scrumus.ui.services;
 
 import edu.piotrjonski.scrumus.business.AlreadyExistException;
 import edu.piotrjonski.scrumus.business.UserManager;
 import edu.piotrjonski.scrumus.domain.Developer;
+import edu.piotrjonski.scrumus.ui.configuration.PathProvider;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,22 +27,27 @@ public class UserService {
     @Inject
     private UserManager userManager;
 
-    @Size(max = 20, message = "Nazwa użytkownika może zawierać maksymalnie 20 znaków")
+    @Inject
+    private transient PathProvider pathProvider;
+
+    @Size(max = 20)
     private String username;
-    @Size(max = 30, message = "Imię użytkownika może zawierać maksymalnie 30 znaków")
+    @Size(max = 30)
     private String firstname;
-    @Size(max = 30, message = "Nazwisko użytkownika może zawierać maksymalnie 30 znaków")
+    @Size(max = 30)
     private String surname;
     @Pattern(regexp = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
-    @Size(max = 40, message = "Adres e-mail użytkownika może zawierać maksymalnie 40 znaków")
+    @Size(max = 40)
     private String email;
 
-    public void createUser() {
+    public String createUser() {
         Developer developer = createDeveloper();
         try {
             userManager.create(developer);
+            return pathProvider.getProperty("admin.listUsers");
         } catch (AlreadyExistException | UnsupportedEncodingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
+            return null;
         }
 
     }
