@@ -95,10 +95,12 @@ public class PermissionManager {
     }
 
     private void removeRole(final RoleType roleType, final Developer user) {
-        Role role = roleDAO.findRoleByRoleType(roleType)
-                           .get();
-        role.removeDeveloper(user);
-        roleDAO.saveOrUpdate(role);
+        roleDAO.findRoleByRoleType(roleType)
+               .ifPresent(x -> {
+                   x.removeDeveloper(user);
+                   roleDAO.saveOrUpdate(x);
+               });
+
     }
 
     private void deleteAdmin(final Developer user) {

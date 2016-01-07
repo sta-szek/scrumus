@@ -1,5 +1,7 @@
 package edu.piotrjonski.scrumus.configuration;
 
+import org.slf4j.Logger;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.mail.Authenticator;
@@ -25,6 +27,9 @@ public class EmailConfiguration {
     @Inject
     private ConfigurationProvider configurationProvider;
 
+    @Inject
+    private transient Logger logger;
+
     public Session createSession() {
         return Session.getInstance(createProperties(), createAuthenticator());
     }
@@ -35,6 +40,11 @@ public class EmailConfiguration {
         properties.put(MAIL_SMTP_STARTTLS_ENABLE, configurationProvider.getProperty(EMAIL_TLS));
         properties.put(MAIL_SMTP_HOST, configurationProvider.getProperty(EMAIL_SMTP_HOST));
         properties.put(MAIL_SMTP_PORT, configurationProvider.getProperty(EMAIL_SMTP_PORT));
+
+        logger.info(configurationProvider.getProperty(EMAIL_AUTH));
+        logger.info(configurationProvider.getProperty(EMAIL_TLS));
+        logger.info(configurationProvider.getProperty(EMAIL_SMTP_HOST));
+        logger.info(configurationProvider.getProperty(EMAIL_SMTP_PORT));
         return properties;
     }
 
@@ -44,6 +54,7 @@ public class EmailConfiguration {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(configurationProvider.getProperty(EMAIL_FROM),
                                                   configurationProvider.getProperty(EMAIL_PASSWORD));
+
             }
         };
     }

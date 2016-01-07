@@ -130,7 +130,7 @@ public class UserManager {
             logger.info("Message with password has been sent");
         } catch (MessagingException e) {
             developerDAO.delete(savedDeveloper.getId());
-            logger.info("Couldn't send email with password. User was deleted.");
+            logger.info("Couldn't send email with password. User was deleted. Reason: " + e.getMessage());
             logger.error(mailSender.getClass()
                                    .getName());
         }

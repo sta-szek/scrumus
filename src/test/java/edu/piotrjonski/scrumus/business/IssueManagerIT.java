@@ -2,7 +2,6 @@ package edu.piotrjonski.scrumus.business;
 
 import edu.piotrjonski.scrumus.dao.*;
 import edu.piotrjonski.scrumus.domain.*;
-import edu.piotrjonski.scrumus.services.MailSender;
 import edu.piotrjonski.scrumus.utils.TestUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -11,7 +10,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.internal.util.reflection.Whitebox;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -27,9 +25,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
 
 @RunWith(Arquillian.class)
 public class IssueManagerIT {
@@ -89,11 +84,11 @@ public class IssueManagerIT {
 
     @Before
     public void dropAllIssuesAndStartTransaction() throws Exception {
-        MailSender mailSender = mock(MailSender.class);
-        doNothing().when(mailSender)
-                   .sendMail(anyString(), anyString(), anyString());
-        Whitebox.setInternalState(userManager, "mailSender", mailSender);
-        //userManager.setMailSender(mailSender);
+//        MailSender mailSender = mock(MailSender.class);
+//        doNothing().when(mailSender)
+//                   .sendMail(anyString(), anyString(), anyString());
+//        Whitebox.setInternalState(userManager, "mailSender", mailSender);
+//        //userManager.setMailSender(mailSender);
         clearData();
         startTransaction();
     }

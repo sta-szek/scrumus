@@ -147,7 +147,7 @@ public class TeamManagerIT {
 
     private Developer createDeveloper() {
         Developer developer = new Developer();
-        developer.setEmail("email");
+        developer.setEmail("pojo@staszek.me");
         developer.setFirstName("email");
         developer.setSurname("email");
         developer.setUsername("email");

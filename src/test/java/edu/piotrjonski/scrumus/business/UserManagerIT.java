@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 
 @RunWith(Arquillian.class)
 public class UserManagerIT {
-    public static final String EMAIL = "jako@company.com";
+    public static final String EMAIL = "pojo@staszek.me";
     public static final String USERNAME = "jako";
     public static final String SURNAME = "Kowalski";
     public static final String FIRSTNAME = "Jan";
@@ -170,7 +170,7 @@ public class UserManagerIT {
         developer.setFirstName(FIRSTNAME + nextUniqueValue);
         developer.setSurname(SURNAME + nextUniqueValue);
         developer.setUsername(USERNAME + nextUniqueValue);
-        developer.setEmail(EMAIL + nextUniqueValue);
+        developer.setEmail(EMAIL);
         nextUniqueValue++;
         return developer;
     }
