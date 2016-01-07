@@ -4,12 +4,12 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <h:body>
-    <ui:composition template="/WEB-INF/templates/default.xhtml">
+    <ui:composition template="/admin/admin-template.xhtml">
 
         <ui:define name="content">
-            <h:outputLabel value="STRONA ADMINA. Aktualny użytkownik: "/>
-            <h:outputLabel value="#{request.remoteUser}"/>
-            <h:commandButton action="#{request.logout}" value="wyloguj"/>
+            <h:outputLabel value="STRONA ADMINA. Aktualny użytkownik: " />
+            <h:outputLabel value="#{request.remoteUser}" />
+            <h:commandButton action="#{request.logout}" value="wyloguj" />
         </ui:define>
 
     </ui:composition>

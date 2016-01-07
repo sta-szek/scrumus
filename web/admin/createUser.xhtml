@@ -5,48 +5,48 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 <h:body>
-    <ui:composition template="/WEB-INF/templates/default.xhtml">
+    <ui:composition template="/admin/admin-template.xhtml">
 
         <ui:define name="content">
             <h:form id="createUserForm">
-                <p:panel header="Stwórz nowego użytkownika">
+                <p:panel header="#{i18n['page.admin.user.create']}">
                     <h:panelGrid columns="3" cellpadding="5">
-                        <p:outputLabel for="firstname" value="Imię" />
+                        <p:outputLabel for="firstname" value="#{i18n['page.admin.user.firstname']}" />
                         <p:inputText id="firstname"
                                      value="#{userService.firstname}"
                                      label="Firstname"
                                      required="true"
-                                     requiredMessage="Imię użytkownika jest wymagane" />
+                                     requiredMessage="#{i18n['page.validator.require.user.firstname']}" />
                         <p:message for="firstname" />
 
-                        <p:outputLabel for="surname" value="Nazwisko" />
+                        <p:outputLabel for="surname" value="#{i18n['page.admin.user.surname']}" />
                         <p:inputText id="surname"
                                      value="#{userService.surname}"
                                      label="Surname"
                                      required="true"
-                                     requiredMessage="Nazwisko użytkownika jest wymagane" />
+                                     requiredMessage="#{i18n['page.validator.require.user.surname']}" />
                         <p:message for="surname" />
 
-                        <p:outputLabel for="username" value="Nazwa użytkownika" />
+                        <p:outputLabel for="username" value="#{i18n['page.admin.user.username']}" />
                         <p:inputText id="username"
                                      value="#{userService.username}"
                                      required="true"
-                                     requiredMessage="Nazwa użytkownika jest wymagana" />
+                                     requiredMessage="#{i18n['page.validator.require.user.username']}" />
                         <p:message for="username" />
 
 
-                        <p:outputLabel for="email" value="Adres e-mail" />
+                        <p:outputLabel for="email" value="#{i18n['page.admin.user.email']}" />
                         <p:inputText id="email"
                                      value="#{userService.email}"
                                      required="true"
-                                     requiredMessage="Email jest wymagany" />
+                                     requiredMessage="#{i18n['page.validator.require.user.email']}" />
                         <p:message for="email" />
                     </h:panelGrid>
-                    <p:commandButton id="sendButton"
-                                     value="Stwórz użytkownika"
+                    <p:commandButton id="createButton"
+                                     value="#{i18n['page.admin.user.create']}"
                                      action="#{userService.createUser}"
                                      ajax="false"
-                                     icon="ui-icon-check"
+                                     icon="fa fa-user-plus"
                                      validateClient="true" />
                 </p:panel>
             </h:form>

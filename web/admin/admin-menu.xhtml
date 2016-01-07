@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <h:outputStylesheet name="style.css" />
+</h:head>
+<h:body>
+    <p:megaMenu orientation="horizontal" style="margin-top:20px">
+        <p:submenu label="#{i18n['page.admin.menubar.create']}" icon="fa fa-plus">
+            <p:column>
+                <p:submenu style="display: none;">
+                    <p:menuitem icon="fa fa-user-plus"
+                                value="#{i18n['page.admin.menubar.create.user']}"
+                                url="#{path['admin.createUser']}" />
+                    <p:menuitem icon="fa fa-leanpub"
+                                value="#{i18n['page.admin.menubar.create.project']}"
+                                url="#{path['admin.createProject']}" />
+                </p:submenu>
+            </p:column>
+        </p:submenu>
+
+        <p:submenu label="#{i18n['page.admin.menubar.explore']}" icon="ui-icon-document">
+            <p:column>
+                <p:submenu style="display: none;">
+                    <p:menuitem icon="fa fa-users"
+                                value="#{i18n['page.admin.menubar.explore.user']}"
+                                url="#{path['admin.listUsers']}" />
+                    <p:menuitem icon="fa fa-users"
+                                value="#{i18n['page.admin.menubar.explore.project']}"
+                                url="#{path['admin.listProjects']}" />
+                </p:submenu>
+            </p:column>
+        </p:submenu>
+
+        <p:menuitem value="#{i18n['page.common.logout']}" url="" icon="ui-icon-close" />
+    </p:megaMenu>
+</h:body>
+</html>

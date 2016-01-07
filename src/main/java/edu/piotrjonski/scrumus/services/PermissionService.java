@@ -19,7 +19,6 @@ public class PermissionService {
     private PermissionManager permissionManager;
 
     public boolean isAdmin(Developer user) {
-        logger.info("isAdmin");
         return permissionManager.isAdmin(user);
     }
 

@@ -5,43 +5,43 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 <h:body>
-    <ui:composition template="/WEB-INF/templates/default.xhtml">
+    <ui:composition template="/admin/admin-template.xhtml">
 
         <ui:define name="content">
-            <p:panel id="userListPanel" header="Lista użytkowników">
+            <p:panel id="userListPanel" header="#{i18n['page.admin.user.list']}">
                 <p:dataTable id="userListTable" var="user" value="#{userService.allUsers}">
-                    <p:column headerText="Firstname">
+                    <p:column headerText="#{i18n['page.admin.user.firstname']}">
                         <h:outputText value="#{user.firstName}" />
                     </p:column>
 
-                    <p:column headerText="Surname">
+                    <p:column headerText="#{i18n['page.admin.user.surname']}">
                         <h:outputText value="#{user.surname}" />
                     </p:column>
 
-                    <p:column headerText="Username">
+                    <p:column headerText="#{i18n['page.admin.user.username']}">
                         <h:outputText value="#{user.username}" />
                     </p:column>
 
-                    <p:column headerText="Email">
+                    <p:column headerText="#{i18n['page.admin.user.email']}">
                         <h:outputText value="#{user.email}" />
                     </p:column>
 
-                    <p:column headerText="Uprawnienia administratora">
+                    <p:column headerText="#{i18n['page.admin.user.administrator-permission']}">
                         <h:form id="grantPermissionForm">
-                            <p:commandButton value="Nadaj uprawnienia"
+                            <p:commandButton value="#{i18n['page.admin.user.administrator-permission.grant']}"
                                              id="grantAdminPermission"
                                              rendered="#{!permissionService.isAdmin(user)}"
                                              action="#{permissionService.grantAdminPermission(user)}"
                                              update="grantPermissionForm" />
-                            <p:commandButton value="Obierz uprawnienia"
+                            <p:commandButton value="#{i18n['page.admin.user.administrator-permission.remove']}"
                                              id="removeAdminPermission"
                                              rendered="#{permissionService.isAdmin(user)}"
                                              action="#{permissionService.removeAdminPermission(user)}"
                                              update="grantPermissionForm" />
                         </h:form>
                     </p:column>
-                    <p:column headerText="Delete user">
-                        <p:commandButton value="Usuń użytkownika"
+                    <p:column headerText="#{i18n['page.admin.user.delete']}r">
+                        <p:commandButton value="#{i18n['page.admin.user.delete']}"
                                          id="removeUserButton"
                                          action="#{userService.deleteUser(user)}"
                                          update="userListTable" />

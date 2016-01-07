@@ -9,11 +9,11 @@
             <supported-locale>en</supported-locale>
         </locale-config>
         <resource-bundle>
-            <base-name>resources.configuration</base-name>
-            <var>configuration</var>
+            <base-name>paths</base-name>
+            <var>path</var>
         </resource-bundle>
         <resource-bundle>
-            <base-name>resources.i18n</base-name>
+            <base-name>messages</base-name>
             <var>i18n</var>
         </resource-bundle>
     </application>

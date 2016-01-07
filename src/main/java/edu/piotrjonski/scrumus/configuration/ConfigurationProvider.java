@@ -7,13 +7,13 @@ import java.util.ResourceBundle;
 @ApplicationScoped
 public class ConfigurationProvider {
 
-    public static final String CONFIGURATION_PATH = "configuration";
+    protected String configurationPath = "configuration";
 
     public String getProperty(String key) {
         if (key == null) {
             return "";
         }
-        return ResourceBundle.getBundle(CONFIGURATION_PATH, createDefaultLocale())
+        return ResourceBundle.getBundle(configurationPath, createDefaultLocale())
                              .getString(key);
     }
 
