@@ -1,10 +1,9 @@
 package edu.piotrjonski.scrumus.business;
 
 import edu.piotrjonski.scrumus.dao.DeveloperDAO;
-import edu.piotrjonski.scrumus.dao.model.user.AdminEntity;
 import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
-import edu.piotrjonski.scrumus.utils.UtilsTest;
+import edu.piotrjonski.scrumus.utils.TestUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -14,18 +13,21 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
 @RunWith(Arquillian.class)
 public class UserManagerIT {
-    public static final String EMAIL = "jako@company.com";
+    public static final String EMAIL = "yoyo@wp.eu";
     public static final String USERNAME = "jako";
     public static final String SURNAME = "Kowalski";
     public static final String FIRSTNAME = "Jan";
@@ -48,7 +50,7 @@ public class UserManagerIT {
 
     @Deployment
     public static WebArchive createDeployment() {
-        return UtilsTest.createDeployment();
+        return TestUtils.createDeployment();
     }
 
     @Before
@@ -63,7 +65,8 @@ public class UserManagerIT {
     }
 
     @Test
-    public void shouldCreateDeveloper() throws AlreadyExistException {
+    public void shouldCreateDeveloper()
+            throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException, MessagingException {
         // given
         Developer developer = createDeveloper();
 
@@ -77,7 +80,8 @@ public class UserManagerIT {
     }
 
     @Test
-    public void shouldThrowExceptionWhenUserAlreadyExist() throws AlreadyExistException {
+    public void shouldThrowExceptionWhenUserAlreadyExist()
+            throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
         // given
         Developer developer = createDeveloper();
         Developer savedDeveloper = userManager.create(developer)
@@ -91,15 +95,14 @@ public class UserManagerIT {
     }
 
     @Test
-    public void shouldDeleteUser() throws AlreadyExistException {
+    public void shouldDeleteUser() throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
         // given
         Developer developer = createDeveloper();
-        int id = userManager.create(developer)
-                            .get()
-                            .getId();
+        developer = userManager.create(developer)
+                               .get();
 
         // when
-        userManager.delete(id);
+        userManager.delete(developer);
         int result = findAllUsersSize();
 
         // then
@@ -107,7 +110,8 @@ public class UserManagerIT {
     }
 
     @Test
-    public void shouldUpdateUserIfExist() throws AlreadyExistException, NotExistException {
+    public void shouldUpdateUserIfExist()
+            throws AlreadyExistException, NotExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
         // given
         Developer developer = createDeveloper();
         Developer savedDeveloper = userManager.create(developer)
@@ -152,6 +156,8 @@ public class UserManagerIT {
         entityManager.joinTransaction();
         entityManager.createQuery("DELETE FROM AdminEntity")
                      .executeUpdate();
+        entityManager.createQuery("DELETE FROM PasswordEntity")
+                     .executeUpdate();
         entityManager.createQuery("DELETE FROM DeveloperEntity")
                      .executeUpdate();
         userTransaction.commit();
@@ -163,15 +169,9 @@ public class UserManagerIT {
         developer.setFirstName(FIRSTNAME + nextUniqueValue);
         developer.setSurname(SURNAME + nextUniqueValue);
         developer.setUsername(USERNAME + nextUniqueValue);
-        developer.setEmail(EMAIL + nextUniqueValue);
+        developer.setEmail(EMAIL);
         nextUniqueValue++;
         return developer;
-    }
-
-    private int findAllAdminsSize() {
-        return entityManager.createNamedQuery(AdminEntity.FIND_ALL, AdminEntity.class)
-                            .getResultList()
-                            .size();
     }
 
     private int findAllUsersSize() {

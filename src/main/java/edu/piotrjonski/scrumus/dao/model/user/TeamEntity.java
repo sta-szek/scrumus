@@ -14,11 +14,16 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "team")
-@NamedQueries({@NamedQuery(name = TeamEntity.FIND_ALL, query = TeamEntity.FIND_ALL_QUERY)})
+@NamedQueries({@NamedQuery(name = TeamEntity.FIND_ALL, query = TeamEntity.FIND_ALL_QUERY),
+               @NamedQuery(name = TeamEntity.FIND_ALL_DEVELOPER_TEAMS, query = TeamEntity.FIND_ALL_DEVELOPER_TEAMS_QUERY)})
 public class TeamEntity {
 
     public static final String FIND_ALL = "findAllTeams";
+    public static final String DEVELOPER = "developer";
+    public static final String FIND_ALL_DEVELOPER_TEAMS = "findAllDeveloperTeams";
     protected static final String FIND_ALL_QUERY = "SELECT d FROM TeamEntity d";
+    protected static final String FIND_ALL_DEVELOPER_TEAMS_QUERY =
+            "SELECT d FROM TeamEntity d WHERE :" + DEVELOPER + " MEMBER OF d.developerEntities";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +35,6 @@ public class TeamEntity {
     @ManyToMany
     private List<DeveloperEntity> developerEntities;
 
-    @ManyToMany(mappedBy = "teamEntities")
+    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "teamEntities")
     private List<ProjectEntity> projectEntities;
 }

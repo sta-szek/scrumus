@@ -13,12 +13,16 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "developer")
-@NamedQueries({@NamedQuery(name = DeveloperEntity.FIND_ALL, query = DeveloperEntity.FIND_ALL_QUERY)})
+@NamedQueries({@NamedQuery(name = DeveloperEntity.FIND_ALL, query = DeveloperEntity.FIND_ALL_QUERY),
+               @NamedQuery(name = DeveloperEntity.FIND_BY_MAIL, query = DeveloperEntity.FIND_BY_EMAIL_QUERY)})
 public class DeveloperEntity {
 
     public static final String FIND_ALL = "findAllDevelopers";
+    public static final String FIND_BY_MAIL = "findByMail";
     public static final String ID = "id";
+    public static final String EMAIL = "id";
     protected static final String FIND_ALL_QUERY = "SELECT d FROM DeveloperEntity d";
+    protected static final String FIND_BY_EMAIL_QUERY = "SELECT d FROM DeveloperEntity d WHERE d.email=:" + EMAIL;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

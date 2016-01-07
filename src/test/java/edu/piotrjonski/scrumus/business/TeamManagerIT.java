@@ -4,7 +4,7 @@ import edu.piotrjonski.scrumus.dao.TeamDAO;
 import edu.piotrjonski.scrumus.dao.model.user.TeamEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Team;
-import edu.piotrjonski.scrumus.utils.UtilsTest;
+import edu.piotrjonski.scrumus.utils.TestUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -19,6 +19,8 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,7 +48,7 @@ public class TeamManagerIT {
 
     @Deployment
     public static WebArchive createDeployment() {
-        return UtilsTest.createDeployment();
+        return TestUtils.createDeployment();
     }
 
     @Before
@@ -89,7 +91,7 @@ public class TeamManagerIT {
     }
 
     @Test
-    public void shouldAddUserToTeam() throws AlreadyExistException {
+    public void shouldAddUserToTeam() throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
         // given
         Team team = createTeam();
         Developer developer = createDeveloper();
@@ -108,7 +110,7 @@ public class TeamManagerIT {
     }
 
     @Test
-    public void shouldRemoveUserFromTeam() throws AlreadyExistException {
+    public void shouldRemoveUserFromTeam() throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
         // given
         Team team = createTeam();
         Developer developer = createDeveloper();
@@ -145,7 +147,7 @@ public class TeamManagerIT {
 
     private Developer createDeveloper() {
         Developer developer = new Developer();
-        developer.setEmail("email");
+        developer.setEmail("yoyo@wp.eu");
         developer.setFirstName("email");
         developer.setSurname("email");
         developer.setUsername("email");
@@ -160,7 +162,9 @@ public class TeamManagerIT {
     private void clearData() throws Exception {
         userTransaction.begin();
         entityManager.joinTransaction();
-        entityManager.createQuery("DELETE FROM DeveloperEntity ")
+        entityManager.createQuery("DELETE FROM PasswordEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM DeveloperEntity")
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM TeamEntity")
                      .executeUpdate();

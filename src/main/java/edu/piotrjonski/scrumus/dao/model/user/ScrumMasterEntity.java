@@ -13,17 +13,21 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "scrum_master")
-@NamedQueries({@NamedQuery(name = ScrumMasterEntity.FIND_ALL, query = ScrumMasterEntity.FIND_ALL_QUERY)})
+@NamedQueries({@NamedQuery(name = ScrumMasterEntity.FIND_ALL, query = ScrumMasterEntity.FIND_ALL_QUERY),
+               @NamedQuery(name = ScrumMasterEntity.FIND_BY_DEVELOPER_ID, query = ScrumMasterEntity.FIND_BY_DEVELOPER_ID_QUERY)})
 public class ScrumMasterEntity {
 
     public static final String FIND_ALL = "findAllScrumMasters";
+    public static final String FIND_BY_DEVELOPER_ID = "findScrumMasterByDeveloperId";
     protected static final String FIND_ALL_QUERY = "SELECT d FROM ScrumMasterEntity d";
+    protected static final String FIND_BY_DEVELOPER_ID_QUERY =
+            "SELECT d FROM ScrumMasterEntity d WHERE d.developerEntity.id=:" + DeveloperEntity.ID;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
+    @OneToOne(fetch = FetchType.EAGER, optional = false)
     private DeveloperEntity developerEntity;
 
     @OneToMany

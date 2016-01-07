@@ -1,51 +1,56 @@
-------------------------------------------------- TABELE U≈ªYTKOWNIK√ìW -------------------------------------------------
+------------------------------------------------- TABELE UØYTKOWNIK”W -------------------------------------------------
 
 -- DEVELOPER TABLE                                                                                ADMIN   SM    TEAM    PO
 INSERT INTO developer VALUES (1, 'jano@email.pl', 'Jan', 'Nowak', 'jano', NULL);              --    -     -      1      -
-INSERT INTO developer VALUES (2, 'szgo@email.pl', 'Szymon', 'G√≥rnik', 'szgo', NULL);          --    -     -      2      -
+INSERT INTO developer VALUES (2, 'szgo@email.pl', 'Szymon', 'GÛrnik', 'szgo', NULL);          --    -     -      2      -
 INSERT INTO developer VALUES (3, 'alto@email.pl', 'Alfred', 'Tomczak', 'alto', NULL);         --    -     -      1      -
 INSERT INTO developer VALUES (4, 'domo@email.pl', 'Donata', 'Momot', 'domo', NULL);           --    -     -      2      -
 INSERT INTO developer VALUES (5, 'arfa@email.pl', 'Arseniusz', 'Fabisiak', 'arfa', NULL);     --    Y     -      3      -
 INSERT INTO developer VALUES (6, 'kaja@email.pl', 'Kacper', 'Janas', 'kaja', NULL);           --    -     2      2      -
-INSERT INTO developer VALUES (7, 'wafr@email.pl', 'Warcis≈Çaw', 'Frydrych', 'wafr', NULL);     --    Y     -      1,3    -
-INSERT INTO developer VALUES (8, 'miwi@email.pl', 'Mi≈Çosz', 'Wielgus', 'miwi', NULL);         --    -     -      2      -
+INSERT INTO developer VALUES (7, 'wafr@email.pl', 'Warcis≥aw', 'Frydrych', 'wafr', NULL);     --    Y     -      1,3    -
+INSERT INTO developer VALUES (8, 'miwi@email.pl', 'Mi≥osz', 'Wielgus', 'miwi', NULL);         --    -     -      2      -
 INSERT INTO developer VALUES (9, 'trba@email.pl', 'Trzebowit', 'Bartosiak', 'trba', NULL);    --    -     -      1      -
 INSERT INTO developer VALUES (10, 'miwa@email.pl', 'Mirella', 'Wachowiak', 'miwa', NULL);     --    -     -      2      1
 INSERT INTO developer VALUES (11, 'grjo@email.pl', 'Grzesiak', 'Job', 'grjo', NULL);          --    -     -      1      -
-INSERT INTO developer VALUES (12, 'anra@email.pl', 'Angelus', 'RƒÖczka', 'anra', NULL);        --    -     -      2      -
+INSERT INTO developer VALUES (12, 'anra@email.pl', 'Angelus', 'Rπczka', 'anra', NULL);        --    -     -      2      -
 INSERT INTO developer VALUES (13, 'cyru@email.pl', 'Cyryl', 'Rusin', 'cyru', NULL);           --    -     -      1      -
-INSERT INTO developer VALUES (14, 'jafr@email.pl', 'Jazon', 'FrƒÖckowiak', 'jafr', NULL);      --    -     1      1      -
-INSERT INTO developer VALUES (15, 'grli@email.pl', 'Gra≈ºyna', 'Lipowski', 'grli', NULL);      --    -     -      1      2
+INSERT INTO developer VALUES (14, 'jafr@email.pl', 'Jazon', 'Frπckowiak', 'jafr', NULL);      --    -     1      1      -
+INSERT INTO developer VALUES (15, 'grli@email.pl', 'Graøyna', 'Lipowski', 'grli', NULL);      --    -     -      1      2
+select setval('DEVELOPER_ID_SEQ', 16, true);
 
 -- ADMINISTRATORZY
 INSERT INTO admin VALUES (1, 5);
 INSERT INTO admin VALUES (2, 7);
+select setval('admin_ID_SEQ', 3, true);
 
 -- SCRUM MASTERZY
 INSERT INTO scrum_master VALUES (1, 6);
 INSERT INTO scrum_master VALUES (2, 14);
+select setval('scrum_master_ID_SEQ', 3, true);
 
--- HAS≈ÅA
-INSERT INTO password VALUES (1, '202cb962ac59075b964b07152d234b70', 1);
-INSERT INTO password VALUES (2, '202cb962ac59075b964b07152d234b70', 2);
-INSERT INTO password VALUES (3, '202cb962ac59075b964b07152d234b70', 3);
-INSERT INTO password VALUES (4, '202cb962ac59075b964b07152d234b70', 4);
-INSERT INTO password VALUES (5, '202cb962ac59075b964b07152d234b70', 5);
-INSERT INTO password VALUES (6, '202cb962ac59075b964b07152d234b70', 6);
-INSERT INTO password VALUES (7, '202cb962ac59075b964b07152d234b70', 7);
-INSERT INTO password VALUES (8, '202cb962ac59075b964b07152d234b70', 8);
-INSERT INTO password VALUES (9, '202cb962ac59075b964b07152d234b70', 9);
-INSERT INTO password VALUES (10, '202cb962ac59075b964b07152d234b70', 10);
-INSERT INTO password VALUES (11, '202cb962ac59075b964b07152d234b70', 11);
-INSERT INTO password VALUES (12, '202cb962ac59075b964b07152d234b70', 12);
-INSERT INTO password VALUES (13, '202cb962ac59075b964b07152d234b70', 13);
-INSERT INTO password VALUES (14, '202cb962ac59075b964b07152d234b70', 14);
-INSERT INTO password VALUES (15, '202cb962ac59075b964b07152d234b70', 15);
+-- HAS£A
+INSERT INTO password VALUES (1, 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 1);
+INSERT INTO password VALUES (2, 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 2);
+INSERT INTO password VALUES (3, 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 3);
+INSERT INTO password VALUES (4, 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 4);
+INSERT INTO password VALUES (5, 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 5);
+INSERT INTO password VALUES (6, 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 6);
+INSERT INTO password VALUES (7, 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 7);
+INSERT INTO password VALUES (8, 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 8);
+INSERT INTO password VALUES (9, 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 9);
+INSERT INTO password VALUES (10, 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 10);
+INSERT INTO password VALUES (11, 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 11);
+INSERT INTO password VALUES (12, 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 12);
+INSERT INTO password VALUES (13, 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 13);
+INSERT INTO password VALUES (14, 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 14);
+INSERT INTO password VALUES (15, 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 15);
+select setval('password_ID_SEQ', 16, true);
 
 -- TEAMY
 INSERT INTO team VALUES (1, 'Fumfle');
 INSERT INTO team VALUES (2, 'Nikifory');
 INSERT INTO team VALUES (3, 'Administratorzy');
+select setval('team_ID_SEQ', 4, true);
 
 -- DEVELOPER TEAM
 INSERT INTO team_developer VALUES (1, 1);
@@ -68,14 +73,16 @@ INSERT INTO team_developer VALUES (1, 15);
 -- BACKLOG
 INSERT INTO backlog VALUES (1);
 INSERT INTO backlog VALUES (2);
+select setval('backlog_ID_SEQ', 3, true);
 
 -- PROJEKTY
-INSERT INTO project VALUES ('reco', '2015-11-17 12:21:13 ', 'Aplikacja umo≈ºliwaiajƒÖc zdalne po≈ÇƒÖczenie siƒô z komputerem', 'Opis aplikacji umo≈ºliwiajƒÖcej ≈ÇƒÖczenie siƒô z komputerem', 'Remote connector', 1);
-INSERT INTO project VALUES ('pote', '2016-01-15 12:21:13 ', 'Framework do testowania obiekt√≥w POJO', 'Opis frameworku do testowania obiekt√≥w POJO', 'Pojo tester', 2);
+INSERT INTO project VALUES ('reco', '2015-11-17 12:21:13 ', 'Aplikacja umoøliwaiajπc zdalne po≥πczenie siÍ z komputerem', 'Opis aplikacji umoøliwiajπcej ≥πczenie siÍ z komputerem', 'Remote connector', 1);
+INSERT INTO project VALUES ('pote', '2016-01-15 12:21:13 ', 'Framework do testowania obiektÛw POJO', 'Opis frameworku do testowania obiektÛw POJO', 'Pojo tester', 2);
 
 -- PRODUCT OWNERZY
 INSERT INTO product_owner VALUES (1, 10, 'reco');
 INSERT INTO product_owner VALUES (2, 15, 'pote');
+select setval('product_owner_ID_SEQ', 3, true);
 
 --RETROSPEKTYWY
 INSERT INTO retrospective VALUES (1, 'Opis retrospektywy 1');
@@ -84,14 +91,16 @@ INSERT INTO retrospective VALUES (3, 'Opis retrospektywy 1');
 INSERT INTO retrospective VALUES (4, 'Opis retrospektywy 1');
 INSERT INTO retrospective VALUES (5, 'Opis retrospektywy 1');
 INSERT INTO retrospective VALUES (6, 'Opis retrospektywy 1');
+select setval('retrospective_ID_SEQ', 7, true);
 
 -- SPRINTY
 INSERT INTO sprint VALUES (1, 'Implementacja story 1-5', 'Sprint 1', '2015-11-24 12:00:00', '2015-11-17 12:00:00', 'reco', 1);
 INSERT INTO sprint VALUES (2, 'Testy systemowe', 'Sprint 2', '2015-12-1 12:00:00', '2015-11-24 12:00:00', 'reco', 2);
 INSERT INTO sprint VALUES (3, 'Release wersji 1.0', 'Sprint 3', '2015-12-8 12:00:00', '2015-12-1 12:00:00', 'reco', 3);
-INSERT INTO sprint VALUES (4, 'Rozpoznanie ≈õrodowisk', 'Sprint 1', '2015-11-24 12:00:00', '2015-11-17 12:00:00', 'pote', 4);
+INSERT INTO sprint VALUES (4, 'Rozpoznanie úrodowisk', 'Sprint 1', '2015-11-24 12:00:00', '2015-11-17 12:00:00', 'pote', 4);
 INSERT INTO sprint VALUES (5, 'Implementacja', 'Sprint 2', '2015-12-1 12:00:00', '2015-11-24 12:00:00', 'pote', 5);
 INSERT INTO sprint VALUES (6, 'Testy systemowe', 'Sprint 3', '2015-12-8 12:00:00', '2015-12-1 12:00:00', 'pote', 6);
+select setval('sprint_ID_SEQ', 7, true);
 
 -- TEAMY DO PROJEKTU
 INSERT INTO project_team VALUES ('reco', 1);
@@ -111,23 +120,27 @@ INSERT INTO story VALUES (6, 'Definition of Done dla story', 'Optional name6', '
 INSERT INTO story VALUES (7, 'Definition of Done dla story', 'Optional name7', '1', 1);
 INSERT INTO story VALUES (8, 'Definition of Done dla story', 'Optional name8', '2', 2);
 INSERT INTO story VALUES (9, 'Definition of Done dla story', 'Optional name9', '3', 3);
+select setval('story_ID_SEQ', 10, true);
 
 -- RODZAJE ISSUE
 INSERT INTO issue_type VALUES (1, 'Task');
 INSERT INTO issue_type VALUES (2, 'Feature');
 INSERT INTO issue_type VALUES (3, 'Bug');
 INSERT INTO issue_type VALUES (4, 'Improvement');
+select setval('issue_Type_ID_SEQ', 5, true);
 
 -- PRIORYTETY
 INSERT INTO priority VALUES (1, 'Wysoki');
-INSERT INTO priority VALUES (2, '≈öredni');
+INSERT INTO priority VALUES (2, 'åredni');
 INSERT INTO priority VALUES (3, 'Niski');
-INSERT INTO priority VALUES (4, 'Ma≈Çy');
+INSERT INTO priority VALUES (4, 'Ma≥y');
+select setval('priority_ID_SEQ', 5, true);
 
 -- STANY
 INSERT INTO state VALUES (1, 'TO DO');
 INSERT INTO state VALUES (2, 'IN PROGRES');
 INSERT INTO state VALUES (3, 'DONE');
+select setval('state_ID_SEQ', 4, true);
 
 -- ISSUES
 INSERT INTO issue VALUES (1, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-1', 'nazwa', NULL, 1, 1, 1, 1);
@@ -152,6 +165,7 @@ INSERT INTO issue VALUES (19, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote
 INSERT INTO issue VALUES (20, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-20', 'nazwa', 13, 4, 1, 1, 1);
 INSERT INTO issue VALUES (21, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-21', 'nazwa', NULL, 1, 1, 15, 1);
 INSERT INTO issue VALUES (22, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-22', 'nazwa', 13, 2, 1, 1, 1);
+select setval('issue_ID_SEQ', 23, true);
 
 -- KOMENTARZE
 INSERT INTO comment VALUES (1, 'Komentarz 1', '2015-02-02 12:00:00', 1);
@@ -168,6 +182,7 @@ INSERT INTO comment VALUES (11, 'Komentarz 11', '2015-02-02 12:00:00', 11);
 INSERT INTO comment VALUES (12, 'Komentarz 12', '2015-02-02 12:00:00', 12);
 INSERT INTO comment VALUES (13, 'Komentarz 13', '2015-02-02 12:00:00', 13);
 INSERT INTO comment VALUES (14, 'Komentarz 14', '2015-02-02 12:00:00', 14);
+select setval('comment_ID_SEQ', 15, true);
 
 -- KOMENTARZE DO ISSE
 INSERT INTO issue_comment VALUES (1, 1);
@@ -236,6 +251,7 @@ INSERT INTO role VALUES (1, 'ADMIN');
 INSERT INTO role VALUES (2, 'SCRUM_MASTER');
 INSERT INTO role VALUES (3, 'PRODUCT_OWNER');
 INSERT INTO role VALUES (4, 'DEVELOPER');
+select setval('role_ID_SEQ', 5, true);
 
 -- ROLE UZYTKOWNIKOW
 INSERT INTO role_developer VALUES (1, 5);

@@ -2,7 +2,7 @@ package edu.piotrjonski.scrumus.business;
 
 import edu.piotrjonski.scrumus.dao.*;
 import edu.piotrjonski.scrumus.domain.*;
-import edu.piotrjonski.scrumus.utils.UtilsTest;
+import edu.piotrjonski.scrumus.utils.TestUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -17,6 +17,8 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -77,11 +79,16 @@ public class IssueManagerIT {
 
     @Deployment
     public static WebArchive createDeployment() {
-        return UtilsTest.createDeployment();
+        return TestUtils.createDeployment();
     }
 
     @Before
     public void dropAllIssuesAndStartTransaction() throws Exception {
+//        MailSender mailSender = mock(MailSender.class);
+//        doNothing().when(mailSender)
+//                   .sendMail(anyString(), anyString(), anyString());
+//        Whitebox.setInternalState(userManager, "mailSender", mailSender);
+//        //userManager.setMailSender(mailSender);
         clearData();
         startTransaction();
     }
@@ -323,7 +330,8 @@ public class IssueManagerIT {
         assertThat(result.getName()).isEqualTo(newName);
     }
 
-    private void startTransaction() throws SystemException, NotSupportedException, AlreadyExistException {
+    private void startTransaction()
+            throws SystemException, NotSupportedException, AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
         userTransaction.begin();
         entityManager.joinTransaction();
         Developer developer = createDeveloper();
