@@ -1,13 +1,13 @@
 package edu.piotrjonski.scrumus.services;
 
 
-import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
-@Stateless
+@ApplicationScoped
 public class HashGenerator {
 
     public String generateHash() {

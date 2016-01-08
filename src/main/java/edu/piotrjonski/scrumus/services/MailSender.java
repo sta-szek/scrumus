@@ -3,7 +3,7 @@ package edu.piotrjonski.scrumus.services;
 
 import edu.piotrjonski.scrumus.configuration.EmailConfiguration;
 
-import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.mail.Address;
 import javax.mail.Message;
@@ -18,13 +18,8 @@ import javax.ws.rs.QueryParam;
 import java.time.LocalDateTime;
 
 @Path("/email")
-@Stateless
+@ApplicationScoped
 public class MailSender {
-    private static final long serialVersionUID = 1L;
-    private static final String FROM = "pojo@staszek.me";
-
-//    @Resource(lookup = "java:jboss/mail/Default")
-//    private Session mailSession;
 
     @Inject
     private EmailConfiguration emailConfiguration;
@@ -52,7 +47,7 @@ public class MailSender {
     private MimeMessage createMimeMessage(final String email, String subject, String content) throws MessagingException {
         MimeMessage mimeMessage = new MimeMessage(emailConfiguration.createSession());
         Address[] to = new InternetAddress[]{new InternetAddress(email)};
-        mimeMessage.setFrom(FROM);
+        mimeMessage.setFrom(emailConfiguration.getFrom());
         mimeMessage.setRecipients(Message.RecipientType.TO, to);
         mimeMessage.setSubject(subject);
         mimeMessage.setContent(content, "text/plain");

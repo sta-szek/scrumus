@@ -26,6 +26,16 @@ public class DeveloperDAO extends AbstractDAO<DeveloperEntity, Developer> {
         super(entityClass);
     }
 
+    public List<String> findAllUsernames() {
+        return entityManager.createNamedQuery(DeveloperEntity.FIND_ALL_USERNAMES)
+                            .getResultList();
+    }
+
+    public List<String> findAllEmails() {
+        return entityManager.createNamedQuery(DeveloperEntity.FIND_ALL_EMAILS)
+                            .getResultList();
+    }
+
     public boolean emailExist(String email) {
         try {
             entityManager.createNamedQuery(DeveloperEntity.FIND_BY_MAIL, DeveloperEntity.class)

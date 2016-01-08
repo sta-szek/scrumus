@@ -1,20 +1,19 @@
 package edu.piotrjonski.scrumus.ui.services;
 
-import edu.piotrjonski.scrumus.business.AlreadyExistException;
 import edu.piotrjonski.scrumus.business.UserManager;
 import edu.piotrjonski.scrumus.domain.Developer;
+import edu.piotrjonski.scrumus.ui.configuration.I18NProvider;
 import edu.piotrjonski.scrumus.ui.configuration.PathProvider;
 import lombok.Data;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Data
@@ -22,39 +21,49 @@ import java.util.List;
 @Named
 public class UserService {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Inject
+    private transient Logger logger;
 
     @Inject
     private UserManager userManager;
 
     @Inject
-    private transient PathProvider pathProvider;
+    private PathProvider pathProvider;
 
-    @Size(max = 20)
+    @Inject
+    private I18NProvider i18NProvider;
+
+    @Inject
+    private OccupiedChecker occupiedChecker;
+
+    @Size(max = 20, message = "{validator.size.username}")
     private String username;
-    @Size(max = 30)
+    @Size(max = 30, message = "{validator.size.firstname}")
     private String firstname;
-    @Size(max = 30)
+    @Size(max = 30, message = "{validator.size.surname}")
     private String surname;
-    @Pattern(regexp = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
+    @Pattern(regexp = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$",
+             message = "{validator.pattern.email}")
     @Size(max = 40)
     private String email;
 
     public String createUser() {
-        Developer developer = createDeveloper();
+        if (validateFields()) {
+            return null;
+        }
+        Developer developer = createDeveloperFromFields();
         try {
             userManager.create(developer);
             return pathProvider.getProperty("admin.listUsers");
-        } catch (AlreadyExistException | UnsupportedEncodingException | NoSuchAlgorithmException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            createFacesMessage("system.fatal.create.user", null);
             return null;
         }
-
     }
 
     public List<Developer> getAllUsers() {
         List<Developer> users = userManager.findAllUsers();
-        logger.info("users.size " + users.size());
         return users;
     }
 
@@ -62,7 +71,34 @@ public class UserService {
         userManager.delete(developer);
     }
 
-    private Developer createDeveloper() {
+    public boolean validateUsername(String username) {
+        if (occupiedChecker.isUsernameOccupied(username)) {
+            return createFacesMessage("page.validator.occupied.user.username", "createUserForm:username");
+        }
+        return false;
+    }
+
+    public boolean validateEmail(String email) {
+        if (occupiedChecker.isEmailOccupied(email)) {
+            return createFacesMessage("page.validator.occupied.user.email", "createUserForm:email");
+        }
+        return false;
+    }
+
+    private boolean createFacesMessage(String property, String field) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                                     i18NProvider.getProperty(property),
+                                                     null);
+        facesContext.addMessage(field, facesMessage);
+        return true;
+    }
+
+    private boolean validateFields() {
+        return validateUsername(username) && validateEmail(email);
+    }
+
+    private Developer createDeveloperFromFields() {
         Developer developer = new Developer();
         developer.setEmail(email);
         developer.setFirstName(firstname);
@@ -70,4 +106,5 @@ public class UserService {
         developer.setUsername(username);
         return developer;
     }
+
 }

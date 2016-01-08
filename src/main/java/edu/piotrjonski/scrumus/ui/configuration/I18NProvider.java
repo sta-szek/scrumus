@@ -7,10 +7,10 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
 @ApplicationScoped
-@Named(value = "pathProvider")
-public class PathProvider extends ConfigurationProvider {
+@Named(value = "i18nProvider")
+public class I18NProvider extends ConfigurationProvider {
 
-    public PathProvider() {
-        configurationPath = "paths";
+    public I18NProvider() {
+        configurationPath = "messages";
     }
 }

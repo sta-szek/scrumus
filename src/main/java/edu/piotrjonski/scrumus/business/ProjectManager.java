@@ -5,6 +5,7 @@ import edu.piotrjonski.scrumus.domain.Project;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.List;
 import java.util.Optional;
 
 @Stateless
@@ -29,6 +30,14 @@ public class ProjectManager {
 
     public void delete(String projectKey) {
         projectDAO.delete(projectKey);
+    }
+
+    public List<String> findAllKeys() {
+        return projectDAO.findAllKeys();
+    }
+
+    public List<String> findAllNames() {
+        return projectDAO.findAllNames();
     }
 
     private boolean exists(Project project) {

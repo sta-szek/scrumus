@@ -36,6 +36,10 @@ public class EmailConfiguration {
         return Session.getInstance(createProperties(), createAuthenticator());
     }
 
+    public String getFrom() {
+        return configurationProvider.getProperty(EMAIL_FROM);
+    }
+
     private Properties createProperties() {
         Properties properties = new Properties();
         properties.put(MAIL_SMTP_AUTH, configurationProvider.getProperty(EMAIL_AUTH));

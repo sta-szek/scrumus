@@ -3,8 +3,6 @@ package edu.piotrjonski.scrumus.ui.services;
 import edu.piotrjonski.scrumus.business.PermissionManager;
 import edu.piotrjonski.scrumus.domain.Developer;
 import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -14,7 +12,7 @@ import javax.inject.Named;
 @RequestScoped
 @Named
 public class PermissionService {
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Inject
     private PermissionManager permissionManager;
 

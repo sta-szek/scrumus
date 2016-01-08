@@ -5,6 +5,7 @@ import edu.piotrjonski.scrumus.domain.Project;
 
 import javax.ejb.Stateless;
 import javax.persistence.Query;
+import java.util.List;
 
 @Stateless
 public class ProjectDAO extends AbstractDAO<ProjectEntity, Project> {
@@ -15,6 +16,16 @@ public class ProjectDAO extends AbstractDAO<ProjectEntity, Project> {
 
     private ProjectDAO(final Class entityClass) {
         super(entityClass);
+    }
+
+    public List<String> findAllNames() {
+        return entityManager.createNamedQuery(ProjectEntity.FIND_ALL_NAMES)
+                            .getResultList();
+    }
+
+    public List<String> findAllKeys() {
+        return entityManager.createNamedQuery(ProjectEntity.FIND_ALL_KEYS)
+                            .getResultList();
     }
 
     @Override

@@ -17,14 +17,20 @@ import java.util.List;
 @Entity
 @Table(name = "project")
 @NamedQueries({@NamedQuery(name = ProjectEntity.FIND_ALL, query = ProjectEntity.FIND_ALL_QUERY),
-               @NamedQuery(name = ProjectEntity.FIND_ALL_SPRINTS, query = ProjectEntity.FIND_ALL_SPRINTS_QUERY)})
+               @NamedQuery(name = ProjectEntity.FIND_ALL_SPRINTS, query = ProjectEntity.FIND_ALL_SPRINTS_QUERY),
+               @NamedQuery(name = ProjectEntity.FIND_ALL_KEYS, query = ProjectEntity.FIND_ALL_KEYS_QUERY),
+               @NamedQuery(name = ProjectEntity.FIND_ALL_NAMES, query = ProjectEntity.FIND_ALL_NAMES_QUERY)})
 public class ProjectEntity {
 
     public static final String FIND_ALL = "findAllProjects";
     public static final String FIND_ALL_SPRINTS = "findAllSprintsForProject";
+    public static final String FIND_ALL_KEYS = "findAllKeys";
+    public static final String FIND_ALL_NAMES = "findAllNames";
     public static final String KEY = "projectKey";
     protected static final String FIND_ALL_QUERY = "SELECT p FROM ProjectEntity p";
     protected static final String FIND_ALL_SPRINTS_QUERY = "SELECT sprint FROM SprintEntity sprint WHERE sprint.projectEntity.key=:" + KEY;
+    protected static final String FIND_ALL_KEYS_QUERY = "SELECT p.key FROM ProjectEntity p";
+    protected static final String FIND_ALL_NAMES_QUERY = "SELECT p.name FROM ProjectEntity p";
 
 
     @Id

@@ -40,6 +40,14 @@ public class UserManager {
     @Inject
     private TeamManager teamManager;
 
+    public List<String> findAllUsernames() {
+        return developerDAO.findAllUsernames();
+    }
+
+    public List<String> findAllEmails() {
+        return developerDAO.findAllEmails();
+    }
+
     public List<Developer> findAllUsers() {
         return developerDAO.findAll();
         //TODO testy
