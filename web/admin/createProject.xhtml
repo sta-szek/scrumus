@@ -12,7 +12,6 @@
                         <p:inputText id="projectName"
                                      value="#{projectService.projectName}"
                                      required="true"
-                                     size="48"
                                      requiredMessage="#{i18n['page.validator.require.project.name']}">
                             <p:ajax event="keyup" update="projectKey" listener="#{projectService.generateProjectKey}" />
                         </p:inputText>
@@ -22,7 +21,6 @@
                         <p:inputText id="projectKey"
                                      value="#{projectService.projectKey}"
                                      required="true"
-                                     size="48"
                                      requiredMessage="#{i18n['page.validator.require.project.key']}"
                                      style="text-transform: uppercase" />
                         <p:message for="projectKey" />

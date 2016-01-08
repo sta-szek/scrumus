@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @RequestScoped
@@ -64,6 +65,10 @@ public class ProjectService {
             createFacesMessage("system.fatal.create.project", null);
             return null;
         }
+    }
+
+    public List<Project> getAllProjects() {
+        return projectManager.findAllProjects();
     }
 
     public boolean validateProjectName(String projectName) {

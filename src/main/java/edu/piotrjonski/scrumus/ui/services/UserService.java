@@ -63,8 +63,7 @@ public class UserService {
     }
 
     public List<Developer> getAllUsers() {
-        List<Developer> users = userManager.findAllUsers();
-        return users;
+        return userManager.findAllUsers();
     }
 
     public void deleteUser(Developer developer) {

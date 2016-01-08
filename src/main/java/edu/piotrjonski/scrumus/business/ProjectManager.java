@@ -24,6 +24,10 @@ public class ProjectManager {
         return projectDAO.saveOrUpdate(project);
     }
 
+    public List<Project> findAllProjects() {
+        return projectDAO.findAll();
+    }
+
     public Optional<Project> findProject(String projectKey) {
         return projectDAO.findById(projectKey);
     }
