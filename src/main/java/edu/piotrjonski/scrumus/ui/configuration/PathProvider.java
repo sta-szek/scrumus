@@ -10,7 +10,13 @@ import javax.inject.Named;
 @Named(value = "pathProvider")
 public class PathProvider extends ConfigurationProvider {
 
+    private static final String REDIRECTION_APPENDIX = "?faces-redirect=true";
+
     public PathProvider() {
         configurationPath = "paths";
+    }
+
+    public String getRedirectPath(String key) {
+        return getPath(key).concat(REDIRECTION_APPENDIX);
     }
 }

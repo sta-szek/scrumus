@@ -7,32 +7,36 @@
         <ui:define name="admin-content">
             <p:panel id="userListPanel" header="#{i18n['page.admin.user.list']}">
                 <p:dataTable id="userListTable"
-                             var="project"
+                             var="proj"
                              value="#{userService.allUsers}"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                              paginator="true"
                              rows="10">
                     <p:column headerText="#{i18n['page.admin.user.firstname']}">
-                        <h:outputText value="#{project.firstName}" />
+                        <h:outputText value="#{proj.firstName}" />
                     </p:column>
 
                     <p:column headerText="#{i18n['page.admin.user.surname']}">
-                        <h:outputText value="#{project.surname}" />
+                        <h:outputText value="#{proj.surname}" />
                     </p:column>
 
                     <p:column headerText="#{i18n['page.admin.user.username']}">
-                        <h:outputText value="#{project.username}" />
+                        <h:outputText value="#{proj.username}" />
                     </p:column>
 
                     <p:column headerText="#{i18n['page.admin.user.email']}">
-                        <h:outputText value="#{project.email}" />
+                        <h:outputText value="#{proj.email}" />
                     </p:column>
 
-                    <p:column headerText="#{i18n['page.admin.user.delete']}">
+                    <p:column headerText="#{i18n['page.admin.user.actions']}">
                         <p:commandButton value="#{i18n['page.admin.user.delete']}"
                                          id="removeUserButton"
-                                         action="#{userService.deleteUser(project)}"
+                                         action="#{userService.deleteUser(proj)}"
                                          update="userListTable" />
+                        <!--<p:link value="#{i18n['page.admin.user.view']}"
+                                         id="viewUserButton"
+                                         action="#{userService.deleteUser(project)}"
+                                         update="userListTable" />-->
                     </p:column>
                 </p:dataTable>
             </p:panel>

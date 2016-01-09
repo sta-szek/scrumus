@@ -11,7 +11,7 @@ public class ConfigurationProvider {
 
     protected String configurationPath = "configuration";
 
-    public String getProperty(String key) {
+    public String getPath(String key) {
         if (key == null) {
             return "";
         }

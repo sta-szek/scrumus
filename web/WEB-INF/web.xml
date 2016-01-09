@@ -14,6 +14,10 @@
         <param-value>client</param-value>
     </context-param>
     <context-param>
+        <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
         <param-name>javax.faces.CONFIG_FILES</param-name>
         <param-value>/WEB-INF/beans.xml, /WEB-INF/global_config.xml</param-value>
     </context-param>

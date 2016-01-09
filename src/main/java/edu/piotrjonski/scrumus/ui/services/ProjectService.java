@@ -8,19 +8,20 @@ import edu.piotrjonski.scrumus.ui.configuration.PathProvider;
 import lombok.Data;
 import org.slf4j.Logger;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@RequestScoped
+@ConversationScoped
 @Named
-public class ProjectService {
+public class ProjectService implements Serializable {
 
     @Inject
     private transient Logger logger;
@@ -59,12 +60,22 @@ public class ProjectService {
         Project project = createProjectFromFields();
         try {
             projectManager.create(project);
-            return pathProvider.getProperty("admin.listProjects");
+            return pathProvider.getRedirectPath("admin.listProjects");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             createFacesMessage("system.fatal.create.project", null);
             return null;
         }
+    }
+
+    public Project findByProjectKey(String projectKey) {
+        Project project = projectManager.findProject(projectKey)
+                                        .orElse(null);
+        projectName = project.getName();
+        this.projectKey = project.getKey();
+        description = project.getDescription();
+        definitionOfDone = project.getDefinitionOfDone();
+        return project;
     }
 
     public List<Project> getAllProjects() {
@@ -92,7 +103,7 @@ public class ProjectService {
     private boolean createFacesMessage(String property, String field) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                                                     i18NProvider.getProperty(property),
+                                                     i18NProvider.getPath(property),
                                                      null);
         facesContext.addMessage(field, facesMessage);
         return true;

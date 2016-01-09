@@ -1,26 +1,100 @@
 <h:body xmlns="http://www.w3.org/1999/xhtml"
         xmlns:h="http://xmlns.jcp.org/jsf/html"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-        xmlns:p="http://primefaces.org/ui">
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition template="#{path['admin.template']}">
         <ui:define name="admin-content">
-            <p:panel id="projectsListPanel" header="#{i18n['page.admin.projects.list']}">
+            <f:metadata>
+                <f:viewParam name="projectKey" />
+            </f:metadata>
+            <c:if test="${not empty projectKey}">
+                <ui:param name="project" value="#{projectService.findByProjectKey(projectKey)}" />
+            </c:if>
+
+            <!--LISTA PROJEKTÓW-->
+
+            <p:panel id="projectsListPanel" header="#{i18n['page.admin.project.list']}" rendered="#{empty projectKey}">
                 <p:dataTable id="projectsListTable"
-                             var="project"
+                             var="proj"
                              value="#{projectService.allProjects}"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                              paginator="true"
                              rows="10">
                     <p:column headerText="#{i18n['page.admin.project.name']}">
-                        <h:outputText value="#{project.name}" />
+                        <h:outputText value="#{proj.name}" />
                     </p:column>
 
                     <p:column headerText="#{i18n['page.admin.project.key']}">
-                        <h:outputText value="#{project.key}" />
+                        <h:outputText value="#{proj.key}" />
                     </p:column>
 
+                    <p:column headerText="#{i18n['page.admin.project.actions']}">
+                        <p:button value="#{i18n['page.admin.project.edit']}"
+                                  id="editProjectButton"
+                                  outcome="#{path['admin.listProjects']}"
+                                  icon="fa fa-edit">
+                            <f:param name="projectKey" value="#{proj.key}" />
+                        </p:button>
+                        <p:commandButton value="#{i18n['page.admin.project.delete']}"
+                                         id="deleteProjectButton"
+                                         action="#{projectService.deleteProject(proj)}"
+                                         update="projectsListTable" />
+                    </p:column>
                 </p:dataTable>
             </p:panel>
+
+            <!--EDYTUJ PROJEKT - NIE ZNALEZIONO PROJEKTU PO KLUCZU-->
+
+            <p:outputLabel value="#{i18n['page.admin.project.notFound']}"
+                           rendered="#{empty project and not empty projectKey}" />
+
+            <!--EDYTUJ PROJEKT -->
+
+            <h:form id="createProjectForm" rendered="#{not empty project}">
+                <p:panel header="#{i18n['page.admin.project.create']}">
+                    <h:panelGrid columns="3" cellpadding="5">
+                        <p:outputLabel for="projectName" value="#{i18n['page.admin.project.name']}" />
+                        <p:inplace id="projectName">
+                            <p:inputText value="#{projectService.projectName}"
+                                         required="true"
+                                         requiredMessage="#{i18n['page.validator.require.project.name']}" />
+                        </p:inplace>
+                        <p:message for="projectName" />
+
+                        <p:outputLabel for="projectKey" value="#{i18n['page.admin.project.key']}" />
+                        <p:inputText id="projectKey"
+                                     value="#{projectService.projectKey}"
+                                     required="true"
+                                     requiredMessage="#{i18n['page.validator.require.project.key']}"
+                                     style="text-transform: uppercase" />
+                        <p:message for="projectKey" />
+
+                        <p:outputLabel for="description" value="#{i18n['page.admin.project.description']}" />
+                        <p:inputTextarea rows="6"
+                                         cols="50"
+                                         autoResize="false"
+                                         id="description"
+                                         value="#{projectService.description}" />
+                        <p:message for="description" />
+
+                        <p:outputLabel for="definitionOfDone" value="#{i18n['page.admin.project.definitionOfDone']}" />
+                        <p:inputTextarea rows="6"
+                                         cols="50"
+                                         autoResize="false"
+                                         id="definitionOfDone"
+                                         value="#{projectService.definitionOfDone}" />
+                        <p:message for="definitionOfDone" />
+                    </h:panelGrid>
+                    <p:commandButton id="createButton"
+                                     value="#{i18n['page.admin.project.create']}"
+                                     action="#{projectService.createProject}"
+                                     ajax="false"
+                                     icon="fa fa-plus"
+                                     validateClient="true">
+                    </p:commandButton>
+                </p:panel>
+            </h:form>
         </ui:define>
     </ui:composition>
 </h:body>

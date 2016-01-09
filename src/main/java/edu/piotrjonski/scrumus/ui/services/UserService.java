@@ -54,7 +54,7 @@ public class UserService {
         Developer developer = createDeveloperFromFields();
         try {
             userManager.create(developer);
-            return pathProvider.getProperty("admin.listUsers");
+            return pathProvider.getRedirectPath("admin.listUsers");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             createFacesMessage("system.fatal.create.user", null);
@@ -87,7 +87,7 @@ public class UserService {
     private boolean createFacesMessage(String property, String field) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                                                     i18NProvider.getProperty(property),
+                                                     i18NProvider.getPath(property),
                                                      null);
         facesContext.addMessage(field, facesMessage);
         return true;
