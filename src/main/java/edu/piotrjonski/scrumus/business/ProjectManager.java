@@ -24,6 +24,16 @@ public class ProjectManager {
         return projectDAO.saveOrUpdate(project);
     }
 
+    public void update(Project project) throws NotExistException {
+        if (!exists(project)) {
+            throw new NotExistException("Projekt nie istnieje!");
+        }
+        Project savedProject = projectDAO.findById(project.getKey())
+                                         .get();
+        project.setCreationDate(savedProject.getCreationDate());
+        projectDAO.saveOrUpdate(project);
+    }
+
     public List<Project> findAllProjects() {
         return projectDAO.findAll();
     }

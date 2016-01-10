@@ -8,7 +8,7 @@ import edu.piotrjonski.scrumus.ui.configuration.PathProvider;
 import lombok.Data;
 import org.slf4j.Logger;
 
-import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@ConversationScoped
+@SessionScoped
 @Named
 public class ProjectService implements Serializable {
 
@@ -53,6 +53,7 @@ public class ProjectService implements Serializable {
     @Size(max = 4096, message = "{validator.size.definitionOfDone}")
     private String definitionOfDone;
 
+
     public String createProject() {
         if (validateFields()) {
             return null;
@@ -82,22 +83,41 @@ public class ProjectService implements Serializable {
         return projectManager.findAllProjects();
     }
 
-    public boolean validateProjectName(String projectName) {
+    public void generateProjectKey() {
+        projectKey = projectKeyGenerator.generateProjectKey(projectName);
+    }
+
+    public String editProject() {
+        Project projectFromFields = createProjectFromFields();
+        try {
+            projectManager.update(projectFromFields);
+            return pathProvider.getRedirectPath("admin.listProjects");
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            createFacesMessage("system.fatal.edit.project", null);
+            return null;
+        }
+    }
+
+    public void clearFields() {
+        projectKey = null;
+        projectName = null;
+        definitionOfDone = null;
+        description = null;
+    }
+
+    private boolean validateProjectName(String projectName) {
         if (occupiedChecker.isProjectNameOccupied(projectName)) {
             return createFacesMessage("page.validator.occupied.project.name", "createProjectForm:projectName");
         }
         return false;
     }
 
-    public boolean validateProjectKey(String projectKey) {
+    private boolean validateProjectKey(String projectKey) {
         if (occupiedChecker.isProjectKeyOccupied(projectKey)) {
             return createFacesMessage("page.validator.occupied.project.key", "createProjectForm:projectKey");
         }
         return false;
-    }
-
-    public void generateProjectKey() {
-        projectKey = projectKeyGenerator.generateProjectKey(projectName);
     }
 
     private boolean createFacesMessage(String property, String field) {
@@ -120,6 +140,7 @@ public class ProjectService implements Serializable {
         project.setDescription(description);
         project.setKey(projectKey);
         project.setName(projectName);
+        clearFields();
         return project;
     }
 }

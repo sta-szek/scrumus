@@ -13,8 +13,10 @@
             </c:if>
 
             <!--LISTA PROJEKTÓW-->
-
-            <p:panel id="projectsListPanel" header="#{i18n['page.admin.project.list']}" rendered="#{empty projectKey}">
+            <p:panel id="projectsListPanel" header="#{i18n['page.admin.project.panel.list']}" rendered="#{empty projectKey}">
+                <h:form id="initialPageCommand">
+                    <p:remoteCommand name="rc" actionListener="#{projectService.clearFields}" autoRun="true" />
+                </h:form>
                 <p:dataTable id="projectsListTable"
                              var="proj"
                              value="#{projectService.allProjects}"
@@ -30,16 +32,30 @@
                     </p:column>
 
                     <p:column headerText="#{i18n['page.admin.project.actions']}">
-                        <p:button value="#{i18n['page.admin.project.edit']}"
+                        <p:button value="#{i18n['page.admin.project.button.edit']}"
                                   id="editProjectButton"
                                   outcome="#{path['admin.listProjects']}"
                                   icon="fa fa-edit">
                             <f:param name="projectKey" value="#{proj.key}" />
                         </p:button>
-                        <p:commandButton value="#{i18n['page.admin.project.delete']}"
+                        <p:commandButton value="#{i18n['page.admin.project.button.delete']}"
                                          id="deleteProjectButton"
                                          action="#{projectService.deleteProject(proj)}"
-                                         update="projectsListTable" />
+                                         update="projectsListTable">
+                            <p:confirm header="#{i18n['page.admin.project.header.delete']}"
+                                       message="#{i18n['page.admin.project.message.delete']}"
+                                       icon="ui-icon-alert" />
+                        </p:commandButton>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="#{i18n['page.admin.project.delete.yes']}"
+                                             type="button"
+                                             styleClass="ui-confirmdialog-yes"
+                                             icon="ui-icon-check" />
+                            <p:commandButton value="#{i18n['page.admin.project.delete.no']}"
+                                             type="button"
+                                             styleClass="ui-confirmdialog-no"
+                                             icon="ui-icon-close" />
+                        </p:confirmDialog>
                     </p:column>
                 </p:dataTable>
             </p:panel>
@@ -51,8 +67,8 @@
 
             <!--EDYTUJ PROJEKT -->
 
-            <h:form id="createProjectForm" rendered="#{not empty project}">
-                <p:panel header="#{i18n['page.admin.project.create']}">
+            <h:form id="editProjectForm" rendered="#{not empty project}">
+                <p:panel header="#{i18n['page.admin.project.panel.edit']}">
                     <h:panelGrid columns="3" cellpadding="5">
                         <p:outputLabel for="projectName" value="#{i18n['page.admin.project.name']}" />
                         <p:inplace id="projectName">
@@ -63,32 +79,32 @@
                         <p:message for="projectName" />
 
                         <p:outputLabel for="projectKey" value="#{i18n['page.admin.project.key']}" />
-                        <p:inputText id="projectKey"
-                                     value="#{projectService.projectKey}"
-                                     required="true"
-                                     requiredMessage="#{i18n['page.validator.require.project.key']}"
-                                     style="text-transform: uppercase" />
+                        <p:inplace id="projectKey" disabled="true">
+                            <p:inputText value="#{projectService.projectKey}" />
+                        </p:inplace>
                         <p:message for="projectKey" />
 
                         <p:outputLabel for="description" value="#{i18n['page.admin.project.description']}" />
-                        <p:inputTextarea rows="6"
-                                         cols="50"
-                                         autoResize="false"
-                                         id="description"
-                                         value="#{projectService.description}" />
+                        <p:inplace id="description">
+                            <p:inputTextarea rows="6"
+                                             cols="50"
+                                             autoResize="false"
+                                             value="#{projectService.description}" />
+                        </p:inplace>
                         <p:message for="description" />
 
                         <p:outputLabel for="definitionOfDone" value="#{i18n['page.admin.project.definitionOfDone']}" />
-                        <p:inputTextarea rows="6"
-                                         cols="50"
-                                         autoResize="false"
-                                         id="definitionOfDone"
-                                         value="#{projectService.definitionOfDone}" />
+                        <p:inplace id="definitionOfDone">
+                            <p:inputTextarea rows="6"
+                                             cols="50"
+                                             autoResize="false"
+                                             value="#{projectService.definitionOfDone}" />
+                        </p:inplace>
                         <p:message for="definitionOfDone" />
                     </h:panelGrid>
-                    <p:commandButton id="createButton"
-                                     value="#{i18n['page.admin.project.create']}"
-                                     action="#{projectService.createProject}"
+                    <p:commandButton id="saveChangesButton"
+                                     value="#{i18n['page.admin.project.button.save']}"
+                                     action="#{projectService.editProject}"
                                      ajax="false"
                                      icon="fa fa-plus"
                                      validateClient="true">
