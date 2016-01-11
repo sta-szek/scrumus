@@ -2,7 +2,8 @@
         xmlns:h="http://xmlns.jcp.org/jsf/html"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:p="http://primefaces.org/ui"
-        xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition template="#{path['admin.template']}">
         <ui:define name="admin-content">
             <f:metadata>
@@ -14,9 +15,6 @@
 
             <!--LISTA PROJEKTÓW-->
             <p:panel id="projectsListPanel" header="#{i18n['page.admin.project.panel.list']}" rendered="#{empty projectKey}">
-                <h:form id="initialPageCommand">
-                    <p:remoteCommand name="rc" actionListener="#{projectService.clearFields}" autoRun="true" />
-                </h:form>
                 <p:dataTable id="projectsListTable"
                              var="proj"
                              value="#{projectService.allProjects}"
@@ -80,7 +78,9 @@
 
                         <p:outputLabel for="projectKey" value="#{i18n['page.admin.project.key']}" />
                         <p:inplace id="projectKey" disabled="true">
-                            <p:inputText value="#{projectService.projectKey}" />
+                            <p:inputText value="#{projectService.projectKey}"
+                                         required="true"
+                                         requiredMessage="#{i18n['page.validator.require.project.key']}" />
                         </p:inplace>
                         <p:message for="projectKey" />
 
@@ -104,10 +104,11 @@
                     </h:panelGrid>
                     <p:commandButton id="saveChangesButton"
                                      value="#{i18n['page.admin.project.button.save']}"
-                                     action="#{projectService.editProject}"
+                                     action="#{projectService.editProject()}"
                                      ajax="false"
                                      icon="fa fa-plus"
                                      validateClient="true">
+                        <f:param name="projectKey" value="#{projectKey}" />
                     </p:commandButton>
                 </p:panel>
             </h:form>

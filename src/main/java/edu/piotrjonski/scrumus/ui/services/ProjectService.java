@@ -8,7 +8,7 @@ import edu.piotrjonski.scrumus.ui.configuration.PathProvider;
 import lombok.Data;
 import org.slf4j.Logger;
 
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -19,40 +19,31 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@SessionScoped
+@RequestScoped
 @Named
 public class ProjectService implements Serializable {
 
+    String action;
     @Inject
     private transient Logger logger;
-
     @Inject
     private ProjectManager projectManager;
-
     @Inject
     private PathProvider pathProvider;
-
     @Inject
     private I18NProvider i18NProvider;
-
     @Inject
     private OccupiedChecker occupiedChecker;
-
     @Inject
     private ProjectKeyGenerator projectKeyGenerator;
-
     @Size(max = 255, message = "{validator.size.projectName}")
     private String projectName;
-
     @Size(max = 8, message = "{validator.size.projectKey}")
     private String projectKey;
-
     @Size(max = 4096, message = "{validator.size.description}")
     private String description;
-
     @Size(max = 4096, message = "{validator.size.definitionOfDone}")
     private String definitionOfDone;
-
 
     public String createProject() {
         if (validateFields()) {
@@ -69,11 +60,11 @@ public class ProjectService implements Serializable {
         }
     }
 
-    public Project findByProjectKey(String projectKey) {
-        Project project = projectManager.findProject(projectKey)
+    public Project findByProjectKey(String projKey) {
+        Project project = projectManager.findProject(projKey)
                                         .orElse(null);
         projectName = project.getName();
-        this.projectKey = project.getKey();
+        projectKey = project.getKey();
         description = project.getDescription();
         definitionOfDone = project.getDefinitionOfDone();
         return project;
@@ -89,6 +80,11 @@ public class ProjectService implements Serializable {
 
     public String editProject() {
         Project projectFromFields = createProjectFromFields();
+        String projectKey = FacesContext.getCurrentInstance()
+                                        .getExternalContext()
+                                        .getRequestParameterMap()
+                                        .get("projectKey");
+        projectFromFields.setKey(projectKey);
         try {
             projectManager.update(projectFromFields);
             return pathProvider.getRedirectPath("admin.listProjects");
