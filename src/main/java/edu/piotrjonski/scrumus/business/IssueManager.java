@@ -5,6 +5,7 @@ import edu.piotrjonski.scrumus.domain.*;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.List;
 import java.util.Optional;
 
 @Stateless
@@ -27,6 +28,9 @@ public class IssueManager {
 
     @Inject
     private BacklogDAO backlogDAO;
+
+    @Inject
+    private IssueTypeDAO issueTypeDAO;
 
     public void deleteIssuesFromProject(String projectKey) {
         issueDAO.deleteIssuesFromProject(projectKey);
@@ -73,6 +77,30 @@ public class IssueManager {
         return priorityDAO.saveOrUpdate(newPriority);
     }
 
+    public Optional<IssueType> createIssueType(IssueType issueType) throws AlreadyExistException {
+        if (issueTypeExist(issueType)) {
+            throw new AlreadyExistException("Rodzaj zadania już istnieje już istnieje.");
+        }
+        return issueTypeDAO.saveOrUpdate(issueType);
+    }
+
+    public void deleteIssueType(IssueType issueType) throws NotExistException, IllegalOperationException {
+        if (!issueTypeExist(issueType)) {
+            throw new NotExistException("Rodzaj zadania nie istnieje.");
+        }
+        if (issueTypeIsCurrentlyUsed(issueType)) {
+            throw new IllegalOperationException("Rodzaj zadania jest używany przez inne zadania.");
+        }
+        issueTypeDAO.delete(issueType.getId());
+    }
+
+    public Optional<IssueType> updateIssueType(IssueType issueType) throws NotExistException {
+        if (!issueTypeExist(issueType)) {
+            throw new NotExistException("Rodzaj zadania nie istnieje.");
+        }
+        return issueTypeDAO.saveOrUpdate(issueType);
+    }
+
     public Optional<State> createState(State state) throws AlreadyExistException {
         if (stateExist(state)) {
             throw new AlreadyExistException("Stan już istnieje.");
@@ -92,6 +120,18 @@ public class IssueManager {
             throw new NotExistException("Stan nie istnieje.");
         }
         return stateDAO.saveOrUpdate(state);
+    }
+
+    public List<String> findAllIssueTypeNames() {
+        return issueTypeDAO.findAllNames();
+    }
+
+    public List<IssueType> findAllIssueTypes() {
+        return issueTypeDAO.findAll();
+    }
+
+    private boolean issueTypeIsCurrentlyUsed(final IssueType issueType) {
+        return issueDAO.isIssueTypeCurrentlyUsed(issueType.getName());
     }
 
     private void addIssueToBacklog(final Issue issue, Project project) {
@@ -120,6 +160,10 @@ public class IssueManager {
 
     private boolean stateExist(final State state) {
         return stateDAO.exist(state.getId());
+    }
+
+    private boolean issueTypeExist(final IssueType issueType) {
+        return issueTypeDAO.exist(issueType.getId());
     }
 
 }

@@ -117,29 +117,30 @@ public class ProjectService implements Serializable {
 
     private boolean validateProjectName(String projectName) {
         if (occupiedChecker.isProjectNameOccupied(projectName)) {
-            return createFacesMessage("page.validator.occupied.project.name", "createProjectForm:projectName");
+            createFacesMessage("page.validator.occupied.project.name", "createProjectForm:projectName");
+            return true;
         }
         return false;
     }
 
     private boolean validateProjectKey(String projectKey) {
         if (occupiedChecker.isProjectKeyOccupied(projectKey)) {
-            return createFacesMessage("page.validator.occupied.project.key", "createProjectForm:projectKey");
+            createFacesMessage("page.validator.occupied.project.key", "createProjectForm:projectKey");
+            return true;
         }
         return false;
     }
 
-    private boolean createFacesMessage(String property, String field) {
+    private void createFacesMessage(String property, String field) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                                                     i18NProvider.getPath(property),
+                                                     i18NProvider.getMessage(property),
                                                      null);
         facesContext.addMessage(field, facesMessage);
-        return true;
     }
 
     private boolean validateFields() {
-        return validateProjectName(projectName) && validateProjectKey(projectKey);
+        return validateProjectName(projectName) || validateProjectKey(projectKey);
     }
 
     private Project createProjectFromFields() {

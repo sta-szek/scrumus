@@ -2,6 +2,7 @@ package edu.piotrjonski.scrumus.dao;
 
 
 import edu.piotrjonski.scrumus.dao.model.project.IssueEntity;
+import edu.piotrjonski.scrumus.dao.model.project.IssueTypeEntity;
 import edu.piotrjonski.scrumus.dao.model.project.ProjectEntity;
 import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
@@ -10,6 +11,7 @@ import edu.piotrjonski.scrumus.domain.Issue;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.Query;
+import java.util.List;
 import java.util.Optional;
 
 @Stateless
@@ -42,6 +44,16 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
         entityManager.createNamedQuery(IssueEntity.DELETE_PROJECT_ISSUES)
                      .setParameter(ProjectEntity.KEY, projectKey)
                      .executeUpdate();
+    }
+
+    public List<Issue> findAllIssuesWithIssueType(String issueTypeName) {
+        return entityManager.createNamedQuery(IssueEntity.FIND_ALL_ISSUES_WITH_ISSUE_TYPE)
+                            .setParameter(IssueTypeEntity.ISSUE_TYPE_NAME, issueTypeName)
+                            .getResultList();
+    }
+
+    public boolean isIssueTypeCurrentlyUsed(String issueTypeName) {
+        return findAllIssuesWithIssueType(issueTypeName).size() > 0;
     }
 
     @Override

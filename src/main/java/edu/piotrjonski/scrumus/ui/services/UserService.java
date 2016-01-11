@@ -14,12 +14,13 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @RequestScoped
 @Named
-public class UserService {
+public class UserService implements Serializable {
 
     @Inject
     private transient Logger logger;
@@ -72,29 +73,30 @@ public class UserService {
 
     public boolean validateUsername(String username) {
         if (occupiedChecker.isUsernameOccupied(username)) {
-            return createFacesMessage("page.validator.occupied.user.username", "createUserForm:username");
+            createFacesMessage("page.validator.occupied.user.username", "createUserForm:username");
+            return true;
         }
         return false;
     }
 
     public boolean validateEmail(String email) {
         if (occupiedChecker.isEmailOccupied(email)) {
-            return createFacesMessage("page.validator.occupied.user.email", "createUserForm:email");
+            createFacesMessage("page.validator.occupied.user.email", "createUserForm:email");
+            return true;
         }
         return false;
     }
 
-    private boolean createFacesMessage(String property, String field) {
+    private void createFacesMessage(String property, String field) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                                                     i18NProvider.getPath(property),
+                                                     i18NProvider.getMessage(property),
                                                      null);
         facesContext.addMessage(field, facesMessage);
-        return true;
     }
 
     private boolean validateFields() {
-        return validateUsername(username) && validateEmail(email);
+        return validateUsername(username) || validateEmail(email);
     }
 
     private Developer createDeveloperFromFields() {

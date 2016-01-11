@@ -17,6 +17,6 @@ public class PathProvider extends ConfigurationProvider {
     }
 
     public String getRedirectPath(String key) {
-        return getPath(key).concat(REDIRECTION_APPENDIX);
+        return getMessage(key).concat(REDIRECTION_APPENDIX);
     }
 }

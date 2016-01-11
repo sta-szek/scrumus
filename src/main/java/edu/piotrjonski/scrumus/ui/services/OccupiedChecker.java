@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.ui.services;
 
+import edu.piotrjonski.scrumus.business.IssueManager;
 import edu.piotrjonski.scrumus.business.ProjectManager;
 import edu.piotrjonski.scrumus.business.UserManager;
 
@@ -19,6 +20,9 @@ public class OccupiedChecker {
     @Inject
     private ProjectManager projectManager;
 
+    @Inject
+    private IssueManager issueManager;
+
     public boolean isUsernameOccupied(String username) {
         return getOccupiedUsernames().contains(username);
     }
@@ -33,6 +37,10 @@ public class OccupiedChecker {
 
     public boolean isProjectNameOccupied(final String projectName) {
         return getOccupiedProjectNames().contains(projectName);
+    }
+
+    public boolean isIssueTypeNameOccupied(String issueTypeName) {
+        return getOccupiedIssueTypeNames().contains(issueTypeName);
     }
 
     private List<String> getOccupiedUsernames() {
@@ -50,4 +58,6 @@ public class OccupiedChecker {
     private List<String> getOccupiedProjectNames() {
         return projectManager.findAllNames();
     }
+
+    private List<String> getOccupiedIssueTypeNames() {return issueManager.findAllIssueTypeNames();}
 }

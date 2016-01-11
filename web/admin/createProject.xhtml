@@ -7,6 +7,7 @@
             <h:form id="createProjectForm">
                 <p:panel id="createProjectPanel" header="#{i18n['page.admin.project.create']}">
                     <p:focus context="createProjectPanel" />
+                    <p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true" />
                     <h:panelGrid columns="3" cellpadding="5">
                         <p:outputLabel for="projectName" value="#{i18n['page.admin.project.name']}" />
                         <p:inputText id="projectName"

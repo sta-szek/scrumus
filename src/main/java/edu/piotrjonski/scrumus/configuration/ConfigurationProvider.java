@@ -11,7 +11,7 @@ public class ConfigurationProvider {
 
     protected String configurationPath = "configuration";
 
-    public String getPath(String key) {
+    public String getMessage(String key) {
         if (key == null) {
             return "";
         }
