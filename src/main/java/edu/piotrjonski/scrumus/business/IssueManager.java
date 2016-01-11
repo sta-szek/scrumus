@@ -28,6 +28,10 @@ public class IssueManager {
     @Inject
     private BacklogDAO backlogDAO;
 
+    public void deleteIssuesFromProject(String projectKey) {
+        issueDAO.deleteIssuesFromProject(projectKey);
+    }
+
     public Optional<Issue> create(Issue issue, Project project) throws AlreadyExistException, NotExistException {
         if (issueExist(issue)) {
             throw new AlreadyExistException("Issue already exist.");

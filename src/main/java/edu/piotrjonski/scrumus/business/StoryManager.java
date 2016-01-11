@@ -27,6 +27,10 @@ public class StoryManager {
     @Inject
     private PermissionManager permissionManager;
 
+    public void deleteStoriesFromProject(String projectKey) {
+        storyDAO.deleteStoriesFromProject(projectKey);
+    }
+
     public Optional<Story> createStory(Story story) throws AlreadyExistException {
         if (storyExist(story)) {
             throw new AlreadyExistException("Story już istnieje");

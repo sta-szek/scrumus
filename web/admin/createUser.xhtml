@@ -6,7 +6,8 @@
     <ui:composition template="#{path['admin.template']}">
         <ui:define name="admin-content">
             <h:form id="createUserForm">
-                <p:panel header="#{i18n['page.admin.user.create']}">
+                <p:panel id="createUserPanel" header="#{i18n['page.admin.user.create']}">
+                    <p:focus context="createUserPanel" />
                     <p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true" />
                     <h:panelGrid columns="3" cellpadding="5">
                         <p:outputLabel for="firstname" value="#{i18n['page.admin.user.firstname']}" />

@@ -15,27 +15,25 @@ public class PermissionManager {
 
     @Inject
     private transient Logger logger;
-
     @Inject
     private DeveloperDAO developerDAO;
-
     @Inject
     private ProjectDAO projectDAO;
-
     @Inject
     private TeamDAO teamDAO;
-
     @Inject
     private AdminDAO adminDAO;
-
     @Inject
     private RoleDAO roleDAO;
-
     @Inject
     private ScrumMasterDAO scrumMasterDAO;
-
     @Inject
     private ProductOwnerDAO productOwnerDAO;
+
+    public void divestProductOwner(String projectKey) {
+        productOwnerDAO.findByProjectKey(projectKey)
+                       .ifPresent(this::removeProjectFromProductOwner);
+    }
 
     public boolean isAdmin(Developer user) {
         return adminDAO.findByDeveloperId(user.getId())
@@ -92,6 +90,11 @@ public class PermissionManager {
         deleteAdmin(user);
         deleteProductOwner(user);
         deleteScrumMaster(user);
+    }
+
+    private void removeProjectFromProductOwner(ProductOwner productOwner) {
+        productOwner.setProject(null);
+        productOwnerDAO.saveOrUpdate(productOwner);
     }
 
     private void removeRole(final RoleType roleType, final Developer user) {

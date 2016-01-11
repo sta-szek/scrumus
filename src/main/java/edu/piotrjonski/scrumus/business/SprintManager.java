@@ -21,6 +21,10 @@ public class SprintManager {
     @Inject
     private PermissionManager permissionManager;
 
+    public void deleteSprintsFromProject(String projectKey) {
+        sprintDAO.deleteSprintsFromProject(projectKey);
+    }
+
     public Optional<Sprint> createSprint(Sprint sprint) throws AlreadyExistException {
         if (sprintExist(sprint)) {
             throw new AlreadyExistException("Sprint już istnieje");

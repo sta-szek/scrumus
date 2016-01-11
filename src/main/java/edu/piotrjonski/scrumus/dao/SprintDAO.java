@@ -30,6 +30,12 @@ public class SprintDAO extends AbstractDAO<SprintEntity, Sprint> {
         super(entityClass);
     }
 
+    public void deleteSprintsFromProject(String projectKey) {
+        entityManager.createNamedQuery(SprintEntity.DELETE_SPRINTS_FROM_PROJECT)
+                     .setParameter(ProjectEntity.KEY, projectKey)
+                     .executeUpdate();
+    }
+
     public List<Sprint> findAllSprints(String projectKey) {
         return mapToDomainModel(entityManager.createNamedQuery(ProjectEntity.FIND_ALL_SPRINTS)
                                              .setParameter(ProjectEntity.KEY, projectKey)
@@ -49,7 +55,7 @@ public class SprintDAO extends AbstractDAO<SprintEntity, Sprint> {
         sprintEntity.setName(domainModel.getName());
         sprintEntity.setRetrospectiveEntity(findRetrospectiveEntity(domainModel.getRetrospectiveId()));
         sprintEntity.setTimeRange(domainModel.getTimeRange());
-        sprintEntity.setProjectEntity(findProjectEntity(domainModel.getProjectKey()));
+        sprintEntity.setProject(findProjectEntity(domainModel.getProjectKey()));
         return sprintEntity;
     }
 
@@ -88,7 +94,7 @@ public class SprintDAO extends AbstractDAO<SprintEntity, Sprint> {
     }
 
     private String getProjectKey(final SprintEntity dbModel) {
-        ProjectEntity projectEntity = dbModel.getProjectEntity();
+        ProjectEntity projectEntity = dbModel.getProject();
         return projectEntity != null
                ? projectEntity.getKey()
                : null;

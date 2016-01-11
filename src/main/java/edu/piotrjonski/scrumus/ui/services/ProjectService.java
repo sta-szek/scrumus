@@ -23,25 +23,33 @@ import java.util.List;
 @Named
 public class ProjectService implements Serializable {
 
-    String action;
     @Inject
     private transient Logger logger;
+
     @Inject
     private ProjectManager projectManager;
+
     @Inject
     private PathProvider pathProvider;
+
     @Inject
     private I18NProvider i18NProvider;
+
     @Inject
     private OccupiedChecker occupiedChecker;
+
     @Inject
     private ProjectKeyGenerator projectKeyGenerator;
+
     @Size(max = 255, message = "{validator.size.projectName}")
     private String projectName;
+
     @Size(max = 8, message = "{validator.size.projectKey}")
     private String projectKey;
+
     @Size(max = 4096, message = "{validator.size.description}")
     private String description;
+
     @Size(max = 4096, message = "{validator.size.definitionOfDone}")
     private String definitionOfDone;
 
@@ -58,6 +66,11 @@ public class ProjectService implements Serializable {
             createFacesMessage("system.fatal.create.project", null);
             return null;
         }
+    }
+
+    public void deleteProject(Project project) {
+        logger.info("Deleting: " + project);
+        projectManager.delete(project.getKey());
     }
 
     public Project findByProjectKey(String projKey) {
@@ -134,7 +147,7 @@ public class ProjectService implements Serializable {
         project.setCreationDate(LocalDateTime.now());
         project.setDefinitionOfDone(definitionOfDone);
         project.setDescription(description);
-        project.setKey(projectKey);
+        project.setKey(projectKey.toUpperCase());
         project.setName(projectName);
         clearFields();
         return project;

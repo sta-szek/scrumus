@@ -105,7 +105,7 @@ public class SprintDAOTest {
                          .getEndDate()).isEqualTo(timeRange.getEndDate());
         assertThat(result.getTimeRange()
                          .getStartDate()).isEqualTo(timeRange.getStartDate());
-        assertThat(result.getProjectEntity()
+        assertThat(result.getProject()
                          .getKey()).isEqualTo(PROJ_KEY);
     }
 
@@ -121,7 +121,7 @@ public class SprintDAOTest {
         sprint.setName(name);
         sprint.setRetrospectiveEntity(createRetrospectiveEntity());
         sprint.setTimeRange(timeRange);
-        sprint.setProjectEntity(createProjectEntity());
+        sprint.setProject(createProjectEntity());
 
         // when
         Sprint result = sprintDAO.mapToDomainModel(sprint);

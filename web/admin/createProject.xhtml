@@ -5,7 +5,8 @@
     <ui:composition template="#{path['admin.template']}">
         <ui:define name="admin-content">
             <h:form id="createProjectForm">
-                <p:panel header="#{i18n['page.admin.project.create']}">
+                <p:panel id="createProjectPanel" header="#{i18n['page.admin.project.create']}">
+                    <p:focus context="createProjectPanel" />
                     <h:panelGrid columns="3" cellpadding="5">
                         <p:outputLabel for="projectName" value="#{i18n['page.admin.project.name']}" />
                         <p:inputText id="projectName"

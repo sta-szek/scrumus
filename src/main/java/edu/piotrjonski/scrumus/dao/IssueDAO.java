@@ -2,6 +2,7 @@ package edu.piotrjonski.scrumus.dao;
 
 
 import edu.piotrjonski.scrumus.dao.model.project.IssueEntity;
+import edu.piotrjonski.scrumus.dao.model.project.ProjectEntity;
 import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Issue;
@@ -35,6 +36,12 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
 
     private IssueDAO(final Class entityClass) {
         super(entityClass);
+    }
+
+    public void deleteIssuesFromProject(String projectKey) {
+        entityManager.createNamedQuery(IssueEntity.DELETE_PROJECT_ISSUES)
+                     .setParameter(ProjectEntity.KEY, projectKey)
+                     .executeUpdate();
     }
 
     @Override

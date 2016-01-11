@@ -17,6 +17,15 @@ public class ProjectManager {
     @Inject
     private PermissionManager permissionManager;
 
+    @Inject
+    private IssueManager issueManager;
+
+    @Inject
+    private StoryManager storyManager;
+
+    @Inject
+    private SprintManager sprintManager;
+
     public Optional<Project> create(Project project) throws AlreadyExistException {
         if (exists(project)) {
             throw new AlreadyExistException("Project already exists.");
@@ -43,6 +52,10 @@ public class ProjectManager {
     }
 
     public void delete(String projectKey) {
+        permissionManager.divestProductOwner(projectKey);
+        issueManager.deleteIssuesFromProject(projectKey);
+        storyManager.deleteStoriesFromProject(projectKey);
+        sprintManager.deleteSprintsFromProject(projectKey);
         projectDAO.delete(projectKey);
     }
 

@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.project.ProjectEntity;
 import edu.piotrjonski.scrumus.dao.model.project.SprintEntity;
 import edu.piotrjonski.scrumus.dao.model.project.StoryEntity;
 import edu.piotrjonski.scrumus.domain.Sprint;
@@ -27,6 +28,12 @@ public class StoryDAO extends AbstractDAO<StoryEntity, Story> {
 
     private StoryDAO(final Class entityClass) {
         super(entityClass);
+    }
+
+    public void deleteStoriesFromProject(String projectKey) {
+        entityManager.createNamedQuery(StoryEntity.DELETE_STORIES_FROM_PROJECT)
+                     .setParameter(ProjectEntity.KEY, projectKey)
+                     .executeUpdate();
     }
 
     public List<Story> findStoriesForSprint(int sprintId) {

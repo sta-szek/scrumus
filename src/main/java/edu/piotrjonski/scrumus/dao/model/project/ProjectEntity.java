@@ -28,7 +28,7 @@ public class ProjectEntity {
     public static final String FIND_ALL_NAMES = "findAllNames";
     public static final String KEY = "projectKey";
     protected static final String FIND_ALL_QUERY = "SELECT p FROM ProjectEntity p";
-    protected static final String FIND_ALL_SPRINTS_QUERY = "SELECT sprint FROM SprintEntity sprint WHERE sprint.projectEntity.key=:" + KEY;
+    protected static final String FIND_ALL_SPRINTS_QUERY = "SELECT sprint FROM SprintEntity sprint WHERE sprint.project.key=:" + KEY;
     protected static final String FIND_ALL_KEYS_QUERY = "SELECT p.key FROM ProjectEntity p";
     protected static final String FIND_ALL_NAMES_QUERY = "SELECT p.name FROM ProjectEntity p";
 
@@ -37,7 +37,7 @@ public class ProjectEntity {
     @Column(length = 8, nullable = false, unique = true)
     private String key;
 
-    @Column(length = 255, nullable = false, unique = true)
+    @Column(length = 255, nullable = false)
     private String name;
 
     @Column(length = 4096, nullable = true)

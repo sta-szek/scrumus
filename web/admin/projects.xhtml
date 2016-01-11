@@ -38,35 +38,35 @@
                         </p:button>
                         <p:commandButton value="#{i18n['page.admin.project.button.delete']}"
                                          id="deleteProjectButton"
-                                         action="#{projectService.deleteProject(proj)}"
-                                         update="projectsListTable">
+                                         icon="fa fa-remove">
                             <p:confirm header="#{i18n['page.admin.project.header.delete']}"
                                        message="#{i18n['page.admin.project.message.delete']}"
                                        icon="ui-icon-alert" />
                         </p:commandButton>
                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <p:commandButton value="#{i18n['page.admin.project.delete.yes']}"
-                                             type="button"
-                                             styleClass="ui-confirmdialog-yes"
-                                             icon="ui-icon-check" />
-                            <p:commandButton value="#{i18n['page.admin.project.delete.no']}"
-                                             type="button"
-                                             styleClass="ui-confirmdialog-no"
-                                             icon="ui-icon-close" />
+                            <h:form id="confirmDialogForm">
+                                <p:commandButton value="#{i18n['page.admin.project.delete.yes']}"
+                                                 styleClass="ui-confirmdialog-yes"
+                                                 icon="ui-icon-check"
+                                                 action="#{projectService.deleteProject(proj)}"
+                                                 update="projectsListPanel" />
+                                <p:commandButton value="#{i18n['page.admin.project.delete.no']}"
+                                                 styleClass="ui-confirmdialog-no"
+                                                 icon="ui-icon-close" />
+                            </h:form>
                         </p:confirmDialog>
                     </p:column>
                 </p:dataTable>
             </p:panel>
 
             <!--EDYTUJ PROJEKT - NIE ZNALEZIONO PROJEKTU PO KLUCZU-->
-
             <p:outputLabel value="#{i18n['page.admin.project.notFound']}"
                            rendered="#{empty project and not empty projectKey}" />
 
             <!--EDYTUJ PROJEKT -->
-
             <h:form id="editProjectForm" rendered="#{not empty project}">
-                <p:panel header="#{i18n['page.admin.project.panel.edit']}">
+                <p:panel id="editProjectPanel" header="#{i18n['page.admin.project.panel.edit']}">
+                    <p:focus context="editProjectPanel" />
                     <h:panelGrid columns="3" cellpadding="5">
                         <p:outputLabel for="projectName" value="#{i18n['page.admin.project.name']}" />
                         <p:inplace id="projectName">
