@@ -3,6 +3,7 @@ package edu.piotrjonski.scrumus.dao;
 
 import edu.piotrjonski.scrumus.dao.model.project.IssueEntity;
 import edu.piotrjonski.scrumus.dao.model.project.IssueTypeEntity;
+import edu.piotrjonski.scrumus.dao.model.project.PriorityEntity;
 import edu.piotrjonski.scrumus.dao.model.project.ProjectEntity;
 import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
@@ -52,8 +53,18 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
                             .getResultList();
     }
 
-    public boolean isIssueTypeCurrentlyUsed(String issueTypeName) {
+    public boolean isIssueTypeInUse(String issueTypeName) {
         return findAllIssuesWithIssueType(issueTypeName).size() > 0;
+    }
+
+    public boolean isPriorityInUse(final String priorityName) {
+        return findAllIssuesWithPriority(priorityName).size() > 0;
+    }
+
+    public List<Issue> findAllIssuesWithPriority(final String priorityName) {
+        return entityManager.createNamedQuery(IssueEntity.FIND_ALL_ISSUES_WITH_PRIORITY)
+                            .setParameter(PriorityEntity.PRIORITY_NAME, priorityName)
+                            .getResultList();
     }
 
     @Override

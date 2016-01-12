@@ -19,10 +19,10 @@ public class PriorityEntity {
 
     public static final String FIND_ALL = "findAllPriorities";
     public static final String FIND_ALL_NAMES = "findAllIPriorityNames";
-    public static final String ISSUE_TYPE_NAME = "name";
+    public static final String PRIORITY_NAME = "name";
     protected static final String FIND_ALL_QUERY = "SELECT p FROM PriorityEntity p";
     protected static final String FIND_ALL_NAMES_QUERY = "SELECT p.name FROM PriorityEntity p";
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

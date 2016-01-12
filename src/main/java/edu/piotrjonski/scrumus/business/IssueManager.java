@@ -63,9 +63,12 @@ public class IssueManager {
         return priorityDAO.saveOrUpdate(priority);
     }
 
-    public void deletePriority(Priority priority) throws NotExistException {
+    public void deletePriority(Priority priority) throws NotExistException, IllegalOperationException {
         if (!priorityExist(priority)) {
             throw new NotExistException("Priorytet nie istnieje.");
+        }
+        if (isPriorityInUser(priority)) {
+            throw new IllegalOperationException("Priorytet jest używany przez inne zadania.");
         }
         priorityDAO.delete(priority.getId());
     }
@@ -88,7 +91,7 @@ public class IssueManager {
         if (!issueTypeExist(issueType)) {
             throw new NotExistException("Rodzaj zadania nie istnieje.");
         }
-        if (issueTypeIsCurrentlyUsed(issueType)) {
+        if (isIssueTypeInUse(issueType)) {
             throw new IllegalOperationException("Rodzaj zadania jest używany przez inne zadania.");
         }
         issueTypeDAO.delete(issueType.getId());
@@ -126,13 +129,19 @@ public class IssueManager {
         return issueTypeDAO.findAllNames();
     }
 
+    public List<String> findAllPriorityNames() {return priorityDAO.findAllNames();}
+
     public List<IssueType> findAllIssueTypes() {
         return issueTypeDAO.findAll();
     }
 
-    private boolean issueTypeIsCurrentlyUsed(final IssueType issueType) {
-        return issueDAO.isIssueTypeCurrentlyUsed(issueType.getName());
+    public List<Priority> findAllPriorities() {return priorityDAO.findAll();}
+
+    private boolean isIssueTypeInUse(final IssueType issueType) {
+        return issueDAO.isIssueTypeInUse(issueType.getName());
     }
+
+    private boolean isPriorityInUser(final Priority priority) {return issueDAO.isPriorityInUse(priority.getName());}
 
     private void addIssueToBacklog(final Issue issue, Project project) {
         Backlog backlog = backlogDAO.findBacklogForProject(project.getKey())
