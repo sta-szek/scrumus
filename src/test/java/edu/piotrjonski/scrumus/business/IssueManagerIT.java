@@ -219,7 +219,7 @@ public class IssueManagerIT {
     }
 
     @Test
-    public void shouldDeletePriorityIfExist() throws NotExistException {
+    public void shouldDeletePriorityIfExist() throws NotExistException, IllegalOperationException {
         // given
         Priority priority = new Priority();
         priority.setName("name");

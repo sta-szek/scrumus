@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @RequestScoped
@@ -38,9 +39,42 @@ public class IssueService implements Serializable {
     private IssueManager issueManager;
 
     private String issueTypeName;
+    private int issueTypeId;
 
     public List<IssueType> getAllIssueTypes() {
         return issueManager.findAllIssueTypes();
+    }
+
+    public IssueType findIssueTypeById(String issueTypeId) {
+        try {
+            int issueTypeIntId = Integer.parseInt(issueTypeId);
+            Optional<IssueType> issueTypeOptional = issueManager.findIssueType(issueTypeIntId);
+            issueTypeOptional.ifPresent(issueType -> {
+                issueTypeName = issueType.getName();
+                this.issueTypeId = issueType.getId();
+            });
+            return issueTypeOptional.orElse(null);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    public String editIssueType() {
+        IssueType issueTypeFromField = createIssueTypeFromField();
+        logger.error(issueTypeFromField.toString());
+        int issueTypeId = Integer.parseInt(FacesContext.getCurrentInstance()
+                                                       .getExternalContext()
+                                                       .getRequestParameterMap()
+                                                       .get("issueTypeId"));
+        issueTypeFromField.setId(issueTypeId);
+        try {
+            issueManager.updateIssueType(issueTypeFromField);
+            return pathProvider.getRedirectPath("admin.listIssueTypes");
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            createFacesMessage("system.fatal.edit.issueType", null);
+            return null;
+        }
     }
 
     public void deleteIssueType(IssueType issueType) {
@@ -90,7 +124,13 @@ public class IssueService implements Serializable {
     private IssueType createIssueTypeFromField() {
         IssueType issueType = new IssueType();
         issueType.setName(issueTypeName);
+        clearFields();
         return issueType;
+    }
+
+    private void clearFields() {
+        issueTypeName = null;
+        issueTypeId = 0;
     }
 
 }

@@ -17,6 +17,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @RequestScoped
@@ -74,13 +75,15 @@ public class ProjectService implements Serializable {
     }
 
     public Project findByProjectKey(String projKey) {
-        Project project = projectManager.findProject(projKey)
-                                        .orElse(null);
-        projectName = project.getName();
-        projectKey = project.getKey();
-        description = project.getDescription();
-        definitionOfDone = project.getDefinitionOfDone();
-        return project;
+        Optional<Project> projectOptional = projectManager.findProject(projKey);
+        projectOptional.ifPresent(project -> {
+            projectName = project.getName();
+            projectKey = project.getKey();
+            description = project.getDescription();
+            definitionOfDone = project.getDefinitionOfDone();
+        });
+
+        return projectOptional.orElse(null);
     }
 
     public List<Project> getAllProjects() {

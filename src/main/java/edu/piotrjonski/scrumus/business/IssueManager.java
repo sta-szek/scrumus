@@ -137,6 +137,10 @@ public class IssueManager {
 
     public List<Priority> findAllPriorities() {return priorityDAO.findAll();}
 
+    public Optional<IssueType> findIssueType(final int issueTypeId) {
+        return issueTypeDAO.findById(issueTypeId);
+    }
+
     private boolean isIssueTypeInUse(final IssueType issueType) {
         return issueDAO.isIssueTypeInUse(issueType.getName());
     }

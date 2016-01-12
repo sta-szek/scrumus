@@ -1,32 +1,77 @@
 <h:body xmlns="http://www.w3.org/1999/xhtml"
         xmlns:h="http://xmlns.jcp.org/jsf/html"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-        xmlns:p="http://primefaces.org/ui">
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition template="#{path['admin.template']}">
         <ui:define name="admin-content">
-            <p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true" />
-            <h:form>
-                <p:panel id="issueTypeListPanel" header="#{i18n['page.admin.issueType.list']}">
+            <f:metadata>
+                <f:viewParam name="issueTypeId" />
+            </f:metadata>
+            <c:if test="${not empty issueTypeId}">
+                <ui:param name="issueType" value="#{issueService.findIssueTypeById(issueTypeId)}" />
+            </c:if>
+
+            <!--LISTA TYPÓW ZADAŃ-->
+            <p:panel id="issueTypeListPanel" header="#{i18n['page.admin.issueType.list']}" rendered="#{empty issueTypeId}">
+                <p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true" />
+                <h:form>
                     <p:dataTable id="issueTypeListTable"
-                                 var="issueType"
+                                 var="issType"
                                  value="#{issueService.allIssueTypes}"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                  paginator="true"
                                  rows="10">
                         <p:column headerText="#{i18n['page.admin.issueType.name']}">
-                            <h:outputText value="#{issueType.name}" />
+                            <h:outputText value="#{issType.name}" />
                         </p:column>
 
                         <p:column headerText="#{i18n['page.admin.issueType.actions']}">
+                            <p:button value="#{i18n['page.admin.issueType.button.edit']}"
+                                      id="editIssueTypeButton"
+                                      outcome="#{path['admin.listIssueTypes']}"
+                                      icon="fa fa-edit">
+                                <f:param name="issueTypeId" value="#{issType.id}" />
+                            </p:button>
                             <p:commandButton value="#{i18n['page.admin.issueType.delete']}"
                                              id="removeIssueTypeButton"
                                              icon="fa fa-remove"
-                                             action="#{issueService.deleteIssueType(issueType)}"
+                                             action="#{issueService.deleteIssueType(issType)}"
                                              update="issueTypeListTable" />
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                             </p:confirmDialog>
                         </p:column>
                     </p:dataTable>
+                </h:form>
+            </p:panel>
+
+            <!--EDYTUJ TYP ZADANIA - NIE ZNALEZIONO TYPU ZADANIA PO ID-->
+            <p:outputLabel value="#{i18n['page.admin.issueType.notFound']}"
+                           rendered="#{empty issueType and not empty issueTypeId}" />
+
+            <!--EDYTUJ TYP ZADANIA -->
+            <h:form id="editIssueTypeForm" rendered="#{not empty issueType}">
+                <p:panel id="editIssueTypePanel" header="#{i18n['page.admin.issueType.panel.edit']}">
+                    <p:focus context="editIssueTypePanel" />
+                    <h:panelGrid columns="3" cellpadding="5">
+                        <p:outputLabel for="issueTypeName" value="#{i18n['page.admin.issueType.name']}" />
+                        <p:inplace id="issueTypeName">
+                            <p:inputText value="#{issueService.issueTypeName}"
+                                         required="true"
+                                         requiredMessage="#{i18n['page.validator.require.issueType.name']}"
+                                         maxlength="32" />
+                        </p:inplace>
+                        <p:message for="issueTypeName" />
+                    </h:panelGrid>
+                    <p:commandButton id="saveChangesButton"
+                                     value="#{i18n['page.admin.issueType.button.save']}"
+                                     action="#{issueService.editIssueType()}"
+                                     ajax="false"
+                                     icon="fa fa-plus"
+                                     validateClient="true">
+                        <f:param name="issueTypeId" value="#{issueTypeId}" />
+                    </p:commandButton>
                 </p:panel>
             </h:form>
         </ui:define>
