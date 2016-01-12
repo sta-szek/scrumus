@@ -224,7 +224,13 @@ public class StoryManagerIT {
     }
 
     private void startTransaction()
-            throws SystemException, NotSupportedException, AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
+            throws
+            SystemException,
+            NotSupportedException,
+            AlreadyExistException,
+            UnsupportedEncodingException,
+            NoSuchAlgorithmException,
+            CreateUserException {
         userTransaction.begin();
         entityManager.joinTransaction();
         lastIssueType = issueTypeDAO.saveOrUpdate(createIssueType())

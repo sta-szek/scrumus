@@ -66,7 +66,7 @@ public class UserManagerIT {
 
     @Test
     public void shouldCreateDeveloper()
-            throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException, MessagingException {
+            throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException, MessagingException, CreateUserException {
         // given
         Developer developer = createDeveloper();
 
@@ -81,7 +81,7 @@ public class UserManagerIT {
 
     @Test
     public void shouldThrowExceptionWhenUserAlreadyExist()
-            throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
+            throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException, CreateUserException {
         // given
         Developer developer = createDeveloper();
         Developer savedDeveloper = userManager.create(developer)
@@ -95,7 +95,8 @@ public class UserManagerIT {
     }
 
     @Test
-    public void shouldDeleteUser() throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void shouldDeleteUser() throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException,
+                                          CreateUserException {
         // given
         Developer developer = createDeveloper();
         developer = userManager.create(developer)
@@ -111,7 +112,7 @@ public class UserManagerIT {
 
     @Test
     public void shouldUpdateUserIfExist()
-            throws AlreadyExistException, NotExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
+            throws AlreadyExistException, NotExistException, UnsupportedEncodingException, NoSuchAlgorithmException, CreateUserException {
         // given
         Developer developer = createDeveloper();
         Developer savedDeveloper = userManager.create(developer)

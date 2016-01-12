@@ -1,5 +1,7 @@
 package edu.piotrjonski.scrumus.ui.services;
 
+import edu.piotrjonski.scrumus.business.AlreadyExistException;
+import edu.piotrjonski.scrumus.business.CreateUserException;
 import edu.piotrjonski.scrumus.business.UserManager;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.ui.configuration.I18NProvider;
@@ -54,11 +56,17 @@ public class UserService implements Serializable {
         }
         Developer developer = createDeveloperFromFields();
         try {
-            userManager.create(developer);
+            Developer user = userManager.create(developer)
+                                        .get();
+            logger.info("User has been created: " + user);
             return pathProvider.getRedirectPath("admin.listUsers");
-        } catch (Exception e) {
+        } catch (CreateUserException e) {
             logger.error(e.getMessage(), e);
             createFacesMessage("system.fatal.create.user", null);
+            return null;
+        } catch (AlreadyExistException e) {
+            logger.error(e.getMessage(), e);
+            createFacesMessage("system.fatal.create.user.exist", null);
             return null;
         }
     }

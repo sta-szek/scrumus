@@ -331,7 +331,13 @@ public class IssueManagerIT {
     }
 
     private void startTransaction()
-            throws SystemException, NotSupportedException, AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
+            throws
+            SystemException,
+            NotSupportedException,
+            AlreadyExistException,
+            UnsupportedEncodingException,
+            NoSuchAlgorithmException,
+            CreateUserException {
         userTransaction.begin();
         entityManager.joinTransaction();
         Developer developer = createDeveloper();

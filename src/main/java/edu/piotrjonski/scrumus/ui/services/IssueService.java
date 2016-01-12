@@ -44,9 +44,9 @@ public class IssueService implements Serializable {
     }
 
     public void deleteIssueType(IssueType issueType) {
-        logger.info("Deleting: " + issueType.toString());
         try {
             issueManager.deleteIssueType(issueType);
+            logger.info("Deleted: " + issueType.toString());
         } catch (NotExistException e) {
             logger.error(e.getMessage(), e);
             createFacesMessage("system.fatal.delete.issueType.notExist", null);

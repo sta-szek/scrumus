@@ -72,15 +72,14 @@
                         <p:inplace id="projectName">
                             <p:inputText value="#{projectService.projectName}"
                                          required="true"
-                                         requiredMessage="#{i18n['page.validator.require.project.name']}" />
+                                         requiredMessage="#{i18n['page.validator.require.project.name']}"
+                                         maxlength="255" />
                         </p:inplace>
                         <p:message for="projectName" />
 
                         <p:outputLabel for="projectKey" value="#{i18n['page.admin.project.key']}" />
                         <p:inplace id="projectKey" disabled="true">
-                            <p:inputText value="#{projectService.projectKey}"
-                                         required="true"
-                                         requiredMessage="#{i18n['page.validator.require.project.key']}" />
+                            <p:inputText value="#{projectService.projectKey}" />
                         </p:inplace>
                         <p:message for="projectKey" />
 
@@ -89,7 +88,8 @@
                             <p:inputTextarea rows="6"
                                              cols="50"
                                              autoResize="false"
-                                             value="#{projectService.description}" />
+                                             value="#{projectService.description}"
+                                             maxlength="4096" />
                         </p:inplace>
                         <p:message for="description" />
 
@@ -98,7 +98,8 @@
                             <p:inputTextarea rows="6"
                                              cols="50"
                                              autoResize="false"
-                                             value="#{projectService.definitionOfDone}" />
+                                             value="#{projectService.definitionOfDone}"
+                                             maxlength="4096" />
                         </p:inplace>
                         <p:message for="definitionOfDone" />
                     </h:panelGrid>

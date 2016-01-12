@@ -13,8 +13,8 @@
                         <p:inputText id="issueTypeName"
                                      value="#{issueService.issueTypeName}"
                                      required="true"
-                                     requiredMessage="#{i18n['page.validator.require.issueType.name']}">
-                        </p:inputText>
+                                     requiredMessage="#{i18n['page.validator.require.issueType.name']}"
+                                     maxlength="32" />
                         <p:message for="issueTypeName" />
                     </h:panelGrid>
                     <p:commandButton id="createButton"

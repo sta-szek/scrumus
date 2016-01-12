@@ -13,23 +13,24 @@
                         <p:inputText id="firstname"
                                      value="#{userService.firstname}"
                                      required="true"
-                                     requiredMessage="#{i18n['page.validator.require.user.firstname']}">
-                        </p:inputText>
+                                     requiredMessage="#{i18n['page.validator.require.user.firstname']}"
+                                     maxlength="30" />
                         <p:message for="firstname" />
 
                         <p:outputLabel for="surname" value="#{i18n['page.admin.user.surname']}" />
                         <p:inputText id="surname"
                                      value="#{userService.surname}"
                                      required="true"
-                                     requiredMessage="#{i18n['page.validator.require.user.surname']}">
-                        </p:inputText>
+                                     requiredMessage="#{i18n['page.validator.require.user.surname']}"
+                                     maxlength="30" />
                         <p:message for="surname" />
 
                         <p:outputLabel for="username" value="#{i18n['page.admin.user.username']}" />
                         <p:inputText id="username"
                                      value="#{userService.username}"
                                      required="true"
-                                     requiredMessage="#{i18n['page.validator.require.user.username']}" />
+                                     requiredMessage="#{i18n['page.validator.require.user.username']}"
+                                     maxlength="20" />
                         <p:message for="username" />
 
 
@@ -37,7 +38,8 @@
                         <p:inputText id="email"
                                      value="#{userService.email}"
                                      required="true"
-                                     requiredMessage="#{i18n['page.validator.require.user.email']}" />
+                                     requiredMessage="#{i18n['page.validator.require.user.email']}"
+                                     maxlength="40" />
                         <p:message for="email" />
                     </h:panelGrid>
                     <p:commandButton id="createButton"
@@ -45,9 +47,14 @@
                                      action="#{userService.createUser}"
                                      ajax="false"
                                      icon="fa fa-user-plus"
-                                     validateClient="true">
-                    </p:commandButton>
+                                     validateClient="true"
+                                     onclick="PF('block').show()" />
                 </p:panel>
+                <p:blockUI block="createUserPanel" trigger="createButton" widgetVar="block">
+                    <p:outputLabel value="#{i18n['page.admin.user.create.process']}" />
+                    <br />
+                    <p:graphicImage library="primefaces" name="/outputpanel/images/loading.gif" />
+                </p:blockUI>
             </h:form>
         </ui:define>
     </ui:composition>

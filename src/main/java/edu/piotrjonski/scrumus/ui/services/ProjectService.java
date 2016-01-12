@@ -115,6 +115,10 @@ public class ProjectService implements Serializable {
         description = null;
     }
 
+    public void setProjectKey(String projectKey) {
+        this.projectKey = projectKey.toUpperCase();
+    }
+
     private boolean validateProjectName(String projectName) {
         if (occupiedChecker.isProjectNameOccupied(projectName)) {
             createFacesMessage("page.validator.occupied.project.name", "createProjectForm:projectName");
@@ -148,7 +152,7 @@ public class ProjectService implements Serializable {
         project.setCreationDate(LocalDateTime.now());
         project.setDefinitionOfDone(definitionOfDone);
         project.setDescription(description);
-        project.setKey(projectKey.toUpperCase());
+        project.setKey(projectKey);
         project.setName(projectName);
         clearFields();
         return project;

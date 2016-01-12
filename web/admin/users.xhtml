@@ -39,19 +39,19 @@
                                          id="viewUserButton"
                                          action="#{userService.deleteUser(project)}"
                                          update="userListTable" />-->
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <h:form id="confirmDialogForm">
+                                <p:commandButton value="#{i18n['page.admin.user.delete.yes']}"
+                                                 styleClass="ui-confirmdialog-yes"
+                                                 icon="ui-icon-check"
+                                                 action="#{userService.deleteUser(user)}"
+                                                 update="userListTable" />
+                                <p:commandButton value="#{i18n['page.admin.user.delete.no']}"
+                                                 styleClass="ui-confirmdialog-no"
+                                                 icon="ui-icon-close" />
+                            </h:form>
+                        </p:confirmDialog>
                     </p:column>
-                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                        <h:form id="confirmDialogForm">
-                            <p:commandButton value="#{i18n['page.admin.user.delete.yes']}"
-                                             styleClass="ui-confirmdialog-yes"
-                                             icon="ui-icon-check"
-                                             action="#{userService.deleteUser(user)}"
-                                             update="userListTable" />
-                            <p:commandButton value="#{i18n['page.admin.user.delete.no']}"
-                                             styleClass="ui-confirmdialog-no"
-                                             icon="ui-icon-close" />
-                        </h:form>
-                    </p:confirmDialog>
                 </p:dataTable>
             </p:panel>
         </ui:define>

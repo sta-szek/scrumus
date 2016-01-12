@@ -13,7 +13,8 @@
                         <p:inputText id="projectName"
                                      value="#{projectService.projectName}"
                                      required="true"
-                                     requiredMessage="#{i18n['page.validator.require.project.name']}">
+                                     requiredMessage="#{i18n['page.validator.require.project.name']}"
+                                     maxlength="255">
                             <p:ajax event="keyup" update="projectKey" listener="#{projectService.generateProjectKey}" />
                         </p:inputText>
                         <p:message for="projectName" />
@@ -23,7 +24,8 @@
                                      value="#{projectService.projectKey}"
                                      required="true"
                                      requiredMessage="#{i18n['page.validator.require.project.key']}"
-                                     style="text-transform: uppercase" />
+                                     style="text-transform: uppercase"
+                                     maxlength="8" />
                         <p:message for="projectKey" />
 
                         <p:outputLabel for="description" value="#{i18n['page.admin.project.description']}" />
@@ -31,7 +33,8 @@
                                          cols="50"
                                          autoResize="false"
                                          id="description"
-                                         value="#{projectService.description}" />
+                                         value="#{projectService.description}"
+                                         maxlength="4096" />
                         <p:message for="description" />
 
                         <p:outputLabel for="definitionOfDone" value="#{i18n['page.admin.project.definitionOfDone']}" />
@@ -39,7 +42,8 @@
                                          cols="50"
                                          autoResize="false"
                                          id="definitionOfDone"
-                                         value="#{projectService.definitionOfDone}" />
+                                         value="#{projectService.definitionOfDone}"
+                                         maxlength="4096" />
                         <p:message for="definitionOfDone" />
                     </h:panelGrid>
                     <p:commandButton id="createButton"

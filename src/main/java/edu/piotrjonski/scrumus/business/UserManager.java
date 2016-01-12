@@ -59,12 +59,10 @@ public class UserManager {
     }
 
     public Optional<Developer> create(Developer developer)
-            throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
+            throws AlreadyExistException, CreateUserException {
         if (developerExist(developer)) {
             throw new AlreadyExistException("User already exist.");
         }
-        logger.info(mailSender.getClass()
-                              .getName());
         return createUserAndSendPassword(developer);
     }
 
@@ -81,8 +79,7 @@ public class UserManager {
         developerDAO.delete(developer.getId());
     }
 
-    private Optional<Developer> createUserAndSendPassword(final Developer user)
-            throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    private Optional<Developer> createUserAndSendPassword(final Developer user) throws CreateUserException {
         Optional<Developer> savedDeveloper = developerDAO.saveOrUpdate(user);
         if (savedDeveloper.isPresent()) {
             if (generatePasswordAndSendEmail(savedDeveloper)) {
@@ -90,10 +87,10 @@ public class UserManager {
             }
         }
         logger.info("Couldn't create user " + user);
-        return Optional.empty();
+        throw new CreateUserException("Couldn't persist user.");
     }
 
-    private boolean generatePasswordAndSendEmail(final Optional<Developer> savedDeveloper) {
+    private boolean generatePasswordAndSendEmail(final Optional<Developer> savedDeveloper) throws CreateUserException {
         final String stringPassword;
         final String encodedPassword;
 
@@ -105,6 +102,7 @@ public class UserManager {
             }
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             logger.info("Couldn't encode text because of:  " + e.getMessage());
+            throw new CreateUserException(e.getMessage());
         }
 
         return false;
@@ -112,20 +110,20 @@ public class UserManager {
 
     private boolean savePasswordAndSendEmail(final Optional<Developer> savedDeveloper,
                                              final String stringPassword,
-                                             final String encodedPassword) {
+                                             final String encodedPassword) throws CreateUserException {
         Optional<Password> savedPassword = createAndSavePassword(savedDeveloper.get(), encodedPassword);
         if (savedPassword.isPresent()) {
             sendMessage(savedDeveloper.get(), stringPassword);
-            return true;
         } else {
             developerDAO.delete(savedDeveloper.get()
                                               .getId());
             logger.info("Couldn't save user password. User was deleted.");
+            throw new CreateUserException("Couldn't generate user password.");
         }
-        return false;
+        return true;
     }
 
-    private void sendMessage(final Developer savedDeveloper, final String stringPassword) {
+    private void sendMessage(final Developer savedDeveloper, final String stringPassword) throws CreateUserException {
         String subject = "Witamy w scrumus!";
         String message = "Twoje hasło to " + stringPassword + "\n Pamiętaj aby je zmienić zaraz po zalogowaniu.";
         String email = savedDeveloper.getEmail();
@@ -134,9 +132,9 @@ public class UserManager {
             logger.info("Message with password has been sent");
         } catch (MessagingException e) {
             developerDAO.delete(savedDeveloper.getId());
+            passwordDAO.deleteUserPassword(savedDeveloper.getId());
             logger.info("Couldn't send email with password. User was deleted. Reason: " + e.getMessage());
-            logger.error(mailSender.getClass()
-                                   .getName());
+            throw new CreateUserException(e.getMessage());
         }
     }
 
