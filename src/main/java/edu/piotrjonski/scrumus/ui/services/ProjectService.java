@@ -8,11 +8,9 @@ import edu.piotrjonski.scrumus.ui.configuration.PathProvider;
 import lombok.Data;
 import org.slf4j.Logger;
 
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -20,8 +18,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Data
-@RequestScoped
-@Named
 public class ProjectService implements Serializable {
 
     @Inject
@@ -54,6 +50,8 @@ public class ProjectService implements Serializable {
     @Size(max = 4096, message = "{validator.size.definitionOfDone}")
     private String definitionOfDone;
 
+    private String projectToDelete;
+
     public String createProject() {
         if (validateFields()) {
             return null;
@@ -61,6 +59,7 @@ public class ProjectService implements Serializable {
         Project project = createProjectFromFields();
         try {
             projectManager.create(project);
+            logger.info("Created project with key '" + project.getKey() + "'.");
             return pathProvider.getRedirectPath("admin.listProjects");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -69,10 +68,13 @@ public class ProjectService implements Serializable {
         }
     }
 
+    public void setProjectToDelete(String projectKey) {
+        projectToDelete = projectKey;
+    }
+
     public void deleteProject() {
-        String projectKey = getProjectKeyFromFacesParameter();
-        logger.info("Deleting project with key " + projectKey);
-        projectManager.delete(projectKey);
+        projectManager.delete(projectToDelete);
+        logger.info("Project with key '" + projectToDelete + "' was deleted.");
     }
 
     public Project findByProjectKey(String projKey) {

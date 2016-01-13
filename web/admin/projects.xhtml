@@ -21,6 +21,7 @@
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                              paginator="true"
                              rows="10">
+                    <ui:param name="productOwner" value="#{userService.findProductOwner(proj.key)}" />
                     <p:column headerText="#{i18n['page.admin.project.name']}">
                         <h:outputText value="#{proj.name}" />
                     </p:column>
@@ -29,7 +30,12 @@
                         <h:outputText value="#{proj.key}" />
                     </p:column>
 
-                    <p:column headerText="#{i18n['page.admin.project.actions']}">
+                    <p:column headerText="#{i18n['page.admin.project.productOwner']}">
+                        <h:outputText value="#{productOwner.firstName} #{productOwner.surname} (#{productOwner.username})"
+                                      rendered="#{not empty productOwner}" />
+                    </p:column>
+
+                    <p:column headerTexrtft="#{i18n['page.admin.project.actions']}">
                         <p:button value="#{i18n['page.admin.project.button.edit']}"
                                   id="editProjectButton"
                                   outcome="#{path['admin.listProjects']}"
@@ -38,28 +44,34 @@
                         </p:button>
                         <p:commandButton value="#{i18n['page.admin.project.button.delete']}"
                                          id="deleteProjectButton"
-                                         icon="fa fa-remove">
-                            <p:confirm header="#{i18n['page.admin.project.header.delete']}"
-                                       message="#{i18n['page.admin.project.message.delete']}"
-                                       icon="ui-icon-alert" />
+                                         icon="fa fa-remove"
+                                         onclick="PF('confirmation').show()">
+                            <f:setPropertyActionListener value="#{proj.key}" target="#{projectService.projectToDelete}" />
                         </p:commandButton>
-                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <h:form id="confirmDialogForm">
-                                <p:commandButton value="#{i18n['page.admin.project.delete.yes']}"
-                                                 styleClass="ui-confirmdialog-yes"
-                                                 icon="ui-icon-check"
-                                                 action="#{projectService.deleteProject()}"
-                                                 update="projectsListPanel">
-                                    <f:param name="projectKey" value="#{proj.key}" />
-                                </p:commandButton>
-                                <p:commandButton value="#{i18n['page.admin.project.delete.no']}"
-                                                 styleClass="ui-confirmdialog-no"
-                                                 icon="ui-icon-close" />
-                            </h:form>
-                        </p:confirmDialog>
                     </p:column>
                 </p:dataTable>
             </p:panel>
+            <p:confirmDialog global="true"
+                             showEffect="fade"
+                             hideEffect="fade"
+                             widgetVar="confirmation"
+                             header="#{i18n['page.admin.project.header.delete']}"
+                             message="#{i18n['page.admin.project.message.delete']}"
+                             icon="fa fa-warning">
+                <h:form id="confirmDialogForm">
+                    <p:commandButton value="#{i18n['page.admin.project.delete.yes']}"
+                                     styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"
+                                     action="#{projectService.deleteProject()}"
+                                     oncomplete="PF('confirmation').hide()"
+                                     update="projectsListPanel">
+                        <f:ajax render="projectsListPanel" />
+                    </p:commandButton>
+                    <p:commandButton value="#{i18n['page.admin.project.delete.no']}"
+                                     styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close" />
+                </h:form>
+            </p:confirmDialog>
 
             <!--EDYTUJ PROJEKT - NIE ZNALEZIONO PROJEKTU PO KLUCZU-->
             <p:outputLabel value="#{i18n['page.admin.project.notFound']}"

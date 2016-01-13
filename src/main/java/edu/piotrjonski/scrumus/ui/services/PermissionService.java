@@ -4,13 +4,9 @@ import edu.piotrjonski.scrumus.business.PermissionManager;
 import edu.piotrjonski.scrumus.domain.Developer;
 import lombok.Data;
 
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 @Data
-@RequestScoped
-@Named
 public class PermissionService {
 
     @Inject

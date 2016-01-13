@@ -2,8 +2,10 @@ package edu.piotrjonski.scrumus.business;
 
 import edu.piotrjonski.scrumus.dao.DeveloperDAO;
 import edu.piotrjonski.scrumus.dao.PasswordDAO;
+import edu.piotrjonski.scrumus.dao.ProductOwnerDAO;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Password;
+import edu.piotrjonski.scrumus.domain.ProductOwner;
 import edu.piotrjonski.scrumus.services.HashGenerator;
 import edu.piotrjonski.scrumus.services.MailSender;
 import org.slf4j.Logger;
@@ -27,6 +29,9 @@ public class UserManager {
 
     @Inject
     private PasswordDAO passwordDAO;
+
+    @Inject
+    private ProductOwnerDAO productOwnerDAO;
 
     @Inject
     private PermissionManager permissionManager;
@@ -77,6 +82,10 @@ public class UserManager {
         permissionManager.removeAllRolesFromUser(developer);
         teamManager.removeUserFromAllTeams(developer);
         developerDAO.delete(developer.getId());
+    }
+
+    public Optional<ProductOwner> findProductOwner(final String projectKey) {
+        return productOwnerDAO.findByProjectKey(projectKey);
     }
 
     private Optional<Developer> createUserAndSendPassword(final Developer user) throws CreateUserException {

@@ -80,12 +80,10 @@ public class IssueService implements Serializable {
     public void deleteIssueType(IssueType issueType) {
         try {
             issueManager.deleteIssueType(issueType);
-            logger.info("Deleted: " + issueType.toString());
+            logger.info("Issue type with id '" + issueType.getId() + "' was deleted.");
         } catch (NotExistException e) {
-            logger.error(e.getMessage(), e);
             createFacesMessage("system.fatal.delete.issueType.notExist", null);
         } catch (IllegalOperationException e) {
-            logger.error(e.getMessage(), e);
             createFacesMessage("system.fatal.delete.issueType.used", null);
         }
     }
@@ -97,6 +95,7 @@ public class IssueService implements Serializable {
         IssueType issueType = createIssueTypeFromField();
         try {
             issueManager.createIssueType(issueType);
+            logger.info("Created issue type with name '" + issueType.getName() + "'.");
             return pathProvider.getRedirectPath("admin.listIssueTypes");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

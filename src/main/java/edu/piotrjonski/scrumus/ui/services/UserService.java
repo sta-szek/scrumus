@@ -4,24 +4,21 @@ import edu.piotrjonski.scrumus.business.AlreadyExistException;
 import edu.piotrjonski.scrumus.business.CreateUserException;
 import edu.piotrjonski.scrumus.business.UserManager;
 import edu.piotrjonski.scrumus.domain.Developer;
+import edu.piotrjonski.scrumus.domain.ProductOwner;
 import edu.piotrjonski.scrumus.ui.configuration.I18NProvider;
 import edu.piotrjonski.scrumus.ui.configuration.PathProvider;
 import lombok.Data;
 import org.slf4j.Logger;
 
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
 @Data
-@RequestScoped
-@Named
 public class UserService implements Serializable {
 
     @Inject
@@ -50,6 +47,12 @@ public class UserService implements Serializable {
     @Size(max = 40)
     private String email;
 
+    private Developer userToDelete;
+
+    public void setUserToDelete(Developer user) {
+        userToDelete = user;
+    }
+
     public String createUser() {
         if (validateFields()) {
             return null;
@@ -58,14 +61,13 @@ public class UserService implements Serializable {
         try {
             Developer user = userManager.create(developer)
                                         .get();
-            logger.info("User has been created: " + user);
+            logger.info("Created user with id '" + user.getId() + "'.");
             return pathProvider.getRedirectPath("admin.listUsers");
         } catch (CreateUserException e) {
             logger.error(e.getMessage(), e);
             createFacesMessage("system.fatal.create.user", null);
             return null;
         } catch (AlreadyExistException e) {
-            logger.error(e.getMessage(), e);
             createFacesMessage("system.fatal.create.user.exist", null);
             return null;
         }
@@ -75,8 +77,9 @@ public class UserService implements Serializable {
         return userManager.findAllUsers();
     }
 
-    public void deleteUser(Developer developer) {
-        userManager.delete(developer);
+    public void deleteUser() {
+        userManager.delete(userToDelete);
+        logger.info("User with id '" + userToDelete.getId() + "' was deleted.");
     }
 
     public boolean validateUsername(String username) {
@@ -93,6 +96,12 @@ public class UserService implements Serializable {
             return true;
         }
         return false;
+    }
+
+    public Developer findProductOwner(String projectKey) {
+        ProductOwner productOwner = userManager.findProductOwner(projectKey)
+                                               .orElse(new ProductOwner());
+        return productOwner.getDeveloper();
     }
 
     private void createFacesMessage(String property, String field) {
