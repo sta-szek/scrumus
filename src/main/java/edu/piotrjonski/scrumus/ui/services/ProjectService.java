@@ -69,9 +69,10 @@ public class ProjectService implements Serializable {
         }
     }
 
-    public void deleteProject(Project project) {
-        logger.info("Deleting: " + project);
-        projectManager.delete(project.getKey());
+    public void deleteProject() {
+        String projectKey = getProjectKeyFromFacesParameter();
+        logger.info("Deleting project with key " + projectKey);
+        projectManager.delete(projectKey);
     }
 
     public Project findByProjectKey(String projKey) {
@@ -96,10 +97,7 @@ public class ProjectService implements Serializable {
 
     public String editProject() {
         Project projectFromFields = createProjectFromFields();
-        String projectKey = FacesContext.getCurrentInstance()
-                                        .getExternalContext()
-                                        .getRequestParameterMap()
-                                        .get("projectKey");
+        String projectKey = getProjectKeyFromFacesParameter();
         projectFromFields.setKey(projectKey);
         try {
             projectManager.update(projectFromFields);
@@ -120,6 +118,13 @@ public class ProjectService implements Serializable {
 
     public void setProjectKey(String projectKey) {
         this.projectKey = projectKey.toUpperCase();
+    }
+
+    private String getProjectKeyFromFacesParameter() {
+        return FacesContext.getCurrentInstance()
+                           .getExternalContext()
+                           .getRequestParameterMap()
+                           .get("projectKey");
     }
 
     private boolean validateProjectName(String projectName) {

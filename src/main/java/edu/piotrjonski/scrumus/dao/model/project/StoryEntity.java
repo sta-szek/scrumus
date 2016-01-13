@@ -37,7 +37,7 @@ public class StoryEntity {
     @Column
     private int points;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<IssueEntity> issueEntities;
 
     @ManyToOne(optional = false)

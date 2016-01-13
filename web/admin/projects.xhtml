@@ -48,8 +48,10 @@
                                 <p:commandButton value="#{i18n['page.admin.project.delete.yes']}"
                                                  styleClass="ui-confirmdialog-yes"
                                                  icon="ui-icon-check"
-                                                 action="#{projectService.deleteProject(proj)}"
-                                                 update="projectsListPanel" />
+                                                 action="#{projectService.deleteProject()}"
+                                                 update="projectsListPanel">
+                                    <f:param name="projectKey" value="#{proj.key}" />
+                                </p:commandButton>
                                 <p:commandButton value="#{i18n['page.admin.project.delete.no']}"
                                                  styleClass="ui-confirmdialog-no"
                                                  icon="ui-icon-close" />

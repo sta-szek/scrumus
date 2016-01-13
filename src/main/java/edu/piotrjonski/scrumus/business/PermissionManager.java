@@ -93,8 +93,8 @@ public class PermissionManager {
     }
 
     private void removeProjectFromProductOwner(ProductOwner productOwner) {
-        productOwner.setProject(null);
-        productOwnerDAO.saveOrUpdate(productOwner);
+        removeRole(RoleType.PRODUCT_OWNER, productOwner.getDeveloper());
+        deleteProductOwner(productOwner.getDeveloper());
     }
 
     private void removeRole(final RoleType roleType, final Developer user) {

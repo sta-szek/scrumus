@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.business;
 
+import edu.piotrjonski.scrumus.dao.BacklogDAO;
 import edu.piotrjonski.scrumus.dao.ProjectDAO;
 import edu.piotrjonski.scrumus.domain.Project;
 
@@ -25,6 +26,9 @@ public class ProjectManager {
 
     @Inject
     private SprintManager sprintManager;
+
+    @Inject
+    private BacklogDAO backlogDAO;
 
     public Optional<Project> create(Project project) throws AlreadyExistException {
         if (exists(project)) {
@@ -53,10 +57,11 @@ public class ProjectManager {
 
     public void delete(String projectKey) {
         permissionManager.divestProductOwner(projectKey);
-        issueManager.deleteIssuesFromProject(projectKey);
         storyManager.deleteStoriesFromProject(projectKey);
         sprintManager.deleteSprintsFromProject(projectKey);
         projectDAO.delete(projectKey);
+        deleteBacklogForProject(projectKey);
+        issueManager.deleteIssuesFromProject(projectKey);
     }
 
     public List<String> findAllKeys() {
@@ -69,6 +74,11 @@ public class ProjectManager {
 
     private boolean exists(Project project) {
         return projectDAO.exist(project.getKey());
+    }
+
+    private void deleteBacklogForProject(String projectKey) {
+        backlogDAO.findBacklogForProject(projectKey)
+                  .ifPresent(backlog -> backlogDAO.delete(backlog.getId()));
     }
 
 }
