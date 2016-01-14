@@ -13,4 +13,5 @@
     <module id="scrumus-EJB">
         <ejb>ejb.jar</ejb>
     </module>
+    <library-directory>lib</library-directory>
 </application>

@@ -17,6 +17,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class UserService implements Serializable {
@@ -38,8 +39,10 @@ public class UserService implements Serializable {
 
     @Size(max = 20, message = "{validator.size.username}")
     private String username;
+
     @Size(max = 30, message = "{validator.size.firstname}")
     private String firstname;
+
     @Size(max = 30, message = "{validator.size.surname}")
     private String surname;
     @Pattern(regexp = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$",
@@ -104,6 +107,27 @@ public class UserService implements Serializable {
         return productOwner.getDeveloper();
     }
 
+    public List<String> completeUser(String query) {
+        String lowerCaseQuery = query.toLowerCase();
+        return getAllUsers().stream()
+                            .filter(user -> anyNameStatsWith(user, lowerCaseQuery))
+                            .map(this::getUserFullName)
+                            .collect(Collectors.toList());
+    }
+
+    private String getUserFullName(Developer user) {
+        return user.getFirstName() + " " + user.getSurname() + " (" + user.getUsername() + ")";
+    }
+
+    private boolean anyNameStatsWith(Developer user, String query) {
+        return startsWith(user.getFirstName(), query) || startsWith(user.getSurname(), query) || startsWith(user.getUsername(), query);
+    }
+
+    private boolean startsWith(String text, String query) {
+        return text.toLowerCase()
+                   .startsWith(query);
+    }
+
     private void createFacesMessage(String property, String field) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -124,5 +148,4 @@ public class UserService implements Serializable {
         developer.setUsername(username);
         return developer;
     }
-
 }

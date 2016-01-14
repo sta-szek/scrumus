@@ -32,7 +32,28 @@ public class PermissionManager {
 
     public void divestProductOwner(String projectKey) {
         productOwnerDAO.findByProjectKey(projectKey)
-                       .ifPresent(this::removeProjectFromProductOwner);
+                       .ifPresent(productOwner -> {
+                           removeProjectFromProductOwner(productOwner);
+                           removeRole(RoleType.PRODUCT_OWNER, productOwner.getDeveloper());
+                       });
+    }
+
+    public void setProductOwner(String projectKey, String usrname) throws NotExistException, IllegalOperationException {
+        Optional<Developer> userOptional = developerDAO.findByUsername(usrname);
+        if (!userOptional.isPresent()) {
+            throw new NotExistException("User with username '" + usrname + "' does not exist.");
+        } else if (!projectExist(projectKey)) {
+            throw new NotExistException("Project with key '" + projectKey + "' does not exist.");
+        } else if (hasRole(RoleType.PRODUCT_OWNER, userOptional.get())) {
+            throw new IllegalOperationException("User is already product owner.");
+        }
+        Developer user = userOptional.get();
+        Project project = projectDAO.findById(projectKey)
+                                    .get();
+        Role role = createRoleIfNotExist(RoleType.PRODUCT_OWNER);
+        createProductOwner(userOptional.get(), project);
+        grantRole(role, user);
+
     }
 
     public boolean isAdmin(Developer user) {
@@ -41,7 +62,7 @@ public class PermissionManager {
     }
 
     public boolean isProductOwner(Project project, Developer user) {
-        if (developerExist(user) && projectExist(project)) {
+        if (developerExist(user) && projectExist(project.getKey())) {
             Optional<ProductOwner> productOwner = productOwnerDAO.findByDeveloperId(user.getId());
             if (productOwner.isPresent()) {
                 return hasProjectPermission(project, productOwner) && hasRole(RoleType.PRODUCT_OWNER, user);
@@ -69,14 +90,14 @@ public class PermissionManager {
     }
 
     public void addTeamToProject(Team team, Project project) {
-        if (teamExist(team) && projectExist(project)) {
+        if (teamExist(team) && projectExist(project.getKey())) {
             team.addProject(project);
             teamDAO.saveOrUpdate(team);
         }
     }
 
     public void removeTeamFromProject(Team team, Project project) {
-        if (teamExist(team) && projectExist(project)) {
+        if (teamExist(team) && projectExist(project.getKey())) {
             team.removeProject(project);
             teamDAO.saveOrUpdate(team);
         }
@@ -90,6 +111,13 @@ public class PermissionManager {
         deleteAdmin(user);
         deleteProductOwner(user);
         deleteScrumMaster(user);
+    }
+
+    private void createProductOwner(final Developer user, final Project project) {
+        ProductOwner productOwner = new ProductOwner();
+        productOwner.setDeveloper(user);
+        productOwner.setProject(project);
+        productOwnerDAO.saveOrUpdate(productOwner);
     }
 
     private void removeProjectFromProductOwner(ProductOwner productOwner) {
@@ -161,5 +189,5 @@ public class PermissionManager {
 
     private boolean teamExist(final Team team) {return teamDAO.exist(team.getId());}
 
-    private boolean projectExist(final Project project) {return projectDAO.exist(project.getKey());}
+    private boolean projectExist(final String projectKey) {return projectDAO.exist(projectKey);}
 }

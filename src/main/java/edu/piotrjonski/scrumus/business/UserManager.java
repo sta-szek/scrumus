@@ -84,6 +84,10 @@ public class UserManager {
         developerDAO.delete(developer.getId());
     }
 
+    public Optional<Developer> findByUsername(String username) {
+        return developerDAO.findByUsername(username);
+    }
+
     public Optional<ProductOwner> findProductOwner(final String projectKey) {
         return productOwnerDAO.findByProjectKey(projectKey);
     }

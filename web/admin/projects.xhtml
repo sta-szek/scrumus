@@ -15,6 +15,7 @@
 
             <!--LISTA PROJEKTÓW-->
             <p:panel id="projectsListPanel" header="#{i18n['page.admin.project.panel.list']}" rendered="#{empty projectKey}">
+                <p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true" />
                 <p:dataTable id="projectsListTable"
                              var="proj"
                              value="#{projectService.allProjects}"
@@ -35,7 +36,7 @@
                                       rendered="#{not empty productOwner}" />
                     </p:column>
 
-                    <p:column headerTexrtft="#{i18n['page.admin.project.actions']}">
+                    <p:column headerText="#{i18n['page.admin.project.actions']}">
                         <p:button value="#{i18n['page.admin.project.button.edit']}"
                                   id="editProjectButton"
                                   outcome="#{path['admin.listProjects']}"
@@ -48,9 +49,60 @@
                                          onclick="PF('confirmation').show()">
                             <f:setPropertyActionListener value="#{proj.key}" target="#{projectService.projectToDelete}" />
                         </p:commandButton>
+                        <p:commandButton value="#{i18n['page.admin.project.select.productOwner']}"
+                                         id="selectProductOwner"
+                                         icon="fa-user-plus"
+                                         onclick="PF('selectProductOwner').show()"
+                                         rendered="#{empty productOwner}">
+                            <f:setPropertyActionListener value="#{proj.key}" target="#{permissionService.productOwnerProjectKey}" />
+                        </p:commandButton>
+                        <p:commandButton value="#{i18n['page.admin.project.remove.productOwner']}"
+                                         id="removeProductOwner"
+                                         icon="fa fa-remove"
+                                         rendered="#{not empty productOwner}"
+                                         action="#{permissionService.removeProductOwner}"
+                                         update="projectsListPanel">
+                            <f:setPropertyActionListener value="#{proj.key}" target="#{permissionService.productOwnerProjectKey}" />
+                        </p:commandButton>
                     </p:column>
                 </p:dataTable>
             </p:panel>
+            <p:dialog
+                    global="true"
+                    showEffect="fade"
+                    hideEffect="fade"
+                    widgetVar="selectProductOwner"
+                    header="#{i18n['page.admin.project.select.productOwner.header']}"
+                    icon="fa fa-warning">
+                <h:form id="selectProductOwnerForm">
+                    <p:autoComplete id="productOwner"
+                                    multiple="false"
+                                    value="#{permissionService.productOwnerFullname}"
+                                    completeMethod="#{userService.completeUser}"
+                                    var="user"
+                                    itemLabel="#{user}"
+                                    itemValue="#{user}"
+                                    forceSelection="true"
+                                    dropdown="true">
+                        <p:column>
+                            <h:outputText value="#{user}" />
+                        </p:column>
+                    </p:autoComplete>
+                    <br />
+                    <p:commandButton value="#{i18n['page.admin.project.select.productOwner.save']}"
+                                     styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"
+                                     action="#{permissionService.setProductOwner()}"
+                                     oncomplete="PF('selectProductOwner').hide()"
+                                     update="projectsListPanel">
+                        <f:ajax render="projectsListPanel" />
+                    </p:commandButton>
+                    <p:commandButton value="#{i18n['page.admin.project.select.productOwner.cancel']}"
+                                     styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close"
+                                     onclick="PF('selectProductOwner').hide()" />
+                </h:form>
+            </p:dialog>
             <p:confirmDialog global="true"
                              showEffect="fade"
                              hideEffect="fade"
