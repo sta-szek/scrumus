@@ -85,22 +85,6 @@ public class UserService implements Serializable {
         logger.info("User with id '" + userToDelete.getId() + "' was deleted.");
     }
 
-    public boolean validateUsername(String username) {
-        if (occupiedChecker.isUsernameOccupied(username)) {
-            createFacesMessage("page.validator.occupied.user.username", "createUserForm:username");
-            return true;
-        }
-        return false;
-    }
-
-    public boolean validateEmail(String email) {
-        if (occupiedChecker.isEmailOccupied(email)) {
-            createFacesMessage("page.validator.occupied.user.email", "createUserForm:email");
-            return true;
-        }
-        return false;
-    }
-
     public Developer findProductOwner(String projectKey) {
         ProductOwner productOwner = userManager.findProductOwner(projectKey)
                                                .orElse(new ProductOwner());
@@ -113,6 +97,22 @@ public class UserService implements Serializable {
                             .filter(user -> anyNameStatsWith(user, lowerCaseQuery))
                             .map(this::getUserFullName)
                             .collect(Collectors.toList());
+    }
+
+    private boolean validateUsername(String username) {
+        if (occupiedChecker.isUsernameOccupied(username)) {
+            createFacesMessage("page.validator.occupied.user.username", "createUserForm:username");
+            return true;
+        }
+        return false;
+    }
+
+    private boolean validateEmail(String email) {
+        if (occupiedChecker.isEmailOccupied(email)) {
+            createFacesMessage("page.validator.occupied.user.email", "createUserForm:email");
+            return true;
+        }
+        return false;
     }
 
     private String getUserFullName(Developer user) {

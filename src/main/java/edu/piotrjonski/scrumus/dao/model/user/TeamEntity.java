@@ -15,13 +15,16 @@ import java.util.List;
 @Entity
 @Table(name = "team")
 @NamedQueries({@NamedQuery(name = TeamEntity.FIND_ALL, query = TeamEntity.FIND_ALL_QUERY),
-               @NamedQuery(name = TeamEntity.FIND_ALL_DEVELOPER_TEAMS, query = TeamEntity.FIND_ALL_DEVELOPER_TEAMS_QUERY)})
+               @NamedQuery(name = TeamEntity.FIND_ALL_DEVELOPER_TEAMS, query = TeamEntity.FIND_ALL_DEVELOPER_TEAMS_QUERY),
+               @NamedQuery(name = TeamEntity.FIND_ALL_NAMES, query = TeamEntity.FIND_ALL_NAMES_QUERY)})
 public class TeamEntity {
 
     public static final String FIND_ALL = "findAllTeams";
     public static final String DEVELOPER = "developer";
+    public static final String FIND_ALL_NAMES = "findAllTeamNames";
     public static final String FIND_ALL_DEVELOPER_TEAMS = "findAllDeveloperTeams";
     protected static final String FIND_ALL_QUERY = "SELECT d FROM TeamEntity d";
+    protected static final String FIND_ALL_NAMES_QUERY = "SELECT d.name FROM TeamEntity d";
     protected static final String FIND_ALL_DEVELOPER_TEAMS_QUERY =
             "SELECT d FROM TeamEntity d WHERE :" + DEVELOPER + " MEMBER OF d.developerEntities";
 
@@ -29,7 +32,7 @@ public class TeamEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, length = 30, unique = false)
+    @Column(nullable = false, length = 30, unique = true)
     private String name;
 
     @ManyToMany

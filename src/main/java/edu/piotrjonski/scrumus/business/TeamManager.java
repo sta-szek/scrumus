@@ -7,6 +7,7 @@ import edu.piotrjonski.scrumus.domain.Team;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.List;
 import java.util.Optional;
 
 @Stateless
@@ -54,6 +55,8 @@ public class TeamManager {
         }
     }
 
+    public List<String> findAllTeamNames() {return teamDAO.findAllNames();}
+
     private boolean teamExist(Team team) {
         return teamDAO.exist(team.getId());
     }
@@ -61,5 +64,4 @@ public class TeamManager {
     private boolean developerExist(Developer developer) {
         return developerDAO.exist(developer.getId());
     }
-
 }

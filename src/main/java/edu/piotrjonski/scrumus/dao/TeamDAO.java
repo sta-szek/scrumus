@@ -40,6 +40,11 @@ public class TeamDAO extends AbstractDAO<TeamEntity, Team> {
         return new ArrayList<>();
     }
 
+    public List<String> findAllNames() {
+        return entityManager.createNamedQuery(TeamEntity.FIND_ALL_NAMES)
+                            .getResultList();
+    }
+
     @Override
     protected TeamEntity mapToDatabaseModel(final Team domainModel) {
         TeamEntity teamEntity = new TeamEntity();
