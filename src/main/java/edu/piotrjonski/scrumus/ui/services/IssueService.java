@@ -4,6 +4,7 @@ import edu.piotrjonski.scrumus.business.IllegalOperationException;
 import edu.piotrjonski.scrumus.business.IssueManager;
 import edu.piotrjonski.scrumus.business.NotExistException;
 import edu.piotrjonski.scrumus.domain.IssueType;
+import edu.piotrjonski.scrumus.domain.State;
 import edu.piotrjonski.scrumus.ui.configuration.I18NProvider;
 import edu.piotrjonski.scrumus.ui.configuration.PathProvider;
 import lombok.Data;
@@ -40,10 +41,14 @@ public class IssueService implements Serializable {
 
     private String issueTypeName;
     private int issueTypeId;
+    private int stateId;
+    private String stateName;
 
     public List<IssueType> getAllIssueTypes() {
         return issueManager.findAllIssueTypes();
     }
+
+    public List<State> getAllStates() {return issueManager.findAllStates();}
 
     public IssueType findIssueTypeById(String issueTypeId) {
         try {
@@ -59,9 +64,22 @@ public class IssueService implements Serializable {
         }
     }
 
+    public State findStateById(String stateId) {
+        try {
+            int stateIntId = Integer.parseInt(stateId);
+            Optional<State> stateOptional = issueManager.findState(stateIntId);
+            stateOptional.ifPresent(state -> {
+                stateName = state.getName();
+                this.stateId = state.getId();
+            });
+            return stateOptional.orElse(null);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
     public String editIssueType() {
         IssueType issueTypeFromField = createIssueTypeFromField();
-        logger.error(issueTypeFromField.toString());
         int issueTypeId = Integer.parseInt(FacesContext.getCurrentInstance()
                                                        .getExternalContext()
                                                        .getRequestParameterMap()
@@ -77,14 +95,42 @@ public class IssueService implements Serializable {
         }
     }
 
+    public String editState() {
+        State stateFromField = createStateFromField();
+        int stateId = Integer.parseInt(FacesContext.getCurrentInstance()
+                                                   .getExternalContext()
+                                                   .getRequestParameterMap()
+                                                   .get("stateId"));
+        stateFromField.setId(stateId);
+        try {
+            issueManager.updateState(stateFromField);
+            return pathProvider.getRedirectPath("admin.listStates");
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            createFacesMessage("system.fatal.edit.state", null);
+            return null;
+        }
+    }
+
     public void deleteIssueType(IssueType issueType) {
         try {
             issueManager.deleteIssueType(issueType);
             logger.info("Issue type with id '" + issueType.getId() + "' was deleted.");
         } catch (NotExistException e) {
-            createFacesMessage("system.fatal.delete.issueType.notExist", null);
+            createFacesMessage("system.fatal.delete.state.notExist", null);
         } catch (IllegalOperationException e) {
-            createFacesMessage("system.fatal.delete.issueType.used", null);
+            createFacesMessage("system.fatal.delete.state.used", null);
+        }
+    }
+
+    public void deleteState(State state) {
+        try {
+            issueManager.deleteState(state);
+            logger.info("State with id '" + state.getId() + "' was deleted.");
+        } catch (NotExistException e) {
+            createFacesMessage("system.fatal.delete.state.notExist", null);
+        } catch (IllegalOperationException e) {
+            createFacesMessage("system.fatal.delete.state.used", null);
         }
     }
 
@@ -104,9 +150,33 @@ public class IssueService implements Serializable {
         }
     }
 
+    public String createState() {
+        if (validateStateName()) {
+            return null;
+        }
+        State state = createStateFromField();
+        try {
+            issueManager.createState(state);
+            logger.info("Created state with name '" + state.getName() + "'.");
+            return pathProvider.getRedirectPath("admin.listStates");
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            createFacesMessage("system.fatal.create.state", null);
+            return null;
+        }
+    }
+
     public boolean validateIssueTypeName() {
         if (occupiedChecker.isIssueTypeNameOccupied(issueTypeName)) {
             createFacesMessage("page.validator.occupied.issueType.name", "createIssueTypeForm:issueTypeName");
+            return true;
+        }
+        return false;
+    }
+
+    public boolean validateStateName() {
+        if (occupiedChecker.isStateNameOccupied(stateName)) {
+            createFacesMessage("page.validator.occupied.state.name", "createStateForm:stateName");
             return true;
         }
         return false;
@@ -127,9 +197,18 @@ public class IssueService implements Serializable {
         return issueType;
     }
 
+    private State createStateFromField() {
+        State state = new State();
+        state.setName(stateName);
+        clearFields();
+        return state;
+    }
+
     private void clearFields() {
         issueTypeName = null;
+        stateName = null;
         issueTypeId = 0;
+        stateId = 0;
     }
 
 }

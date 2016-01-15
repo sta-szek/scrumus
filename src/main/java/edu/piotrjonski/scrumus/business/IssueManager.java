@@ -111,9 +111,12 @@ public class IssueManager {
         return stateDAO.saveOrUpdate(state);
     }
 
-    public void deleteState(State state) throws NotExistException {
+    public void deleteState(State state) throws NotExistException, IllegalOperationException {
         if (!stateExist(state)) {
             throw new NotExistException("Stan nie istnieje.");
+        }
+        if (isStateInUse(state)) {
+            throw new IllegalOperationException("Stan jest używany przez inne zadania.");
         }
         stateDAO.delete(state.getId());
     }
@@ -129,11 +132,17 @@ public class IssueManager {
         return issueTypeDAO.findAllNames();
     }
 
+    public List<String> findAllStateNames() {
+        return stateDAO.findAllNames();
+    }
+
     public List<String> findAllPriorityNames() {return priorityDAO.findAllNames();}
 
     public List<IssueType> findAllIssueTypes() {
         return issueTypeDAO.findAll();
     }
+
+    public List<State> findAllStates() {return stateDAO.findAll();}
 
     public List<Priority> findAllPriorities() {return priorityDAO.findAll();}
 
@@ -141,8 +150,16 @@ public class IssueManager {
         return issueTypeDAO.findById(issueTypeId);
     }
 
+    public Optional<State> findState(final int stateId) {
+        return stateDAO.findById(stateId);
+    }
+
     private boolean isIssueTypeInUse(final IssueType issueType) {
         return issueDAO.isIssueTypeInUse(issueType.getName());
+    }
+
+    private boolean isStateInUse(final State state) {
+        return issueDAO.isStateInUse(state.getName());
     }
 
     private boolean isPriorityInUser(final Priority priority) {return issueDAO.isPriorityInUse(priority.getName());}

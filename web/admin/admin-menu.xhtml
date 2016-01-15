@@ -12,6 +12,9 @@
             <p:menuitem icon="fa fa-leanpub"
                         value="#{i18n['page.admin.menubar.create.issueType']}"
                         url="#{path['admin.createIssueType']}" />
+            <p:menuitem icon="fa fa-leanpub"
+                        value="#{i18n['page.admin.menubar.create.state']}"
+                        url="#{path['admin.createState']}" />
         </p:submenu>
 
         <p:submenu label="#{i18n['page.admin.menubar.explore']}" icon="ui-icon-document">
@@ -24,6 +27,9 @@
             <p:menuitem icon="fa fa-users"
                         value="#{i18n['page.admin.menubar.explore.issueType']}"
                         url="#{path['admin.listIssueTypes']}" />
+            <p:menuitem icon="fa fa-users"
+                        value="#{i18n['page.admin.menubar.explore.state']}"
+                        url="#{path['admin.listStates']}" />
         </p:submenu>
     </p:menu>
 </h:body>

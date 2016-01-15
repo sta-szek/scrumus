@@ -43,6 +43,10 @@ public class OccupiedChecker {
         return getOccupiedIssueTypeNames().contains(issueTypeName);
     }
 
+    public boolean isStateNameOccupied(String stateName) {
+        return getOccupiedStateNames().contains(stateName);
+    }
+
     private List<String> getOccupiedUsernames() {
         return userManager.findAllUsernames();
     }
@@ -60,4 +64,6 @@ public class OccupiedChecker {
     }
 
     private List<String> getOccupiedIssueTypeNames() {return issueManager.findAllIssueTypeNames();}
+
+    private List<String> getOccupiedStateNames() {return issueManager.findAllStateNames();}
 }

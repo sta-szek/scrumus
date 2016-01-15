@@ -246,7 +246,7 @@ public class IssueManagerIT {
     }
 
     @Test
-    public void shouldDeleteStateIfExist() throws NotExistException {
+    public void shouldDeleteStateIfExist() throws NotExistException, IllegalOperationException {
         // given
         State state = new State();
         state.setName("name");

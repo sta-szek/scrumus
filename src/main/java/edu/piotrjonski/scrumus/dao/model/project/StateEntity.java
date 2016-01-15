@@ -11,12 +11,15 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "state")
-@NamedQueries({@NamedQuery(name = StateEntity.FIND_ALL, query = StateEntity.FIND_ALL_QUERY)})
+@NamedQueries({@NamedQuery(name = StateEntity.FIND_ALL, query = StateEntity.FIND_ALL_QUERY),
+               @NamedQuery(name = StateEntity.FIND_ALL_NAMES, query = StateEntity.FIND_ALL_NAMES_QUERY)})
 public class StateEntity {
 
     public static final String FIND_ALL = "findAllStates";
+    public static final String STATE_NAME = "stateName";
+    public static final String FIND_ALL_NAMES = "findAllStateNames";
     protected static final String FIND_ALL_QUERY = "SELECT p FROM StateEntity p";
-
+    protected static final String FIND_ALL_NAMES_QUERY = "SELECT p.name FROM StateEntity p";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

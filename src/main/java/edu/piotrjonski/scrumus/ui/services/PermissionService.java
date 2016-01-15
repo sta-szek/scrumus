@@ -41,12 +41,12 @@ public class PermissionService implements Serializable {
         try {
             String username = extractUserNameFromFullname(productOwnerFullname);
             permissionManager.setProductOwner(productOwnerProjectKey, username);
+            clearFields();
             return "";
         } catch (NotExistException | IllegalOperationException e) {
             createFacesMessage(e.getMessage(), null);
-            return null;
-        } finally {
             clearFields();
+            return null;
         }
     }
 
