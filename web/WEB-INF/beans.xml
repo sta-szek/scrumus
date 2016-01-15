@@ -19,5 +19,10 @@
         <managed-bean-class>edu.piotrjonski.scrumus.ui.services.PermissionService</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>teamService</managed-bean-name>
+        <managed-bean-class>edu.piotrjonski.scrumus.ui.services.TeamService</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
 
 </faces-config>
