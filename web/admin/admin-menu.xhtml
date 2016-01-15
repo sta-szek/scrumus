@@ -18,6 +18,9 @@
             <p:menuitem icon="fa fa-leanpub"
                         value="#{i18n['page.admin.menubar.create.priority']}"
                         url="#{path['admin.createPriority']}" />
+            <p:menuitem icon="fa fa-leanpub"
+                        value="#{i18n['page.admin.menubar.create.team']}"
+                        url="#{path['admin.createTeam']}" />
         </p:submenu>
 
         <p:submenu label="#{i18n['page.admin.menubar.explore']}" icon="ui-icon-document">
@@ -36,6 +39,9 @@
             <p:menuitem icon="fa fa-users"
                         value="#{i18n['page.admin.menubar.explore.priority']}"
                         url="#{path['admin.listPriorities']}" />
+            <p:menuitem icon="fa fa-users"
+                        value="#{i18n['page.admin.menubar.explore.team']}"
+                        url="#{path['admin.listTeams']}" />
         </p:submenu>
     </p:menu>
 </h:body>

@@ -38,6 +38,6 @@ public class TeamEntity {
     @ManyToMany
     private List<DeveloperEntity> developerEntities;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "teamEntities")
+    @ManyToMany
     private List<ProjectEntity> projectEntities;
 }

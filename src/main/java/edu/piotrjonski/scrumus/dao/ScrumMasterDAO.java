@@ -3,7 +3,9 @@ package edu.piotrjonski.scrumus.dao;
 
 import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.dao.model.user.ScrumMasterEntity;
+import edu.piotrjonski.scrumus.dao.model.user.TeamEntity;
 import edu.piotrjonski.scrumus.domain.ScrumMaster;
+import edu.piotrjonski.scrumus.domain.Team;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -33,6 +35,19 @@ public class ScrumMasterDAO extends AbstractDAO<ScrumMasterEntity, ScrumMaster> 
             ScrumMasterEntity scrumMasterEntity = entityManager.createNamedQuery(ScrumMasterEntity.FIND_BY_DEVELOPER_ID,
                                                                                  ScrumMasterEntity.class)
                                                                .setParameter(DeveloperEntity.ID, developerId)
+                                                               .getSingleResult();
+            return Optional.of(mapToDomainModelIfNotNull(scrumMasterEntity));
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<ScrumMaster> findByDeveloperTeam(Team team) {
+        try {
+            TeamEntity teamEntity = entityManager.find(TeamEntity.class, team.getId());
+            ScrumMasterEntity scrumMasterEntity = entityManager.createNamedQuery(ScrumMasterEntity.FIND_BY_TEAM,
+                                                                                 ScrumMasterEntity.class)
+                                                               .setParameter(ScrumMasterEntity.TEAM, teamEntity)
                                                                .getSingleResult();
             return Optional.of(mapToDomainModelIfNotNull(scrumMasterEntity));
         } catch (NoResultException e) {

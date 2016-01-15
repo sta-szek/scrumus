@@ -103,8 +103,8 @@ INSERT INTO sprint VALUES (6, 'Testy systemowe', 'Sprint 3', '2015-12-8 12:00:00
 select setval('sprint_ID_SEQ', 7, true);
 
 -- TEAMY DO PROJEKTU
-INSERT INTO project_team VALUES ('reco', 1);
-INSERT INTO project_team VALUES ('pote', 2);
+INSERT INTO team_project VALUES (1, 'reco');
+INSERT INTO team_project VALUES (2, 'pote');
 
 -- SCRUM MASTERZY DO TEAMU
 INSERT INTO scrum_master_team VALUES (1, 2);

@@ -103,11 +103,24 @@ public class PermissionManager {
         }
     }
 
+    public void removeScrumMasterFromTeam(Team team) {
+        Optional<ScrumMaster> scrumMasterOptional = scrumMasterDAO.findByDeveloperTeam(team);
+        if (scrumMasterOptional.isPresent()) {
+            ScrumMaster scrumMaster = scrumMasterOptional.get();
+            scrumMaster.removeTeam(team);
+            scrumMasterDAO.saveOrUpdate(scrumMaster);
+            if (!scrumMaster.hasAnyTeam()) {
+                removeRole(RoleType.SCRUM_MASTER, scrumMaster.getDeveloper());
+                deleteScrumMaster(scrumMaster.getDeveloper());
+            }
+        }
+    }
+
     public void removeAllRolesFromUser(Developer user) {
         removeRole(RoleType.ADMIN, user);
-        removeRole(RoleType.DEVELOPER, user);
         removeRole(RoleType.PRODUCT_OWNER, user);
         removeRole(RoleType.SCRUM_MASTER, user);
+        removeRole(RoleType.DEVELOPER, user);
         deleteAdmin(user);
         deleteProductOwner(user);
         deleteScrumMaster(user);

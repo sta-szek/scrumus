@@ -1,13 +1,10 @@
 package edu.piotrjonski.scrumus.dao.model.project;
 
-import edu.piotrjonski.scrumus.dao.model.user.TeamEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Represents project object.
@@ -48,10 +45,7 @@ public class ProjectEntity {
 
     @Column(nullable = false)
     private LocalDateTime creationDate = LocalDateTime.now();
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<TeamEntity> teamEntities = new ArrayList<>();
-
+    
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private BacklogEntity backlogEntity = new BacklogEntity();
 }
