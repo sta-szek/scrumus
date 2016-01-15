@@ -4,6 +4,7 @@ import edu.piotrjonski.scrumus.business.IllegalOperationException;
 import edu.piotrjonski.scrumus.business.IssueManager;
 import edu.piotrjonski.scrumus.business.NotExistException;
 import edu.piotrjonski.scrumus.domain.IssueType;
+import edu.piotrjonski.scrumus.domain.Priority;
 import edu.piotrjonski.scrumus.domain.State;
 import edu.piotrjonski.scrumus.ui.configuration.I18NProvider;
 import edu.piotrjonski.scrumus.ui.configuration.PathProvider;
@@ -43,6 +44,8 @@ public class IssueService implements Serializable {
     private int issueTypeId;
     private int stateId;
     private String stateName;
+    private int priorityId;
+    private String priorityName;
 
     public List<IssueType> getAllIssueTypes() {
         return issueManager.findAllIssueTypes();
@@ -117,9 +120,9 @@ public class IssueService implements Serializable {
             issueManager.deleteIssueType(issueType);
             logger.info("Issue type with id '" + issueType.getId() + "' was deleted.");
         } catch (NotExistException e) {
-            createFacesMessage("system.fatal.delete.state.notExist", null);
+            createFacesMessage("system.fatal.delete.issueType.notExist", null);
         } catch (IllegalOperationException e) {
-            createFacesMessage("system.fatal.delete.state.used", null);
+            createFacesMessage("system.fatal.delete.issueType.used", null);
         }
     }
 
@@ -166,6 +169,22 @@ public class IssueService implements Serializable {
         }
     }
 
+    public String createPriority() {
+        if (validatePriorityName()) {
+            return null;
+        }
+        Priority priority = createPriorityFromField();
+        try {
+            issueManager.createPriority(priority);
+            logger.info("Created priority with name '" + priority.getName() + "'.");
+            return pathProvider.getRedirectPath("admin.listPriorities");
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            createFacesMessage("system.fatal.create.priority", null);
+            return null;
+        }
+    }
+
     public boolean validateIssueTypeName() {
         if (occupiedChecker.isIssueTypeNameOccupied(issueTypeName)) {
             createFacesMessage("page.validator.occupied.issueType.name", "createIssueTypeForm:issueTypeName");
@@ -177,6 +196,14 @@ public class IssueService implements Serializable {
     public boolean validateStateName() {
         if (occupiedChecker.isStateNameOccupied(stateName)) {
             createFacesMessage("page.validator.occupied.state.name", "createStateForm:stateName");
+            return true;
+        }
+        return false;
+    }
+
+    public boolean validatePriorityName() {
+        if (occupiedChecker.isPriorityNameOccupied(priorityName)) {
+            createFacesMessage("page.validator.occupied.priority.name", "createPriorityForm:priorityName");
             return true;
         }
         return false;
@@ -204,11 +231,20 @@ public class IssueService implements Serializable {
         return state;
     }
 
+    private Priority createPriorityFromField() {
+        Priority priority = new Priority();
+        priority.setName(priorityName);
+        clearFields();
+        return priority;
+    }
+
     private void clearFields() {
         issueTypeName = null;
         stateName = null;
+        priorityName = null;
         issueTypeId = 0;
         stateId = 0;
+        priorityId = 0;
     }
 
 }
