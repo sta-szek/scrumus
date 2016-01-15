@@ -1,0 +1,79 @@
+<h:body xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="#{path['admin.template']}">
+        <ui:define name="admin-content">
+            <f:metadata>
+                <f:viewParam name="priorityId" />
+            </f:metadata>
+            <c:if test="${not empty priorityId}">
+                <ui:param name="priority" value="#{issueService.findPriorityById(priorityId)}" />
+            </c:if>
+
+            <!--LISTA PRIORYTETÓW-->
+            <p:panel id="priorityListPanel" header="#{i18n['page.admin.priority.list']}" rendered="#{empty priorityId}">
+                <p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true" />
+                <h:form>
+                    <p:dataTable id="priorityListTable"
+                                 var="stat"
+                                 value="#{issueService.allPriorities}"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                 paginator="true"
+                                 rows="10">
+                        <p:column headerText="#{i18n['page.admin.priority.name']}">
+                            <h:outputText value="#{stat.name}" />
+                        </p:column>
+
+                        <p:column headerText="#{i18n['page.admin.priority.actions']}">
+                            <p:button value="#{i18n['page.admin.priority.button.edit']}"
+                                      id="editPriorityButton"
+                                      outcome="#{path['admin.listPriorities']}"
+                                      icon="fa fa-edit">
+                                <f:param name="priorityId" value="#{stat.id}" />
+                            </p:button>
+                            <p:commandButton value="#{i18n['page.admin.priority.delete']}"
+                                             id="removePriorityButton"
+                                             icon="fa fa-remove"
+                                             action="#{issueService.deletePriority(stat)}"
+                                             update="priorityListTable" />
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            </p:confirmDialog>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:panel>
+
+            <!--EDYTUJ PRIORYTET - NIE ZNALEZIONO Priorytetu PO ID-->
+            <p:outputLabel value="#{i18n['page.admin.priority.notFound']}"
+                           rendered="#{empty priority and not empty priorityId}" />
+
+            <!--EDYTUJ PRIORYTET -->
+            <h:form id="editPriorityForm" rendered="#{not empty priority}">
+                <p:panel id="editPriorityPanel" header="#{i18n['page.admin.priority.panel.edit']}">
+                    <p:focus context="editPriorityPanel" />
+                    <h:panelGrid columns="3" cellpadding="5">
+                        <p:outputLabel for="priorityName" value="#{i18n['page.admin.priority.name']}" />
+                        <p:inplace id="priorityName">
+                            <p:inputText value="#{issueService.priorityName}"
+                                         required="true"
+                                         requiredMessage="#{i18n['page.validator.require.priority.name']}"
+                                         maxlength="32" />
+                        </p:inplace>
+                        <p:message for="priorityName" />
+                    </h:panelGrid>
+                    <p:commandButton id="saveChangesButton"
+                                     value="#{i18n['page.admin.priority.button.save']}"
+                                     action="#{issueService.editPriority()}"
+                                     ajax="false"
+                                     icon="fa fa-plus"
+                                     validateClient="true">
+                        <f:param name="priorityId" value="#{priorityId}" />
+                    </p:commandButton>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>

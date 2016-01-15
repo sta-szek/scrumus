@@ -154,6 +154,10 @@ public class IssueManager {
         return stateDAO.findById(stateId);
     }
 
+    public Optional<Priority> findPriority(final int priorityId) {
+        return priorityDAO.findById(priorityId);
+    }
+
     private boolean isIssueTypeInUse(final IssueType issueType) {
         return issueDAO.isIssueTypeInUse(issueType.getName());
     }

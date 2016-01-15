@@ -53,6 +53,8 @@ public class IssueService implements Serializable {
 
     public List<State> getAllStates() {return issueManager.findAllStates();}
 
+    public List<Priority> getAllPriorities() { return issueManager.findAllPriorities();}
+
     public IssueType findIssueTypeById(String issueTypeId) {
         try {
             int issueTypeIntId = Integer.parseInt(issueTypeId);
@@ -76,6 +78,20 @@ public class IssueService implements Serializable {
                 this.stateId = state.getId();
             });
             return stateOptional.orElse(null);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    public Priority findPriorityById(String priorityId) {
+        try {
+            int priorityIntId = Integer.parseInt(priorityId);
+            Optional<Priority> priorityOptional = issueManager.findPriority(priorityIntId);
+            priorityOptional.ifPresent(priority -> {
+                priorityName = priority.getName();
+                this.priorityId = priority.getId();
+            });
+            return priorityOptional.orElse(null);
         } catch (NumberFormatException e) {
             return null;
         }
@@ -115,6 +131,23 @@ public class IssueService implements Serializable {
         }
     }
 
+    public String editPriority() {
+        Priority priorityFromField = createPriorityFromField();
+        int priorityId = Integer.parseInt(FacesContext.getCurrentInstance()
+                                                      .getExternalContext()
+                                                      .getRequestParameterMap()
+                                                      .get("priorityId"));
+        priorityFromField.setId(priorityId);
+        try {
+            issueManager.updatePriority(priorityFromField);
+            return pathProvider.getRedirectPath("admin.listPriorities");
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            createFacesMessage("system.fatal.edit.priority", null);
+            return null;
+        }
+    }
+
     public void deleteIssueType(IssueType issueType) {
         try {
             issueManager.deleteIssueType(issueType);
@@ -134,6 +167,17 @@ public class IssueService implements Serializable {
             createFacesMessage("system.fatal.delete.state.notExist", null);
         } catch (IllegalOperationException e) {
             createFacesMessage("system.fatal.delete.state.used", null);
+        }
+    }
+
+    public void deletePriority(Priority priority) {
+        try {
+            issueManager.deletePriority(priority);
+            logger.info("Priority with id '" + priority.getId() + "' was deleted.");
+        } catch (NotExistException e) {
+            createFacesMessage("system.fatal.delete.priority.notExist", null);
+        } catch (IllegalOperationException e) {
+            createFacesMessage("system.fatal.delete.priority.used", null);
         }
     }
 
