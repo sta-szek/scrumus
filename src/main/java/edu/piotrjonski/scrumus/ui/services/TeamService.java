@@ -2,10 +2,14 @@ package edu.piotrjonski.scrumus.ui.services;
 
 import edu.piotrjonski.scrumus.business.AlreadyExistException;
 import edu.piotrjonski.scrumus.business.TeamManager;
+import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Team;
 import edu.piotrjonski.scrumus.ui.configuration.I18NProvider;
 import edu.piotrjonski.scrumus.ui.configuration.PathProvider;
 import lombok.Data;
+import org.primefaces.model.tagcloud.DefaultTagCloudItem;
+import org.primefaces.model.tagcloud.DefaultTagCloudModel;
+import org.primefaces.model.tagcloud.TagCloudModel;
 import org.slf4j.Logger;
 
 import javax.faces.application.FacesMessage;
@@ -13,8 +17,10 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Data
 public class TeamService implements Serializable {
@@ -38,6 +44,27 @@ public class TeamService implements Serializable {
     private String teamName;
 
     private String teamToDelete;
+
+    private String userToAdd;
+
+    private String addUserTeamId;
+
+    public void addUser() {
+        if (userToAdd != null && addUserTeamId != null) {
+            int teamIntId = Integer.parseInt(addUserTeamId);
+            String username = extractUsername(userToAdd);
+            clearFields();
+            teamManager.addUserToTeam(username, teamIntId);
+            logger.info("User with username '" + username + "' was added to team with id '" + teamIntId + "'");
+        }
+    }
+
+    public TagCloudModel getUserTagCloudModel(String teamId) {
+        int teamIntId = Integer.parseInt(teamId);
+        List<Developer> users = teamManager.findUsersForTeam(teamIntId);
+        Collections.shuffle(users);
+        return createTagCloudModelForUsers(users);
+    }
 
     public Team findByTeamId(String teamId) {
         try {
@@ -96,6 +123,30 @@ public class TeamService implements Serializable {
         }
     }
 
+    private void clearFields() {
+        teamName = null;
+        teamToDelete = null;
+        userToAdd = null;
+        addUserTeamId = null;
+    }
+
+    private TagCloudModel createTagCloudModelForUsers(final List<Developer> users) {
+        TagCloudModel tagCloudModel = new DefaultTagCloudModel();
+
+        users.stream()
+             .map(user -> new DefaultTagCloudItem(getUserFullName(user), nextRandom()))
+             .forEach(tagCloudModel::addTag);
+        return tagCloudModel;
+
+    }
+
+    private String getUserFullName(final Developer user) {return user.getFirstName() + " " + user.getSurname();}
+
+    private int nextRandom() {
+        Random random = new Random();
+        return random.nextInt(5) + 1;
+    }
+
     private Team createTeamFromField() {
         Team team = new Team();
         team.setName(teamName);
@@ -116,5 +167,14 @@ public class TeamService implements Serializable {
                                                      i18NProvider.getMessage(property),
                                                      null);
         facesContext.addMessage(field, facesMessage);
+    }
+
+    private String extractUsername(String fullname) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        PermissionService permissionService = facesContext.getApplication()
+                                                          .evaluateExpressionGet(facesContext,
+                                                                                 "#{permissionService}",
+                                                                                 PermissionService.class);
+        return permissionService.extractUserNameFromFullname(fullname);
     }
 }

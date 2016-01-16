@@ -23,8 +23,13 @@
                              paginator="true"
                              rows="10">
                     <ui:param name="scrumMaster" value="#{userService.findScrumMaster(tm.id)}" />
-                    <p:column headerText="#{i18n['page.admin.team.name']}">
+                    <p:column headerText="#{i18n['page.admin.team.name']}" filterBy="#{tm.name}">
                         <h:outputText value="#{tm.name}" />
+                    </p:column>
+                    <p:column headerText="#{i18n['page.admin.team.users']}" width="800">
+                        <p:tagCloud model="#{teamService.getUserTagCloudModel(tm.id)}" style="width: inherit">
+                            <p:ajax event="select" update="teamsListTable" listener="#{teamService.deleteUser}" />
+                        </p:tagCloud>
                     </p:column>
                     <p:column headerText="#{i18n['page.admin.team.scrumMaster']}">
                         <h:outputText value="#{scrumMaster.firstName} #{scrumMaster.surname} (#{scrumMaster.username})"
@@ -59,16 +64,20 @@
                                          update="teamsListPanel">
                             <f:setPropertyActionListener value="#{tm.id}" target="#{permissionService.scrumMasterTeamId}" />
                         </p:commandButton>
+                        <p:commandButton value="#{i18n['page.admin.team.add.user']}"
+                                         id="addUserButton"
+                                         icon="fa-user-plus"
+                                         onclick="PF('addUser').show()">
+                            <f:setPropertyActionListener value="#{tm.id}" target="#{teamService.addUserTeamId}" />
+                        </p:commandButton>
                     </p:column>
                 </p:dataTable>
             </p:panel>
-            <p:dialog
-                    global="true"
-                    showEffect="fade"
-                    hideEffect="fade"
-                    widgetVar="selectScrumMaster"
-                    header="#{i18n['page.admin.team.select.scrumMaster.header']}"
-                    icon="fa fa-warning">
+            <p:dialog showEffect="fade"
+                      hideEffect="fade"
+                      widgetVar="selectScrumMaster"
+                      header="#{i18n['page.admin.team.select.scrumMaster.header']}"
+                      icon="fa fa-warning">
                 <h:form id="selectScrumMasterForm">
                     <p:autoComplete id="scrumMaster"
                                     multiple="false"
@@ -96,6 +105,40 @@
                                      styleClass="ui-confirmdialog-no"
                                      icon="ui-icon-close"
                                      onclick="PF('selectScrumMaster').hide()" />
+                </h:form>
+            </p:dialog>
+            <p:dialog showEffect="fade"
+                      hideEffect="fade"
+                      widgetVar="addUser"
+                      header="#{i18n['page.admin.team.add.user.header']}"
+                      icon="fa fa-warning">
+                <h:form id="addUserForm">
+                    <p:autoComplete id="user"
+                                    multiple="false"
+                                    value="#{teamService.userToAdd}"
+                                    completeMethod="#{userService.completeUser}"
+                                    var="user"
+                                    itemLabel="#{user}"
+                                    itemValue="#{user}"
+                                    forceSelection="true"
+                                    dropdown="true">
+                        <p:column>
+                            <h:outputText value="#{user}" />
+                        </p:column>
+                    </p:autoComplete>
+                    <br />
+                    <p:commandButton value="#{i18n['page.admin.team.add.user.save']}"
+                                     styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"
+                                     action="#{teamService.addUser()}"
+                                     oncomplete="PF('addUser').hide()"
+                                     update="teamsListPanel">
+                        <f:ajax render="teamsListPanel" />
+                    </p:commandButton>
+                    <p:commandButton value="#{i18n['page.admin.team.add.user.cancel']}"
+                                     styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close"
+                                     onclick="PF('addUser').hide()" />
                 </h:form>
             </p:dialog>
             <p:confirmDialog global="true"

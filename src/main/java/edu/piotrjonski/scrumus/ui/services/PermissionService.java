@@ -90,6 +90,11 @@ public class PermissionService implements Serializable {
         }
     }
 
+    String extractUserNameFromFullname(final String productOwnerFullname) {
+        String usernameWithBrace = productOwnerFullname.split("\\(")[1];
+        return usernameWithBrace.substring(0, usernameWithBrace.length() - 1);
+    }
+
     private void clearFields() {
         productOwnerFullname = null;
         productOwnerProjectKey = null;
@@ -103,11 +108,6 @@ public class PermissionService implements Serializable {
                                                      message,
                                                      null);
         facesContext.addMessage(field, facesMessage);
-    }
-
-    private String extractUserNameFromFullname(final String productOwnerFullname) {
-        String usernameWithBrace = productOwnerFullname.split("\\(")[1];
-        return usernameWithBrace.substring(0, usernameWithBrace.length() - 1);
     }
 
 }

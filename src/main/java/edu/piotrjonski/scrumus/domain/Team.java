@@ -25,4 +25,8 @@ public class Team {
     public void addProject(Project project) {projects.add(project);}
 
     public void removeProject(Project project) {projects.remove(project);}
+
+    public boolean containsUser(Developer user) {
+        return developers.contains(user);
+    }
 }

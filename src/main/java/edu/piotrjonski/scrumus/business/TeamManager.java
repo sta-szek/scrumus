@@ -46,9 +46,9 @@ public class TeamManager {
         return teamDAO.findById(teamId);
     }
 
-    public void addUserToTeam(Developer developer, Team team) {
-        if (teamExist(team) && developerExist(developer)) {
-            team.addDeveloper(developer);
+    public void addUserToTeam(Developer user, Team team) {
+        if (teamExist(team) && developerExist(user) && !team.containsUser(user)) {
+            team.addDeveloper(user);
             teamDAO.saveOrUpdate(team);
         }
     }
@@ -79,6 +79,19 @@ public class TeamManager {
             throw new NotExistException("Team zadania nie istnieje.");
         }
         teamDAO.saveOrUpdate(team);
+    }
+
+    public void addUserToTeam(final String username, final int teamId) {
+        Optional<Team> teamOptional = teamDAO.findById(teamId);
+        Optional<Developer> userOptional = developerDAO.findByUsername(username);
+        if (teamOptional.isPresent() && userOptional.isPresent()) {
+            addUserToTeam(userOptional.get(), teamOptional.get());
+        }
+    }
+
+    public List<Developer> findUsersForTeam(final int teamId) {
+        return findTeam(teamId).orElse(new Team())
+                               .getDevelopers();
     }
 
     private boolean teamExist(Team team) {
