@@ -25,6 +25,10 @@ public class PermissionService implements Serializable {
 
     private String productOwnerProjectKey;
 
+    private String scrumMasterTeamId;
+
+    private String scrumMasterFullName;
+
     public boolean isAdmin(Developer user) {
         return permissionManager.isAdmin(user);
     }
@@ -38,6 +42,9 @@ public class PermissionService implements Serializable {
     }
 
     public String setProductOwner() {
+        if (productOwnerFullname == null) {
+            return null;
+        }
         try {
             String username = extractUserNameFromFullname(productOwnerFullname);
             permissionManager.setProductOwner(productOwnerProjectKey, username);
@@ -50,13 +57,44 @@ public class PermissionService implements Serializable {
         }
     }
 
+    public String setScrumMaster() {
+        if (scrumMasterFullName == null) {
+            return null;
+        }
+        try {
+            String username = extractUserNameFromFullname(scrumMasterFullName);
+            int teamIntId = Integer.parseInt(scrumMasterTeamId);
+            permissionManager.setScrumMaster(teamIntId, username);
+            clearFields();
+            return "";
+        } catch (NotExistException e) {
+            createFacesMessage(e.getMessage(), null);
+            clearFields();
+            return null;
+        } catch (NumberFormatException e) {
+            clearFields();
+            return null;
+        }
+    }
+
     public void removeProductOwner() {
-        permissionManager.divestProductOwner(productOwnerProjectKey);
+        permissionManager.removeProductOwnerFromProject(productOwnerProjectKey);
+    }
+
+    public void removeScrumMaster() {
+        try {
+            int teamIntId = Integer.parseInt(scrumMasterTeamId);
+            permissionManager.removeScrumMasterFromTeam(teamIntId);
+        } catch (NumberFormatException e) {
+
+        }
     }
 
     private void clearFields() {
         productOwnerFullname = null;
         productOwnerProjectKey = null;
+        scrumMasterTeamId = null;
+        scrumMasterFullName = null;
     }
 
     private void createFacesMessage(String message, String field) {

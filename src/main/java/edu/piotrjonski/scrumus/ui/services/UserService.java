@@ -5,6 +5,7 @@ import edu.piotrjonski.scrumus.business.CreateUserException;
 import edu.piotrjonski.scrumus.business.UserManager;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.ProductOwner;
+import edu.piotrjonski.scrumus.domain.ScrumMaster;
 import edu.piotrjonski.scrumus.ui.configuration.I18NProvider;
 import edu.piotrjonski.scrumus.ui.configuration.PathProvider;
 import lombok.Data;
@@ -80,15 +81,21 @@ public class UserService implements Serializable {
         return userManager.findAllUsers();
     }
 
+    public Developer findScrumMaster(int teamId) {
+        return userManager.findScrumMaster(teamId)
+                          .orElse(new ScrumMaster())
+                          .getDeveloper();
+    }
+
     public void deleteUser() {
         userManager.delete(userToDelete);
         logger.info("User with id '" + userToDelete.getId() + "' was deleted.");
     }
 
     public Developer findProductOwner(String projectKey) {
-        ProductOwner productOwner = userManager.findProductOwner(projectKey)
-                                               .orElse(new ProductOwner());
-        return productOwner.getDeveloper();
+        return userManager.findProductOwner(projectKey)
+                          .orElse(new ProductOwner())
+                          .getDeveloper();
     }
 
     public List<String> completeUser(String query) {

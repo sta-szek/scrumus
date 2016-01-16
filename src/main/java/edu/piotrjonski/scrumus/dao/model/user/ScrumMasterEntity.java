@@ -31,7 +31,7 @@ public class ScrumMasterEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private DeveloperEntity developerEntity;
 
     @OneToMany

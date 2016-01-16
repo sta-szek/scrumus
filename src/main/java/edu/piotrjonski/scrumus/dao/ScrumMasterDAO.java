@@ -5,12 +5,12 @@ import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.dao.model.user.ScrumMasterEntity;
 import edu.piotrjonski.scrumus.dao.model.user.TeamEntity;
 import edu.piotrjonski.scrumus.domain.ScrumMaster;
-import edu.piotrjonski.scrumus.domain.Team;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import java.util.List;
 import java.util.Optional;
 
 @Stateless
@@ -30,21 +30,18 @@ public class ScrumMasterDAO extends AbstractDAO<ScrumMasterEntity, ScrumMaster> 
         super(entityClass);
     }
 
-    public Optional<ScrumMaster> findByDeveloperId(int developerId) {
-        try {
-            ScrumMasterEntity scrumMasterEntity = entityManager.createNamedQuery(ScrumMasterEntity.FIND_BY_DEVELOPER_ID,
-                                                                                 ScrumMasterEntity.class)
-                                                               .setParameter(DeveloperEntity.ID, developerId)
-                                                               .getSingleResult();
-            return Optional.of(mapToDomainModelIfNotNull(scrumMasterEntity));
-        } catch (NoResultException e) {
-            return Optional.empty();
-        }
+    public List<ScrumMaster> findByDeveloperId(int developerId) {
+        List<ScrumMasterEntity> scrumMasterEntities = entityManager.createNamedQuery(ScrumMasterEntity.FIND_BY_DEVELOPER_ID,
+                                                                                     ScrumMasterEntity.class)
+                                                                   .setParameter(DeveloperEntity.ID, developerId)
+                                                                   .getResultList();
+        return mapToDomainModel(scrumMasterEntities);
+
     }
 
-    public Optional<ScrumMaster> findByDeveloperTeam(Team team) {
+    public Optional<ScrumMaster> findByTeam(int teamId) {
         try {
-            TeamEntity teamEntity = entityManager.find(TeamEntity.class, team.getId());
+            TeamEntity teamEntity = entityManager.find(TeamEntity.class, teamId);
             ScrumMasterEntity scrumMasterEntity = entityManager.createNamedQuery(ScrumMasterEntity.FIND_BY_TEAM,
                                                                                  ScrumMasterEntity.class)
                                                                .setParameter(ScrumMasterEntity.TEAM, teamEntity)

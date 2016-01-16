@@ -56,7 +56,7 @@ public class ProjectManager {
     }
 
     public void delete(String projectKey) {
-        permissionManager.divestProductOwner(projectKey);
+        permissionManager.removeProductOwnerFromProject(projectKey);
         storyManager.deleteStoriesFromProject(projectKey);
         sprintManager.deleteSprintsFromProject(projectKey);
         projectDAO.delete(projectKey);

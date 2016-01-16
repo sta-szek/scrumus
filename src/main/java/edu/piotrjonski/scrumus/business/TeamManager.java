@@ -37,7 +37,7 @@ public class TeamManager {
         Optional<Team> teamOptional = teamDAO.findById(teamId);
         if (teamOptional.isPresent()) {
             Team team = teamOptional.get();
-            permissionManager.removeScrumMasterFromTeam(team);
+            permissionManager.removeScrumMasterFromTeam(team.getId());
             teamDAO.delete(teamId);
         }
     }

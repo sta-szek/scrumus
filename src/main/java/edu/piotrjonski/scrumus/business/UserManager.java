@@ -3,9 +3,11 @@ package edu.piotrjonski.scrumus.business;
 import edu.piotrjonski.scrumus.dao.DeveloperDAO;
 import edu.piotrjonski.scrumus.dao.PasswordDAO;
 import edu.piotrjonski.scrumus.dao.ProductOwnerDAO;
+import edu.piotrjonski.scrumus.dao.ScrumMasterDAO;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Password;
 import edu.piotrjonski.scrumus.domain.ProductOwner;
+import edu.piotrjonski.scrumus.domain.ScrumMaster;
 import edu.piotrjonski.scrumus.services.HashGenerator;
 import edu.piotrjonski.scrumus.services.MailSender;
 import org.slf4j.Logger;
@@ -34,6 +36,9 @@ public class UserManager {
     private ProductOwnerDAO productOwnerDAO;
 
     @Inject
+    private ScrumMasterDAO scrumMasterDAO;
+
+    @Inject
     private PermissionManager permissionManager;
 
     @Inject
@@ -55,7 +60,6 @@ public class UserManager {
 
     public List<Developer> findAllUsers() {
         return developerDAO.findAll();
-        //TODO testy
     }
 
     public boolean emailExist(String email) {
@@ -90,6 +94,10 @@ public class UserManager {
 
     public Optional<ProductOwner> findProductOwner(final String projectKey) {
         return productOwnerDAO.findByProjectKey(projectKey);
+    }
+
+    public Optional<ScrumMaster> findScrumMaster(final int teamId) {
+        return scrumMasterDAO.findByTeam(teamId);
     }
 
     private Optional<Developer> createUserAndSendPassword(final Developer user) throws CreateUserException {
