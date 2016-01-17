@@ -34,6 +34,7 @@ repositories {
 dependencies {
     providedCompile 'org.projectlombok:lombok:1.16.6'
     providedCompile 'org.wildfly:wildfly-spec-api:8.0.0.Final'
+    providedCompile 'org.primefaces:primefaces:5.2'
     compile 'org.slf4j:slf4j-simple:1.7.7'
     compile 'org.apache.commons:commons-collections4:4.0'
 
