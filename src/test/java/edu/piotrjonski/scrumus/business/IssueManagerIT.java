@@ -219,7 +219,7 @@ public class IssueManagerIT {
     }
 
     @Test
-    public void shouldDeletePriorityIfExist() throws NotExistException {
+    public void shouldDeletePriorityIfExist() throws NotExistException, IllegalOperationException {
         // given
         Priority priority = new Priority();
         priority.setName("name");
@@ -246,7 +246,7 @@ public class IssueManagerIT {
     }
 
     @Test
-    public void shouldDeleteStateIfExist() throws NotExistException {
+    public void shouldDeleteStateIfExist() throws NotExistException, IllegalOperationException {
         // given
         State state = new State();
         state.setName("name");
@@ -331,7 +331,13 @@ public class IssueManagerIT {
     }
 
     private void startTransaction()
-            throws SystemException, NotSupportedException, AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
+            throws
+            SystemException,
+            NotSupportedException,
+            AlreadyExistException,
+            UnsupportedEncodingException,
+            NoSuchAlgorithmException,
+            CreateUserException {
         userTransaction.begin();
         entityManager.joinTransaction();
         Developer developer = createDeveloper();

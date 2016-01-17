@@ -1,7 +1,7 @@
 package edu.piotrjonski.scrumus.dao;
 
 
-import edu.piotrjonski.scrumus.dao.model.project.IssueEntity;
+import edu.piotrjonski.scrumus.dao.model.project.*;
 import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Issue;
@@ -9,6 +9,7 @@ import edu.piotrjonski.scrumus.domain.Issue;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.Query;
+import java.util.List;
 import java.util.Optional;
 
 @Stateless
@@ -35,6 +36,42 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
 
     private IssueDAO(final Class entityClass) {
         super(entityClass);
+    }
+
+    public void deleteIssuesFromProject(String projectKey) {
+        entityManager.createNamedQuery(IssueEntity.DELETE_PROJECT_ISSUES)
+                     .setParameter(ProjectEntity.KEY, projectKey)
+                     .executeUpdate();
+    }
+
+    public List<Issue> findAllIssuesWithIssueType(String issueTypeName) {
+        return entityManager.createNamedQuery(IssueEntity.FIND_ALL_ISSUES_WITH_ISSUE_TYPE)
+                            .setParameter(IssueTypeEntity.ISSUE_TYPE_NAME, issueTypeName)
+                            .getResultList();
+    }
+
+    public List<Issue> findAllIssuesWithState(String stateName) {
+        return entityManager.createNamedQuery(IssueEntity.FIND_ALL_ISSUES_WITH_STATE)
+                            .setParameter(StateEntity.STATE_NAME, stateName)
+                            .getResultList();
+    }
+
+    public boolean isIssueTypeInUse(String issueTypeName) {
+        return findAllIssuesWithIssueType(issueTypeName).size() > 0;
+    }
+
+    public boolean isStateInUse(String stateName) {
+        return findAllIssuesWithState(stateName).size() > 0;
+    }
+
+    public boolean isPriorityInUse(final String priorityName) {
+        return findAllIssuesWithPriority(priorityName).size() > 0;
+    }
+
+    public List<Issue> findAllIssuesWithPriority(final String priorityName) {
+        return entityManager.createNamedQuery(IssueEntity.FIND_ALL_ISSUES_WITH_PRIORITY)
+                            .setParameter(PriorityEntity.PRIORITY_NAME, priorityName)
+                            .getResultList();
     }
 
     @Override

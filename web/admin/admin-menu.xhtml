@@ -1,0 +1,47 @@
+<h:body xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:p="http://primefaces.org/ui">
+    <p:menu toggleable="true">
+        <p:submenu label="#{i18n['page.admin.menubar.create']}" icon="fa fa-plus">
+            <p:menuitem icon="fa fa-user-plus"
+                        value="#{i18n['page.admin.menubar.create.user']}"
+                        url="#{path['admin.createUser']}" />
+            <p:menuitem icon="fa fa-leanpub"
+                        value="#{i18n['page.admin.menubar.create.project']}"
+                        url="#{path['admin.createProject']}" />
+            <p:menuitem icon="fa fa-leanpub"
+                        value="#{i18n['page.admin.menubar.create.issueType']}"
+                        url="#{path['admin.createIssueType']}" />
+            <p:menuitem icon="fa fa-leanpub"
+                        value="#{i18n['page.admin.menubar.create.state']}"
+                        url="#{path['admin.createState']}" />
+            <p:menuitem icon="fa fa-leanpub"
+                        value="#{i18n['page.admin.menubar.create.priority']}"
+                        url="#{path['admin.createPriority']}" />
+            <p:menuitem icon="fa fa-leanpub"
+                        value="#{i18n['page.admin.menubar.create.team']}"
+                        url="#{path['admin.createTeam']}" />
+        </p:submenu>
+
+        <p:submenu label="#{i18n['page.admin.menubar.explore']}" icon="ui-icon-document">
+            <p:menuitem icon="fa fa-users"
+                        value="#{i18n['page.admin.menubar.explore.user']}"
+                        url="#{path['admin.listUsers']}" />
+            <p:menuitem icon="fa fa-users"
+                        value="#{i18n['page.admin.menubar.explore.project']}"
+                        url="#{path['admin.listProjects']}" />
+            <p:menuitem icon="fa fa-users"
+                        value="#{i18n['page.admin.menubar.explore.issueType']}"
+                        url="#{path['admin.listIssueTypes']}" />
+            <p:menuitem icon="fa fa-users"
+                        value="#{i18n['page.admin.menubar.explore.state']}"
+                        url="#{path['admin.listStates']}" />
+            <p:menuitem icon="fa fa-users"
+                        value="#{i18n['page.admin.menubar.explore.priority']}"
+                        url="#{path['admin.listPriorities']}" />
+            <p:menuitem icon="fa fa-users"
+                        value="#{i18n['page.admin.menubar.explore.team']}"
+                        url="#{path['admin.listTeams']}" />
+        </p:submenu>
+    </p:menu>
+</h:body>

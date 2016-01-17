@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.project.ProjectEntity;
 import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.dao.model.user.TeamEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
@@ -7,6 +8,7 @@ import edu.piotrjonski.scrumus.domain.Team;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,32 @@ public class TeamDAO extends AbstractDAO<TeamEntity, Team> {
                                                  .getResultList());
         }
         return new ArrayList<>();
+    }
+
+    public List<Team> findAllTeamsForProject(String projectKey) {
+        ProjectEntity projectEntity = entityManager.find(ProjectEntity.class, projectKey);
+        if (projectEntity != null) {
+            return mapToDomainModel(entityManager.createNamedQuery(TeamEntity.FIND_ALL_TEAMS_FOR_PROJECT)
+                                                 .setParameter(TeamEntity.PROJECT, projectEntity)
+                                                 .getResultList());
+        }
+        return new ArrayList<>();
+    }
+
+    public List<String> findAllNames() {
+        return entityManager.createNamedQuery(TeamEntity.FIND_ALL_NAMES)
+                            .getResultList();
+    }
+
+    public Optional<Team> findByName(final String teamName) {
+        try {
+            TeamEntity teamEntity = entityManager.createNamedQuery(TeamEntity.FIND_BY_NAME, TeamEntity.class)
+                                                 .setParameter(TeamEntity.NAME, teamName)
+                                                 .getSingleResult();
+            return Optional.of(mapToDomainModel(teamEntity));
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     @Override

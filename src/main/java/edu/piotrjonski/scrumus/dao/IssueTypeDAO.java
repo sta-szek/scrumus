@@ -5,6 +5,7 @@ import edu.piotrjonski.scrumus.domain.IssueType;
 
 import javax.ejb.Stateless;
 import javax.persistence.Query;
+import java.util.List;
 
 @Stateless
 public class IssueTypeDAO extends AbstractDAO<IssueTypeEntity, IssueType> {
@@ -15,6 +16,11 @@ public class IssueTypeDAO extends AbstractDAO<IssueTypeEntity, IssueType> {
 
     private IssueTypeDAO(final Class entityClass) {
         super(entityClass);
+    }
+
+    public List<String> findAllNames() {
+        return entityManager.createNamedQuery(IssueTypeEntity.FIND_ALL_NAMES)
+                            .getResultList();
     }
 
     @Override

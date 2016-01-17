@@ -91,7 +91,8 @@ public class TeamManagerIT {
     }
 
     @Test
-    public void shouldAddUserToTeam() throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void shouldAddUserToTeam()
+            throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException, CreateUserException {
         // given
         Team team = createTeam();
         Developer developer = createDeveloper();
@@ -110,7 +111,8 @@ public class TeamManagerIT {
     }
 
     @Test
-    public void shouldRemoveUserFromTeam() throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void shouldRemoveUserFromTeam()
+            throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException, CreateUserException {
         // given
         Team team = createTeam();
         Developer developer = createDeveloper();

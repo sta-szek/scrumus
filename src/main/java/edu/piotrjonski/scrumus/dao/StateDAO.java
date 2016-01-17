@@ -5,6 +5,7 @@ import edu.piotrjonski.scrumus.domain.State;
 
 import javax.ejb.Stateless;
 import javax.persistence.Query;
+import java.util.List;
 
 @Stateless
 public class StateDAO extends AbstractDAO<StateEntity, State> {
@@ -15,6 +16,11 @@ public class StateDAO extends AbstractDAO<StateEntity, State> {
 
     private StateDAO(final Class entityClass) {
         super(entityClass);
+    }
+
+    public List<String> findAllNames() {
+        return entityManager.createNamedQuery(StateEntity.FIND_ALL_NAMES)
+                            .getResultList();
     }
 
     @Override

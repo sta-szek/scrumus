@@ -94,17 +94,17 @@ INSERT INTO retrospective VALUES (6, 'Opis retrospektywy 1');
 select setval('retrospective_ID_SEQ', 7, true);
 
 -- SPRINTY
-INSERT INTO sprint VALUES (1, 'Implementacja story 1-5', 'Sprint 1', '2015-11-24 12:00:00', '2015-11-17 12:00:00', 'reco', 1);
-INSERT INTO sprint VALUES (2, 'Testy systemowe', 'Sprint 2', '2015-12-1 12:00:00', '2015-11-24 12:00:00', 'reco', 2);
-INSERT INTO sprint VALUES (3, 'Release wersji 1.0', 'Sprint 3', '2015-12-8 12:00:00', '2015-12-1 12:00:00', 'reco', 3);
+INSERT INTO sprint VALUES (1, 'Implementacja story 1-5', 'Sprint 1', '2015-11-24 12:00:00', '2015-11-17 12:00:00', 'pote', 1);
+INSERT INTO sprint VALUES (2, 'Testy systemowe', 'Sprint 2', '2015-12-1 12:00:00', '2015-11-24 12:00:00', 'pote', 2);
+INSERT INTO sprint VALUES (3, 'Release wersji 1.0', 'Sprint 3', '2015-12-8 12:00:00', '2015-12-1 12:00:00', 'pote', 3);
 INSERT INTO sprint VALUES (4, 'Rozpoznanie œrodowisk', 'Sprint 1', '2015-11-24 12:00:00', '2015-11-17 12:00:00', 'pote', 4);
 INSERT INTO sprint VALUES (5, 'Implementacja', 'Sprint 2', '2015-12-1 12:00:00', '2015-11-24 12:00:00', 'pote', 5);
 INSERT INTO sprint VALUES (6, 'Testy systemowe', 'Sprint 3', '2015-12-8 12:00:00', '2015-12-1 12:00:00', 'pote', 6);
 select setval('sprint_ID_SEQ', 7, true);
 
 -- TEAMY DO PROJEKTU
-INSERT INTO project_team VALUES ('reco', 1);
-INSERT INTO project_team VALUES ('pote', 2);
+INSERT INTO team_project VALUES (1, 'reco');
+INSERT INTO team_project VALUES (2, 'pote');
 
 -- SCRUM MASTERZY DO TEAMU
 INSERT INTO scrum_master_team VALUES (1, 2);
@@ -143,28 +143,28 @@ INSERT INTO state VALUES (3, 'DONE');
 select setval('state_ID_SEQ', 4, true);
 
 -- ISSUES
-INSERT INTO issue VALUES (1, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-1', 'nazwa', NULL, 1, 1, 1, 1);
-INSERT INTO issue VALUES (2, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-2', 'nazwa', 1, 2, 1, 1, 1);
-INSERT INTO issue VALUES (3, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-3', 'nazwa', NULL, 3, 1, 11, 1);
-INSERT INTO issue VALUES (4, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-4', 'nazwa', 2, 4, 1, 1, 1);
-INSERT INTO issue VALUES (5, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-5', 'nazwa', 3, 1, 1, 10, 1);
-INSERT INTO issue VALUES (6, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-6', 'nazwa', 4, 2, 1, 1, 1);
-INSERT INTO issue VALUES (7, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-7', 'nazwa', 5, 3, 1, 12, 1);
-INSERT INTO issue VALUES (8, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-8', 'nazwa', 6, 4, 1, 13, 1);
-INSERT INTO issue VALUES (9, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-9', 'nazwa', 7, 1, 1, 14, 1);
-INSERT INTO issue VALUES (10, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-10', 'nazwa', 8, 2, 1, 1, 1);
-INSERT INTO issue VALUES (11, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-11', 'nazwa', 9, 3, 1, 8, 1);
-INSERT INTO issue VALUES (12, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-12', 'nazwa', 10, 4, 1, 7, 1);
-INSERT INTO issue VALUES (13, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-13', 'nazwa', 11, 1, 1, 6, 1);
-INSERT INTO issue VALUES (14, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-14', 'nazwa', 2, 2, 1, 5, 1);
-INSERT INTO issue VALUES (15, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-15', 'nazwa', 11, 3, 1, 4, 1);
-INSERT INTO issue VALUES (16, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-16', 'nazwa', 3, 4, 1, 3, 1);
-INSERT INTO issue VALUES (17, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-17', 'nazwa', 1, 1, 1, 2, 1);
-INSERT INTO issue VALUES (18, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-18', 'nazwa', 12, 2, 1, 1, 1);
-INSERT INTO issue VALUES (19, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-19', 'nazwa', NULL, 3, 1, 1, 1);
-INSERT INTO issue VALUES (20, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-20', 'nazwa', 13, 4, 1, 1, 1);
-INSERT INTO issue VALUES (21, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-21', 'nazwa', NULL, 1, 1, 15, 1);
-INSERT INTO issue VALUES (22, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote-22', 'nazwa', 13, 2, 1, 1, 1);
+INSERT INTO issue VALUES (1, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', NULL, 1, 1, 1, 1);
+INSERT INTO issue VALUES (2, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 1, 2, 1, 1, 1);
+INSERT INTO issue VALUES (3, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', NULL, 3, 1, 11, 1);
+INSERT INTO issue VALUES (4, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 2, 4, 1, 1, 1);
+INSERT INTO issue VALUES (5, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 3, 1, 1, 10, 1);
+INSERT INTO issue VALUES (6, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 4, 2, 1, 1, 1);
+INSERT INTO issue VALUES (7, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 5, 3, 1, 12, 1);
+INSERT INTO issue VALUES (8, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 6, 4, 1, 13, 1);
+INSERT INTO issue VALUES (9, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 7, 1, 1, 14, 1);
+INSERT INTO issue VALUES (10, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 8, 2, 1, 1, 1);
+INSERT INTO issue VALUES (11, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 9, 3, 1, 8, 1);
+INSERT INTO issue VALUES (12, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 10, 4, 1, 7, 1);
+INSERT INTO issue VALUES (13, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 11, 1, 1, 6, 1);
+INSERT INTO issue VALUES (14, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 2, 2, 1, 5, 1);
+INSERT INTO issue VALUES (15, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 11, 3, 1, 4, 1);
+INSERT INTO issue VALUES (16, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 3, 4, 1, 3, 1);
+INSERT INTO issue VALUES (17, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 1, 1, 1, 2, 1);
+INSERT INTO issue VALUES (18, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 12, 2, 1, 1, 1);
+INSERT INTO issue VALUES (19, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', NULL, 3, 1, 1, 1);
+INSERT INTO issue VALUES (20, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 13, 4, 1, 1, 1);
+INSERT INTO issue VALUES (21, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', NULL, 1, 1, 15, 1);
+INSERT INTO issue VALUES (22, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 13, 2, 1, 1, 1);
 select setval('issue_ID_SEQ', 23, true);
 
 -- KOMENTARZE
@@ -203,9 +203,6 @@ INSERT INTO retrospective_comment VALUES (4, 13);
 INSERT INTO retrospective_comment VALUES (5, 14);
 
 -- ISSUE DO BACKLOGA
-INSERT INTO backlog_issue VALUES (1, 1);
-INSERT INTO backlog_issue VALUES (1, 2);
-INSERT INTO backlog_issue VALUES (1, 3);
 INSERT INTO backlog_issue VALUES (2, 4);
 INSERT INTO backlog_issue VALUES (2, 5);
 INSERT INTO backlog_issue VALUES (2, 6);

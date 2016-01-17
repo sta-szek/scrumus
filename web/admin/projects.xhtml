@@ -1,0 +1,229 @@
+<h:body xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="#{path['admin.template']}">
+        <ui:define name="admin-content">
+            <f:metadata>
+                <f:viewParam name="projectKey" />
+            </f:metadata>
+            <c:if test="${not empty projectKey}">
+                <ui:param name="project" value="#{projectService.findByProjectKey(projectKey)}" />
+            </c:if>
+
+            <!--LISTA PROJEKTÓW-->
+            <p:panel id="projectsListPanel" header="#{i18n['page.admin.project.panel.list']}" rendered="#{empty projectKey}">
+                <p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true" />
+                <p:dataTable id="projectsListTable"
+                             var="proj"
+                             value="#{projectService.allProjects}"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                             paginator="true"
+                             rows="10">
+                    <ui:param name="productOwner" value="#{userService.findProductOwner(proj.key)}" />
+                    <p:column headerText="#{i18n['page.admin.project.name']}">
+                        <h:outputText value="#{proj.name}" />
+                    </p:column>
+
+                    <p:column headerText="#{i18n['page.admin.project.key']}">
+                        <h:outputText value="#{proj.key}" />
+                    </p:column>
+
+                    <p:column headerText="#{i18n['page.admin.project.teams']}" width="600">
+                        <p:tagCloud model="#{projectService.getTeamTagCloudModel(proj.key)}" style="width: inherit">
+                            <f:attribute name="projectKey" value="#{proj.key}" />
+                            <p:ajax event="select" update="projectsListTable" listener="#{projectService.deleteTeamFromProject}" />
+                        </p:tagCloud>
+                    </p:column>
+
+                    <p:column headerText="#{i18n['page.admin.project.productOwner']}">
+                        <h:outputText value="#{productOwner.firstName} #{productOwner.surname} (#{productOwner.username})"
+                                      rendered="#{not empty productOwner}" />
+                    </p:column>
+
+                    <p:column headerText="#{i18n['page.admin.project.actions']}">
+                        <p:button value="#{i18n['page.admin.project.button.edit']}"
+                                  id="editProjectButton"
+                                  outcome="#{path['admin.listProjects']}"
+                                  icon="fa fa-edit">
+                            <f:param name="projectKey" value="#{proj.key}" />
+                        </p:button>
+                        <p:commandButton value="#{i18n['page.admin.project.button.delete']}"
+                                         id="deleteProjectButton"
+                                         icon="fa fa-remove"
+                                         onclick="PF('confirmation').show()">
+                            <f:setPropertyActionListener value="#{proj.key}" target="#{projectService.projectToDelete}" />
+                        </p:commandButton>
+                        <p:commandButton value="#{i18n['page.admin.project.select.productOwner']}"
+                                         id="selectProductOwner"
+                                         icon="fa-user-plus"
+                                         onclick="PF('selectProductOwner').show()"
+                                         rendered="#{empty productOwner}">
+                            <f:setPropertyActionListener value="#{proj.key}" target="#{permissionService.productOwnerProjectKey}" />
+                        </p:commandButton>
+                        <p:commandButton value="#{i18n['page.admin.project.remove.productOwner']}"
+                                         id="removeProductOwner"
+                                         icon="fa fa-remove"
+                                         rendered="#{not empty productOwner}"
+                                         action="#{permissionService.removeProductOwner}"
+                                         update="projectsListPanel">
+                            <f:setPropertyActionListener value="#{proj.key}" target="#{permissionService.productOwnerProjectKey}" />
+                        </p:commandButton>
+                        <p:commandButton value="#{i18n['page.admin.project.add.team']}"
+                                         id="addTeamButton"
+                                         icon="fa-user-plus"
+                                         onclick="PF('addTeam').show()">
+                            <f:setPropertyActionListener value="#{proj.key}" target="#{projectService.addTeamProjectKey}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            <p:dialog showEffect="fade"
+                      hideEffect="fade"
+                      widgetVar="addTeam"
+                      header="#{i18n['page.admin.project.add.team.header']}"
+                      icon="fa fa-warning">
+                <h:form id="addTeamForm">
+                    <p:autoComplete id="team"
+                                    multiple="false"
+                                    value="#{projectService.teamToAdd}"
+                                    completeMethod="#{teamService.completeTeam}"
+                                    var="team"
+                                    itemLabel="#{team}"
+                                    itemValue="#{team}"
+                                    forceSelection="true"
+                                    dropdown="true">
+                        <p:column>
+                            <h:outputText value="#{team}" />
+                        </p:column>
+                    </p:autoComplete>
+                    <br />
+                    <p:commandButton value="#{i18n['page.admin.project.add.team.save']}"
+                                     styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"
+                                     action="#{projectService.addTeam()}"
+                                     oncomplete="PF('addTeam').hide()"
+                                     update="projectsListPanel">
+                        <f:ajax render="projectsListPanel" />
+                    </p:commandButton>
+                    <p:commandButton value="#{i18n['page.admin.project.add.team.cancel']}"
+                                     styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close"
+                                     onclick="PF('addTeam').hide()" />
+                </h:form>
+            </p:dialog>
+            <p:dialog showEffect="fade"
+                      hideEffect="fade"
+                      widgetVar="selectProductOwner"
+                      header="#{i18n['page.admin.project.select.productOwner.header']}"
+                      icon="fa fa-warning">
+                <h:form id="selectProductOwnerForm">
+                    <p:autoComplete id="productOwner"
+                                    multiple="false"
+                                    value="#{permissionService.productOwnerFullname}"
+                                    completeMethod="#{userService.completeUser}"
+                                    var="user"
+                                    itemLabel="#{user}"
+                                    itemValue="#{user}"
+                                    forceSelection="true"
+                                    dropdown="true">
+                        <p:column>
+                            <h:outputText value="#{user}" />
+                        </p:column>
+                    </p:autoComplete>
+                    <br />
+                    <p:commandButton value="#{i18n['page.admin.project.select.productOwner.save']}"
+                                     styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"
+                                     action="#{permissionService.setProductOwner()}"
+                                     oncomplete="PF('selectProductOwner').hide()"
+                                     update="projectsListPanel">
+                        <f:ajax render="projectsListPanel" />
+                    </p:commandButton>
+                    <p:commandButton value="#{i18n['page.admin.project.select.productOwner.cancel']}"
+                                     styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close"
+                                     onclick="PF('selectProductOwner').hide()" />
+                </h:form>
+            </p:dialog>
+            <p:confirmDialog global="true"
+                             showEffect="fade"
+                             hideEffect="fade"
+                             widgetVar="confirmation"
+                             header="#{i18n['page.admin.project.header.delete']}"
+                             message="#{i18n['page.admin.project.message.delete']}"
+                             icon="fa fa-warning">
+                <h:form id="confirmDialogForm">
+                    <p:commandButton value="#{i18n['page.admin.project.delete.yes']}"
+                                     styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"
+                                     action="#{projectService.deleteProject()}"
+                                     oncomplete="PF('confirmation').hide()"
+                                     update="projectsListPanel">
+                        <f:ajax render="projectsListPanel" />
+                    </p:commandButton>
+                    <p:commandButton value="#{i18n['page.admin.project.delete.no']}"
+                                     styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close" />
+                </h:form>
+            </p:confirmDialog>
+
+            <!--EDYTUJ PROJEKT - NIE ZNALEZIONO PROJEKTU PO KLUCZU-->
+            <p:outputLabel value="#{i18n['page.admin.project.notFound']}"
+                           rendered="#{empty project and not empty projectKey}" />
+
+            <!--EDYTUJ PROJEKT -->
+            <h:form id="editProjectForm" rendered="#{not empty project}">
+                <p:panel id="editProjectPanel" header="#{i18n['page.admin.project.panel.edit']}">
+                    <p:focus context="editProjectPanel" />
+                    <h:panelGrid columns="3" cellpadding="5">
+                        <p:outputLabel for="projectName" value="#{i18n['page.admin.project.name']}" />
+                        <p:inplace id="projectName">
+                            <p:inputText value="#{projectService.projectName}"
+                                         required="true"
+                                         requiredMessage="#{i18n['page.validator.require.project.name']}"
+                                         maxlength="255" />
+                        </p:inplace>
+                        <p:message for="projectName" />
+
+                        <p:outputLabel for="projectKey" value="#{i18n['page.admin.project.key']}" />
+                        <p:inplace id="projectKey" disabled="true">
+                            <p:inputText value="#{projectService.projectKey}" />
+                        </p:inplace>
+                        <p:message for="projectKey" />
+
+                        <p:outputLabel for="description" value="#{i18n['page.admin.project.description']}" />
+                        <p:inplace id="description">
+                            <p:inputTextarea rows="6"
+                                             cols="50"
+                                             autoResize="false"
+                                             value="#{projectService.description}"
+                                             maxlength="4096" />
+                        </p:inplace>
+                        <p:message for="description" />
+
+                        <p:outputLabel for="definitionOfDone" value="#{i18n['page.admin.project.definitionOfDone']}" />
+                        <p:inplace id="definitionOfDone">
+                            <p:inputTextarea rows="6"
+                                             cols="50"
+                                             autoResize="false"
+                                             value="#{projectService.definitionOfDone}"
+                                             maxlength="4096" />
+                        </p:inplace>
+                        <p:message for="definitionOfDone" />
+                    </h:panelGrid>
+                    <p:commandButton id="saveChangesButton"
+                                     value="#{i18n['page.admin.project.button.save']}"
+                                     action="#{projectService.editProject()}"
+                                     ajax="false"
+                                     icon="fa fa-plus"
+                                     validateClient="true">
+                        <f:param name="projectKey" value="#{projectKey}" />
+                    </p:commandButton>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>

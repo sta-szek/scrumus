@@ -1,0 +1,60 @@
+<h:body xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="#{path['admin.template']}">
+        <ui:define name="admin-content">
+            <h:form id="createProjectForm">
+                <p:panel id="createProjectPanel" header="#{i18n['page.admin.project.create']}">
+                    <p:focus context="createProjectPanel" />
+                    <p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true" />
+                    <h:panelGrid columns="3" cellpadding="5">
+                        <p:outputLabel for="projectName" value="#{i18n['page.admin.project.name']}" />
+                        <p:inputText id="projectName"
+                                     value="#{projectService.projectName}"
+                                     required="true"
+                                     requiredMessage="#{i18n['page.validator.require.project.name']}"
+                                     maxlength="255">
+                            <p:ajax event="keyup" update="projectKey" listener="#{projectService.generateProjectKey}" />
+                        </p:inputText>
+                        <p:message for="projectName" />
+
+                        <p:outputLabel for="projectKey" value="#{i18n['page.admin.project.key']}" />
+                        <p:inputText id="projectKey"
+                                     value="#{projectService.projectKey}"
+                                     required="true"
+                                     requiredMessage="#{i18n['page.validator.require.project.key']}"
+                                     style="text-transform: uppercase"
+                                     maxlength="8" />
+                        <p:message for="projectKey" />
+
+                        <p:outputLabel for="description" value="#{i18n['page.admin.project.description']}" />
+                        <p:inputTextarea rows="6"
+                                         cols="50"
+                                         autoResize="false"
+                                         id="description"
+                                         value="#{projectService.description}"
+                                         maxlength="4096" />
+                        <p:message for="description" />
+
+                        <p:outputLabel for="definitionOfDone" value="#{i18n['page.admin.project.definitionOfDone']}" />
+                        <p:inputTextarea rows="6"
+                                         cols="50"
+                                         autoResize="false"
+                                         id="definitionOfDone"
+                                         value="#{projectService.definitionOfDone}"
+                                         maxlength="4096" />
+                        <p:message for="definitionOfDone" />
+                    </h:panelGrid>
+                    <p:commandButton id="createButton"
+                                     value="#{i18n['page.admin.project.create']}"
+                                     action="#{projectService.createProject}"
+                                     ajax="false"
+                                     icon="fa fa-plus"
+                                     validateClient="true">
+                    </p:commandButton>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>

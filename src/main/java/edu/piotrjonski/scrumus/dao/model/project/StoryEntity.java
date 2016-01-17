@@ -14,11 +14,15 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "story")
-@NamedQueries({@NamedQuery(name = StoryEntity.FIND_ALL, query = StoryEntity.FIND_ALL_QUERY)})
+@NamedQueries({@NamedQuery(name = StoryEntity.FIND_ALL, query = StoryEntity.FIND_ALL_QUERY),
+               @NamedQuery(name = StoryEntity.DELETE_STORIES_FROM_PROJECT, query = StoryEntity.DELETE_STORIES_FROM_PROJECT_QUERY)})
 public class StoryEntity {
 
     public static final String FIND_ALL = "findAllStories";
-    public static final String FIND_ALL_QUERY = "SELECT p FROM StoryEntity p";
+    public static final String DELETE_STORIES_FROM_PROJECT = "deleteStoriesFromProject";
+    protected static final String FIND_ALL_QUERY = "SELECT p FROM StoryEntity p";
+    protected static final String DELETE_STORIES_FROM_PROJECT_QUERY =
+            "DELETE FROM StoryEntity s WHERE s.sprint IN (SELECT sp FROM SprintEntity sp WHERE sp.project.key=:" + ProjectEntity.KEY + ")";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +37,7 @@ public class StoryEntity {
     @Column
     private int points;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<IssueEntity> issueEntities;
 
     @ManyToOne(optional = false)

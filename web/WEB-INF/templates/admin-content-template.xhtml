@@ -1,0 +1,26 @@
+<h:body xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="default-template.xhtml">
+        <ui:define name="content">
+            <p:layout>
+                <p:layoutUnit position="west"
+                              resizable="true"
+                              collapsible="true"
+                              size="200"
+                              minSize="40"
+                              maxSize="200"
+                              header="${i18n['page.admin.menubar.title']}">
+                    <ui:include src="#{path['admin.menu']}" />
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <ui:insert name="admin-content">
+                        [Tu zostanie wstawiona treść szablonu]
+                    </ui:insert>
+                </p:layoutUnit>
+            </p:layout>
+        </ui:define>
+    </ui:composition>
+</h:body>

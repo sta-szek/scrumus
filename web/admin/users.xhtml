@@ -1,56 +1,69 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
-<h:body>
-    <ui:composition template="/WEB-INF/templates/default.xhtml">
+<h:body xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="#{path['admin.template']}">
+        <ui:define name="admin-content">
 
-        <ui:define name="content">
-            <p:panel id="userListPanel" header="Lista użytkowników">
-                <p:dataTable id="userListTable" var="user" value="#{userService.allUsers}">
-                    <p:column headerText="Firstname">
+            <p:panel id="userListPanel" header="#{i18n['page.admin.user.list']}">
+                <p:dataTable id="userListTable"
+                             var="user"
+                             value="#{userService.allUsers}"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                             paginator="true"
+                             rows="10">
+                    <p:column headerText="#{i18n['page.admin.user.firstname']}">
                         <h:outputText value="#{user.firstName}" />
                     </p:column>
 
-                    <p:column headerText="Surname">
+                    <p:column headerText="#{i18n['page.admin.user.surname']}">
                         <h:outputText value="#{user.surname}" />
                     </p:column>
 
-                    <p:column headerText="Username">
+                    <p:column headerText="#{i18n['page.admin.user.username']}">
                         <h:outputText value="#{user.username}" />
                     </p:column>
 
-                    <p:column headerText="Email">
+                    <p:column headerText="#{i18n['page.admin.user.email']}">
                         <h:outputText value="#{user.email}" />
                     </p:column>
 
-                    <p:column headerText="Uprawnienia administratora">
-                        <h:form id="grantPermissionForm">
-                            <p:commandButton value="Nadaj uprawnienia"
-                                             id="grantAdminPermission"
-                                             rendered="#{!permissionService.isAdmin(user)}"
-                                             action="#{permissionService.grantAdminPermission(user)}"
-                                             update="grantPermissionForm" />
-                            <p:commandButton value="Obierz uprawnienia"
-                                             id="removeAdminPermission"
-                                             rendered="#{permissionService.isAdmin(user)}"
-                                             action="#{permissionService.removeAdminPermission(user)}"
-                                             update="grantPermissionForm" />
-                        </h:form>
-                    </p:column>
-                    <p:column headerText="Delete user">
-                        <p:commandButton value="Usuń użytkownika"
+                    <p:column headerText="#{i18n['page.admin.user.actions']}">
+                        <p:commandButton value="#{i18n['page.admin.user.delete']}"
                                          id="removeUserButton"
-                                         action="#{userService.deleteUser(user)}"
-                                         update="userListTable" />
+                                         icon="fa fa-remove"
+                                         onclick="PF('confirmation').show()">
+                            <f:setPropertyActionListener value="#{user}" target="#{userService.userToDelete}" />
+                        </p:commandButton>
+                        <!--<p:link value="#{i18n['page.admin.user.view']}"
+                                         id="viewUserButton"
+                                         action="#{userService.deleteUser(project)}"
+                                         update="userListTable" />-->
                     </p:column>
                 </p:dataTable>
             </p:panel>
+            <p:confirmDialog global="true"
+                             showEffect="fade"
+                             hideEffect="fade"
+                             widgetVar="confirmation"
+                             header="#{i18n['page.admin.user.header.delete']}"
+                             message="#{i18n['page.admin.user.message.delete']}"
+                             icon="fa fa-warning">
+                <h:form id="confirmDialogForm">
+                    <p:commandButton value="#{i18n['page.admin.user.delete.yes']}"
+                                     styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"
+                                     action="#{userService.deleteUser()}"
+                                     oncomplete="PF('confirmation').hide()"
+                                     update="userListTable">
+                        <f:ajax render="userListTable" />
+                    </p:commandButton>
+                    <p:commandButton value="#{i18n['page.admin.user.delete.no']}"
+                                     styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close" />
+                </h:form>
+            </p:confirmDialog>
         </ui:define>
-
     </ui:composition>
-
 </h:body>
-</html>

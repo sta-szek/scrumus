@@ -1,11 +1,7 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-<h:body>
-    <ui:composition template="/WEB-INF/templates/default.xhtml">
-
+<h:body xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="#{path['common.template']}">
         <ui:define name="content">
             <h:head>
                 <title>Błąd logowania</title>
@@ -14,14 +10,11 @@
                 <h2>Nieprawidłowa nazwa użytkownika lub hasło.</h2>
 
                 <p>Proszę wpisać nazwę użytkownika i hasło zapewniające dostęp do aplikacji.
-                    Dla tej aplikacji oznacza to użytkownika utworzonego w
+                   Dla tej aplikacji oznacza to użytkownika utworzonego w
                     <code>pliku</code> i przypisanego do
                     <em>grupy</em> <code>ADMIN</code>.</p>
                 <h:link outcome="login">Powrót na stronę logowania</h:link>
             </h:body>
         </ui:define>
-
     </ui:composition>
-
 </h:body>
-</html>

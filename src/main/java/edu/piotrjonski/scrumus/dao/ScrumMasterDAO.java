@@ -3,12 +3,14 @@ package edu.piotrjonski.scrumus.dao;
 
 import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.dao.model.user.ScrumMasterEntity;
+import edu.piotrjonski.scrumus.dao.model.user.TeamEntity;
 import edu.piotrjonski.scrumus.domain.ScrumMaster;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import java.util.List;
 import java.util.Optional;
 
 @Stateless
@@ -28,11 +30,21 @@ public class ScrumMasterDAO extends AbstractDAO<ScrumMasterEntity, ScrumMaster> 
         super(entityClass);
     }
 
-    public Optional<ScrumMaster> findByDeveloperId(int developerId) {
+    public List<ScrumMaster> findByDeveloperId(int developerId) {
+        List<ScrumMasterEntity> scrumMasterEntities = entityManager.createNamedQuery(ScrumMasterEntity.FIND_BY_DEVELOPER_ID,
+                                                                                     ScrumMasterEntity.class)
+                                                                   .setParameter(DeveloperEntity.ID, developerId)
+                                                                   .getResultList();
+        return mapToDomainModel(scrumMasterEntities);
+
+    }
+
+    public Optional<ScrumMaster> findByTeam(int teamId) {
         try {
-            ScrumMasterEntity scrumMasterEntity = entityManager.createNamedQuery(ScrumMasterEntity.FIND_BY_DEVELOPER_ID,
+            TeamEntity teamEntity = entityManager.find(TeamEntity.class, teamId);
+            ScrumMasterEntity scrumMasterEntity = entityManager.createNamedQuery(ScrumMasterEntity.FIND_BY_TEAM,
                                                                                  ScrumMasterEntity.class)
-                                                               .setParameter(DeveloperEntity.ID, developerId)
+                                                               .setParameter(ScrumMasterEntity.TEAM, teamEntity)
                                                                .getSingleResult();
             return Optional.of(mapToDomainModelIfNotNull(scrumMasterEntity));
         } catch (NoResultException e) {

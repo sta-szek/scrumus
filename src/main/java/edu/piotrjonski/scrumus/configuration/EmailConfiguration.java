@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -13,7 +14,7 @@ import java.util.Properties;
 public class EmailConfiguration {
 
     public static final String MAIL_SMTP_AUTH = "mail.smtp.auth";
-    public static final String MAIL_SMTP_STARTTLS_ENABLE = "mail.smtp.starttls.enable";
+    public static final String MAIL_SMTP_START_TLS_ENABLE = "mail.smtp.starttls.enable";
     public static final String MAIL_SMTP_HOST = "mail.smtp.host";
     public static final String MAIL_SMTP_PORT = "mail.smtp.port";
 
@@ -25,6 +26,7 @@ public class EmailConfiguration {
     public static final String EMAIL_AUTH = "email.auth";
 
     @Inject
+    @Named(value = "configurationProvider")
     private ConfigurationProvider configurationProvider;
 
     @Inject
@@ -34,12 +36,16 @@ public class EmailConfiguration {
         return Session.getInstance(createProperties(), createAuthenticator());
     }
 
+    public String getFrom() {
+        return configurationProvider.getMessage(EMAIL_FROM);
+    }
+
     private Properties createProperties() {
         Properties properties = new Properties();
-        properties.put(MAIL_SMTP_AUTH, configurationProvider.getProperty(EMAIL_AUTH));
-        properties.put(MAIL_SMTP_STARTTLS_ENABLE, configurationProvider.getProperty(EMAIL_TLS));
-        properties.put(MAIL_SMTP_HOST, configurationProvider.getProperty(EMAIL_SMTP_HOST));
-        properties.put(MAIL_SMTP_PORT, configurationProvider.getProperty(EMAIL_SMTP_PORT));
+        properties.put(MAIL_SMTP_AUTH, configurationProvider.getMessage(EMAIL_AUTH));
+        properties.put(MAIL_SMTP_START_TLS_ENABLE, configurationProvider.getMessage(EMAIL_TLS));
+        properties.put(MAIL_SMTP_HOST, configurationProvider.getMessage(EMAIL_SMTP_HOST));
+        properties.put(MAIL_SMTP_PORT, configurationProvider.getMessage(EMAIL_SMTP_PORT));
         return properties;
     }
 
@@ -47,8 +53,8 @@ public class EmailConfiguration {
         return new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(configurationProvider.getProperty(EMAIL_FROM),
-                                                  configurationProvider.getProperty(EMAIL_PASSWORD));
+                return new PasswordAuthentication(configurationProvider.getMessage(EMAIL_FROM),
+                                                  configurationProvider.getMessage(EMAIL_PASSWORD));
 
             }
         };

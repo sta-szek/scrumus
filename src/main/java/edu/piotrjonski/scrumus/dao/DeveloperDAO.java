@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.List;
+import java.util.Optional;
 
 @Stateless
 public class DeveloperDAO extends AbstractDAO<DeveloperEntity, Developer> {
@@ -24,6 +25,27 @@ public class DeveloperDAO extends AbstractDAO<DeveloperEntity, Developer> {
 
     private DeveloperDAO(final Class entityClass) {
         super(entityClass);
+    }
+
+    public List<String> findAllUsernames() {
+        return entityManager.createNamedQuery(DeveloperEntity.FIND_ALL_USERNAMES)
+                            .getResultList();
+    }
+
+    public List<String> findAllEmails() {
+        return entityManager.createNamedQuery(DeveloperEntity.FIND_ALL_EMAILS)
+                            .getResultList();
+    }
+
+    public Optional<Developer> findByUsername(String username) {
+        try {
+            DeveloperEntity developerEntity = entityManager.createNamedQuery(DeveloperEntity.FIND_BY_USERNAME, DeveloperEntity.class)
+                                                           .setParameter(DeveloperEntity.USERNAME, username)
+                                                           .getSingleResult();
+            return Optional.of(mapToDomainModelIfNotNull(developerEntity));
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     public boolean emailExist(String email) {

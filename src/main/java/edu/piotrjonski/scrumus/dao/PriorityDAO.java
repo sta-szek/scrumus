@@ -5,6 +5,7 @@ import edu.piotrjonski.scrumus.domain.Priority;
 
 import javax.ejb.Stateless;
 import javax.persistence.Query;
+import java.util.List;
 
 @Stateless
 public class PriorityDAO extends AbstractDAO<PriorityEntity, Priority> {
@@ -15,6 +16,11 @@ public class PriorityDAO extends AbstractDAO<PriorityEntity, Priority> {
 
     private PriorityDAO(final Class entityClass) {
         super(entityClass);
+    }
+
+    public List<String> findAllNames() {
+        return entityManager.createNamedQuery(PriorityEntity.FIND_ALL_NAMES)
+                            .getResultList();
     }
 
     @Override

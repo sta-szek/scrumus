@@ -1,0 +1,197 @@
+<h:body xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="#{path['admin.template']}">
+        <ui:define name="admin-content">
+            <f:metadata>
+                <f:viewParam name="teamId" />
+            </f:metadata>
+            <c:if test="${not empty teamId}">
+                <ui:param name="team" value="#{teamService.findByTeamId(teamId)}" />
+            </c:if>
+
+            <!--LISTA TEAMÓW-->
+            <p:panel id="teamsListPanel" header="#{i18n['page.admin.team.panel.list']}" rendered="#{empty teamId}">
+                <p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true" />
+                <p:dataTable id="teamsListTable"
+                             var="tm"
+                             value="#{teamService.allTeams}"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                             paginator="true"
+                             rows="10">
+                    <ui:param name="scrumMaster" value="#{userService.findScrumMaster(tm.id)}" />
+                    <p:column headerText="#{i18n['page.admin.team.name']}">
+                        <h:outputText value="#{tm.name}" />
+                    </p:column>
+                    <p:column headerText="#{i18n['page.admin.team.users']}" width="800">
+                        <p:tagCloud model="#{teamService.getUserTagCloudModel(tm.id)}" style="width: inherit">
+                            <f:attribute name="teamId" value="#{tm.id}" />
+                            <p:ajax event="select" update="teamsListTable" listener="#{teamService.deleteUserFromTeam}" />
+                        </p:tagCloud>
+                    </p:column>
+                    <p:column headerText="#{i18n['page.admin.team.scrumMaster']}">
+                        <h:outputText value="#{scrumMaster.firstName} #{scrumMaster.surname} (#{scrumMaster.username})"
+                                      rendered="#{not empty scrumMaster}" />
+                    </p:column>
+
+                    <p:column headerText="#{i18n['page.admin.team.actions']}">
+                        <p:button value="#{i18n['page.admin.team.button.edit']}"
+                                  id="editTeamButton"
+                                  outcome="#{path['admin.listTeams']}"
+                                  icon="fa fa-edit">
+                            <f:param name="teamId" value="#{tm.id}" />
+                        </p:button>
+                        <p:commandButton value="#{i18n['page.admin.team.button.delete']}"
+                                         id="deleteTeamButton"
+                                         icon="fa fa-remove"
+                                         onclick="PF('confirmation').show()">
+                            <f:setPropertyActionListener value="#{tm.id}" target="#{teamService.teamToDelete}" />
+                        </p:commandButton>
+                        <p:commandButton value="#{i18n['page.admin.team.select.scrumMaster']}"
+                                         id="selectScrumMaster"
+                                         icon="fa-user-plus"
+                                         onclick="PF('selectScrumMaster').show()"
+                                         rendered="#{empty scrumMaster}">
+                            <f:setPropertyActionListener value="#{tm.id}" target="#{permissionService.scrumMasterTeamId}" />
+                        </p:commandButton>
+                        <p:commandButton value="#{i18n['page.admin.team.remove.scrumMaster']}"
+                                         id="removeScrumMaster"
+                                         icon="fa fa-remove"
+                                         rendered="#{not empty scrumMaster}"
+                                         action="#{permissionService.removeScrumMaster}"
+                                         update="teamsListPanel">
+                            <f:setPropertyActionListener value="#{tm.id}" target="#{permissionService.scrumMasterTeamId}" />
+                        </p:commandButton>
+                        <p:commandButton value="#{i18n['page.admin.team.add.user']}"
+                                         id="addUserButton"
+                                         icon="fa-user-plus"
+                                         onclick="PF('addUser').show()">
+                            <f:setPropertyActionListener value="#{tm.id}" target="#{teamService.addUserTeamId}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            <p:dialog showEffect="fade"
+                      hideEffect="fade"
+                      widgetVar="selectScrumMaster"
+                      header="#{i18n['page.admin.team.select.scrumMaster.header']}"
+                      icon="fa fa-warning">
+                <h:form id="selectScrumMasterForm">
+                    <p:autoComplete id="scrumMaster"
+                                    multiple="false"
+                                    value="#{permissionService.scrumMasterFullName}"
+                                    completeMethod="#{userService.completeUser}"
+                                    var="user"
+                                    itemLabel="#{user}"
+                                    itemValue="#{user}"
+                                    forceSelection="true"
+                                    dropdown="true">
+                        <p:column>
+                            <h:outputText value="#{user}" />
+                        </p:column>
+                    </p:autoComplete>
+                    <br />
+                    <p:commandButton value="#{i18n['page.admin.team.select.scrumMaster.save']}"
+                                     styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"
+                                     action="#{permissionService.setScrumMaster()}"
+                                     oncomplete="PF('selectScrumMaster').hide()"
+                                     update="teamsListPanel">
+                        <f:ajax render="teamsListPanel" />
+                    </p:commandButton>
+                    <p:commandButton value="#{i18n['page.admin.team.select.scrumMaster.cancel']}"
+                                     styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close"
+                                     onclick="PF('selectScrumMaster').hide()" />
+                </h:form>
+            </p:dialog>
+            <p:dialog showEffect="fade"
+                      hideEffect="fade"
+                      widgetVar="addUser"
+                      header="#{i18n['page.admin.team.add.user.header']}"
+                      icon="fa fa-warning">
+                <h:form id="addUserForm">
+                    <p:autoComplete id="user"
+                                    multiple="false"
+                                    value="#{teamService.userToAdd}"
+                                    completeMethod="#{userService.completeUser}"
+                                    var="user"
+                                    itemLabel="#{user}"
+                                    itemValue="#{user}"
+                                    forceSelection="true"
+                                    dropdown="true">
+                        <p:column>
+                            <h:outputText value="#{user}" />
+                        </p:column>
+                    </p:autoComplete>
+                    <br />
+                    <p:commandButton value="#{i18n['page.admin.team.add.user.save']}"
+                                     styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"
+                                     action="#{teamService.addUser()}"
+                                     oncomplete="PF('addUser').hide()"
+                                     update="teamsListPanel">
+                        <f:ajax render="teamsListPanel" />
+                    </p:commandButton>
+                    <p:commandButton value="#{i18n['page.admin.team.add.user.cancel']}"
+                                     styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close"
+                                     onclick="PF('addUser').hide()" />
+                </h:form>
+            </p:dialog>
+            <p:confirmDialog global="true"
+                             showEffect="fade"
+                             hideEffect="fade"
+                             widgetVar="confirmation"
+                             header="#{i18n['page.admin.team.header.delete']}"
+                             message="#{i18n['page.admin.team.message.delete']}"
+                             icon="fa fa-warning">
+                <h:form id="confirmDialogForm">
+                    <p:commandButton value="#{i18n['page.admin.team.delete.yes']}"
+                                     styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"
+                                     action="#{teamService.deleteTeam()}"
+                                     oncomplete="PF('confirmation').hide()"
+                                     update="teamsListPanel">
+                        <f:ajax render="teamsListPanel" />
+                    </p:commandButton>
+                    <p:commandButton value="#{i18n['page.admin.team.delete.no']}"
+                                     styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close" />
+                </h:form>
+            </p:confirmDialog>
+
+            <!--EDYTUJ TEAM - NIE ZNALEZIONO TEAMU PO KLUCZU-->
+            <p:outputLabel value="#{i18n['page.admin.team.notFound']}"
+                           rendered="#{empty team and not empty teamId}" />
+
+            <!--EDYTUJ TEAM -->
+            <h:form id="editTeamForm" rendered="#{not empty team}">
+                <p:panel id="editTeamPanel" header="#{i18n['page.admin.team.panel.edit']}">
+                    <p:focus context="editTeamPanel" />
+                    <h:panelGrid columns="3" cellpadding="5">
+                        <p:outputLabel for="teamName" value="#{i18n['page.admin.team.name']}" />
+                        <p:inplace id="teamName">
+                            <p:inputText value="#{teamService.teamName}"
+                                         required="true"
+                                         requiredMessage="#{i18n['page.validator.require.team.name']}"
+                                         maxlength="32" />
+                        </p:inplace>
+                        <p:message for="teamName" />
+                    </h:panelGrid>
+                    <p:commandButton id="saveChangesButton"
+                                     value="#{i18n['page.admin.team.button.save']}"
+                                     action="#{teamService.editTeam()}"
+                                     ajax="false"
+                                     icon="fa fa-plus"
+                                     validateClient="true">
+                        <f:param name="teamId" value="#{teamId}" />
+                    </p:commandButton>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>

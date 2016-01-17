@@ -15,27 +15,62 @@ public class PermissionManager {
 
     @Inject
     private transient Logger logger;
-
     @Inject
     private DeveloperDAO developerDAO;
-
     @Inject
     private ProjectDAO projectDAO;
-
     @Inject
     private TeamDAO teamDAO;
-
     @Inject
     private AdminDAO adminDAO;
-
     @Inject
     private RoleDAO roleDAO;
-
     @Inject
     private ScrumMasterDAO scrumMasterDAO;
-
     @Inject
     private ProductOwnerDAO productOwnerDAO;
+
+    public void removeProductOwnerFromProject(String projectKey) {
+        productOwnerDAO.findByProjectKey(projectKey)
+                       .ifPresent(productOwner -> {
+                           removeProjectFromProductOwner(productOwner);
+                           removeRole(RoleType.PRODUCT_OWNER, productOwner.getDeveloper());
+                       });
+    }
+
+    public void setProductOwner(String projectKey, String username) throws NotExistException, IllegalOperationException {
+        Optional<Developer> userOptional = developerDAO.findByUsername(username);
+        if (!userOptional.isPresent()) {
+            throw new NotExistException("User with username '" + username + "' does not exist.");
+        } else if (!projectExist(projectKey)) {
+            throw new NotExistException("Project with key '" + projectKey + "' does not exist.");
+        } else if (hasRole(RoleType.PRODUCT_OWNER, userOptional.get())) {
+            throw new IllegalOperationException("User is already product owner.");
+        }
+        Developer user = userOptional.get();
+        Project project = projectDAO.findById(projectKey)
+                                    .get();
+        Role role = createRoleIfNotExist(RoleType.PRODUCT_OWNER);
+        createProductOwner(userOptional.get(), project);
+        grantRole(role, user);
+
+    }
+
+    public void setScrumMaster(int teamId, String username) throws NotExistException {
+        Optional<Developer> userOptional = developerDAO.findByUsername(username);
+        if (!userOptional.isPresent()) {
+            throw new NotExistException("User with username '" + username + "' does not exist.");
+        } else if (!teamExist(teamId)) {
+            throw new NotExistException("Team with id '" + teamId + "' does not exist.");
+        }
+        Developer user = userOptional.get();
+        Team team = teamDAO.findById(teamId)
+                           .get();
+        Role role = createRoleIfNotExist(RoleType.SCRUM_MASTER);
+        createScrumMaster(userOptional.get(), team);
+        grantRole(role, user);
+
+    }
 
     public boolean isAdmin(Developer user) {
         return adminDAO.findByDeveloperId(user.getId())
@@ -43,7 +78,7 @@ public class PermissionManager {
     }
 
     public boolean isProductOwner(Project project, Developer user) {
-        if (developerExist(user) && projectExist(project)) {
+        if (developerExist(user) && projectExist(project.getKey())) {
             Optional<ProductOwner> productOwner = productOwnerDAO.findByDeveloperId(user.getId());
             if (productOwner.isPresent()) {
                 return hasProjectPermission(project, productOwner) && hasRole(RoleType.PRODUCT_OWNER, user);
@@ -71,27 +106,76 @@ public class PermissionManager {
     }
 
     public void addTeamToProject(Team team, Project project) {
-        if (teamExist(team) && projectExist(project)) {
+        if (teamExist(team.getId()) && projectExist(project.getKey()) && !team.belongsTo(project)) {
             team.addProject(project);
             teamDAO.saveOrUpdate(team);
         }
     }
 
     public void removeTeamFromProject(Team team, Project project) {
-        if (teamExist(team) && projectExist(project)) {
+        if (teamExist(team.getId()) && projectExist(project.getKey()) && team.belongsTo(project)) {
             team.removeProject(project);
             teamDAO.saveOrUpdate(team);
         }
     }
 
+    public void removeScrumMasterFromTeam(int teamId) {
+        Optional<ScrumMaster> scrumMasterOptional = scrumMasterDAO.findByTeam(teamId);
+        Optional<Team> teamOptional = teamDAO.findById(teamId);
+        if (scrumMasterOptional.isPresent() && teamOptional.isPresent()) {
+            ScrumMaster scrumMaster = scrumMasterOptional.get();
+            scrumMaster.removeTeam(teamOptional.get());
+            scrumMasterDAO.saveOrUpdate(scrumMaster);
+            if (!scrumMaster.hasAnyTeam()) {
+                removeRole(RoleType.SCRUM_MASTER, scrumMaster.getDeveloper());
+                deleteScrumMaster(scrumMaster.getDeveloper());
+            }
+        }
+    }
+
     public void removeAllRolesFromUser(Developer user) {
         removeRole(RoleType.ADMIN, user);
-        removeRole(RoleType.DEVELOPER, user);
         removeRole(RoleType.PRODUCT_OWNER, user);
         removeRole(RoleType.SCRUM_MASTER, user);
+        removeRole(RoleType.DEVELOPER, user);
         deleteAdmin(user);
         deleteProductOwner(user);
         deleteScrumMaster(user);
+    }
+
+    public void addTeamToProject(final String teamName, final String projectKey) {
+        Optional<Team> teamOptional = teamDAO.findByName(teamName);
+        Optional<Project> projectOptional = projectDAO.findById(projectKey);
+        if (teamOptional.isPresent() && projectOptional.isPresent()) {
+            addTeamToProject(teamOptional.get(), projectOptional.get());
+        }
+    }
+
+    public void removeTeamFromProject(final String teamName, final String projectKey) {
+        Optional<Team> teamOptional = teamDAO.findByName(teamName);
+        Optional<Project> projectOptional = projectDAO.findById(projectKey);
+        if (teamOptional.isPresent() && projectOptional.isPresent()) {
+            removeTeamFromProject(teamOptional.get(), projectOptional.get());
+        }
+    }
+
+    private void createProductOwner(final Developer user, final Project project) {
+        ProductOwner productOwner = new ProductOwner();
+        productOwner.setDeveloper(user);
+        productOwner.setProject(project);
+        productOwnerDAO.saveOrUpdate(productOwner);
+    }
+
+    private void createScrumMaster(final Developer user, final Team team) {
+        ScrumMaster scrumMaster = new ScrumMaster();
+        scrumMaster.addTeam(team);
+        scrumMaster.setDeveloper(user);
+        scrumMasterDAO.saveOrUpdate(scrumMaster);
+    }
+
+    private void removeProjectFromProductOwner(ProductOwner productOwner) {
+        removeRole(RoleType.PRODUCT_OWNER, productOwner.getDeveloper());
+        deleteProductOwner(productOwner.getDeveloper());
     }
 
     private void removeRole(final RoleType roleType, final Developer user) {
@@ -117,6 +201,8 @@ public class PermissionManager {
 
     private void deleteScrumMaster(final Developer user) {
         scrumMasterDAO.findByDeveloperId(user.getId())
+                      .stream()
+                      .findFirst()
                       .map(ScrumMaster::getId)
                       .ifPresent(scrumMasterDAO::delete);
     }
@@ -156,7 +242,7 @@ public class PermissionManager {
 
     private boolean developerExist(final Developer user) {return developerDAO.exist(user.getId());}
 
-    private boolean teamExist(final Team team) {return teamDAO.exist(team.getId());}
+    private boolean teamExist(final int teamId) {return teamDAO.exist(teamId);}
 
-    private boolean projectExist(final Project project) {return projectDAO.exist(project.getKey());}
+    private boolean projectExist(final String projectKey) {return projectDAO.exist(projectKey);}
 }
