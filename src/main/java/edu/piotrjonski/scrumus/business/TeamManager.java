@@ -94,6 +94,14 @@ public class TeamManager {
                                .getDevelopers();
     }
 
+    public void removeUserFromTeam(final String username, final int teamId) {
+        Optional<Team> teamOptional = teamDAO.findById(teamId);
+        Optional<Developer> userOptional = developerDAO.findByUsername(username);
+        if (teamOptional.isPresent() && userOptional.isPresent()) {
+            removeUserFromTeam(userOptional.get(), teamOptional.get());
+        }
+    }
+
     private boolean teamExist(Team team) {
         return teamDAO.exist(team.getId());
     }

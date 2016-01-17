@@ -90,8 +90,11 @@ public class PermissionService implements Serializable {
         }
     }
 
-    String extractUserNameFromFullname(final String productOwnerFullname) {
-        String usernameWithBrace = productOwnerFullname.split("\\(")[1];
+    String extractUserNameFromFullname(final String userFullname) {
+        if (!userFullname.contains("(")) {
+            return "";
+        }
+        String usernameWithBrace = userFullname.split("\\(")[1];
         return usernameWithBrace.substring(0, usernameWithBrace.length() - 1);
     }
 

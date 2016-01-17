@@ -7,8 +7,10 @@ import edu.piotrjonski.scrumus.domain.Team;
 import edu.piotrjonski.scrumus.ui.configuration.I18NProvider;
 import edu.piotrjonski.scrumus.ui.configuration.PathProvider;
 import lombok.Data;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.tagcloud.DefaultTagCloudItem;
 import org.primefaces.model.tagcloud.DefaultTagCloudModel;
+import org.primefaces.model.tagcloud.TagCloudItem;
 import org.primefaces.model.tagcloud.TagCloudModel;
 import org.slf4j.Logger;
 
@@ -17,7 +19,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -49,6 +50,8 @@ public class TeamService implements Serializable {
 
     private String addUserTeamId;
 
+    private String deleteUserTeamId;
+
     public void addUser() {
         if (userToAdd != null && addUserTeamId != null) {
             int teamIntId = Integer.parseInt(addUserTeamId);
@@ -59,10 +62,22 @@ public class TeamService implements Serializable {
         }
     }
 
+    public void deleteUserFromTeam(SelectEvent event) {
+        TagCloudItem item = (TagCloudItem) event.getObject();
+        String fullname = item.getLabel();
+        String username = extractUsername(fullname);
+        String teamId = event.getComponent()
+                             .getAttributes()
+                             .get("teamId")
+                             .toString();
+        int teamIntId = Integer.parseInt(teamId);
+        teamManager.removeUserFromTeam(username, teamIntId);
+        logger.info("User with username '" + username + "' was removed from team with id '" + teamIntId + "'");
+    }
+
     public TagCloudModel getUserTagCloudModel(String teamId) {
         int teamIntId = Integer.parseInt(teamId);
         List<Developer> users = teamManager.findUsersForTeam(teamIntId);
-        Collections.shuffle(users);
         return createTagCloudModelForUsers(users);
     }
 
@@ -93,10 +108,7 @@ public class TeamService implements Serializable {
 
     public String editTeam() {
         Team teamFromField = createTeamFromField();
-        int teamId = Integer.parseInt(FacesContext.getCurrentInstance()
-                                                  .getExternalContext()
-                                                  .getRequestParameterMap()
-                                                  .get("teamId"));
+        int teamId = Integer.parseInt(getParameterFromFaces("teamId"));
         teamFromField.setId(teamId);
         try {
             teamManager.update(teamFromField);
@@ -123,11 +135,19 @@ public class TeamService implements Serializable {
         }
     }
 
+    private String getParameterFromFaces(String paramName) {
+        return FacesContext.getCurrentInstance()
+                           .getExternalContext()
+                           .getRequestParameterMap()
+                           .get(paramName);
+    }
+
     private void clearFields() {
         teamName = null;
         teamToDelete = null;
         userToAdd = null;
         addUserTeamId = null;
+        deleteUserTeamId = null;
     }
 
     private TagCloudModel createTagCloudModelForUsers(final List<Developer> users) {
@@ -140,7 +160,9 @@ public class TeamService implements Serializable {
 
     }
 
-    private String getUserFullName(final Developer user) {return user.getFirstName() + " " + user.getSurname();}
+    private String getUserFullName(final Developer user) {
+        return user.getFirstName() + " " + user.getSurname() + " (" + user.getUsername() + ")";
+    }
 
     private int nextRandom() {
         Random random = new Random();

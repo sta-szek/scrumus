@@ -23,12 +23,13 @@
                              paginator="true"
                              rows="10">
                     <ui:param name="scrumMaster" value="#{userService.findScrumMaster(tm.id)}" />
-                    <p:column headerText="#{i18n['page.admin.team.name']}" filterBy="#{tm.name}">
+                    <p:column headerText="#{i18n['page.admin.team.name']}">
                         <h:outputText value="#{tm.name}" />
                     </p:column>
                     <p:column headerText="#{i18n['page.admin.team.users']}" width="800">
                         <p:tagCloud model="#{teamService.getUserTagCloudModel(tm.id)}" style="width: inherit">
-                            <p:ajax event="select" update="teamsListTable" listener="#{teamService.deleteUser}" />
+                            <f:attribute name="teamId" value="#{tm.id}" />
+                            <p:ajax event="select" update="teamsListTable" listener="#{teamService.deleteUserFromTeam}" />
                         </p:tagCloud>
                     </p:column>
                     <p:column headerText="#{i18n['page.admin.team.scrumMaster']}">
