@@ -258,6 +258,8 @@ public class BacklogDAOIT {
     private void clearData() throws Exception {
         userTransaction.begin();
         entityManager.joinTransaction();
+        entityManager.createQuery("DELETE FROM ProjectEntity")
+                     .executeUpdate();
         entityManager.createQuery("DELETE FROM BacklogEntity")
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM IssueEntity")

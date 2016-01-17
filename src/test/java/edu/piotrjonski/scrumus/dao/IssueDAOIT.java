@@ -202,21 +202,20 @@ public class IssueDAOIT {
     @Test
     public void shouldDeleteIssuesFromProject() {
         // given
-        Issue issue1 = new Issue();
-        Issue issue2 = new Issue();
-        Issue issue3 = new Issue();
+        Issue issue1 = createIssue();
+        Issue issue2 = createIssue();
+        Issue issue3 = createIssue();
         issue3.setProjectKey("a");
         issueDAO.saveOrUpdate(issue1);
         issueDAO.saveOrUpdate(issue2);
-        IssueEntity issueWithDifferentKey = issueDAO.mapToDatabaseModel(issueDAO.saveOrUpdate(issue3)
-                                                                                .get());
+        issueDAO.saveOrUpdate(issue3);
 
         // when
         issueDAO.deleteIssuesFromProject(issue1.getProjectKey());
         List<IssueEntity> result = findAll();
 
         // then
-        assertThat(result).contains(issueWithDifferentKey);
+        assertThat(result).hasSize(1);
     }
 
     @Test
