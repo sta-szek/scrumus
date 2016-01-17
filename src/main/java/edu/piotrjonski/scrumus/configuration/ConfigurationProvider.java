@@ -10,13 +10,17 @@ import java.util.ResourceBundle;
 public class ConfigurationProvider {
 
     protected String configurationPath = "configuration";
+    private ResourceBundle resourceBundle;
+
+    public ConfigurationProvider() {
+        resourceBundle = ResourceBundle.getBundle(configurationPath, createDefaultLocale());
+    }
 
     public String getMessage(String key) {
         if (key == null) {
             return "";
         }
-        return ResourceBundle.getBundle(configurationPath, createDefaultLocale())
-                             .getString(key);
+        return resourceBundle.getString(key);
     }
 
     private Locale createDefaultLocale() {

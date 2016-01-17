@@ -2,6 +2,7 @@ package edu.piotrjonski.scrumus.dao;
 
 
 import edu.piotrjonski.scrumus.dao.model.project.BacklogEntity;
+import edu.piotrjonski.scrumus.dao.model.project.ProjectEntity;
 import edu.piotrjonski.scrumus.domain.*;
 import edu.piotrjonski.scrumus.utils.TestUtils;
 import org.assertj.core.util.Lists;
@@ -202,7 +203,7 @@ public class BacklogDAOIT {
     }
 
     @Test
-    public void shouldFindByKey() {
+    public void shouldFindById() {
         // given
         Backlog backlog1 = createBacklog();
         Backlog backlog2 = createBacklog();
@@ -217,6 +218,25 @@ public class BacklogDAOIT {
 
         // then
         assertThat(backlog).isEqualTo(backlog1);
+    }
+
+    @Test
+    public void shouldFindBacklogForProject() {
+        // given
+        Backlog backlog = createBacklog();
+        BacklogEntity backlogEntity = entityManager.merge(backlogDAO.mapToDatabaseModelIfNotNull(backlog));
+        ProjectEntity projectEntity = new ProjectEntity();
+        projectEntity.setBacklogEntity(backlogEntity);
+        String projectKey = "key";
+        projectEntity.setKey(projectKey);
+        projectEntity.setName("name");
+        entityManager.merge(projectEntity);
+
+        // when
+        Optional<Backlog> result = backlogDAO.findBacklogForProject(projectKey);
+
+        // then
+        assertThat(result.isPresent()).isTrue();
     }
 
     @Test
@@ -263,9 +283,4 @@ public class BacklogDAOIT {
                             .getResultList();
     }
 
-    private State createState() {
-        State state = new State();
-        state.setName("name");
-        return state;
-    }
 }

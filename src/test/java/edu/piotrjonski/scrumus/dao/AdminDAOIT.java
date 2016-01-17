@@ -70,6 +70,20 @@ public class AdminDAOIT {
     }
 
     @Test
+    public void shouldFindByDeveloperId() {
+        // given
+        Admin admin = createAdmin();
+        Optional<Admin> savedAdmin = adminDAO.saveOrUpdate(admin);
+
+        // when
+        Optional<Admin> result = adminDAO.findByDeveloperId(lastDeveloperId);
+
+        // then
+        assertThat(result).isEqualTo(savedAdmin);
+
+    }
+
+    @Test
     public void shouldReturnTrueIfExist() {
         // given
         Admin admin = createAdmin();

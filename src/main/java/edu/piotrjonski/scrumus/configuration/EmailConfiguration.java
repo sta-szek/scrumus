@@ -1,7 +1,5 @@
 package edu.piotrjonski.scrumus.configuration;
 
-import org.slf4j.Logger;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -28,9 +26,6 @@ public class EmailConfiguration {
     @Inject
     @Named(value = "configurationProvider")
     private ConfigurationProvider configurationProvider;
-
-    @Inject
-    private transient Logger logger;
 
     public Session createSession() {
         return Session.getInstance(createProperties(), createAuthenticator());

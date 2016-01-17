@@ -2,7 +2,7 @@ ext.libraryVersions = [
         javaee                  : '7.0',
         wildfly                 : '8.0.0.Final',
         junit                   : '4.12',
-        assertj                 : '3.2.0',
+        assertj                 : '3.3.0',
         arquillian              : '1.1.10.Final',
         shrinkWrapResolverGradle: '2.2.0'
 ]

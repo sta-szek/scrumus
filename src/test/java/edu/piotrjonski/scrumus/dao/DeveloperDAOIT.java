@@ -184,6 +184,95 @@ public class DeveloperDAOIT {
         assertThat(user).isEmpty();
     }
 
+    @Test
+    public void shouldFindAllUsernames() {
+        // given
+        Developer developer1 = createDeveloper();
+        Developer developer2 = createDeveloper();
+        String username1 = "name1";
+        String username2 = "name2";
+        developer1.setUsername(username1);
+        developer2.setUsername(username2);
+        developerDAO.saveOrUpdate(developer1);
+        developerDAO.saveOrUpdate(developer2);
+
+        // when
+        List<String> result = developerDAO.findAllUsernames();
+
+        // then
+        assertThat(result).contains(username1)
+                          .contains(username2);
+    }
+
+    @Test
+    public void shouldFindAllEmails() {
+        // given
+        Developer developer1 = createDeveloper();
+        Developer developer2 = createDeveloper();
+        String email1 = "email1";
+        String email2 = "email2";
+        developer1.setEmail(email1);
+        developer2.setEmail(email2);
+        developerDAO.saveOrUpdate(developer1);
+        developerDAO.saveOrUpdate(developer2);
+
+        // when
+        List<String> result = developerDAO.findAllEmails();
+
+        // then
+        assertThat(result).contains(email1)
+                          .contains(email2);
+    }
+
+    @Test
+    public void shouldFindByUsername() {
+        // given
+        Developer developer = createDeveloper();
+        Developer savedDeveloper = developerDAO.saveOrUpdate(developer)
+                                               .get();
+
+        // when
+        Optional<Developer> result = developerDAO.findByUsername(savedDeveloper.getUsername());
+
+        // then
+        assertThat(result).hasValue(savedDeveloper);
+    }
+
+    @Test
+    public void shouldReturnEmptyOptionalIfNoValueFound() {
+        // given
+
+        // when
+        Optional<Developer> result = developerDAO.findByUsername("username");
+
+        // then
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void shouldReturnTrueIfEmailExist() {
+        // given
+        Developer developer = createDeveloper();
+        developerDAO.saveOrUpdate(developer);
+
+        // when
+        boolean result = developerDAO.emailExist(developer.getEmail());
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfEmailDoesNotExist() {
+        // given
+
+        // when
+        boolean result = developerDAO.emailExist("email");
+
+        // then
+        assertThat(result).isFalse();
+    }
+
     private void startTransaction() throws SystemException, NotSupportedException {
         userTransaction.begin();
         entityManager.joinTransaction();
