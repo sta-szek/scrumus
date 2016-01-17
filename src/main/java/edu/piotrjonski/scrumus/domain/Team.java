@@ -29,4 +29,8 @@ public class Team {
     public boolean containsUser(Developer user) {
         return developers.contains(user);
     }
+
+    public boolean belongsTo(final Project project) {
+        return projects.contains(project);
+    }
 }

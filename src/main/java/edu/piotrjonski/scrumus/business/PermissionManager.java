@@ -106,14 +106,14 @@ public class PermissionManager {
     }
 
     public void addTeamToProject(Team team, Project project) {
-        if (teamExist(team.getId()) && projectExist(project.getKey())) {
+        if (teamExist(team.getId()) && projectExist(project.getKey()) && !team.belongsTo(project)) {
             team.addProject(project);
             teamDAO.saveOrUpdate(team);
         }
     }
 
     public void removeTeamFromProject(Team team, Project project) {
-        if (teamExist(team.getId()) && projectExist(project.getKey())) {
+        if (teamExist(team.getId()) && projectExist(project.getKey()) && team.belongsTo(project)) {
             team.removeProject(project);
             teamDAO.saveOrUpdate(team);
         }
@@ -141,6 +141,22 @@ public class PermissionManager {
         deleteAdmin(user);
         deleteProductOwner(user);
         deleteScrumMaster(user);
+    }
+
+    public void addTeamToProject(final String teamName, final String projectKey) {
+        Optional<Team> teamOptional = teamDAO.findByName(teamName);
+        Optional<Project> projectOptional = projectDAO.findById(projectKey);
+        if (teamOptional.isPresent() && projectOptional.isPresent()) {
+            addTeamToProject(teamOptional.get(), projectOptional.get());
+        }
+    }
+
+    public void removeTeamFromProject(final String teamName, final String projectKey) {
+        Optional<Team> teamOptional = teamDAO.findByName(teamName);
+        Optional<Project> projectOptional = projectDAO.findById(projectKey);
+        if (teamOptional.isPresent() && projectOptional.isPresent()) {
+            removeTeamFromProject(teamOptional.get(), projectOptional.get());
+        }
     }
 
     private void createProductOwner(final Developer user, final Project project) {

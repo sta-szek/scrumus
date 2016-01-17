@@ -31,6 +31,13 @@
                         <h:outputText value="#{proj.key}" />
                     </p:column>
 
+                    <p:column headerText="#{i18n['page.admin.project.teams']}" width="600">
+                        <p:tagCloud model="#{projectService.getTeamTagCloudModel(proj.key)}" style="width: inherit">
+                            <f:attribute name="projectKey" value="#{proj.key}" />
+                            <p:ajax event="select" update="projectsListTable" listener="#{projectService.deleteTeamFromProject}" />
+                        </p:tagCloud>
+                    </p:column>
+
                     <p:column headerText="#{i18n['page.admin.project.productOwner']}">
                         <h:outputText value="#{productOwner.firstName} #{productOwner.surname} (#{productOwner.username})"
                                       rendered="#{not empty productOwner}" />
@@ -64,16 +71,54 @@
                                          update="projectsListPanel">
                             <f:setPropertyActionListener value="#{proj.key}" target="#{permissionService.productOwnerProjectKey}" />
                         </p:commandButton>
+                        <p:commandButton value="#{i18n['page.admin.project.add.team']}"
+                                         id="addTeamButton"
+                                         icon="fa-user-plus"
+                                         onclick="PF('addTeam').show()">
+                            <f:setPropertyActionListener value="#{proj.key}" target="#{projectService.addTeamProjectKey}" />
+                        </p:commandButton>
                     </p:column>
                 </p:dataTable>
             </p:panel>
-            <p:dialog
-                    global="true"
-                    showEffect="fade"
-                    hideEffect="fade"
-                    widgetVar="selectProductOwner"
-                    header="#{i18n['page.admin.project.select.productOwner.header']}"
-                    icon="fa fa-warning">
+            <p:dialog showEffect="fade"
+                      hideEffect="fade"
+                      widgetVar="addTeam"
+                      header="#{i18n['page.admin.project.add.team.header']}"
+                      icon="fa fa-warning">
+                <h:form id="addTeamForm">
+                    <p:autoComplete id="team"
+                                    multiple="false"
+                                    value="#{projectService.teamToAdd}"
+                                    completeMethod="#{teamService.completeTeam}"
+                                    var="team"
+                                    itemLabel="#{team}"
+                                    itemValue="#{team}"
+                                    forceSelection="true"
+                                    dropdown="true">
+                        <p:column>
+                            <h:outputText value="#{team}" />
+                        </p:column>
+                    </p:autoComplete>
+                    <br />
+                    <p:commandButton value="#{i18n['page.admin.project.add.team.save']}"
+                                     styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"
+                                     action="#{projectService.addTeam()}"
+                                     oncomplete="PF('addTeam').hide()"
+                                     update="projectsListPanel">
+                        <f:ajax render="projectsListPanel" />
+                    </p:commandButton>
+                    <p:commandButton value="#{i18n['page.admin.project.add.team.cancel']}"
+                                     styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close"
+                                     onclick="PF('addTeam').hide()" />
+                </h:form>
+            </p:dialog>
+            <p:dialog showEffect="fade"
+                      hideEffect="fade"
+                      widgetVar="selectProductOwner"
+                      header="#{i18n['page.admin.project.select.productOwner.header']}"
+                      icon="fa fa-warning">
                 <h:form id="selectProductOwnerForm">
                     <p:autoComplete id="productOwner"
                                     multiple="false"

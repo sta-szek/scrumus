@@ -61,11 +61,15 @@ public class TeamManager {
                });
     }
 
-    public void removeUserFromTeam(Developer developer, Team team) {
-        if (teamExist(team) && developerExist(developer)) {
-            team.removeDeveloper(developer);
+    public void removeUserFromTeam(Developer user, Team team) {
+        if (teamExist(team) && developerExist(user) && team.containsUser(user)) {
+            team.removeDeveloper(user);
             teamDAO.saveOrUpdate(team);
         }
+    }
+
+    public List<Team> findTeamsForProject(String projectKey) {
+        return teamDAO.findAllTeamsForProject(projectKey);
     }
 
     public List<String> findAllTeamNames() {return teamDAO.findAllNames();}

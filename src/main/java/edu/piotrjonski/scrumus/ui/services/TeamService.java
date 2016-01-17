@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Data
 public class TeamService implements Serializable {
@@ -133,6 +134,17 @@ public class TeamService implements Serializable {
             createFacesMessage("system.fatal.create.team.exist", null);
             return null;
         }
+    }
+
+    public List<String> completeTeam(String query) {
+        String lowerCaseQuery = query.toLowerCase();
+        return getAllTeams().stream()
+                            .filter(team -> team.getName()
+                                                .toLowerCase()
+                                                .startsWith(lowerCaseQuery))
+                            .map(Team::getName)
+                            .collect(Collectors.toList());
+
     }
 
     private String getParameterFromFaces(String paramName) {

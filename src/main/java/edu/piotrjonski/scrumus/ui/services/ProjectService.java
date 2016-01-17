@@ -1,11 +1,19 @@
 package edu.piotrjonski.scrumus.ui.services;
 
+import edu.piotrjonski.scrumus.business.PermissionManager;
 import edu.piotrjonski.scrumus.business.ProjectManager;
+import edu.piotrjonski.scrumus.business.TeamManager;
 import edu.piotrjonski.scrumus.domain.Project;
+import edu.piotrjonski.scrumus.domain.Team;
 import edu.piotrjonski.scrumus.services.ProjectKeyGenerator;
 import edu.piotrjonski.scrumus.ui.configuration.I18NProvider;
 import edu.piotrjonski.scrumus.ui.configuration.PathProvider;
 import lombok.Data;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.tagcloud.DefaultTagCloudItem;
+import org.primefaces.model.tagcloud.DefaultTagCloudModel;
+import org.primefaces.model.tagcloud.TagCloudItem;
+import org.primefaces.model.tagcloud.TagCloudModel;
 import org.slf4j.Logger;
 
 import javax.faces.application.FacesMessage;
@@ -16,6 +24,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Data
 public class ProjectService implements Serializable {
@@ -38,6 +47,12 @@ public class ProjectService implements Serializable {
     @Inject
     private ProjectKeyGenerator projectKeyGenerator;
 
+    @Inject
+    private PermissionManager permissionManager;
+
+    @Inject
+    private TeamManager teamManager;
+
     @Size(max = 255, message = "{validator.size.projectName}")
     private String projectName;
 
@@ -51,6 +66,10 @@ public class ProjectService implements Serializable {
     private String definitionOfDone;
 
     private String projectToDelete;
+
+    private String addTeamProjectKey;
+
+    private String teamToAdd;
 
     public String createProject() {
         if (validateFields()) {
@@ -116,10 +135,50 @@ public class ProjectService implements Serializable {
         projectName = null;
         definitionOfDone = null;
         description = null;
+        addTeamProjectKey = null;
+        teamToAdd = null;
     }
 
     public void setProjectKey(String projectKey) {
         this.projectKey = projectKey.toUpperCase();
+    }
+
+    public TagCloudModel getTeamTagCloudModel(String projectKey) {
+        List<Team> teams = teamManager.findTeamsForProject(projectKey);
+        return createTagCloudModelForTeams(teams);
+    }
+
+    public void addTeam() {
+        if (teamToAdd != null && addTeamProjectKey != null) {
+            permissionManager.addTeamToProject(teamToAdd, addTeamProjectKey);
+            logger.info("Team with name '" + teamToAdd + "' was added to project with key '" + addTeamProjectKey + "'");
+            clearFields();
+        }
+    }
+
+    public void deleteTeamFromProject(SelectEvent event) {
+        TagCloudItem item = (TagCloudItem) event.getObject();
+        String teamName = item.getLabel();
+        String projectKey = event.getComponent()
+                                 .getAttributes()
+                                 .get("projectKey")
+                                 .toString();
+        permissionManager.removeTeamFromProject(teamName, projectKey);
+        logger.info("Team with name '" + teamName + "' was removed from project with key '" + projectKey + "'");
+    }
+
+    private TagCloudModel createTagCloudModelForTeams(final List<Team> teams) {
+        TagCloudModel tagCloudModel = new DefaultTagCloudModel();
+
+        teams.stream()
+             .map(team -> new DefaultTagCloudItem(team.getName(), nextRandom()))
+             .forEach(tagCloudModel::addTag);
+        return tagCloudModel;
+    }
+
+    private int nextRandom() {
+        Random random = new Random();
+        return random.nextInt(5) + 1;
     }
 
     private String getProjectKeyFromFacesParameter() {
