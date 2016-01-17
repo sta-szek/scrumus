@@ -204,6 +204,7 @@ public class TeamDAOIT {
         Team team = new Team();
         team.setName(NAME + nextUniqueValue);
         team.setProjects(createProjects());
+        nextUniqueValue++;
         return team;
     }
 

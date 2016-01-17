@@ -271,6 +271,8 @@ public class StoryManagerIT {
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM StateEntity")
                      .executeUpdate();
+        entityManager.createQuery("DELETE FROM PasswordEntity")
+                     .executeUpdate();
         entityManager.createQuery("DELETE FROM DeveloperEntity ")
                      .executeUpdate();
         userTransaction.commit();
@@ -314,7 +316,7 @@ public class StoryManagerIT {
 
     private Developer createDeveloper() {
         Developer developer = new Developer();
-        developer.setEmail("email");
+        developer.setEmail("yoyo@wp.eu");
         developer.setFirstName("email");
         developer.setSurname("email");
         developer.setUsername("email");
