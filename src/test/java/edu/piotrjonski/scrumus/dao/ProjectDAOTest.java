@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.project.BacklogEntity;
 import edu.piotrjonski.scrumus.dao.model.project.ProjectEntity;
 import edu.piotrjonski.scrumus.domain.Project;
 import org.junit.Before;
@@ -65,6 +66,7 @@ public class ProjectDAOTest {
         assertThat(result.getDefinitionOfDone()).isEqualTo(dod);
         assertThat(result.getDescription()).isEqualTo(description);
         assertThat(result.getKey()).isEqualTo(key);
+        assertThat(result.getBacklogEntity()).isNotNull();
     }
 
     @Test
@@ -81,6 +83,7 @@ public class ProjectDAOTest {
         projectEntity.setDefinitionOfDone(dod);
         projectEntity.setDescription(description);
         projectEntity.setKey(key);
+        projectEntity.setBacklogEntity(new BacklogEntity());
 
         // when
         Project result = projectDAO.mapToDomainModel(projectEntity);

@@ -180,6 +180,26 @@ public class IssueTypeDAOIT {
         assertThat(user).isEmpty();
     }
 
+    @Test
+    public void shouldFindAllNames() {
+        // given
+        IssueType issueType1 = createIssueType();
+        IssueType issueType2 = createIssueType();
+        String name1 = issueTypeDAO.saveOrUpdate(issueType1)
+                                   .get()
+                                   .getName();
+        String name2 = issueTypeDAO.saveOrUpdate(issueType2)
+                                   .get()
+                                   .getName();
+
+        // when
+        List<String> result = issueTypeDAO.findAllNames();
+
+        // then
+        assertThat(result).contains(name1)
+                          .contains(name2);
+    }
+
     private void startTransaction() throws SystemException, NotSupportedException {
         userTransaction.begin();
         entityManager.joinTransaction();

@@ -180,6 +180,26 @@ public class StateDAOIT {
         assertThat(user).isEmpty();
     }
 
+    @Test
+    public void shouldFindAllNames() {
+        // given
+        State state1 = createState();
+        State state2 = createState();
+        String name1 = stateDAO.saveOrUpdate(state1)
+                               .get()
+                               .getName();
+        String name2 = stateDAO.saveOrUpdate(state2)
+                               .get()
+                               .getName();
+
+        // when
+        List<String> result = stateDAO.findAllNames();
+
+        // then
+        assertThat(result).contains(name1)
+                          .contains(name2);
+    }
+
     private void startTransaction() throws SystemException, NotSupportedException {
         userTransaction.begin();
         entityManager.joinTransaction();

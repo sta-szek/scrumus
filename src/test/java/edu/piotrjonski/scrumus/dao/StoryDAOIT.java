@@ -233,6 +233,30 @@ public class StoryDAOIT {
         assertThat(user).isEmpty();
     }
 
+    @Test
+    public void shouldDeleteStoriesFromProject() {
+        // given
+        Project project = createProject();
+        project = projectDAO.saveOrUpdate(project)
+                            .get();
+        Sprint sprint = new Sprint();
+        sprint.setProjectKey(project.getKey());
+        sprint.setName("name");
+        sprint = sprintDAO.saveOrUpdate(sprint)
+                          .get();
+        Story story = createStory();
+        story.setSprintId(sprint.getId());
+        storyDAO.saveOrUpdate(story);
+
+        // when
+        storyDAO.deleteStoriesFromProject(project.getKey());
+        List<StoryEntity> result = findAll();
+
+        // then
+        assertThat(result).isEmpty();
+    }
+
+
     private void startTransaction() throws SystemException, NotSupportedException {
         userTransaction.begin();
         entityManager.joinTransaction();

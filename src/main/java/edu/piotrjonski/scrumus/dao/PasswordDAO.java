@@ -34,8 +34,6 @@ public class PasswordDAO extends AbstractDAO<PasswordEntity, Password> {
 
     @Override
     public List<Password> findAll() {
-        // zwraca pustą listę, bo kontener + arquillian + assertj nie potrawią sobie poradzić z wyjątkiem OperationNotSupporterException
-        // który przeistacza się w EJBTransactionRolledBackException. Następnie Rzucany jest kolejny wyjątek, który powoduje fail testu.
         return new ArrayList<>();
     }
 

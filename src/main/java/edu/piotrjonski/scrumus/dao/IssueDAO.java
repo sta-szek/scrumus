@@ -56,6 +56,12 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
                             .getResultList();
     }
 
+    public List<Issue> findAllIssuesWithPriority(final String priorityName) {
+        return entityManager.createNamedQuery(IssueEntity.FIND_ALL_ISSUES_WITH_PRIORITY)
+                            .setParameter(PriorityEntity.PRIORITY_NAME, priorityName)
+                            .getResultList();
+    }
+
     public boolean isIssueTypeInUse(String issueTypeName) {
         return findAllIssuesWithIssueType(issueTypeName).size() > 0;
     }
@@ -66,12 +72,6 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
 
     public boolean isPriorityInUse(final String priorityName) {
         return findAllIssuesWithPriority(priorityName).size() > 0;
-    }
-
-    public List<Issue> findAllIssuesWithPriority(final String priorityName) {
-        return entityManager.createNamedQuery(IssueEntity.FIND_ALL_ISSUES_WITH_PRIORITY)
-                            .setParameter(PriorityEntity.PRIORITY_NAME, priorityName)
-                            .getResultList();
     }
 
     @Override

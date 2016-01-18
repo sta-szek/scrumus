@@ -3,12 +3,22 @@ package edu.piotrjonski.scrumus.services;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class ProjectKeyGenerator {
 
     public static final int MAX_PROJECT_KEY = 8;
+
+    private Map<Integer, Integer> lenghtMapper = new HashMap<>();
+
+    public ProjectKeyGenerator() {
+        lenghtMapper.put(2, 4);
+        lenghtMapper.put(3, 2);
+        lenghtMapper.put(4, 2);
+    }
 
     public String generateProjectKey(String projectName) {
         if (projectName == null) {
@@ -19,16 +29,16 @@ public class ProjectKeyGenerator {
 
     private String calculateProjectKey(final String projectName) {
         String[] splitName = projectName.split(" ");
-        if (splitName.length == 1) {
+        int length = splitName.length;
+        if (length == 1) {
             return trimProjectName(projectName);
-        } else if (splitName.length == 2) {
-            return concatFirstLetters(splitName, 4);
-        } else if (splitName.length == 3) {
-            return concatFirstLetters(splitName, 2);
-        } else if (splitName.length == 4) {
-            return concatFirstLetters(splitName, 2);
         } else {
-            return concatFirstLetters(splitName, 1);
+            Integer wordLength = lenghtMapper.get(length);
+            if (wordLength == null) {
+                return concatFirstLetters(splitName, 1);
+            } else {
+                return concatFirstLetters(splitName, length);
+            }
         }
     }
 

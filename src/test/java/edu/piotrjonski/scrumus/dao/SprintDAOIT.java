@@ -203,7 +203,8 @@ public class SprintDAOIT {
         List<Sprint> result = sprintDAO.findAllSprints(projectKey1);
 
         // then
-        assertThat(result).containsAll(sprints1);
+        assertThat(result).containsAll(sprints1)
+                          .doesNotContainAnyElementsOf(sprints2);
     }
 
     @Test
@@ -243,6 +244,25 @@ public class SprintDAOIT {
 
         // then
         assertThat(result).isFalse();
+    }
+
+    @Test
+    public void shouldDeleteSprintsFromProject() {
+        // given
+        Project project = createProject();
+        project = projectDAO.saveOrUpdate(project)
+                            .get();
+        nextUniqueValue++;
+        String projectKey = project.getKey();
+        createSprints(projectKey, 4);
+
+
+        // when
+        sprintDAO.deleteSprintsFromProject(projectKey);
+        List<SprintEntity> result = findAll();
+
+        // then
+        assertThat(result).hasSize(0);
     }
 
     private void startTransaction() throws SystemException, NotSupportedException {

@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Represents user object.
@@ -53,6 +52,4 @@ public class DeveloperEntity {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private PictureEntity pictureEntity;
 
-    @ManyToMany(mappedBy = "developerEntities")
-    private List<TeamEntity> teamEntities;
 }

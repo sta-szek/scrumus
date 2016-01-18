@@ -180,6 +180,26 @@ public class PriorityDAOIT {
         assertThat(user).isEmpty();
     }
 
+    @Test
+    public void shouldFindAllNames() {
+        // given
+        Priority priority1 = createPriority();
+        Priority priority2 = createPriority();
+        String name1 = priorityDAO.saveOrUpdate(priority1)
+                                  .get()
+                                  .getName();
+        String name2 = priorityDAO.saveOrUpdate(priority2)
+                                  .get()
+                                  .getName();
+
+        // when
+        List<String> result = priorityDAO.findAllNames();
+
+        // then
+        assertThat(result).contains(name1)
+                          .contains(name2);
+    }
+
     private void startTransaction() throws SystemException, NotSupportedException {
         userTransaction.begin();
         entityManager.joinTransaction();
