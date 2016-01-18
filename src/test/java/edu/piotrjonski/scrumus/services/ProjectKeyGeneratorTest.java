@@ -53,8 +53,8 @@ public class ProjectKeyGeneratorTest {
     @Test
     public void shouldReturnFirstFourLettersOfEachWord() {
         // given
-        String projectName = "test test";
-        String expectedProjectKey = "TETE";
+        String projectName = "jeden trzy";
+        String expectedProjectKey = "JEDETRZY";
         ProjectKeyGenerator projectKeyGenerator = new ProjectKeyGenerator();
 
         // when

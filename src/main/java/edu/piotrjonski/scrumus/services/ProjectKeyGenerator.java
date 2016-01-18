@@ -37,7 +37,7 @@ public class ProjectKeyGenerator {
             if (wordLength == null) {
                 return concatFirstLetters(splitName, 1);
             } else {
-                return concatFirstLetters(splitName, length);
+                return concatFirstLetters(splitName, wordLength);
             }
         }
     }
