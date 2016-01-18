@@ -161,6 +161,8 @@ public class ScrumMasterDAOIT {
     @Test
     public void shouldFindByDeveloperId() {
         // given
+        ScrumMaster scrumMaster = createScrumMaster();
+        scrumMasterDAO.saveOrUpdate(scrumMaster);
 
         // when
         List<ScrumMaster> result = scrumMasterDAO.findByDeveloperId(lastDeveloperId);
@@ -190,6 +192,7 @@ public class ScrumMasterDAOIT {
         team = teamDAO.saveOrUpdate(team)
                       .get();
         scrumMaster.addTeam(team);
+        scrumMasterDAO.saveOrUpdate(scrumMaster);
 
         // when
         ScrumMaster result = scrumMasterDAO.findByTeam(team.getId())

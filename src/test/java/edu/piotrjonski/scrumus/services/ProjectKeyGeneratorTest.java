@@ -50,5 +50,75 @@ public class ProjectKeyGeneratorTest {
         assertThat(result).isEqualTo(expectedProjectKey);
     }
 
+    @Test
+    public void shouldReturnFirstFourLettersOfEachWord() {
+        // given
+        String projectName = "test test";
+        String expectedProjectKey = "TETE";
+        ProjectKeyGenerator projectKeyGenerator = new ProjectKeyGenerator();
+
+        // when
+        String result = projectKeyGenerator.generateProjectKey(projectName);
+
+        // then
+        assertThat(result).isEqualTo(expectedProjectKey);
+    }
+
+    @Test
+    public void shouldReturnFirstTwoLettersOfEachWordWhenThreeWordProjectName() {
+        // given
+        String projectName = "test test test";
+        String expectedProjectKey = "TETETE";
+        ProjectKeyGenerator projectKeyGenerator = new ProjectKeyGenerator();
+
+        // when
+        String result = projectKeyGenerator.generateProjectKey(projectName);
+
+        // then
+        assertThat(result).isEqualTo(expectedProjectKey);
+    }
+
+    @Test
+    public void shouldReturnFirstTwoLettersOfEachWordWhenFourWordProjectName() {
+        // given
+        String projectName = "test test test test";
+        String expectedProjectKey = "TETETETE";
+        ProjectKeyGenerator projectKeyGenerator = new ProjectKeyGenerator();
+
+        // when
+        String result = projectKeyGenerator.generateProjectKey(projectName);
+
+        // then
+        assertThat(result).isEqualTo(expectedProjectKey);
+    }
+
+    @Test
+    public void shouldReturnFirstLetterOfEachWordWhenMoreThanFourWordProjectName() {
+        // given
+        String projectName = "test test test test test";
+        String expectedProjectKey = "TTTTT";
+        ProjectKeyGenerator projectKeyGenerator = new ProjectKeyGenerator();
+
+        // when
+        String result = projectKeyGenerator.generateProjectKey(projectName);
+
+        // then
+        assertThat(result).isEqualTo(expectedProjectKey);
+    }
+
+    @Test
+    public void shouldReturnEmptyStringWhenProjectNameIsEmpty() {
+        // given
+        String projectName = "    ";
+        String expectedProjectKey = "";
+        ProjectKeyGenerator projectKeyGenerator = new ProjectKeyGenerator();
+
+        // when
+        String result = projectKeyGenerator.generateProjectKey(projectName);
+
+        // then
+        assertThat(result).isEqualTo(expectedProjectKey);
+    }
+
 
 }

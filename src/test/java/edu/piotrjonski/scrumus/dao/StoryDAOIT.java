@@ -240,6 +240,10 @@ public class StoryDAOIT {
         project = projectDAO.saveOrUpdate(project)
                             .get();
         Sprint sprint = new Sprint();
+        TimeRange timeRange = new TimeRange();
+        timeRange.setStartDate(LocalDateTime.now());
+        timeRange.setEndDate(LocalDateTime.now());
+        sprint.setTimeRange(timeRange);
         sprint.setProjectKey(project.getKey());
         sprint.setName("name");
         sprint = sprintDAO.saveOrUpdate(sprint)

@@ -54,7 +54,6 @@ public class ProjectKeyGenerator {
         return Arrays.stream(words)
                      .map(word -> getFirstLetters(word, lettersAmount))
                      .collect(Collectors.joining());
-
     }
 
     private String getFirstLetters(String text, int letters) {

@@ -170,7 +170,8 @@ public class ProductOwnerDAOIT {
                             .get();
         ProductOwner productOwner = createProductOwner();
         productOwner.setProject(project);
-        productOwnerDAO.saveOrUpdate(productOwner);
+        productOwner = productOwnerDAO.saveOrUpdate(productOwner)
+                                      .get();
 
         // when
         ProductOwner result = productOwnerDAO.findByProjectKey(projectKey)
@@ -192,6 +193,8 @@ public class ProductOwnerDAOIT {
     @Test
     public void shouldFindByDeveloperId() {
         // given
+        ProductOwner productOwner = createProductOwner();
+        productOwnerDAO.saveOrUpdate(productOwner);
 
         // when
         ProductOwner result = productOwnerDAO.findByDeveloperId(lastDeveloperId)
