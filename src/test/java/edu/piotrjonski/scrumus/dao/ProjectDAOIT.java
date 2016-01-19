@@ -187,6 +187,46 @@ public class ProjectDAOIT {
         assertThat(user).isEmpty();
     }
 
+    @Test
+    public void shouldFindAllNames() {
+        // given
+        Project project1 = createProject();
+        Project project2 = createProject();
+        String name1 = projectDAO.saveOrUpdate(project1)
+                                 .get()
+                                 .getName();
+        String name2 = projectDAO.saveOrUpdate(project2)
+                                 .get()
+                                 .getName();
+
+        // when
+        List<String> result = projectDAO.findAllNames();
+
+        // then
+        assertThat(result).contains(name1)
+                          .contains(name2);
+    }
+
+    @Test
+    public void shouldFindAllKeys() {
+        // given
+        Project project1 = createProject();
+        Project project2 = createProject();
+        String key1 = projectDAO.saveOrUpdate(project1)
+                                .get()
+                                .getKey();
+        String key2 = projectDAO.saveOrUpdate(project2)
+                                .get()
+                                .getKey();
+
+        // when
+        List<String> result = projectDAO.findAllNames();
+
+        // then
+        assertThat(result).contains(key1)
+                          .contains(key2);
+    }
+
     private void startTransaction() throws SystemException, NotSupportedException {
         userTransaction.begin();
         entityManager.joinTransaction();

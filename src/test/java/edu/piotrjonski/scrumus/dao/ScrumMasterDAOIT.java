@@ -3,6 +3,7 @@ package edu.piotrjonski.scrumus.dao;
 import edu.piotrjonski.scrumus.dao.model.user.ScrumMasterEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.ScrumMaster;
+import edu.piotrjonski.scrumus.domain.Team;
 import edu.piotrjonski.scrumus.utils.TestUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -36,6 +37,9 @@ public class ScrumMasterDAOIT {
 
     @Inject
     private UserTransaction userTransaction;
+
+    @Inject
+    private TeamDAO teamDAO;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -152,6 +156,61 @@ public class ScrumMasterDAOIT {
 
         // then
         assertThat(user).isEmpty();
+    }
+
+    @Test
+    public void shouldFindByDeveloperId() {
+        // given
+        ScrumMaster scrumMaster = createScrumMaster();
+        scrumMasterDAO.saveOrUpdate(scrumMaster);
+
+        // when
+        List<ScrumMaster> result = scrumMasterDAO.findByDeveloperId(lastDeveloperId);
+
+        // then
+        assertThat(result).hasSize(1);
+    }
+
+    @Test
+    public void shouldReturnEmptyListIfNoScrumMasterFound() {
+        // given
+
+        // when
+        List<ScrumMaster> result = scrumMasterDAO.findByDeveloperId(0);
+
+        // then
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void shouldFindByTeam() {
+        // given
+        ScrumMaster scrumMaster = createScrumMaster();
+        scrumMasterDAO.saveOrUpdate(scrumMaster);
+        Team team = new Team();
+        team.setName("name");
+        team = teamDAO.saveOrUpdate(team)
+                      .get();
+        scrumMaster.addTeam(team);
+        scrumMasterDAO.saveOrUpdate(scrumMaster);
+
+        // when
+        ScrumMaster result = scrumMasterDAO.findByTeam(team.getId())
+                                           .get();
+        // then
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    public void shouldReturnEmptyOptionalIfWasNotFoundByTeam() {
+        // given
+
+
+        // when
+        Optional<ScrumMaster> result = scrumMasterDAO.findByTeam(0);
+
+        // then
+        assertThat(result).isEmpty();
     }
 
     private void startTransaction() throws SystemException, NotSupportedException {

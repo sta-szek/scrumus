@@ -1,6 +1,7 @@
 package edu.piotrjonski.scrumus.dao;
 
 import edu.piotrjonski.scrumus.dao.model.user.AdminEntity;
+import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.domain.Admin;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.utils.TestUtils;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 @RunWith(Arquillian.class)
 public class AdminDAOIT {
@@ -209,6 +211,12 @@ public class AdminDAOIT {
         admin.setDeveloper(developerDAO.findById(lastDeveloperId)
                                        .get());
         return admin;
+    }
+
+    private AdminEntity createAdminEntity() {
+        AdminEntity adminEntity = new AdminEntity();
+        adminEntity.setDeveloperEntity(entityManager.find(DeveloperEntity.class, lastDeveloperId));
+        return adminEntity;
     }
 
     private List<AdminEntity> findAll() {

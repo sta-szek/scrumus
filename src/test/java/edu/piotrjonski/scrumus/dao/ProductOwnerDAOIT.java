@@ -3,6 +3,7 @@ package edu.piotrjonski.scrumus.dao;
 import edu.piotrjonski.scrumus.dao.model.user.ProductOwnerEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.ProductOwner;
+import edu.piotrjonski.scrumus.domain.Project;
 import edu.piotrjonski.scrumus.utils.TestUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -33,6 +34,9 @@ public class ProductOwnerDAOIT {
 
     @Inject
     private DeveloperDAO developerDAO;
+
+    @Inject
+    private ProjectDAO projectDAO;
 
     @Inject
     private UserTransaction userTransaction;
@@ -153,6 +157,62 @@ public class ProductOwnerDAOIT {
 
         // then
         assertThat(user).isEmpty();
+    }
+
+    @Test
+    public void shouldFindByProjectKey() {
+        // given
+        Project project = new Project();
+        String projectKey = "key";
+        project.setKey(projectKey);
+        project.setName("name");
+        project = projectDAO.saveOrUpdate(project)
+                            .get();
+        ProductOwner productOwner = createProductOwner();
+        productOwner.setProject(project);
+        productOwner = productOwnerDAO.saveOrUpdate(productOwner)
+                                      .get();
+
+        // when
+        ProductOwner result = productOwnerDAO.findByProjectKey(projectKey)
+                                             .get();
+        // then
+        assertThat(result).isEqualTo(productOwner);
+    }
+
+    @Test
+    public void shouldReturnEmptyOptionalIfNoValueFoundByProjectKey() {
+        // given
+
+        // when
+        Optional<ProductOwner> result = productOwnerDAO.findByProjectKey("test");
+        // then
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void shouldFindByDeveloperId() {
+        // given
+        ProductOwner productOwner = createProductOwner();
+        productOwnerDAO.saveOrUpdate(productOwner);
+
+        // when
+        ProductOwner result = productOwnerDAO.findByDeveloperId(lastDeveloperId)
+                                             .get();
+
+        // then
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    public void shouldReturnEmptyOptionalIfNoValueFoundByDeveloperId() {
+        // given
+
+        // when
+        Optional<ProductOwner> result = productOwnerDAO.findByDeveloperId(0);
+
+        // then
+        assertThat(result).isEmpty();
     }
 
     private void startTransaction() throws SystemException, NotSupportedException {

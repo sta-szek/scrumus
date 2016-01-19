@@ -199,6 +199,155 @@ public class IssueDAOIT {
         assertThat(user).isEmpty();
     }
 
+    @Test
+    public void shouldDeleteIssuesFromProject() {
+        // given
+        Issue issue1 = createIssue();
+        Issue issue2 = createIssue();
+        Issue issue3 = createIssue();
+        issue3.setProjectKey("a");
+        issueDAO.saveOrUpdate(issue1);
+        issueDAO.saveOrUpdate(issue2);
+        issueDAO.saveOrUpdate(issue3);
+
+        // when
+        issueDAO.deleteIssuesFromProject(issue1.getProjectKey());
+        List<IssueEntity> result = findAll();
+
+        // then
+        assertThat(result).hasSize(1);
+    }
+
+    @Test
+    public void shouldFindAllIssuesWithGivenIssueType() {
+        // given
+        Issue issue1 = createIssue();
+        Issue issue2 = createIssue();
+        issueDAO.saveOrUpdate(issue1);
+        issueDAO.saveOrUpdate(issue2);
+
+        // when
+        List<Issue> result = issueDAO.findAllIssuesWithIssueType(issue1.getIssueType()
+                                                                       .getName());
+
+        // then
+        assertThat(result).hasSize(2);
+    }
+
+    @Test
+    public void shouldFindAllIssuesWithGivenState() {
+        // given
+        Issue issue1 = createIssue();
+        Issue issue2 = createIssue();
+        issueDAO.saveOrUpdate(issue1);
+        issueDAO.saveOrUpdate(issue2);
+
+        // when
+        List<Issue> result = issueDAO.findAllIssuesWithState(issue1.getState()
+                                                                   .getName());
+
+        // then
+        assertThat(result).hasSize(2);
+    }
+
+    @Test
+    public void shouldFindAllIssuesWithGivenPriority() {
+        // given
+        Issue issue1 = createIssue();
+        Issue issue2 = createIssue();
+        issueDAO.saveOrUpdate(issue1);
+        issueDAO.saveOrUpdate(issue2);
+
+        // when
+        List<Issue> result = issueDAO.findAllIssuesWithIssueType(issue1.getPriority()
+                                                                       .getName());
+
+        // then
+        assertThat(result).hasSize(2);
+    }
+
+    @Test
+    public void shouldReturnTrueIfIssueTypeIsInUse() {
+        // given
+        Issue issue = createIssue();
+        issueDAO.saveOrUpdate(issue);
+
+        // when
+        boolean result = issueDAO.isIssueTypeInUse(issue.getIssueType()
+                                                        .getName());
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfIssueTypeIsNotInUse() {
+        // given
+        Issue issue = createIssue();
+        issueDAO.saveOrUpdate(issue);
+
+        // when
+        boolean result = issueDAO.isIssueTypeInUse("x");
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    public void shouldReturnTrueIfStateIsInUse() {
+        // given
+        Issue issue = createIssue();
+        issueDAO.saveOrUpdate(issue);
+
+        // when
+        boolean result = issueDAO.isStateInUse(issue.getState()
+                                                    .getName());
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfStateIsNotInUse() {
+        // given
+        Issue issue = createIssue();
+        issueDAO.saveOrUpdate(issue);
+
+        // when
+        boolean result = issueDAO.isStateInUse("x");
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    public void shouldReturnTrueIfPriorityIsInUse() {
+        // given
+        Issue issue = createIssue();
+        issueDAO.saveOrUpdate(issue);
+
+        // when
+        boolean result = issueDAO.isPriorityInUse(issue.getPriority()
+                                                       .getName());
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfPriorityIsNotInUse() {
+        // given
+        Issue issue = createIssue();
+        issueDAO.saveOrUpdate(issue);
+
+        // when
+        boolean result = issueDAO.isPriorityInUse("x");
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+
     private void startTransaction() throws SystemException, NotSupportedException {
         userTransaction.begin();
         entityManager.joinTransaction();
@@ -241,7 +390,7 @@ public class IssueDAOIT {
     private Issue createIssue() {
         Issue issue = new Issue();
         issue.setCreationDate(NOW);
-        issue.setProjectKey(KEY + nextUniqueValue);
+        issue.setProjectKey(KEY);
         issue.setDescription(DESCRIPTION);
         issue.setDefinitionOfDone(DOD);
         IssueType issueType = new IssueType();

@@ -131,7 +131,7 @@ public class PasswordDAOIT {
     }
 
     @Test
-    public void shouldThrowExceptionWhenTryToGetAllPasswords() {
+    public void shouldReturnEmptyList() {
         // given
         Password password = createPassword();
         passwordDAO.saveOrUpdate(password);
@@ -168,6 +168,18 @@ public class PasswordDAOIT {
 
         // then
         assertThat(user).isEmpty();
+    }
+
+    @Test
+    public void shouldDeleteUserPassword() {
+        // given
+
+        // when
+        passwordDAO.deleteUserPassword(currentlySavedDeveloperId);
+        List<PasswordEntity> result = findAll();
+
+        // then
+        assertThat(result).hasSize(0);
     }
 
     private void startTransaction() throws SystemException, NotSupportedException {

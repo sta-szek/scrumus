@@ -150,7 +150,6 @@ public class RetrospectiveDAOTest {
         developerEntity.setId(1);
         developerEntity.setPictureEntity(null);
         developerEntity.setSurname("surname");
-        developerEntity.setTeamEntities(null);
         developerEntity.setUsername("username");
         return developerEntity;
     }

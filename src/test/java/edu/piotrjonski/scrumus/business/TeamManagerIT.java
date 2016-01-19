@@ -111,8 +111,7 @@ public class TeamManagerIT {
     }
 
     @Test
-    public void shouldRemoveUserFromTeam()
-            throws AlreadyExistException, UnsupportedEncodingException, NoSuchAlgorithmException, CreateUserException {
+    public void shouldRemoveUserFromTeam() throws AlreadyExistException, CreateUserException {
         // given
         Team team = createTeam();
         Developer developer = createDeveloper();
@@ -166,9 +165,9 @@ public class TeamManagerIT {
         entityManager.joinTransaction();
         entityManager.createQuery("DELETE FROM PasswordEntity")
                      .executeUpdate();
-        entityManager.createQuery("DELETE FROM DeveloperEntity")
-                     .executeUpdate();
         entityManager.createQuery("DELETE FROM TeamEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM DeveloperEntity")
                      .executeUpdate();
         userTransaction.commit();
         entityManager.clear();

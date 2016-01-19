@@ -1,6 +1,7 @@
 package edu.piotrjonski.scrumus.dao;
 
 import edu.piotrjonski.scrumus.dao.model.user.TeamEntity;
+import edu.piotrjonski.scrumus.domain.Developer;
 import edu.piotrjonski.scrumus.domain.Project;
 import edu.piotrjonski.scrumus.domain.Team;
 import edu.piotrjonski.scrumus.utils.TestUtils;
@@ -37,6 +38,9 @@ public class TeamDAOIT {
 
     @Inject
     private ProjectDAO projectDAO;
+
+    @Inject
+    private DeveloperDAO developerDAO;
 
     @Inject
     private UserTransaction userTransaction;
@@ -186,6 +190,124 @@ public class TeamDAOIT {
         assertThat(user).isEmpty();
     }
 
+    @Test
+    public void shouldFindAllDeveloperTeams() {
+        // given
+        Developer developer = new Developer();
+        developer.setEmail("test");
+        developer.setFirstName("test");
+        developer.setSurname("test");
+        developer.setUsername("test");
+        developer = developerDAO.saveOrUpdate(developer)
+                                .get();
+        Team team1 = createTeam();
+        Team team2 = createTeam();
+        team1.addDeveloper(developer);
+        team2.addDeveloper(developer);
+        team1 = teamDAO.saveOrUpdate(team1)
+                       .get();
+        team2 = teamDAO.saveOrUpdate(team2)
+                       .get();
+
+        // when
+        List<Team> result = teamDAO.findAllDeveloperTeams(developer);
+
+        // then
+        assertThat(result).contains(team1)
+                          .contains(team2);
+    }
+
+    @Test
+    public void shouldReturnEmptyListIfDeveloperDoesNotExist() {
+        // given
+
+        // when
+        List<Team> result = teamDAO.findAllDeveloperTeams(new Developer());
+
+        // then
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void shouldFindAllProjectTeams() {
+        // given
+        Project project = createProjects().get(0);
+        project = projectDAO.saveOrUpdate(project)
+                            .get();
+        Team team1 = createTeam();
+        Team team2 = createTeam();
+        team1.addProject(project);
+        team2.addProject(project);
+        team1 = teamDAO.saveOrUpdate(team1)
+                       .get();
+        team2 = teamDAO.saveOrUpdate(team2)
+                       .get();
+
+        // when
+        List<Team> result = teamDAO.findAllTeamsForProject(project.getKey());
+
+        // then
+        assertThat(result).contains(team1)
+                          .contains(team2);
+    }
+
+    @Test
+    public void shouldReturnEmptyListIfProjectDoesNotExist() {
+        // given
+
+        // when
+        List<Team> result = teamDAO.findAllTeamsForProject("test");
+
+        // then
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void shouldFindAllNames() {
+        // given
+        Team team1 = createTeam();
+        Team team2 = createTeam();
+        String name1 = teamDAO.saveOrUpdate(team1)
+                              .get()
+                              .getName();
+        String name2 = teamDAO.saveOrUpdate(team2)
+                              .get()
+                              .getName();
+
+        // when
+        List<String> result = teamDAO.findAllNames();
+
+        // then
+        assertThat(result).contains(name1)
+                          .contains(name2);
+    }
+
+    @Test
+    public void shouldFindTeamByName() {
+        // given
+        Team team = createTeam();
+        team = teamDAO.saveOrUpdate(team)
+                      .get();
+
+        // when
+        Team result = teamDAO.findByName(team.getName())
+                             .get();
+
+        // then
+        assertThat(result).isEqualTo(team);
+    }
+
+    @Test
+    public void shouldReturnEmptyOptionalIfTeamWasNotFound() {
+        // given
+
+        // when
+        Optional<Team> result = teamDAO.findByName("test");
+
+        // then
+        assertThat(result).isEmpty();
+    }
+
     private void startTransaction() throws SystemException, NotSupportedException {
         userTransaction.begin();
         entityManager.joinTransaction();
@@ -204,6 +326,7 @@ public class TeamDAOIT {
         Team team = new Team();
         team.setName(NAME + nextUniqueValue);
         team.setProjects(createProjects());
+        nextUniqueValue++;
         return team;
     }
 

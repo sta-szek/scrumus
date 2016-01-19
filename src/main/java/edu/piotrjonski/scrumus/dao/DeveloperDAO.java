@@ -57,7 +57,6 @@ public class DeveloperDAO extends AbstractDAO<DeveloperEntity, Developer> {
         } catch (NoResultException e) {
             return false;
         }
-        //TODO TESTY
     }
 
     @Override
@@ -66,7 +65,6 @@ public class DeveloperDAO extends AbstractDAO<DeveloperEntity, Developer> {
         setAssigneeAndReporterToNull(id);
         passwordDAO.deleteUserPassword((Integer) id);
         super.delete(id);
-        //TODO TESTY
     }
 
     @Override

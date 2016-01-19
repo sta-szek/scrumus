@@ -359,7 +359,7 @@ public class IssueManagerIT {
 
     private Developer createDeveloper() {
         Developer developer = new Developer();
-        developer.setEmail("email");
+        developer.setEmail("yoyo@wp.eu");
         developer.setFirstName("email");
         developer.setSurname("email");
         developer.setUsername("email");
@@ -421,6 +421,8 @@ public class IssueManagerIT {
         entityManager.createQuery("DELETE FROM PriorityEntity")
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM StateEntity")
+                     .executeUpdate();
+        entityManager.createQuery("DELETE FROM PasswordEntity")
                      .executeUpdate();
         entityManager.createQuery("DELETE FROM DeveloperEntity ")
                      .executeUpdate();

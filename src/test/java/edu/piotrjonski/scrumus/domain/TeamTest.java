@@ -59,4 +59,58 @@ public class TeamTest {
         // then
         assertThat(team.getProjects()).doesNotContain(project);
     }
+
+    @Test
+    public void shouldReturnTrueIfContainsUser() {
+        // given
+        Team team = new Team();
+        Developer developer = new Developer();
+        team.addDeveloper(developer);
+
+        // when
+        boolean result = team.containsUser(developer);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfDoesNotContainUser() {
+        // given
+        Team team = new Team();
+        Developer developer = new Developer();
+
+        // when
+        boolean result = team.containsUser(developer);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    public void shouldReturnTrueIfTeamBelongsToProject() {
+        // given
+        Team team = new Team();
+        Project project = new Project();
+        team.addProject(project);
+
+        // when
+        boolean result = team.belongsTo(project);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfTeamDoesNotBelongToProject() {
+        // given
+        Team team = new Team();
+        Project project = new Project();
+
+        // when
+        boolean result = team.belongsTo(project);
+
+        // then
+        assertThat(result).isFalse();
+    }
 }
