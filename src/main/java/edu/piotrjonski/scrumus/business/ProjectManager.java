@@ -3,11 +3,14 @@ package edu.piotrjonski.scrumus.business;
 import edu.piotrjonski.scrumus.dao.BacklogDAO;
 import edu.piotrjonski.scrumus.dao.ProjectDAO;
 import edu.piotrjonski.scrumus.domain.Project;
+import edu.piotrjonski.scrumus.domain.Team;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Stateless
 public class ProjectManager {
@@ -26,6 +29,9 @@ public class ProjectManager {
 
     @Inject
     private SprintManager sprintManager;
+
+    @Inject
+    private TeamManager teamManager;
 
     @Inject
     private BacklogDAO backlogDAO;
@@ -70,6 +76,14 @@ public class ProjectManager {
 
     public List<String> findAllNames() {
         return projectDAO.findAllNames();
+    }
+
+    public List<Project> getUserProjects(final String username) {
+        return teamManager.findTeamsForUser(username)
+                          .stream()
+                          .map(Team::getProjects)
+                          .flatMap(Collection::stream)
+                          .collect(Collectors.toList());
     }
 
     private boolean exists(Project project) {

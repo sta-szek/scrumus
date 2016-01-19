@@ -1,0 +1,23 @@
+<h:body xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <p:menubar>
+        <p:submenu label="#{i18n['page.menubar.project']}"
+                   icon="fa fa-user-plus">
+            <p:menuitem icon="fa fa-user-plus"
+                        value="#{i18n['page.menubar.project.all']}"
+                        url="#{path['project']}" />
+            <c:forEach items="#{projectService.getUserProjects(request.remoteUser)}" var="project">
+                <p:menuitem icon="fa fa-user-plus"
+                            value="#{project.name}"
+                            url="#{path['project']}?projectKey=#{project.key}"
+                            includeViewParams="true" />
+            </c:forEach>
+        </p:submenu>
+        <p:menuitem icon="fa fa-user-plus"
+                    value="#{i18n['page.admin.menubar.title']}"
+                    url="#{path['admin.page']}"
+                    rendered="#{permissionService.isAdmin(request.remoteUser)}" />
+    </p:menubar>
+</h:body>

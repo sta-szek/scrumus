@@ -64,7 +64,6 @@ public class UserManager {
 
     public boolean emailExist(String email) {
         return developerDAO.emailExist(email);
-        //TODO TESTY
     }
 
     public Optional<Developer> create(Developer developer)

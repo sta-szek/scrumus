@@ -13,7 +13,7 @@ public class PathProvider extends ConfigurationProvider {
     private static final String REDIRECTION_APPENDIX = "?faces-redirect=true";
 
     public PathProvider() {
-        configurationPath = "paths";
+        super("paths");
     }
 
     public String getRedirectPath(String key) {

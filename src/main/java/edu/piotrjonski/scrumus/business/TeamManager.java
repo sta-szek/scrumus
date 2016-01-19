@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +23,9 @@ public class TeamManager {
 
     @Inject
     private DeveloperDAO developerDAO;
+
+    @Inject
+    private UserManager userManager;
 
     @Inject
     private PermissionManager permissionManager;
@@ -44,6 +48,14 @@ public class TeamManager {
 
     public Optional<Team> findTeam(int teamId) {
         return teamDAO.findById(teamId);
+    }
+
+    public List<Team> findTeamsForUser(String username) {
+        Optional<Developer> user = userManager.findByUsername(username);
+        if (user.isPresent()) {
+            return teamDAO.findAllDeveloperTeams(user.get());
+        }
+        return new ArrayList<>();
     }
 
     public void addUserToTeam(Developer user, Team team) {

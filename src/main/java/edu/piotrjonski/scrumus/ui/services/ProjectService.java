@@ -71,6 +71,10 @@ public class ProjectService implements Serializable {
 
     private String teamToAdd;
 
+    public List<Project> getUserProjects(String username) {
+        return projectManager.getUserProjects(username);
+    }
+
     public String createProject() {
         if (validateFields()) {
             return null;

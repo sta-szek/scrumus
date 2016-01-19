@@ -58,7 +58,6 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>scrumusSecurity</web-resource-name>
-            <description>zasady bezpieczeństwa aplikacji</description>
             <url-pattern>/admin/*</url-pattern>
             <http-method>GET</http-method>
             <http-method>POST</http-method>
@@ -73,6 +72,23 @@
         </auth-constraint>
     </security-constraint>
 
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>scrumusSecurity</web-resource-name>
+            <url-pattern>/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+            <http-method>HEAD</http-method>
+            <http-method>PUT</http-method>
+            <http-method>OPTIONS</http-method>
+            <http-method>TRACE</http-method>
+            <http-method>DELETE</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>DEVELOPER</role-name>
+        </auth-constraint>
+    </security-constraint>
+
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>scrumusSecurity</realm-name>
@@ -84,6 +100,9 @@
 
     <security-role>
         <role-name>ADMIN</role-name>
+    </security-role>
+    <security-role>
+        <role-name>DEVELOPER</role-name>
     </security-role>
 
     <servlet>
