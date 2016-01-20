@@ -21,14 +21,28 @@
                            rendered="#{empty project and not empty projectKey}" />
             <p:outputLabel value="#{i18n['page.agile.noActiveSprint']}"
                            rendered="#{empty sprint and not empty project}" />
+            <c:set var="states" value="#{projectService.allStates}" />
+            <c:set var="responsiveSize" value="#{(12 div states.size()).toString().substring(0,1)}" />
+
+
+            <p:panel style="width: 98%; margin: 0 auto; padding: 0">
+                <div class="ui-grid ui-grid-responsive" style="padding: 0">
+                    <div class="ui-grid-row">
+                        <c:forEach var="stat" items="#{states}">
+                            <div class="ui-grid-col-#{responsiveSize} state" style="text-align:center;">#{stat.name}</div>
+                        </c:forEach>
+                    </div>
+                </div>
+            </p:panel>
+
 
             <p:accordionPanel multiple="true" rendered="#{not empty sprint}">
-                <c:set var="states" value="#{projectService.allStates}" />
                 <c:forEach items="#{projectService.findStoriesForSprint(sprint.id)}" var="story">
                     <p:tab title="#{story.name}">
-                        <div style="width:1800px; margin-right: auto; margin-left: auto;">
+                        <div style="width: 100% !important; margin: auto;">
                             <p:dashboard id="agileBoard"
-                                         model="#{projectService.createDashboardModelForStory(story.id)}">
+                                         model="#{projectService.createDashboardModelForStory(story.id)}"
+                                         style="width:100%; margin: 0 auto;">
                                 <c:forEach items="#{projectService.findIssuesForStory(story.id)}" var="issue">
                                     <p:panel id="#{issue.projectKey}#{issue.id}" header="#{issue.summary}">
                                         <h:outputText value="#{issue.description}" />
@@ -39,7 +53,11 @@
                     </p:tab>
                 </c:forEach>
             </p:accordionPanel>
-
+            <script>
+                jQuery(document).ready(function ($) {
+                    $(".ui-dashboard-column").addClass("ui-grid-col-#{responsiveSize}");
+                });
+            </script>
         </ui:define>
     </ui:composition>
 </h:body>

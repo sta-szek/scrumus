@@ -36,6 +36,14 @@ body {
     overflow: visible !important;
 }
 
+.state:nth-child(n+1) {
+    border-right: 1px solid gray;
+}
+
+.state:last-child {
+    border: none;
+}
+
 .ui-dashboard-column {
-    width: 600px !important;
+    padding-bottom: 25px;
 }

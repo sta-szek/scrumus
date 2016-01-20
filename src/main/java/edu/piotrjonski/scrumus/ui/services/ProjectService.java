@@ -220,7 +220,7 @@ public class ProjectService implements Serializable {
         logger.info("Team with name '" + teamName + "' was removed from project with key '" + projectKey + "'");
     }
 
-    public List<State> getAllStatuses() {
+    public List<State> getAllStates() {
         return issueManager.findAllStates();
     }
 
