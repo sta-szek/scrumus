@@ -60,6 +60,7 @@ INSERT INTO team_developer VALUES (2, 4);
 INSERT INTO team_developer VALUES (3, 5);
 INSERT INTO team_developer VALUES (2, 6);
 INSERT INTO team_developer VALUES (1, 7);
+INSERT INTO team_developer VALUES (2, 7);
 INSERT INTO team_developer VALUES (3, 7);
 INSERT INTO team_developer VALUES (2, 8);
 INSERT INTO team_developer VALUES (1, 9);

@@ -39,6 +39,13 @@
                         <h:outputText value="#{project.name}" styleClass="ui-grid-row ui-grid-col-12" />
                     </h2>
 
+                    <div class="ui-grid-row ui-grid-col-12">
+                        <h:outputLink value="#{request.contextPath}#{path['agileBoard']}?projectKey=#{project.key}"
+                                      styleClass="ui-grid-col-6">
+                            <h:outputText value="#{i18n['page.project.agile']}" />
+                        </h:outputLink>
+                    </div>
+
                     <div class="ui-grid-row">
                         <p:outputLabel for="key" value="#{i18n['page.project.label.key']}" styleClass="ui-grid-row ui-grid-col-1" />
                         <h:outputText id="key" value="#{project.key}" styleClass="ui-grid-row ui-grid-col-11" />

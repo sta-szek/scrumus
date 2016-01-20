@@ -14,6 +14,12 @@
                             url="#{path['project']}?projectKey=#{project.key}"
                             includeViewParams="true" />
             </c:forEach>
+            <c:forEach items="#{projectService.getUserProjects(request.remoteUser)}" var="project">
+                <p:menuitem icon="fa fa-user-plus"
+                            value="#{project.name}"
+                            url="#{path['agileBoard']}?projectKey=#{project.key}"
+                            includeViewParams="true" />
+            </c:forEach>
         </p:submenu>
         <p:menuitem icon="fa fa-user-plus"
                     value="#{i18n['page.admin.menubar.title']}"
