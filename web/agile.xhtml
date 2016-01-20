@@ -35,29 +35,30 @@
                 </div>
             </p:panel>
 
+            <script>
+                jQuery(document).ready(function ($) {
+                    $(".ui-dashboard-column").addClass("ui-grid-col-#{responsiveSize}");
+                });
+            </script>
 
-            <p:accordionPanel multiple="true" rendered="#{not empty sprint}">
+
+            <p:accordionPanel id="agileBoard" multiple="true" rendered="#{not empty sprint}">
                 <c:forEach items="#{projectService.findStoriesForSprint(sprint.id)}" var="story">
                     <p:tab title="#{story.name}">
-                        <div style="width: 100% !important; margin: auto;">
-                            <p:dashboard id="agileBoard"
-                                         model="#{projectService.createDashboardModelForStory(story.id)}"
-                                         style="width:100%; margin: 0 auto;">
+                        <h:form id="dashboardForm">
+                            <p:dashboard model="#{projectService.createDashboardModelForStory(story.id)}">
+                                <p:ajax event="reorder" listener="#{projectService.updateIssue}" update="agileBoard" />
                                 <c:forEach items="#{projectService.findIssuesForStory(story.id)}" var="issue">
                                     <p:panel id="#{issue.projectKey}#{issue.id}" header="#{issue.summary}">
                                         <h:outputText value="#{issue.description}" />
                                     </p:panel>
                                 </c:forEach>
                             </p:dashboard>
-                        </div>
+                        </h:form>
                     </p:tab>
                 </c:forEach>
             </p:accordionPanel>
-            <script>
-                jQuery(document).ready(function ($) {
-                    $(".ui-dashboard-column").addClass("ui-grid-col-#{responsiveSize}");
-                });
-            </script>
+
         </ui:define>
     </ui:composition>
 </h:body>

@@ -7,6 +7,7 @@ import edu.piotrjonski.scrumus.ui.configuration.I18NProvider;
 import edu.piotrjonski.scrumus.ui.configuration.PathProvider;
 import edu.piotrjonski.scrumus.ui.view.DashboardTitledColumn;
 import lombok.Data;
+import org.primefaces.event.DashboardReorderEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DashboardModel;
 import org.primefaces.model.DefaultDashboardModel;
@@ -18,6 +19,7 @@ import org.slf4j.Logger;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -224,6 +226,16 @@ public class ProjectService implements Serializable {
         return issueManager.findAllStates();
     }
 
+    public void updateIssue(DashboardReorderEvent event) {
+        logger.info("Item index: " + event.getItemIndex() + ", Column index: " + event.getColumnIndex() + ", Sender index: " +
+                    event.getSenderColumnIndex());
+    }
+
+    public void updateIssue(AjaxBehaviorEvent event) {
+        logger.info("Item index: " + event.getSource() + ", Column index: " + event.getBehavior() + ", Sender index: " +
+                    event.getPhaseId());
+    }
+
     private List<Issue> findIssuesForStory(int storyId) {
         return storyManager.findIssuesForStory(storyId);
     }
@@ -316,6 +328,4 @@ public class ProjectService implements Serializable {
         clearFields();
         return project;
     }
-
-
 }
