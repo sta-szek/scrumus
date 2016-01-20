@@ -1,15 +1,15 @@
 package edu.piotrjonski.scrumus.ui.services;
 
-import edu.piotrjonski.scrumus.business.PermissionManager;
-import edu.piotrjonski.scrumus.business.ProjectManager;
-import edu.piotrjonski.scrumus.business.TeamManager;
-import edu.piotrjonski.scrumus.domain.Project;
-import edu.piotrjonski.scrumus.domain.Team;
+import edu.piotrjonski.scrumus.business.*;
+import edu.piotrjonski.scrumus.domain.*;
 import edu.piotrjonski.scrumus.services.ProjectKeyGenerator;
 import edu.piotrjonski.scrumus.ui.configuration.I18NProvider;
 import edu.piotrjonski.scrumus.ui.configuration.PathProvider;
+import edu.piotrjonski.scrumus.ui.view.DashboardTitledColumn;
 import lombok.Data;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DashboardModel;
+import org.primefaces.model.DefaultDashboardModel;
 import org.primefaces.model.tagcloud.DefaultTagCloudItem;
 import org.primefaces.model.tagcloud.DefaultTagCloudModel;
 import org.primefaces.model.tagcloud.TagCloudItem;
@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -53,6 +54,15 @@ public class ProjectService implements Serializable {
     @Inject
     private TeamManager teamManager;
 
+    @Inject
+    private SprintManager sprintManager;
+
+    @Inject
+    private StoryManager storyManager;
+
+    @Inject
+    private IssueManager issueManager;
+
     @Size(max = 255, message = "{validator.size.projectName}")
     private String projectName;
 
@@ -70,6 +80,45 @@ public class ProjectService implements Serializable {
     private String addTeamProjectKey;
 
     private String teamToAdd;
+
+    public List<Issue> findIssuesForStory(String storyId) {
+        try {
+            int storyIntId = Integer.parseInt(storyId);
+            return findIssuesForStory(storyIntId);
+        } catch (NumberFormatException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    public DashboardModel createDashboardModelForStory(String storyId) {
+        try {
+            int storyIntId = Integer.parseInt(storyId);
+            List<Issue> issuesForStory = findIssuesForStory(storyIntId);
+            List<String> allStateNames = issueManager.findAllStateNames();
+            return createDashboardModel(issuesForStory, allStateNames);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    public List<Story> findStoriesForSprint(String sprintId) {
+        try {
+            int sprintIntId = Integer.parseInt(sprintId);
+            return storyManager.findAllStoriesForSprint(sprintIntId);
+        } catch (NumberFormatException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    public Sprint findSprint(String sprintId) {
+        try {
+            int sprintIntId = Integer.parseInt(sprintId);
+            return sprintManager.findSprint(sprintIntId)
+                                .orElse(null);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
 
     public List<Project> getUserProjects(String username) {
         return projectManager.getUserProjects(username);
@@ -171,6 +220,43 @@ public class ProjectService implements Serializable {
         logger.info("Team with name '" + teamName + "' was removed from project with key '" + projectKey + "'");
     }
 
+    public List<State> getAllStatuses() {
+        return issueManager.findAllStates();
+    }
+
+    private List<Issue> findIssuesForStory(int storyId) {
+        return storyManager.findIssuesForStory(storyId);
+    }
+
+    private DashboardModel createDashboardModel(final List<Issue> issuesForStory, final List<String> allStateNames) {
+        DashboardModel dashboardModel = new DefaultDashboardModel();
+        allStateNames.stream()
+                     .map(DashboardTitledColumn::new)
+                     .forEach(column -> {
+                         addIssues(issuesForStory, column);
+                         dashboardModel.addColumn(column);
+                     });
+        return dashboardModel;
+    }
+
+    private void addIssues(final List<Issue> issuesForStory, final DashboardTitledColumn column) {
+        issuesForStory.stream()
+                      .filter(issue -> issueStateEqualsColumnTitle(issue, column))
+                      .map(this::createIssueUniqueId)
+                      .forEach(column::addWidget);
+
+    }
+
+    private String createIssueUniqueId(final Issue issue) {
+        return issue.getProjectKey() + issue.getId();
+    }
+
+    private boolean issueStateEqualsColumnTitle(final Issue issue, final DashboardTitledColumn column) {
+        return issue.getState()
+                    .getName()
+                    .equals(column.getTitle());
+    }
+
     private TagCloudModel createTagCloudModelForTeams(final List<Team> teams) {
         TagCloudModel tagCloudModel = new DefaultTagCloudModel();
 
@@ -230,4 +316,6 @@ public class ProjectService implements Serializable {
         clearFields();
         return project;
     }
+
+
 }

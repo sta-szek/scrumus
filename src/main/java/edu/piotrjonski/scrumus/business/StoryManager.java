@@ -6,6 +6,7 @@ import edu.piotrjonski.scrumus.dao.StoryDAO;
 import edu.piotrjonski.scrumus.domain.Backlog;
 import edu.piotrjonski.scrumus.domain.Issue;
 import edu.piotrjonski.scrumus.domain.Story;
+import org.slf4j.Logger;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -14,6 +15,9 @@ import java.util.Optional;
 
 @Stateless
 public class StoryManager {
+
+    @Inject
+    private transient Logger logger;
 
     @Inject
     private StoryDAO storyDAO;
@@ -26,6 +30,12 @@ public class StoryManager {
 
     @Inject
     private PermissionManager permissionManager;
+
+    public List<Issue> findIssuesForStory(int storyId) {
+        return storyDAO.findById(storyId)
+                       .orElse(new Story())
+                       .getIssues();
+    }
 
     public void deleteStoriesFromProject(String projectKey) {
         storyDAO.deleteStoriesFromProject(projectKey);

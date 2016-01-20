@@ -35,3 +35,7 @@ body {
 .ui-layout-north .ui-layout-unit-content {
     overflow: visible !important;
 }
+
+.ui-dashboard-column {
+    width: 600px !important;
+}

@@ -9,67 +9,36 @@
             <f:metadata>
                 <f:viewParam name="projectKey" />
             </f:metadata>
-
             <c:if test="${not empty projectKey}">
-                <c:if test="#{not permissionService.hasRightsForProject(request.remoteUser,projectKey)}">
+                <c:if test="#{not permissionService.hasRightsForProject(request.remoteUser, projectKey)}">
                     #{facesContext.getCurrentInstance().externalContext.redirect(request.contextPath.concat(path['accessDenied']))}
                 </c:if>
                 <ui:param name="project" value="#{projectService.findByProjectKey(projectKey)}" />
-                <ui:param name="sprint" value="#{projectService.findByProjectKey(projectKey)}" />
+                <ui:param name="sprint" value="#{projectService.findSprint(project.currentSprintId)}" />
             </c:if>
 
-            <p:accordionPanel multiple="true" rendered="#{empty projectKey}">
-                <c:forEach items="#{projectService.getUserProjects(request.remoteUser)}" var="project">
-                    <p:tab title="#{project.name}">
-                        <h2>
-                            <h:outputLink value="#{request.contextPath}#{path['project']}?projectKey=#{project.key}">
-                                <h:outputText value="#{project.name}" />
-                            </h:outputLink>
-                        </h2>
-                        <h:outputText value="#{project.description}" />
+            <p:outputLabel value="#{i18n['page.agile.project.notFound']}"
+                           rendered="#{empty project and not empty projectKey}" />
+            <p:outputLabel value="#{i18n['page.agile.noActiveSprint']}"
+                           rendered="#{empty sprint and not empty project}" />
+
+            <p:accordionPanel multiple="true" rendered="#{not empty sprint}">
+                <c:set var="states" value="#{projectService.allStates}" />
+                <c:forEach items="#{projectService.findStoriesForSprint(sprint.id)}" var="story">
+                    <p:tab title="#{story.name}">
+                        <div style="width:1800px; margin-right: auto; margin-left: auto;">
+                            <p:dashboard id="agileBoard"
+                                         model="#{projectService.createDashboardModelForStory(story.id)}">
+                                <c:forEach items="#{projectService.findIssuesForStory(story.id)}" var="issue">
+                                    <p:panel id="#{issue.projectKey}#{issue.id}" header="#{issue.summary}">
+                                        <h:outputText value="#{issue.description}" />
+                                    </p:panel>
+                                </c:forEach>
+                            </p:dashboard>
+                        </div>
                     </p:tab>
                 </c:forEach>
             </p:accordionPanel>
-
-            <p:outputLabel value="#{i18n['page.project.notFound']}"
-                           rendered="#{empty project and not empty projectKey}" />
-
-            <p:panel header="#{project.name}" rendered="#{not empty project}">
-                <div class="ui-grid ui-grid-responsive">
-                    <h2>
-                        <h:outputText value="#{project.name}" styleClass="ui-grid-row ui-grid-col-12" />
-                    </h2>
-
-                    <div class="ui-grid-row ui-grid-col-12">
-                        <h:outputLink value="#{request.contextPath}#{path['agileBoard']}?projectKey=#{project.key}"
-                                      styleClass="ui-grid-col-6">
-                            <h:outputText value="#{i18n['page.project.agile']}" />
-                        </h:outputLink>
-                    </div>
-
-                    <div class="ui-grid-row">
-                        <p:outputLabel for="key" value="#{i18n['page.project.label.key']}" styleClass="ui-grid-row ui-grid-col-1" />
-                        <h:outputText id="key" value="#{project.key}" styleClass="ui-grid-row ui-grid-col-11" />
-                    </div>
-
-                    <div class="ui-grid-row">
-                        <p:outputLabel for="startDate" value="#{i18n['page.project.label.start']}" styleClass="ui-grid-col-1" />
-                        <h:outputText id="startDate" value="#{project.creationDate}" styleClass="ui-grid-col-11" />
-                    </div>
-                    <div class="ui-grid-row">
-                        <p:outputLabel for="definitionOfDone"
-                                       value="#{i18n['page.project.label.definitionOfDone']}"
-                                       styleClass="ui-grid-row ui-grid-col-1" />
-                        <h:outputText id="definitionOfDone" value="#{project.definitionOfDone}" styleClass="ui-grid-col-11" />
-                    </div>
-                    <div class="ui-grid-row">
-                        <p:outputLabel for="description"
-                                       value="#{i18n['page.project.label.description']}"
-                                       styleClass="ui-grid-row ui-grid-col-1" />
-                        <h:outputText id="description" value="#{project.description}" styleClass="ui-grid-col-11" />
-                    </div>
-                </div>
-            </p:panel>
 
         </ui:define>
     </ui:composition>

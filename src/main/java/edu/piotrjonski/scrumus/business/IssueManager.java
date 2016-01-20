@@ -31,7 +31,7 @@ public class IssueManager {
 
     @Inject
     private IssueTypeDAO issueTypeDAO;
-
+    
     public void deleteIssuesFromProject(String projectKey) {
         issueDAO.deleteIssuesFromProject(projectKey);
     }

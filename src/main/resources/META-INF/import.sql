@@ -95,13 +95,17 @@ INSERT INTO retrospective VALUES (6, 'Opis retrospektywy 1');
 select setval('retrospective_ID_SEQ', 7, true);
 
 -- SPRINTY
-INSERT INTO sprint VALUES (1, 'Implementacja story 1-5', 'Sprint 1', '2015-11-24 12:00:00', '2015-11-17 12:00:00', 'pote', 1);
-INSERT INTO sprint VALUES (2, 'Testy systemowe', 'Sprint 2', '2015-12-1 12:00:00', '2015-11-24 12:00:00', 'pote', 2);
-INSERT INTO sprint VALUES (3, 'Release wersji 1.0', 'Sprint 3', '2015-12-8 12:00:00', '2015-12-1 12:00:00', 'pote', 3);
+INSERT INTO sprint VALUES (1, 'Implementacja story 1-5', 'Sprint 1', '2015-11-24 12:00:00', '2015-11-17 12:00:00', 'reco', 1);
+INSERT INTO sprint VALUES (2, 'Testy systemowe', 'Sprint 2', '2015-12-1 12:00:00', '2015-11-24 12:00:00', 'reco', 2);
+INSERT INTO sprint VALUES (3, 'Release wersji 1.0', 'Sprint 3', '2015-12-8 12:00:00', '2015-12-1 12:00:00', 'reco', 3);
 INSERT INTO sprint VALUES (4, 'Rozpoznanie œrodowisk', 'Sprint 1', '2015-11-24 12:00:00', '2015-11-17 12:00:00', 'pote', 4);
 INSERT INTO sprint VALUES (5, 'Implementacja', 'Sprint 2', '2015-12-1 12:00:00', '2015-11-24 12:00:00', 'pote', 5);
 INSERT INTO sprint VALUES (6, 'Testy systemowe', 'Sprint 3', '2015-12-8 12:00:00', '2015-12-1 12:00:00', 'pote', 6);
 select setval('sprint_ID_SEQ', 7, true);
+
+UPDATE project SET currentsprint_id=1 WHERE project.key = 'reco';
+UPDATE project SET currentsprint_id=4 WHERE project.key = 'pote';
+
 
 -- TEAMY DO PROJEKTU
 INSERT INTO team_project VALUES (1, 'reco');
@@ -119,7 +123,7 @@ INSERT INTO story VALUES (4, 'Definition of Done dla story', 'Optional name4', '
 INSERT INTO story VALUES (5, 'Definition of Done dla story', 'Optional name5', '8', 5);
 INSERT INTO story VALUES (6, 'Definition of Done dla story', 'Optional name6', '13', 6);
 INSERT INTO story VALUES (7, 'Definition of Done dla story', 'Optional name7', '1', 1);
-INSERT INTO story VALUES (8, 'Definition of Done dla story', 'Optional name8', '2', 2);
+INSERT INTO story VALUES (8, 'Definition of Done dla story', 'Optional name8', '2', 4);
 INSERT INTO story VALUES (9, 'Definition of Done dla story', 'Optional name9', '3', 3);
 select setval('story_ID_SEQ', 10, true);
 
@@ -144,28 +148,30 @@ INSERT INTO state VALUES (3, 'DONE');
 select setval('state_ID_SEQ', 4, true);
 
 -- ISSUES
-INSERT INTO issue VALUES (1, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', NULL, 1, 1, 1, 1);
-INSERT INTO issue VALUES (2, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 1, 2, 1, 1, 1);
-INSERT INTO issue VALUES (3, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', NULL, 3, 1, 11, 1);
-INSERT INTO issue VALUES (4, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 2, 4, 1, 1, 1);
-INSERT INTO issue VALUES (5, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 3, 1, 1, 10, 1);
-INSERT INTO issue VALUES (6, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 4, 2, 1, 1, 1);
-INSERT INTO issue VALUES (7, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 5, 3, 1, 12, 1);
-INSERT INTO issue VALUES (8, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 6, 4, 1, 13, 1);
-INSERT INTO issue VALUES (9, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 7, 1, 1, 14, 1);
-INSERT INTO issue VALUES (10, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 8, 2, 1, 1, 1);
-INSERT INTO issue VALUES (11, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 9, 3, 1, 8, 1);
-INSERT INTO issue VALUES (12, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 10, 4, 1, 7, 1);
-INSERT INTO issue VALUES (13, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 11, 1, 1, 6, 1);
-INSERT INTO issue VALUES (14, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 2, 2, 1, 5, 1);
-INSERT INTO issue VALUES (15, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 11, 3, 1, 4, 1);
-INSERT INTO issue VALUES (16, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 3, 4, 1, 3, 1);
-INSERT INTO issue VALUES (17, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 1, 1, 1, 2, 1);
-INSERT INTO issue VALUES (18, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 12, 2, 1, 1, 1);
-INSERT INTO issue VALUES (19, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', NULL, 3, 1, 1, 1);
-INSERT INTO issue VALUES (20, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 13, 4, 1, 1, 1);
-INSERT INTO issue VALUES (21, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', NULL, 1, 1, 15, 1);
-INSERT INTO issue VALUES (22, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'nazwa', 13, 2, 1, 1, 1);
+INSERT INTO issue VALUES (1, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'pote1', NULL, 1, 1, 1, 1);
+INSERT INTO issue VALUES (2, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'pote2', 1, 2, 1, 1, 1);
+INSERT INTO issue VALUES (3, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'pote3', NULL, 3, 1, 11, 1);
+INSERT INTO issue VALUES (4, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'pote4', 2, 4, 1, 1, 1);
+INSERT INTO issue VALUES (5, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'pote5', 3, 1, 1, 10, 1);
+INSERT INTO issue VALUES (6, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'pote6-todo', 4, 2, 1, 1, 1);
+INSERT INTO issue VALUES (7, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'pote7-todo', 5, 3, 1, 12, 1);
+INSERT INTO issue VALUES (13, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'pote13-todo', 11, 1, 1, 6, 1);
+INSERT INTO issue VALUES (14, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'pote14-todo', 2, 2, 1, 5, 1);
+INSERT INTO issue VALUES (15, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'pote15-done', 11, 3, 1, 4, 3);
+INSERT INTO issue VALUES (16, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'pote16-done', 3, 4, 1, 3, 3);
+INSERT INTO issue VALUES (17, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'pote17-done', 1, 1, 1, 2, 3);
+INSERT INTO issue VALUES (21, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'pote21-inprogres', NULL, 1, 1, 15, 2);
+INSERT INTO issue VALUES (22, '2015-01-01 12:00:00', 'DoD', 'Description', 'pote', 'pote22-inprogres', 13, 2, 1, 1, 2);
+
+INSERT INTO issue VALUES (18, '2015-01-01 12:00:00', 'DoD', 'Description', 'reco', 'reco18-todo', 12, 2, 1, 1, 1);
+INSERT INTO issue VALUES (19, '2015-01-01 12:00:00', 'DoD', 'Description', 'reco', 'reco19-inprogres', NULL, 3, 1, 1, 2);
+INSERT INTO issue VALUES (20, '2015-01-01 12:00:00', 'DoD', 'Description', 'reco', 'reco20-done', 13, 4, 1, 1, 3);
+
+INSERT INTO issue VALUES (8, '2015-01-01 12:00:00', 'DoD', 'Description', 'reco', 'reco8-todo', 6, 4, 1, 13, 1);
+INSERT INTO issue VALUES (9, '2015-01-01 12:00:00', 'DoD', 'Description', 'reco', 'reco9-todo', 7, 1, 1, 14, 1);
+INSERT INTO issue VALUES (10, '2015-01-01 12:00:00', 'DoD', 'Description', 'reco', 'reco10-inprogres', 8, 2, 1, 1, 2);
+INSERT INTO issue VALUES (11, '2015-01-01 12:00:00', 'DoD', 'Description', 'reco', 'reco11-inprogres', 9, 3, 1, 8, 2);
+INSERT INTO issue VALUES (12, '2015-01-01 12:00:00', 'DoD', 'Description', 'reco', 'reco12-done', 10, 4, 1, 7, 3);
 select setval('issue_ID_SEQ', 23, true);
 
 -- KOMENTARZE
@@ -211,20 +217,20 @@ INSERT INTO backlog_issue VALUES (2, 7);
 
 -- ISSUE DO STORY
 INSERT INTO story_issue VALUES (1, 8);
-INSERT INTO story_issue VALUES (2, 9);
-INSERT INTO story_issue VALUES (3, 10);
-INSERT INTO story_issue VALUES (4, 11);
-INSERT INTO story_issue VALUES (5, 12);
-INSERT INTO story_issue VALUES (6, 13);
-INSERT INTO story_issue VALUES (7, 14);
-INSERT INTO story_issue VALUES (8, 15);
-INSERT INTO story_issue VALUES (9, 16);
-INSERT INTO story_issue VALUES (1, 17);
-INSERT INTO story_issue VALUES (2, 18);
-INSERT INTO story_issue VALUES (3, 19);
-INSERT INTO story_issue VALUES (3, 20);
-INSERT INTO story_issue VALUES (4, 21);
-INSERT INTO story_issue VALUES (5, 22);
+INSERT INTO story_issue VALUES (1, 9);
+INSERT INTO story_issue VALUES (1, 10);
+INSERT INTO story_issue VALUES (1, 11);
+INSERT INTO story_issue VALUES (1, 12);
+INSERT INTO story_issue VALUES (4, 13);
+INSERT INTO story_issue VALUES (4, 14);
+INSERT INTO story_issue VALUES (4, 15);
+INSERT INTO story_issue VALUES (4, 16);
+INSERT INTO story_issue VALUES (4, 17);
+INSERT INTO story_issue VALUES (7, 18);
+INSERT INTO story_issue VALUES (7, 19);
+INSERT INTO story_issue VALUES (7, 20);
+INSERT INTO story_issue VALUES (8, 21);
+INSERT INTO story_issue VALUES (8, 22);
 
 -- PLUSY I MINUSY
 INSERT INTO retrospectiveentity_retrospectiveitemembeddables VALUES (1, 'Cos tam 1', 1, 'PLUS');
