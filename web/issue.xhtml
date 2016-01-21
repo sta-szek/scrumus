@@ -20,12 +20,12 @@
                     #{facesContext.getCurrentInstance().externalContext.redirect(request.contextPath.concat(path['accessDenied']))}
                 </c:if>
             </c:if>
+            <c:set var="reporter" value="#{userService.findUser(issue.reporterId)}" />
+            <c:set var="assignee" value="#{userService.findUser(issue.assigneeId)}" />
+            <c:set var="project" value="#{projectService.findByProjectKey(issue.projectKey)}" />
+            <c:set var="currentUser" value="#{userService.findUserByUsername(request.remoteUser)}" />
 
             <p:panel id="issueDetails" styleClass="ui-grid-row" rendered="#{not empty issue}" style="border: none">
-                <c:set var="reporter" value="#{userService.findUser(issue.reporterId)}" />
-                <c:set var="assignee" value="#{userService.findUser(issue.assigneeId)}" />
-                <c:set var="project" value="#{projectService.findByProjectKey(issue.projectKey)}" />
-
                 <p:panel id="summary" styleClass="ui-grid-col-10" style="border: none">
                     <h2>
                         <h:outputText value="#{issue.summary}" styleClass="ui-grid-row ui-grid-col-10" />
@@ -73,8 +73,9 @@
 
                 </p:panelGrid>
             </p:panel>
+            <h:messages />
 
-            <p:dataScroller value="#{issue.comments}"
+            <p:dataScroller value="#{issueService.findIssueById(issueId).comments}"
                             var="comment"
                             id="comments"
                             styleClass="ui-grid-row ui-grid-col-12"
@@ -82,9 +83,18 @@
                 <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
 
                     <p:outputPanel styleClass="ui-grid">
+                        <c:set var="currentCommentUser" value="#{userService.findUser(comment.developerId)}" />
+
                         <div class="ui-grid-row">
-                            <h:outputText value="#{userService.findUser(comment.developerId).getFullName()}" styleClass="ui-grid-col-1" />
-                            <h:outputText value="#{comment.creationDate}" styleClass="ui-grid-col-11" />
+                            <!-- <h:form rendered="${currentUser.id eq comment.developerId}">
+                                 <p:commandButton icon="fa fa-remove"
+                                                  action="#{commentService.removeCommentFromIssue()}"
+                                                  update="comments"
+                                                  type="submit" />
+
+                             </h:form>-->
+                            <h:outputText value="#{currentCommentUser.getFullName()}" styleClass="ui-grid-col-1" />
+                            <h:outputText value="#{comment.creationDate}" styleClass="ui-grid-col-2" />
                         </div>
                         <div class="ui-grid-row">
                             <h:outputText value="#{comment.commentBody}" styleClass="ui-grid-col-12" />
@@ -92,6 +102,17 @@
                     </p:outputPanel>
                 </h:panelGrid>
             </p:dataScroller>
+            <p:panel>
+                <h:form>
+                    <p:inputTextarea id="commentBody" value="#{commentService.commentBody}" styleClass="ui-grid-col-12" autoResize="true" />
+                    <br />
+                    <p:commandButton value="#{i18n['page.issue.comment.add']}"
+                                     action="#{commentService.addCommentToIssue()}" update="comments, commentBody">
+                        <f:param name="issueId" value="#{issue.id}" />
+                        <f:param name="userId" value="#{currentUser.id}" />
+                    </p:commandButton>
+                </h:form>
+            </p:panel>
         </ui:define>
     </ui:composition>
 </h:body>

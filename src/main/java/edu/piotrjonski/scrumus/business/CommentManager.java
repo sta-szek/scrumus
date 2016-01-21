@@ -23,6 +23,13 @@ public class CommentManager {
     @Inject
     private RetrospectiveDAO retrospectiveDAO;
 
+    public void addCommentToIssue(Comment comment, int issueId) {
+        Optional<Issue> issue = issueDAO.findById(issueId);
+        if (issue.isPresent()) {
+            addCommentToIssue(comment, issue.get());
+        }
+    }
+
     public Optional<Comment> addCommentToIssue(Comment comment, Issue issue) {
         if (issueExist(issue)) {
             Optional<Comment> savedComment = saveCommentAndAddToIssue(comment, issue);
@@ -50,6 +57,14 @@ public class CommentManager {
         if (retrospectiveExist(retrospective)) {
             retrospective.removeComment(comment);
             retrospectiveDAO.saveOrUpdate(retrospective);
+        }
+    }
+
+    public void removeCommentFromIssue(final int commentIntId, final int issueIntId) {
+        Optional<Comment> comment = commentDAO.findById(commentIntId);
+        Optional<Issue> issue = issueDAO.findById(issueIntId);
+        if (comment.isPresent() && issue.isPresent()) {
+            removeCommentFromIssue(comment.get(), issue.get());
         }
     }
 

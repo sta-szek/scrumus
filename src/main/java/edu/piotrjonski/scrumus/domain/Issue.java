@@ -3,6 +3,7 @@ package edu.piotrjonski.scrumus.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
-public class Issue {
+public class Issue implements Serializable {
     private int id;
     private String projectKey;
     private String summary;

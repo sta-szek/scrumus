@@ -64,6 +64,15 @@ public class UserService implements Serializable {
         }
     }
 
+    public Developer findUserByUsername(String username) {
+        try {
+            Optional<Developer> userOptional = userManager.findByUsername(username);
+            return userOptional.orElse(null);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
     public void setUserToDelete(Developer user) {
         userToDelete = user;
     }

@@ -3,6 +3,7 @@ package edu.piotrjonski.scrumus.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @NoArgsConstructor
-public class Comment {
+public class Comment implements Serializable {
     private int id;
     private String commentBody;
     private LocalDateTime creationDate = LocalDateTime.now();
