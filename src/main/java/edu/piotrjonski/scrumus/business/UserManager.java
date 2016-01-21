@@ -99,6 +99,10 @@ public class UserManager {
         return scrumMasterDAO.findByTeam(teamId);
     }
 
+    public Optional<Developer> findByUserId(final int userInId) {
+        return developerDAO.findById(userInId);
+    }
+
     private Optional<Developer> createUserAndSendPassword(final Developer user) throws CreateUserException {
         Optional<Developer> savedDeveloper = developerDAO.saveOrUpdate(user);
         if (savedDeveloper.isPresent()) {

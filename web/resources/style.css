@@ -47,3 +47,7 @@ body {
 .ui-dashboard-column {
     padding-bottom: 25px;
 }
+
+.ui-datascroller-item {
+    border-bottom: 1px solid !important;
+}

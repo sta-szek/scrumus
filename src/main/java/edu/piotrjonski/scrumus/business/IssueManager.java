@@ -31,7 +31,7 @@ public class IssueManager {
 
     @Inject
     private IssueTypeDAO issueTypeDAO;
-    
+
     public void deleteIssuesFromProject(String projectKey) {
         issueDAO.deleteIssuesFromProject(projectKey);
     }
@@ -156,6 +156,10 @@ public class IssueManager {
 
     public Optional<Priority> findPriority(final int priorityId) {
         return priorityDAO.findById(priorityId);
+    }
+
+    public Optional<Issue> findIssue(final int issueIntId) {
+        return issueDAO.findById(issueIntId);
     }
 
     private boolean isIssueTypeInUse(final IssueType issueType) {

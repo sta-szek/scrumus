@@ -1,0 +1,98 @@
+<h:body xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="#{path['common.template']}">
+        <ui:define name="content">
+            <f:metadata>
+                <f:viewParam name="issueId" />
+            </f:metadata>
+
+            <c:if test="${empty issueId}">
+                #{facesContext.getCurrentInstance().externalContext.redirect(request.contextPath)}
+            </c:if>
+
+            <c:if test="${not empty issueId}">
+                <ui:param name="issue" value="#{issueService.findIssueById(issueId)}" />
+                <c:if test="#{not permissionService.hasRightsForProject(request.remoteUser, issue.projectKey)}">
+                    #{facesContext.getCurrentInstance().externalContext.redirect(request.contextPath.concat(path['accessDenied']))}
+                </c:if>
+            </c:if>
+
+            <p:panel id="issueDetails" styleClass="ui-grid-row" rendered="#{not empty issue}" style="border: none">
+                <c:set var="reporter" value="#{userService.findUser(issue.reporterId)}" />
+                <c:set var="assignee" value="#{userService.findUser(issue.assigneeId)}" />
+                <c:set var="project" value="#{projectService.findByProjectKey(issue.projectKey)}" />
+
+                <p:panel id="summary" styleClass="ui-grid-col-10" style="border: none">
+                    <h2>
+                        <h:outputText value="#{issue.summary}" styleClass="ui-grid-row ui-grid-col-10" />
+                        <p:spacer height="20" />
+                    </h2>
+                    <p:outputLabel for="description"
+                                   value="#{i18n['page.issue.description']}"
+                                   style="font-weight: bold;"
+                                   styleClass="ui-grid-row ui-grid-col-10" />
+                    <h:outputText id="description" value="#{issue.description}" styleClass="ui-grid-row ui-grid-col-10" />
+                    <p:spacer height="50" />
+
+                    <p:outputLabel for="definitionOfDone"
+                                   value="#{i18n['page.issue.dod']}"
+                                   style="font-weight: bold;"
+                                   styleClass="ui-grid-row ui-grid-col-10" />
+                    <h:outputText id="definitionOfDone" value="#{issue.definitionOfDone}" styleClass="ui-grid-row ui-grid-col-10" />
+                </p:panel>
+
+                <p:panelGrid columns="2"
+                             columnClasses="ui-grid-col-6, ui-grid-col-6"
+                             layout="grid"
+                             styleClass="ui-grid-col-2">
+
+                    <p:outputLabel for="projectLabel" value="#{i18n['page.issue.project']}" />
+                    <h:outputText id="projectLabel" value="#{project.name}" />
+
+                    <p:outputLabel for="reporter" value="#{i18n['page.issue.reporter']}" />
+                    <h:outputText id="reporter" value="#{reporter.getFullName()}" />
+
+                    <p:outputLabel for="created" value="#{i18n['page.issue.created']}" />
+                    <h:outputText id="created" value="#{issue.creationDate}" />
+
+                    <p:outputLabel for="priority" value="#{i18n['page.issue.priority']}" />
+                    <h:outputText id="priority" value="#{issue.priority.name}" />
+
+                    <p:outputLabel for="state" value="#{i18n['page.issue.state']}" />
+                    <h:outputText id="state" value="#{issue.state.name}" />
+
+                    <p:outputLabel for="type" value="#{i18n['page.issue.type']}" />
+                    <h:outputText id="type" value="#{issue.issueType.name}" />
+
+                    <p:outputLabel for="assignee" value="#{i18n['page.issue.assignee']}" />
+                    <h:outputText id="assignee" value="#{assignee.getFullName()}" />
+
+                </p:panelGrid>
+            </p:panel>
+
+            <p:dataScroller value="#{issue.comments}"
+                            var="comment"
+                            id="comments"
+                            styleClass="ui-grid-row ui-grid-col-12"
+                            style="border: none">
+                <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
+
+                    <p:outputPanel styleClass="ui-grid">
+                        <div class="ui-grid-row">
+                            <h:outputText value="#{userService.findUser(comment.developerId).getFullName()}" styleClass="ui-grid-col-1" />
+                            <h:outputText value="#{comment.creationDate}" styleClass="ui-grid-col-11" />
+                        </div>
+                        <div class="ui-grid-row">
+                            <h:outputText value="#{comment.commentBody}" styleClass="ui-grid-col-12" />
+                        </div>
+                    </p:outputPanel>
+                </h:panelGrid>
+            </p:dataScroller>
+        </ui:define>
+    </ui:composition>
+</h:body>
+

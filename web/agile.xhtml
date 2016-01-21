@@ -51,6 +51,10 @@
                                 <c:forEach items="#{projectService.findIssuesForStory(story.id)}" var="issue">
                                     <p:panel id="#{issue.projectKey}#{issue.id}" header="#{issue.summary}">
                                         <h:outputText value="#{issue.description}" />
+                                        <f:facet name="footer">
+                                            <p:link outcome="issue" value="#{i18n['page.agile.issue.link']}">
+                                                <f:param name="issueId" value="#{issue.id}" /></p:link>
+                                        </f:facet>
                                     </p:panel>
                                 </c:forEach>
                             </p:dashboard>

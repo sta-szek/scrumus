@@ -18,6 +18,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
@@ -52,6 +53,16 @@ public class UserService implements Serializable {
     private String email;
 
     private Developer userToDelete;
+
+    public Developer findUser(String userId) {
+        try {
+            int userInId = Integer.parseInt(userId);
+            Optional<Developer> userOptional = userManager.findByUserId(userInId);
+            return userOptional.orElse(null);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
 
     public void setUserToDelete(Developer user) {
         userToDelete = user;

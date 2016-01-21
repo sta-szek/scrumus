@@ -3,6 +3,7 @@ package edu.piotrjonski.scrumus.ui.services;
 import edu.piotrjonski.scrumus.business.IllegalOperationException;
 import edu.piotrjonski.scrumus.business.IssueManager;
 import edu.piotrjonski.scrumus.business.NotExistException;
+import edu.piotrjonski.scrumus.domain.Issue;
 import edu.piotrjonski.scrumus.domain.IssueType;
 import edu.piotrjonski.scrumus.domain.Priority;
 import edu.piotrjonski.scrumus.domain.State;
@@ -54,6 +55,16 @@ public class IssueService implements Serializable {
     public List<State> getAllStates() {return issueManager.findAllStates();}
 
     public List<Priority> getAllPriorities() { return issueManager.findAllPriorities();}
+
+    public Issue findIssueById(String issueId) {
+        try {
+            int issueIntId = Integer.parseInt(issueId);
+            Optional<Issue> issueOptional = issueManager.findIssue(issueIntId);
+            return issueOptional.orElse(null);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
 
     public IssueType findIssueTypeById(String issueTypeId) {
         try {
