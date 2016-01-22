@@ -364,7 +364,6 @@ public class IssueService implements Serializable {
                                                   String.class);
     }
 
-
     private void clearFields() {
         issueTypeName = null;
         stateName = null;

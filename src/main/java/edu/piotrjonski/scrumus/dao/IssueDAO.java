@@ -110,8 +110,8 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
         issue.setIssueType(issueTypeDAO.mapToDomainModelIfNotNull(dbModel.getIssueTypeEntity()));
         issue.setProjectKey(dbModel.getProjectKey());
         issue.setSummary(dbModel.getSummary());
-        issue.setAssigneeId(getDeveloperId(dbModel));
-        issue.setReporterId(getDeveloperId(dbModel));
+        issue.setAssigneeId(getDeveloperId(dbModel.getAssignee()));
+        issue.setReporterId(getDeveloperId(dbModel.getReporter()));
         issue.setPriority(priorityDAO.mapToDomainModelIfNotNull(dbModel.getPriorityEntity()));
         issue.setState(stateDAO.mapToDomainModelIfNotNull(dbModel.getStateEntity()));
         return issue;
@@ -122,10 +122,9 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
         return entityManager.createNamedQuery(IssueEntity.FIND_ALL, IssueEntity.class);
     }
 
-    private int getDeveloperId(final IssueEntity dbModel) {
-        DeveloperEntity reporter = dbModel.getReporter();
-        return reporter != null
-               ? reporter.getId()
+    private int getDeveloperId(final DeveloperEntity dbModel) {
+        return dbModel != null
+               ? dbModel.getId()
                : 0;
     }
 

@@ -26,29 +26,30 @@
             <c:set var="currentUser" value="#{userService.findUserByUsername(request.remoteUser)}" />
 
             <p:panel id="issueDetails" styleClass="ui-grid-row" rendered="#{not empty issue}" style="border: none">
-                <p:panel id="summary" styleClass="ui-grid-col-10" style="border: none">
+                <p:panel id="summary" styleClass="ui-grid-col-8" style="border: none">
                     <h2>
-                        <h:outputText value="#{issue.summary}" styleClass="ui-grid-row ui-grid-col-10" />
+                        <h:outputText value="#{issue.summary}" styleClass="ui-grid-row ui-grid-col-8" />
                         <p:spacer height="20" />
                     </h2>
+
                     <p:outputLabel for="description"
                                    value="#{i18n['page.issue.description']}"
                                    style="font-weight: bold;"
-                                   styleClass="ui-grid-row ui-grid-col-10" />
-                    <h:outputText id="description" value="#{issue.description}" styleClass="ui-grid-row ui-grid-col-10" />
+                                   styleClass="ui-grid-row ui-grid-col-8" />
+                    <h:outputText id="description" value="#{issue.description}" styleClass="ui-grid-row ui-grid-col-8" />
                     <p:spacer height="50" />
 
                     <p:outputLabel for="definitionOfDone"
                                    value="#{i18n['page.issue.dod']}"
                                    style="font-weight: bold;"
-                                   styleClass="ui-grid-row ui-grid-col-10" />
-                    <h:outputText id="definitionOfDone" value="#{issue.definitionOfDone}" styleClass="ui-grid-row ui-grid-col-10" />
+                                   styleClass="ui-grid-row ui-grid-col-8" />
+                    <h:outputText id="definitionOfDone" value="#{issue.definitionOfDone}" styleClass="ui-grid-row ui-grid-col-8" />
                 </p:panel>
 
                 <p:panelGrid columns="2"
                              columnClasses="ui-grid-col-4, ui-grid-col-8"
                              layout="grid"
-                             styleClass="ui-grid-col-2">
+                             styleClass="ui-grid-col-4">
 
                     <p:outputLabel for="projectLabel" value="#{i18n['page.issue.project']}" />
                     <h:outputText id="projectLabel" value="#{project.name}" />
