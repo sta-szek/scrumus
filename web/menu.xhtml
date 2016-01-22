@@ -24,6 +24,12 @@
                             includeViewParams="true" />
             </c:forEach>
         </p:submenu>
+
+        <p:menuitem icon="fa fa-user-plus"
+                    value="#{i18n['page.menubar.createIssue']}"
+                    url="#{path['createIssue']}"
+                    rendered="#{not empty request.remoteUser}" />
+
         <p:menuitem icon="fa fa-user-plus"
                     value="#{i18n['page.admin.menubar.title']}"
                     url="#{path['admin.page']}"

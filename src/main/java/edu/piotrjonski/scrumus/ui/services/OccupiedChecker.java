@@ -59,6 +59,10 @@ public class OccupiedChecker {
         return getOccupiedTeamNames().contains(teamName);
     }
 
+    public List<String> getAllProjectKeys() {
+        return getOccupiedProjectKeys();
+    }
+
     private List<String> getOccupiedUsernames() {
         return userManager.findAllUsernames();
     }

@@ -1,12 +1,7 @@
 package edu.piotrjonski.scrumus.ui.services;
 
-import edu.piotrjonski.scrumus.business.IllegalOperationException;
-import edu.piotrjonski.scrumus.business.IssueManager;
-import edu.piotrjonski.scrumus.business.NotExistException;
-import edu.piotrjonski.scrumus.domain.Issue;
-import edu.piotrjonski.scrumus.domain.IssueType;
-import edu.piotrjonski.scrumus.domain.Priority;
-import edu.piotrjonski.scrumus.domain.State;
+import edu.piotrjonski.scrumus.business.*;
+import edu.piotrjonski.scrumus.domain.*;
 import edu.piotrjonski.scrumus.ui.configuration.I18NProvider;
 import edu.piotrjonski.scrumus.ui.configuration.PathProvider;
 import lombok.Data;
@@ -18,6 +13,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,12 +37,26 @@ public class IssueService implements Serializable {
     @Inject
     private IssueManager issueManager;
 
+    @Inject
+    private UserManager userManager;
+
+    @Inject
+    private ProjectManager projectManager;
+
     private String issueTypeName;
     private int issueTypeId;
     private int stateId;
     private String stateName;
     private int priorityId;
     private String priorityName;
+
+    private String createIssueSummary;
+    private String createIssueDescription;
+    private String createIssueDefinitionOfDone;
+    private String createIssueIssueType;
+    private String createIssuePriority;
+    private String createIssueProjectKey;
+    private String createIssueState;
 
     public List<IssueType> getAllIssueTypes() {
         return issueManager.findAllIssueTypes();
@@ -192,6 +202,23 @@ public class IssueService implements Serializable {
         }
     }
 
+
+    public String createIssue() {
+        Issue issue = createIssueFromField();
+        try {
+            Project project = projectManager.findProject(createIssueProjectKey)
+                                            .get();
+            Issue savedIssue = issueManager.create(issue, project)
+                                           .get();
+            logger.info("Created issue with id '" + savedIssue.getId() + "' in project with key '" + project.getKey() + "'.");
+            return pathProvider.getRedirectPath("issue") + "&issueId=" + savedIssue.getId();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            createFacesMessage("system.fatal.create.issue", null);
+            return null;
+        }
+    }
+
     public String createIssueType() {
         if (validateIssueTypeName()) {
             return null;
@@ -293,6 +320,40 @@ public class IssueService implements Serializable {
         return priority;
     }
 
+    private Issue createIssueFromField() {
+        Issue issue = new Issue();
+        issue.setReporterId(getUserId());
+        issue.setCreationDate(LocalDateTime.now());
+        issue.setDefinitionOfDone(createIssueDefinitionOfDone);
+        issue.setDescription(createIssueDescription);
+        issue.setIssueType(issueManager.findIssueType(Integer.parseInt(createIssueIssueType))
+                                       .get());
+        issue.setPriority(issueManager.findPriority(Integer.parseInt(createIssuePriority))
+                                      .get());
+        issue.setProjectKey(createIssueProjectKey);
+        issue.setSummary(createIssueSummary);
+        issue.setState(issueManager.findState(Integer.parseInt(createIssueState))
+                                   .get());
+        return issue;
+    }
+
+    private int getUserId() {
+        String currentUsername = getCurrentUsername();
+        return userManager.findByUsername(currentUsername)
+                          .get()
+                          .getId();
+    }
+
+    private String getCurrentUsername() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        return FacesContext.getCurrentInstance()
+                           .getApplication()
+                           .evaluateExpressionGet(facesContext,
+                                                  "#{request.remoteUser}",
+                                                  String.class);
+    }
+
+
     private void clearFields() {
         issueTypeName = null;
         stateName = null;
@@ -300,6 +361,13 @@ public class IssueService implements Serializable {
         issueTypeId = 0;
         stateId = 0;
         priorityId = 0;
+        createIssueSummary = null;
+        createIssueDescription = null;
+        createIssueDefinitionOfDone = null;
+        createIssueIssueType = null;
+        createIssuePriority = null;
+        createIssueProjectKey = null;
+        createIssueState = null;
     }
 
 }
