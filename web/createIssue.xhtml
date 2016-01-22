@@ -7,14 +7,18 @@
     <ui:composition template="#{path['common.template']}">
         <ui:define name="content">
 
-            <h:form id="createProjectForm">
+            <h:form id="createIssueForm">
                 <p:panel id="createIssuePanel" header="#{i18n['page.createIssue.create']}">
                     <p:focus context="createIssuePanel" />
                     <p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true" />
                     <h:panelGrid columns="3" cellpadding="5">
 
                         <p:outputLabel for="projectKey" value="#{i18n['page.createIssue.projectKey']}" />
-                        <p:selectOneMenu id="projectKey" value="#{issueService.createIssueProjectKey}">
+                        <p:selectOneMenu id="projectKey"
+                                         value="#{issueService.createIssueProjectKey}"
+                                         required="true"
+                                         requiredMessage="#{i18n['page.validator.require.createIssue.project.key']}">
+                            <f:selectItem itemLabel="#{i18n['page.createIssue.selectOne']}" itemValue="" />
                             <c:forEach var="projKey" items="#{occupiedChecker.allProjectKeys}">
                                 <f:selectItem itemLabel="#{projKey}" itemValue="#{projKey}" />
                             </c:forEach>
@@ -30,7 +34,11 @@
                         <p:message for="summary" />
 
                         <p:outputLabel for="issueType" value="#{i18n['page.createIssue.issueType']}" />
-                        <p:selectOneMenu id="issueType" value="#{issueService.createIssueIssueType}">
+                        <p:selectOneMenu id="issueType"
+                                         value="#{issueService.createIssueIssueType}"
+                                         required="true"
+                                         requiredMessage="#{i18n['page.validator.require.createIssue.issue.type']}">
+                            <f:selectItem itemLabel="#{i18n['page.createIssue.selectOne']}" itemValue="" />
                             <c:forEach var="issType" items="#{issueService.allIssueTypes}">
                                 <f:selectItem itemLabel="#{issType.name}" itemValue="#{issType.id}" />
                             </c:forEach>
@@ -38,7 +46,11 @@
                         <p:message for="issueType" />
 
                         <p:outputLabel for="state" value="#{i18n['page.createIssue.state']}" />
-                        <p:selectOneMenu id="state" value="#{issueService.createIssueState}">
+                        <p:selectOneMenu id="state"
+                                         value="#{issueService.createIssueState}"
+                                         required="true"
+                                         requiredMessage="#{i18n['page.validator.require.createIssue.issue.state']}">
+                            <f:selectItem itemLabel="#{i18n['page.createIssue.selectOne']}" itemValue="" />
                             <c:forEach var="sta" items="#{issueService.allStates}">
                                 <f:selectItem itemLabel="#{sta.name}" itemValue="#{sta.id}" />
                             </c:forEach>
@@ -46,7 +58,11 @@
                         <p:message for="state" />
 
                         <p:outputLabel for="priority" value="#{i18n['page.createIssue.priority']}" />
-                        <p:selectOneMenu id="priority" value="#{issueService.createIssuePriority}">
+                        <p:selectOneMenu id="priority"
+                                         value="#{issueService.createIssuePriority}"
+                                         required="true"
+                                         requiredMessage="#{i18n['page.validator.require.createIssue.issue.priority']}">
+                            <f:selectItem itemLabel="#{i18n['page.createIssue.selectOne']}" itemValue="" />
                             <c:forEach var="prio" items="#{issueService.allPriorities}">
                                 <f:selectItem itemLabel="#{prio.name}" itemValue="#{prio.id}" />
                             </c:forEach>

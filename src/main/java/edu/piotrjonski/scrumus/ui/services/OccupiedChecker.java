@@ -63,6 +63,14 @@ public class OccupiedChecker {
         return getOccupiedProjectKeys();
     }
 
+    public boolean isIssueSummaryOccupied(final String createIssueSummary) {
+        return getOccupiedIssueSummaries().contains(createIssueSummary);
+    }
+
+    private List<String> getOccupiedIssueSummaries() {
+        return issueManager.findAllIssueSummaries();
+    }
+
     private List<String> getOccupiedUsernames() {
         return userManager.findAllUsernames();
     }

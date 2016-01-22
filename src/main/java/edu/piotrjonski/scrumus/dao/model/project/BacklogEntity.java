@@ -28,7 +28,7 @@ public class BacklogEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     private List<IssueEntity> issueEntities;
 
 }

@@ -162,6 +162,10 @@ public class IssueManager {
         return issueDAO.findById(issueIntId);
     }
 
+    public List<String> findAllIssueSummaries() {
+        return issueDAO.findAllIssueSummaries();
+    }
+
     private boolean isIssueTypeInUse(final IssueType issueType) {
         return issueDAO.isIssueTypeInUse(issueType.getName());
     }

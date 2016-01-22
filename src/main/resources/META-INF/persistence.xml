@@ -12,6 +12,7 @@
             <property name="hibernate.connection.CharSet" value="utf8"/>
             <property name="hibernate.connection.characterEncoding" value="utf8"/>
             <property name="hibernate.connection.useUnicode" value="true"/>
+            <property name="hibernate.event.merge.entity_copy_observer" value="allow"/>
         </properties>
     </persistence-unit>
 </persistence>

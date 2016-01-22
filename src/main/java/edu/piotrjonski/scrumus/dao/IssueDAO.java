@@ -74,6 +74,11 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
         return findAllIssuesWithPriority(priorityName).size() > 0;
     }
 
+    public List<String> findAllIssueSummaries() {
+        return entityManager.createNamedQuery(IssueEntity.FIND_ALL_ISSUE_SUMMARIES)
+                            .getResultList();
+    }
+
     @Override
     protected IssueEntity mapToDatabaseModel(final Issue domainModel) {
         IssueEntity issueEntity = new IssueEntity();

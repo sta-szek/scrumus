@@ -202,8 +202,10 @@ public class IssueService implements Serializable {
         }
     }
 
-
     public String createIssue() {
+        if (validateIssueSummary()) {
+            return null;
+        }
         Issue issue = createIssueFromField();
         try {
             Project project = projectManager.findProject(createIssueProjectKey)
@@ -211,6 +213,7 @@ public class IssueService implements Serializable {
             Issue savedIssue = issueManager.create(issue, project)
                                            .get();
             logger.info("Created issue with id '" + savedIssue.getId() + "' in project with key '" + project.getKey() + "'.");
+            clearFields();
             return pathProvider.getRedirectPath("issue") + "&issueId=" + savedIssue.getId();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -270,6 +273,14 @@ public class IssueService implements Serializable {
     public boolean validateIssueTypeName() {
         if (occupiedChecker.isIssueTypeNameOccupied(issueTypeName)) {
             createFacesMessage("page.validator.occupied.issueType.name", "createIssueTypeForm:issueTypeName");
+            return true;
+        }
+        return false;
+    }
+
+    public boolean validateIssueSummary() {
+        if (occupiedChecker.isIssueSummaryOccupied(createIssueSummary)) {
+            createFacesMessage("page.validator.occupied.issue.summary", "createIssueForm:summary");
             return true;
         }
         return false;
