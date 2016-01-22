@@ -86,13 +86,6 @@
                         <c:set var="currentCommentUser" value="#{userService.findUser(comment.developerId)}" />
 
                         <div class="ui-grid-row">
-                            <!-- <h:form rendered="${currentUser.id eq comment.developerId}">
-                                 <p:commandButton icon="fa fa-remove"
-                                                  action="#{commentService.removeCommentFromIssue()}"
-                                                  update="comments"
-                                                  type="submit" />
-
-                             </h:form>-->
                             <h:outputText value="#{currentCommentUser.getFullName()}" styleClass="ui-grid-col-1" />
                             <h:outputText value="#{comment.creationDate}" styleClass="ui-grid-col-2" />
                         </div>

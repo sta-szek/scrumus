@@ -20,18 +20,6 @@ public class CommentService implements Serializable {
 
     private String commentBody;
 
-    public void removeCommentFromIssue() {
-        try {
-            int commentIntId = Integer.parseInt(getRequestParameter("commentIdToRemove"));
-            int issueIntId = Integer.parseInt(getRequestParameter("issueIdToRemove"));
-            commentManager.removeCommentFromIssue(commentIntId, issueIntId);
-            logger.info("Deleted comment with id '" + commentIntId + "' from issue with id '" + issueIntId + "'.");
-        } catch (NumberFormatException e) {
-            logger.info("huj");
-        }
-    }
-
-
     public void addCommentToIssue() {
         if (commentIsEmpty()) {
             return;
@@ -43,7 +31,7 @@ public class CommentService implements Serializable {
             commentManager.addCommentToIssue(comment, issueIntId);
             logger.info("Created comment for issue with id '" + issueIntId + "' by user with id '" + userIntId + "'.");
         } catch (NumberFormatException e) {
-            logger.info("huj2");
+            return;
         }
     }
 
