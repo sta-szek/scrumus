@@ -24,6 +24,9 @@ public class IssueManager {
     private StateDAO stateDAO;
 
     @Inject
+    private StoryDAO storyDAO;
+
+    @Inject
     private PermissionManager permissionManager;
 
     @Inject
@@ -54,6 +57,19 @@ public class IssueManager {
             return issueDAO.saveOrUpdate(issue);
         }
         return Optional.empty();
+    }
+
+    public void delete(int issueId) {
+        Optional<Story> storyOptional = storyDAO.findStoryForIssue(issueId);
+        Optional<Issue> issueOptional = issueDAO.findById(issueId);
+        if (issueOptional.isPresent()) {
+            if (storyOptional.isPresent()) {
+                Story story = storyOptional.get();
+                story.removeIssue(issueOptional.get());
+                storyDAO.saveOrUpdate(story);
+            }
+            issueDAO.delete(issueId);
+        }
     }
 
     public Optional<Priority> createPriority(Priority priority) throws AlreadyExistException {

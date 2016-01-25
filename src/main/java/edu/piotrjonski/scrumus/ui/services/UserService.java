@@ -126,6 +126,18 @@ public class UserService implements Serializable {
                             .collect(Collectors.toList());
     }
 
+    public int getCurrentUserId() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        String username = FacesContext.getCurrentInstance()
+                                      .getApplication()
+                                      .evaluateExpressionGet(facesContext,
+                                                             "#{request.remoteUser}",
+                                                             String.class);
+        return userManager.findByUsername(username)
+                          .get()
+                          .getId();
+    }
+
     private boolean validateUsername(String username) {
         if (occupiedChecker.isUsernameOccupied(username)) {
             createFacesMessage("page.validator.occupied.user.username", "createUserForm:username");

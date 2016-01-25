@@ -32,6 +32,7 @@ public class IssueEntity {
     public static final String FIND_ALL_ISSUES_WITH_PRIORITY = "findAllIssuesWIthPriority";
     public static final String FIND_ALL_ISSUES_WITH_STATE = "findAllIssuesWIthState";
     public static final String FIND_ALL_ISSUE_SUMMARIES = "findAllIssueSummaries";
+    public static final String ID = "id";
     protected static final String FIND_ALL_QUERY = "SELECT i FROM IssueEntity i";
     protected static final String FIND_ALL_ISSUE_SUMMARIES_QUERY = "SELECT i.summary FROM IssueEntity i";
     protected static final String DELETE_PROJECT_ISSUES_QUERY = "DELETE FROM IssueEntity i WHERE i.projectKey=:" + ProjectEntity.KEY;

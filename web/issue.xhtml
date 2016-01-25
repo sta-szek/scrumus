@@ -26,6 +26,16 @@
             <c:set var="currentUser" value="#{userService.findUserByUsername(request.remoteUser)}" />
 
             <p:panel id="issueDetails" styleClass="ui-grid-row" rendered="#{not empty issue}" style="border: none">
+
+                <p:commandButton id="assignButton"
+                                 value="#{i18n['page.issue.buttons.assign']}"
+                                 onclick="PF('selectAssignee').show()"
+                                 update="issueDetails" />
+                <p:commandButton value="#{i18n['page.issue.delete']}"
+                                 id="deleteIssueButton"
+                                 icon="fa fa-remove"
+                                 onclick="PF('confirmation').show()" />
+
                 <p:panel id="summary" styleClass="ui-grid-col-8" style="border: none">
                     <h2>
                         <h:outputText value="#{issue.summary}" styleClass="ui-grid-row ui-grid-col-8" />
@@ -74,6 +84,62 @@
 
                 </p:panelGrid>
             </p:panel>
+
+            <p:dialog showEffect="fade"
+                      hideEffect="fade"
+                      widgetVar="selectAssignee"
+                      header="#{i18n['page.issue.assign.header']}"
+                      icon="fa fa-warning">
+                <h:form id="assignIssueForm">
+                    <p:autoComplete id="user"
+                                    multiple="false"
+                                    value="#{issueService.assigneeFullname}"
+                                    completeMethod="#{userService.completeUser}"
+                                    var="user"
+                                    itemLabel="#{user}"
+                                    itemValue="#{user}"
+                                    forceSelection="true"
+                                    dropdown="true">
+                        <p:column>
+                            <h:outputText value="#{user}" />
+                        </p:column>
+                    </p:autoComplete>
+                    <br />
+                    <p:commandButton value="#{i18n['page.issue.assign.save']}"
+                                     styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"
+                                     action="#{issueService.assignToUser()}"
+                                     oncomplete="PF('selectAssignee').hide()"
+                                     update="issueDetails">
+                        <f:ajax render="issueDetails" />
+                    </p:commandButton>
+                    <p:commandButton value="#{i18n['page.issue.assign.cancel']}"
+                                     styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close"
+                                     onclick="PF('selectAssignee').hide()" />
+                </h:form>
+            </p:dialog>
+
+            <p:confirmDialog global="true"
+                             showEffect="fade"
+                             hideEffect="fade"
+                             widgetVar="confirmation"
+                             header="#{i18n['page.issue.delete.header']}"
+                             message="#{i18n['page.issue.delete.message']}"
+                             icon="fa fa-warning">
+                <h:form id="confirmDialogForm">
+                    <p:commandButton value="#{i18n['page.issue.delete.yes']}"
+                                     styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"
+                                     action="#{issueService.deleteIssue()}"
+                                     oncomplete="PF('confirmation').hide()">
+                        <f:setPropertyActionListener value="#{issueId}" target="#{issueService.issueToDelete}" />
+                    </p:commandButton>
+                    <p:commandButton value="#{i18n['page.issue.delete.no']}"
+                                     styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close" />
+                </h:form>
+            </p:confirmDialog>
 
             <p:dataScroller value="#{issueService.findIssueById(issueId).comments}"
                             var="comment"

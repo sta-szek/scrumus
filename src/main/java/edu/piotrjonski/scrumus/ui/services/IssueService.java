@@ -12,6 +12,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -58,6 +59,11 @@ public class IssueService implements Serializable {
     private String createIssueProjectKey;
     private String createIssueState;
 
+    private Issue viewedIssue;
+
+    private String assigneeFullname;
+    private String issueToDelete;
+
     public List<IssueType> getAllIssueTypes() {
         return issueManager.findAllIssueTypes();
     }
@@ -70,10 +76,39 @@ public class IssueService implements Serializable {
         try {
             int issueIntId = Integer.parseInt(issueId);
             Optional<Issue> issueOptional = issueManager.findIssue(issueIntId);
+            issueOptional.ifPresent(this::setViewedIssue);
             return issueOptional.orElse(null);
         } catch (NumberFormatException e) {
             return null;
         }
+    }
+
+    public String assignToUser() throws IOException {
+        String username = extractUserNameFromFullname(assigneeFullname);
+        int userId = getUserId(username);
+        viewedIssue.setAssigneeId(userId);
+        logger.info("AS: " + viewedIssue.getAssigneeId());
+        issueManager.update(viewedIssue);
+        clearFields();
+        return "";
+    }
+
+    public String deleteIssue() {
+        try {
+            int issueId = Integer.parseInt(issueToDelete);
+            issueManager.delete(issueId);
+            logger.info("Issue with id '" + issueId + "' was deleted.");
+            return pathProvider.getRedirectPath("index");
+        } catch (NumberFormatException e) {
+        }
+        return null;
+    }
+
+    public void unassign() {
+        viewedIssue.setAssigneeId(0);
+        logger.info("AS: " + viewedIssue.getAssigneeId());
+
+        issueManager.update(viewedIssue);
     }
 
     public IssueType findIssueTypeById(String issueTypeId) {
@@ -302,6 +337,17 @@ public class IssueService implements Serializable {
         return false;
     }
 
+    String extractUserNameFromFullname(final String userFullname) {
+        if (userFullname == null) {
+            return null;
+        }
+        if (!userFullname.contains("(")) {
+            return "";
+        }
+        String usernameWithBrace = userFullname.split("\\(")[1];
+        return usernameWithBrace.substring(0, usernameWithBrace.length() - 1);
+    }
+
     private void createFacesMessage(String property, String field) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -333,7 +379,7 @@ public class IssueService implements Serializable {
 
     private Issue createIssueFromField() {
         Issue issue = new Issue();
-        issue.setReporterId(getUserId());
+        issue.setReporterId(getUserId(getCurrentUsername()));
         issue.setCreationDate(LocalDateTime.now());
         issue.setDefinitionOfDone(createIssueDefinitionOfDone);
         issue.setDescription(createIssueDescription);
@@ -348,11 +394,16 @@ public class IssueService implements Serializable {
         return issue;
     }
 
-    private int getUserId() {
-        String currentUsername = getCurrentUsername();
-        return userManager.findByUsername(currentUsername)
-                          .get()
+    private int getUserId(String username) {
+        return userManager.findByUsername(username)
+                          .orElse(new Developer())
                           .getId();
+    }
+
+    private String getAssignedUserName(int assigneeId) {
+        return userManager.findByUserId(assigneeId)
+                          .orElse(new Developer())
+                          .getUsername();
     }
 
     private String getCurrentUsername() {
