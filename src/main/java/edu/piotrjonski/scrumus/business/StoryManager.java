@@ -90,6 +90,7 @@ public class StoryManager {
         backlogDAO.saveOrUpdate(backlog);
     }
 
+
     private boolean storyExist(Story story) {
         return storyDAO.exist(story.getId());
     }

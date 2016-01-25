@@ -10,6 +10,11 @@
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
     <managed-bean>
+        <managed-bean-name>editUserService</managed-bean-name>
+        <managed-bean-class>edu.piotrjonski.scrumus.ui.services.EditUserService</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
         <managed-bean-name>commentService</managed-bean-name>
         <managed-bean-class>edu.piotrjonski.scrumus.ui.services.CommentService</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>

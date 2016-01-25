@@ -8,12 +8,13 @@ import edu.piotrjonski.scrumus.business.UserManager;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 import java.util.List;
 
 
 @ApplicationScoped
 @Named("occupiedChecker")
-public class OccupiedChecker {
+public class OccupiedChecker implements Serializable {
 
     @Inject
     private UserManager userManager;

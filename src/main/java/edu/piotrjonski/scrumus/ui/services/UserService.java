@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -108,6 +109,10 @@ public class UserService implements Serializable {
     }
 
     public void deleteUser() {
+        if (userToDelete.getId() == getCurrentUserId()) {
+            createFacesMessage("system.fatal.delete.user", null);
+            return;
+        }
         userManager.delete(userToDelete);
         logger.info("User with id '" + userToDelete.getId() + "' was deleted.");
     }
@@ -134,8 +139,15 @@ public class UserService implements Serializable {
                                                              "#{request.remoteUser}",
                                                              String.class);
         return userManager.findByUsername(username)
-                          .get()
+                          .orElse(new Developer())
                           .getId();
+    }
+
+    public String logout() {
+        ((HttpSession) FacesContext.getCurrentInstance()
+                                   .getExternalContext()
+                                   .getSession(true)).invalidate();
+        return pathProvider.getRedirectPath("index");
     }
 
     private boolean validateUsername(String username) {

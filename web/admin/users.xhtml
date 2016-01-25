@@ -7,6 +7,7 @@
         <ui:define name="admin-content">
 
             <p:panel id="userListPanel" header="#{i18n['page.admin.user.list']}">
+                <p:messages globalOnly="true" autoUpdate="true" closable="true" />
                 <p:dataTable id="userListTable"
                              var="user"
                              value="#{userService.allUsers}"
@@ -36,10 +37,9 @@
                                          onclick="PF('confirmation').show()">
                             <f:setPropertyActionListener value="#{user}" target="#{userService.userToDelete}" />
                         </p:commandButton>
-                        <!--<p:link value="#{i18n['page.admin.user.view']}"
-                                         id="viewUserButton"
-                                         action="#{userService.deleteUser(project)}"
-                                         update="userListTable" />-->
+                        <p:button value="#{i18n['page.admin.user.view']}"
+                                  href="#{path['userProfile']}?userId=#{user.id}" />
+
                     </p:column>
                 </p:dataTable>
             </p:panel>
