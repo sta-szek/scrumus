@@ -1,0 +1,53 @@
+\chapter{Wprowadzenie}
+\section{Szkic problemu}
+
+Szybki rozwój w dziedzinie informatyki spowodował wzrost zapotrzebowania na systemy, które pomogłyby rozwiązywać problemy kwestii organizacyjnej projektów. W dzisiejszych czasach zarządzanie projektami jest szerokim zagadnieniem, a na jego temat powstało wiele publikacji. Autorzy proponują takie rozwiązania dot. zarządzania projektami jak:
+\begin{enumerate}
+	\item scrum,
+	\item lean Softrware Development,
+	\item feature Driven Development,
+	\item test Driven Develipment.
+\end{enumerate}
+
+Nie jest to wyczerpująca lista metodyk - istnieje wiele innych metod tworzenia oprogramowania, jednak opis wszystkich wykracza po za zakres tej pracy. W mojej pracy dyplomowej poruszam temat systemu do zarządzania projektami, który jest dedykowany metodyce Scrum. Nie bez powodu wybrana została właśnie ta zwinna metodyka - jest to na chwilę obecną najbardziej popularna metoda wytwarzania oprogramowania, a umiejętności pracy wraz z nią są pożądane przez większość pracodawców na całym świecie.
+
+Scrum jest zwinną metodyką wytwarzania oprogramowania, której początki sięgają połowy lat 80. Aby prawidłowo przedstawić omawiany temat należy zapoznać się z pojęciami, które są nieodłącznym elementem tej metody:
+\begin{enumerate}
+	\item \textbf{product owner} - osoba odpowiedzialna za projekt,
+	\item \textbf{scrum master} - osoba, która pomaga zespołowi w organizacji czasu pracy a także rozwiązuje powstałe problemu,
+	\item \textbf{zespół developerski} - zespół programistów wspólnie pracujący nad wytworzeniem produktu,
+	\item \textbf{backlog produktu} - jest to zbiór zadań / funkcjonalności wchodzące w skład wytwarzanego projektu,
+	\item \textbf{sprint} - interwały czasowe, w których realizowane są zadania. Bezpośrednio przed każdym sprintem występuje planowanie, czyli wybieranie funkcjonalności do zrealizowania w danym sprincie. Bezpośrednio po sprincie powinna wystąpić retrospektywa oraz demo produktu, które jest często pomijane przez wiele zespołów,
+	\item \textbf{story} - najmniejsza jednostka podlegająca ocenie (wg. wybranej przez zespół skali). 
+	\item \textbf{task} - zadania, które mogą być powiązane bezpośrednio ze story lub projektem.
+	\item \textbf{retrospektywa} - wydarzenie, które ma miejsce na koniec sprintu. W tym momencie zespół developerski spisuje wszystkie wady i zalety minionego sprintu oraz wspólnie z scrum masterem starają się rozwiązać zaistniałe problemy.
+\end{enumerate} 
+
+\section{Przegląd dostępnych narzędzi}
+Wytwarzając ten system skupiłem się, aby wpasował się on w wybraną przeze mnie metodykę oraz rozwiązywał szereg mankamentów, które napotkałem podczas korzystania z obecnych już rozwiązań. W celu lepszego zrozumienia problemów postanowiłem opisać kilka z nich.
+
+Pierwszym i niewątpliwie największym problemem tego typu systemów jest to, że są one płatne, przez co nie wszystkich na nie stać. Niektóre są darmowe, lecz tylko dla projektów typu open source, co nie sprawdza się podczas pracy nad wspólnymi projektami w firmie lub np. pracą dyplomową.
+
+Kolejną wadą jest to, że nie są one proste w instalacji. Często występują jako potężne programy, przez co nie można ich bezpłatnie hostować w chmurze gdyż potrzebują dużo płatnych zasobów. 
+
+Ostatnim, jednak nie mniej ważnym problemem jest ich czytelność. Oferują one szereg zbędnej zwykłemu użytkownikowi - programiście - funkcjonalności, która jest przydatna tylko w określonych warunkach. Taki ogrom zakładek i okienek powoduje często zamęt i niezrozumienie wśród programistów.
+
+
+Poniższa tabela przedstawia 
+------------------------------------------------------------------------------------------------------
+
+Celem pracy było wytworzenie systemu do zarządzania projektami dedykowanego metody Scrum. Obecnie na rynku jest wiele zarówno darmowych jak i płatnych narzędzi, które oferują możliwość prowadzenia projektów rożnymi metodykami. Mają one jednak pewne wady:
+\begin{enumerate}
+	\item Darmowe narzędzia nie są wspierane, przez co ich rozwój stanął w miejscu wiele lat temu
+	\item Część z nich jest darmowa tylko dla 10 użytkowników, co powoduje, że nie są przydatne w większych firmach
+	\item Większość jest darmowa tylko dla open source, co wyklucza możliwość użycia ich w firmie
+	\item Posiadają przerost formy nad treścią - docelowy użytkownik - programista musi przedzierać się przez gąszcz funkcjonalności oraz poświęcać czas na system, zamiast na swoją pracę
+\end{enumerate}
+
+Wytworzony przeze mnie system ma na celu sprostać wadom obecnego oprogramowania oraz spełniać następujące wymagania:
+\begin{enumerate}
+	\item Łatwość instalacji - do tego celu zostało wykorzystane oprogramowanie docker, które wspiera szybkie wytwarzanie oprogramowania
+	\item Przejrzysty interfejs użytkownika - został osiągnięty dzięki open sourcowej bibliotece PrimeFaces
+	\item Bez zbędnej funkcjonalności - zostały zaimplementowane tylko obligatoryjne funkcje tego typu systemu oraz niewielka ilość udogodnień
+\end{enumerate}
+
