@@ -11,8 +11,11 @@ import org.slf4j.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.management.*;
 import javax.validation.constraints.Size;
+import java.io.IOException;
 import java.io.Serializable;
+import java.lang.management.ManagementFactory;
 import java.util.Optional;
 
 @Data
@@ -70,9 +73,20 @@ public class EditUserService implements Serializable {
             userManager.changePassword(userId, newPassword);
             logger.info("User with id '" + currentUser.getId() + "' has changed password.");
             createFacesMessage("system.info.edit.user", null);
+            flushJAAS();
         } catch (CreateUserException e) {
             logger.error(e.getMessage(), e);
             createErrorFacesMessage("system.fatal.change.password", null);
+        }
+    }
+
+    private void flushJAAS() {
+        MBeanServerConnection mbeanServerConnection = ManagementFactory.getPlatformMBeanServer();
+        try {
+            ObjectName mbeanName = new ObjectName("jboss.as:subsystem=security,security-domain=scrumusSecurity");
+            mbeanServerConnection.invoke(mbeanName, "flushCache", null, null);
+        } catch (InstanceNotFoundException | MBeanException | ReflectionException | MalformedObjectNameException | IOException e) {
+            logger.error(e.getMessage(), e);
         }
     }
 

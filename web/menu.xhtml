@@ -55,8 +55,7 @@
                 <p:commandButton icon="fa fa-user-plus"
                                  value="#{i18n['page.menubar.logout']}"
                                  action="#{userService.logout()}"
-                                 rendered="#{not empty request.remoteUser}"
-                                 style="margin-right:10px" />
+                                 rendered="#{not empty request.remoteUser}" />
 
             </h:form>
         </f:facet>

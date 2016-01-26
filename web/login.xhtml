@@ -1,28 +1,36 @@
-<ui:composition template="#{path['common.template']}"
-                xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <ui:define name="content">
-        <h1>Proszę się zalogować</h1>
+<h:body xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="#{path['common.template']}">
+        <ui:define name="content">
+            <c:if test="${not empty request.remoteUser}">
+                <h1>dupa</h1>
+                #{facesContext.getCurrentInstance().externalContext.redirect(request.contextPath.concat(path['index']))}
+            </c:if>
 
-        <form name="loginForm" method="post" action="j_security_check">
-            <p>
-                <strong>
-                    <label for="username">Please type your user name: </label>
-                </strong>
-                <input id="username" type="text" name="j_username" size="25" />
-            </p>
+            <h1>Proszę się zalogować</h1>
 
-            <p>
-                <strong>
-                    <label for="password">Please type your password: </label>
-                </strong>
-                <input id="password" type="password" size="15" name="j_password" />
-            </p>
+            <form name="loginForm" method="post" action="j_security_check">
+                <p>
+                    <strong>
+                        <label for="username">Please type your user name: </label>
+                    </strong>
+                    <input id="username" type="text" name="j_username" size="25" />
+                </p>
 
-            <p>
-                <input type="submit" value="Submit" />
-                <input type="reset" value="Reset" />
-            </p>
-        </form>
-    </ui:define>
-</ui:composition>
+                <p>
+                    <strong>
+                        <label for="password">Please type your password: </label>
+                    </strong>
+                    <input id="password" type="password" size="15" name="j_password" />
+                </p>
+
+                <p>
+                    <input type="submit" value="Submit" />
+                    <input type="reset" value="Reset" />
+                </p>
+            </form>
+        </ui:define>
+    </ui:composition>
+</h:body>
