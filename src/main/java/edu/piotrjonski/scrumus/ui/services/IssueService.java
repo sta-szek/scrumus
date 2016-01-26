@@ -87,7 +87,6 @@ public class IssueService implements Serializable {
         String username = extractUserNameFromFullname(assigneeFullname);
         int userId = getUserId(username);
         viewedIssue.setAssigneeId(userId);
-        logger.info("AS: " + viewedIssue.getAssigneeId());
         issueManager.update(viewedIssue);
         clearFields();
         return "";
