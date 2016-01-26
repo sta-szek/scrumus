@@ -1,0 +1,76 @@
+<h:body xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="#{path['common.template']}">
+        <ui:define name="content">
+            <f:metadata>
+                <f:viewParam name="projectKey" />
+            </f:metadata>
+
+            <c:if test="${not empty projectKey}">
+                <c:if test="#{not permissionService.hasRightsForProject(request.remoteUser,projectKey)}">
+                    #{facesContext.getCurrentInstance().externalContext.redirect(request.contextPath.concat(path['accessDenied']))}
+                </c:if>
+                <ui:param name="project" value="#{projectService.findByProjectKey(projectKey)}" />
+            </c:if>
+
+            <p:accordionPanel multiple="true" rendered="#{empty projectKey}">
+                <c:forEach items="#{projectService.getUserProjects(request.remoteUser)}" var="project">
+                    <p:tab title="#{project.name}">
+                        <h2>
+                            <h:outputLink value="#{request.contextPath}#{path['project']}?projectKey=#{project.key}">
+                                <h:outputText value="#{project.name}" />
+                            </h:outputLink>
+                        </h2>
+                        <h:outputText value="#{project.description}" />
+                    </p:tab>
+                </c:forEach>
+            </p:accordionPanel>
+
+            <p:outputLabel value="#{i18n['page.project.notFound']}"
+                           rendered="#{empty project and not empty projectKey}" />
+
+            <p:panel header="#{project.name}" rendered="#{not empty project}">
+                <div class="ui-grid ui-grid-responsive">
+                    <h2>
+                        <h:outputText value="#{project.name}" styleClass="ui-grid-row ui-grid-col-12" />
+                    </h2>
+
+                    <div class="ui-grid-row ui-grid-col-12">
+                        <h:outputLink value="#{request.contextPath}#{path['agileBoard']}?projectKey=#{project.key}"
+                                      styleClass="ui-grid-col-6">
+                            <h:outputText value="#{i18n['page.project.agile']}" />
+                        </h:outputLink>
+                    </div>
+
+                    <div class="ui-grid-row">
+                        <p:outputLabel for="key" value="#{i18n['page.project.label.key']}" styleClass="ui-grid-row ui-grid-col-1" />
+                        <h:outputText id="key" value="#{project.key}" styleClass="ui-grid-row ui-grid-col-11" />
+                    </div>
+
+                    <div class="ui-grid-row">
+                        <p:outputLabel for="startDate" value="#{i18n['page.project.label.start']}" styleClass="ui-grid-col-1" />
+                        <h:outputText id="startDate" value="#{project.creationDate}" styleClass="ui-grid-col-11" />
+                    </div>
+                    <div class="ui-grid-row">
+                        <p:outputLabel for="definitionOfDone"
+                                       value="#{i18n['page.project.label.definitionOfDone']}"
+                                       styleClass="ui-grid-row ui-grid-col-1" />
+                        <h:outputText id="definitionOfDone" value="#{project.definitionOfDone}" styleClass="ui-grid-col-11" />
+                    </div>
+                    <div class="ui-grid-row">
+                        <p:outputLabel for="description"
+                                       value="#{i18n['page.project.label.description']}"
+                                       styleClass="ui-grid-row ui-grid-col-1" />
+                        <h:outputText id="description" value="#{project.description}" styleClass="ui-grid-col-11" />
+                    </div>
+                </div>
+            </p:panel>
+
+        </ui:define>
+    </ui:composition>
+</h:body>
+

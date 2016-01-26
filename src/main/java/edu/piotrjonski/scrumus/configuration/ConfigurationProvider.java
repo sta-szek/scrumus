@@ -9,11 +9,14 @@ import java.util.ResourceBundle;
 @Named(value = "configurationProvider")
 public class ConfigurationProvider {
 
-    protected String configurationPath = "configuration";
     private ResourceBundle resourceBundle;
 
     public ConfigurationProvider() {
-        resourceBundle = ResourceBundle.getBundle(configurationPath, createDefaultLocale());
+        this("configuration");
+    }
+
+    protected ConfigurationProvider(String path) {
+        resourceBundle = ResourceBundle.getBundle(path, createDefaultLocale());
     }
 
     public String getMessage(String key) {

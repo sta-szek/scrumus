@@ -4,6 +4,7 @@ import edu.piotrjonski.scrumus.dao.model.security.RoleType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
-public class Role {
+public class Role implements Serializable {
     private int id;
     private RoleType roleType;
     private List<Developer> developers = new ArrayList<>();

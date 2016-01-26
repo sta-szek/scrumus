@@ -39,8 +39,9 @@
                     </p:column>
 
                     <p:column headerText="#{i18n['page.admin.project.productOwner']}">
-                        <h:outputText value="#{productOwner.firstName} #{productOwner.surname} (#{productOwner.username})"
-                                      rendered="#{not empty productOwner}" />
+                        <p:link outcome="#{path['userProfile']}?userId=#{productOwner.id}"
+                                value="#{productOwner.firstName} #{productOwner.surname} (#{productOwner.username})"
+                                rendered="#{not empty productOwner}" />
                     </p:column>
 
                     <p:column headerText="#{i18n['page.admin.project.actions']}">

@@ -1,0 +1,129 @@
+<h:body xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="#{path['common.template']}">
+        <ui:define name="content">
+            <f:metadata>
+                <f:viewParam name="userId" />
+            </f:metadata>
+
+            <c:if test="${not empty userId}">
+                <ui:param name="user" value="#{editUserService.findUser(userId)}" />
+                <ui:param name="currentUser" value="#{editUserService.findCurrentUser(request.remoteUser)}" />
+            </c:if>
+
+            <p:outputLabel value="#{i18n['page.user.notFound']}"
+                           rendered="#{empty user and not empty userId}" />
+
+
+            <p:panel id="editableUserPanel" rendered="${currentUser.id eq user.id}">
+                <h:form id="editableUserForm">
+                    <p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true" />
+                    <h:panelGrid columns="3" cellpadding="5">
+
+                        <p:outputLabel for="username" value="#{i18n['page.user.username']}" />
+                        <p:inputText id="username"
+                                     value="#{editUserService.currentUser.username}"
+                                     disabled="true" />
+                        <p:message for="username" />
+
+                        <p:outputLabel for="firstname" value="#{i18n['page.user.firstname']}" />
+                        <p:inputText id="firstname"
+                                     value="#{editUserService.currentUser.firstName}"
+                                     required="true"
+                                     requiredMessage="#{i18n['page.validator.require.user.firstname']}"
+                                     maxlength="30" />
+                        <p:message for="firstname" />
+
+                        <p:outputLabel for="surname" value="#{i18n['page.user.surname']}" />
+                        <p:inputText id="surname"
+                                     value="#{editUserService.currentUser.surname}"
+                                     required="true"
+                                     requiredMessage="#{i18n['page.validator.require.user.surname']}"
+                                     maxlength="30" />
+                        <p:message for="surname" />
+
+                        <p:outputLabel for="email" value="#{i18n['page.user.email']}" />
+                        <p:inputText id="email"
+                                     value="#{editUserService.currentUser.email}"
+                                     required="true"
+                                     requiredMessage="#{i18n['page.validator.require.user.email']}"
+                                     maxlength="40" />
+                        <p:message for="email" />
+                    </h:panelGrid>
+                    <p:commandButton id="editButton"
+                                     value="#{i18n['page.user.edit']}"
+                                     action="#{editUserService.edit}"
+                                     icon="fa fa-user-plus"
+                                     validateClient="true"
+                                     update="editableUserForm" />
+                </h:form>
+
+                <p:commandButton value="#{i18n['page.user.changePassword']}"
+                                 icon="fa fa-user-plus"
+                                 validateClient="true"
+                                 onclick="PF('confirmation').show()" />
+
+            </p:panel>
+
+
+            <p:panel id="viewUserPanel"
+                     rendered="${currentUser.id ne user.id}">
+                <h:panelGrid columns="2" cellpadding="5">
+
+                    <p:outputLabel for="viewUsername" value="#{i18n['page.user.username']}" />
+                    <p:outputLabel id="viewUsername" value="#{user.username}" />
+
+                    <p:outputLabel for="viewFirstname" value="#{i18n['page.user.firstname']}" />
+                    <p:outputLabel id="viewFirstname" value="#{user.firstName}" />
+
+                    <p:outputLabel for="viewSurname" value="#{i18n['page.user.surname']}" />
+                    <p:outputLabel id="viewSurname" value="#{user.surname}" />
+
+                    <p:outputLabel for="viewEmail" value="#{i18n['page.user.email']}" />
+                    <p:outputLabel id="viewEmail" value="#{user.email}" />
+
+                </h:panelGrid>
+            </p:panel>
+
+            <p:confirmDialog global="true"
+                             showEffect="fade"
+                             hideEffect="fade"
+                             widgetVar="confirmation"
+                             header="#{i18n['page.user.changePassword.header']}"
+                             message="#{i18n['page.user.changePassword.message']}"
+                             icon="fa fa-warning">
+                <h:form id="confirmDialogForm">
+                    <p:messages id="message" autoUpdate="true" />
+
+                    <h:panelGrid columns="2" id="passwordGrid" cellpadding="5">
+                        <h:outputLabel for="password1" value="#{i18n['page.user.changePassword.new']}" />
+                        <p:password id="password1"
+                                    value="#{editUserService.newPassword}"
+                                    match="password2"
+                                    required="true"
+                                    requiredMessage="#{i18n['page.validator.require.user.password']}"
+                                    maxlength="40" label="New password" />
+
+                        <h:outputLabel for="password2" value="#{i18n['page.user.changePassword.new.retype']}" />
+                        <p:password id="password2"
+                                    value="#{editUserService.newPassword}"
+                                    required="true"
+                                    requiredMessage="#{i18n['page.validator.require.user.password']}"
+                                    maxlength="40"
+                                    label="retyped password" />
+                    </h:panelGrid>
+
+                    <p:commandButton value="#{i18n['page.user.changePassword.save']}"
+                                     update="passwordGrid"
+                                     action="#{editUserService.changePassword}"
+                                     oncomplete="PF('confirmation').hide()" />
+                </h:form>
+            </p:confirmDialog>
+
+        </ui:define>
+    </ui:composition>
+</h:body>

@@ -29,8 +29,12 @@ public class PermissionService implements Serializable {
 
     private String scrumMasterFullName;
 
-    public boolean isAdmin(Developer user) {
-        return permissionManager.isAdmin(user);
+    public boolean isAdmin(String username) {
+        return permissionManager.isAdmin(username);
+    }
+
+    public boolean hasRightsForProject(String username, String projectKey) {
+        return permissionManager.hasRightsForProject(username, projectKey);
     }
 
     public void grantAdminPermission(Developer user) {

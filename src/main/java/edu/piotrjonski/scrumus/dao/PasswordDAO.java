@@ -48,6 +48,18 @@ public class PasswordDAO extends AbstractDAO<PasswordEntity, Password> {
         }
     }
 
+    public Optional<Password> findUserPassword(int userId) {
+        try {
+            PasswordEntity password = entityManager.createNamedQuery(PasswordEntity.FIND_USER_PASSWORD, PasswordEntity.class)
+                                                   .setParameter(DeveloperEntity.ID, userId)
+                                                   .getSingleResult();
+            return Optional.of(mapToDomainModel(password));
+        } catch (NoResultException e) {
+            logger.warn("User with id " + userId + " hadn't password in database.");
+            return Optional.empty();
+        }
+    }
+
     @Override
     protected PasswordEntity mapToDatabaseModel(final Password domainModel) {
         PasswordEntity passwordEntity = new PasswordEntity();

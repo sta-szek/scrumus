@@ -64,7 +64,6 @@ public class UserManager {
 
     public boolean emailExist(String email) {
         return developerDAO.emailExist(email);
-        //TODO TESTY
     }
 
     public Optional<Developer> create(Developer developer)
@@ -98,6 +97,22 @@ public class UserManager {
 
     public Optional<ScrumMaster> findScrumMaster(final int teamId) {
         return scrumMasterDAO.findByTeam(teamId);
+    }
+
+    public Optional<Developer> findByUserId(final int userInId) {
+        return developerDAO.findById(userInId);
+    }
+
+    public void changePassword(final int userId, final String newPassword) throws CreateUserException {
+        Password password = passwordDAO.findUserPassword(userId)
+                                       .get();
+        try {
+            String newPasswordHash = hashGenerator.encodeWithSHA256(newPassword);
+            password.setPassword(newPasswordHash);
+            passwordDAO.saveOrUpdate(password);
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            throw new CreateUserException("User password could not be changed.");
+        }
     }
 
     private Optional<Developer> createUserAndSendPassword(final Developer user) throws CreateUserException {

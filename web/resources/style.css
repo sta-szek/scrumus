@@ -26,3 +26,28 @@ body {
     background-color: #EEE5FA;
     font-family: Verdana
 }
+
+.ui-layout-north {
+    z-index: 40 !important;
+    overflow: visible !important;
+}
+
+.ui-layout-north .ui-layout-unit-content {
+    overflow: visible !important;
+}
+
+.state:nth-child(n+1) {
+    border-right: 1px solid gray;
+}
+
+.state:last-child {
+    border: none;
+}
+
+.ui-dashboard-column {
+    padding-bottom: 25px;
+}
+
+.ui-datascroller-item {
+    border-bottom: 1px solid !important;
+}

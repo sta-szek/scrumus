@@ -14,10 +14,12 @@ import org.slf4j.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
@@ -52,6 +54,25 @@ public class UserService implements Serializable {
     private String email;
 
     private Developer userToDelete;
+
+    public Developer findUser(String userId) {
+        try {
+            int userInId = Integer.parseInt(userId);
+            Optional<Developer> userOptional = userManager.findByUserId(userInId);
+            return userOptional.orElse(null);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    public Developer findUserByUsername(String username) {
+        try {
+            Optional<Developer> userOptional = userManager.findByUsername(username);
+            return userOptional.orElse(null);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
 
     public void setUserToDelete(Developer user) {
         userToDelete = user;
@@ -88,6 +109,10 @@ public class UserService implements Serializable {
     }
 
     public void deleteUser() {
+        if (userToDelete.getId() == getCurrentUserId()) {
+            createFacesMessage("system.fatal.delete.user", null);
+            return;
+        }
         userManager.delete(userToDelete);
         logger.info("User with id '" + userToDelete.getId() + "' was deleted.");
     }
@@ -104,6 +129,25 @@ public class UserService implements Serializable {
                             .filter(user -> anyNameStatsWith(user, lowerCaseQuery))
                             .map(this::getUserFullName)
                             .collect(Collectors.toList());
+    }
+
+    public int getCurrentUserId() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        String username = FacesContext.getCurrentInstance()
+                                      .getApplication()
+                                      .evaluateExpressionGet(facesContext,
+                                                             "#{request.remoteUser}",
+                                                             String.class);
+        return userManager.findByUsername(username)
+                          .orElse(new Developer())
+                          .getId();
+    }
+
+    public String logout() {
+        ((HttpSession) FacesContext.getCurrentInstance()
+                                   .getExternalContext()
+                                   .getSession(true)).invalidate();
+        return pathProvider.getRedirectPath("index");
     }
 
     private boolean validateUsername(String username) {

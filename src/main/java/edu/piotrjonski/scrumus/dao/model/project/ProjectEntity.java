@@ -43,9 +43,12 @@ public class ProjectEntity {
     @Column(length = 4096, nullable = true)
     private String definitionOfDone;
 
+    @OneToOne
+    private SprintEntity currentSprint;
+
     @Column(nullable = false)
     private LocalDateTime creationDate = LocalDateTime.now();
-    
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private BacklogEntity backlogEntity = new BacklogEntity();
 }

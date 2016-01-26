@@ -39,9 +39,10 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
     }
 
     public void deleteIssuesFromProject(String projectKey) {
-        entityManager.createNamedQuery(IssueEntity.DELETE_PROJECT_ISSUES)
+        entityManager.createNamedQuery(IssueEntity.FIND_ALL_PROJECT_ISSUES)
                      .setParameter(ProjectEntity.KEY, projectKey)
-                     .executeUpdate();
+                     .getResultList()
+                     .forEach(entityManager::remove);
     }
 
     public List<Issue> findAllIssuesWithIssueType(String issueTypeName) {
@@ -72,6 +73,11 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
 
     public boolean isPriorityInUse(final String priorityName) {
         return findAllIssuesWithPriority(priorityName).size() > 0;
+    }
+
+    public List<String> findAllIssueSummaries() {
+        return entityManager.createNamedQuery(IssueEntity.FIND_ALL_ISSUE_SUMMARIES)
+                            .getResultList();
     }
 
     @Override
@@ -105,8 +111,8 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
         issue.setIssueType(issueTypeDAO.mapToDomainModelIfNotNull(dbModel.getIssueTypeEntity()));
         issue.setProjectKey(dbModel.getProjectKey());
         issue.setSummary(dbModel.getSummary());
-        issue.setAssigneeId(getDeveloperId(dbModel));
-        issue.setReporterId(getDeveloperId(dbModel));
+        issue.setAssigneeId(getDeveloperId(dbModel.getAssignee()));
+        issue.setReporterId(getDeveloperId(dbModel.getReporter()));
         issue.setPriority(priorityDAO.mapToDomainModelIfNotNull(dbModel.getPriorityEntity()));
         issue.setState(stateDAO.mapToDomainModelIfNotNull(dbModel.getStateEntity()));
         return issue;
@@ -117,10 +123,9 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
         return entityManager.createNamedQuery(IssueEntity.FIND_ALL, IssueEntity.class);
     }
 
-    private int getDeveloperId(final IssueEntity dbModel) {
-        DeveloperEntity reporter = dbModel.getReporter();
-        return reporter != null
-               ? reporter.getId()
+    private int getDeveloperId(final DeveloperEntity dbModel) {
+        return dbModel != null
+               ? dbModel.getId()
                : 0;
     }
 

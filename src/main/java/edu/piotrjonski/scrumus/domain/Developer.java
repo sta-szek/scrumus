@@ -13,4 +13,8 @@ public class Developer implements Serializable {
     private String surname;
     private String username;
     private String email;
+
+    public String getFullName() {
+        return firstName + " " + surname;
+    }
 }

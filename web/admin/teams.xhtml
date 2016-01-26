@@ -33,8 +33,9 @@
                         </p:tagCloud>
                     </p:column>
                     <p:column headerText="#{i18n['page.admin.team.scrumMaster']}">
-                        <h:outputText value="#{scrumMaster.firstName} #{scrumMaster.surname} (#{scrumMaster.username})"
-                                      rendered="#{not empty scrumMaster}" />
+                        <p:link outcome="#{path['userProfile']}?userId=#{scrumMaster.id}"
+                                value="#{scrumMaster.firstName} #{scrumMaster.surname} (#{scrumMaster.username})"
+                                rendered="#{not empty scrumMaster}" />
                     </p:column>
 
                     <p:column headerText="#{i18n['page.admin.team.actions']}">

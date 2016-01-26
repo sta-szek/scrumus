@@ -11,6 +11,6 @@ import javax.inject.Named;
 public class I18NProvider extends ConfigurationProvider {
 
     public I18NProvider() {
-        configurationPath = "messages";
+        super("messages");
     }
 }

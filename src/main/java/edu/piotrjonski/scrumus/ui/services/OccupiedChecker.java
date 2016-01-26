@@ -8,12 +8,13 @@ import edu.piotrjonski.scrumus.business.UserManager;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 import java.util.List;
 
 
 @ApplicationScoped
 @Named("occupiedChecker")
-public class OccupiedChecker {
+public class OccupiedChecker implements Serializable {
 
     @Inject
     private UserManager userManager;
@@ -57,6 +58,18 @@ public class OccupiedChecker {
 
     public boolean isTeamNameOccupied(String teamName) {
         return getOccupiedTeamNames().contains(teamName);
+    }
+
+    public List<String> getAllProjectKeys() {
+        return getOccupiedProjectKeys();
+    }
+
+    public boolean isIssueSummaryOccupied(final String createIssueSummary) {
+        return getOccupiedIssueSummaries().contains(createIssueSummary);
+    }
+
+    private List<String> getOccupiedIssueSummaries() {
+        return issueManager.findAllIssueSummaries();
     }
 
     private List<String> getOccupiedUsernames() {

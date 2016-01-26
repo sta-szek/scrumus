@@ -3,12 +3,14 @@ package edu.piotrjonski.scrumus.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * Represents retrospective minus object.
  */
 @Data
 @NoArgsConstructor
-public class RetrospectiveItem {
+public class RetrospectiveItem implements Serializable {
     private int rate;
     private String description;
     private RetrospectiveItemType retrospectiveItemType;

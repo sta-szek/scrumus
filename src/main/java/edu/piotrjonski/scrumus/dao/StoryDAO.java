@@ -1,5 +1,6 @@
 package edu.piotrjonski.scrumus.dao;
 
+import edu.piotrjonski.scrumus.dao.model.project.IssueEntity;
 import edu.piotrjonski.scrumus.dao.model.project.ProjectEntity;
 import edu.piotrjonski.scrumus.dao.model.project.SprintEntity;
 import edu.piotrjonski.scrumus.dao.model.project.StoryEntity;
@@ -8,6 +9,7 @@ import edu.piotrjonski.scrumus.domain.Story;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +36,17 @@ public class StoryDAO extends AbstractDAO<StoryEntity, Story> {
         entityManager.createNamedQuery(StoryEntity.DELETE_STORIES_FROM_PROJECT)
                      .setParameter(ProjectEntity.KEY, projectKey)
                      .executeUpdate();
+    }
+
+    public Optional<Story> findStoryForIssue(int issueId) {
+        try {
+            StoryEntity storyEntity = entityManager.createNamedQuery(StoryEntity.FIND_STORY_FOR_ISSUE, StoryEntity.class)
+                                                   .setParameter(IssueEntity.ID, issueId)
+                                                   .getSingleResult();
+            return Optional.of(mapToDomainModel(storyEntity));
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     public List<Story> findStoriesForSprint(int sprintId) {

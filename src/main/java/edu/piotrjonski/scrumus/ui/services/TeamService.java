@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
@@ -40,6 +41,7 @@ public class TeamService implements Serializable {
     private I18NProvider i18NProvider;
 
     @Inject
+    @Named("pathProvider")
     private PathProvider pathProvider;
 
     @Size(max = 30, message = "{validator.size.team.name}")

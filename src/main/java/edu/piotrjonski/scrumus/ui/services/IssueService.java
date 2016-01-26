@@ -1,11 +1,7 @@
 package edu.piotrjonski.scrumus.ui.services;
 
-import edu.piotrjonski.scrumus.business.IllegalOperationException;
-import edu.piotrjonski.scrumus.business.IssueManager;
-import edu.piotrjonski.scrumus.business.NotExistException;
-import edu.piotrjonski.scrumus.domain.IssueType;
-import edu.piotrjonski.scrumus.domain.Priority;
-import edu.piotrjonski.scrumus.domain.State;
+import edu.piotrjonski.scrumus.business.*;
+import edu.piotrjonski.scrumus.domain.*;
 import edu.piotrjonski.scrumus.ui.configuration.I18NProvider;
 import edu.piotrjonski.scrumus.ui.configuration.PathProvider;
 import lombok.Data;
@@ -16,7 +12,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,12 +38,31 @@ public class IssueService implements Serializable {
     @Inject
     private IssueManager issueManager;
 
+    @Inject
+    private UserManager userManager;
+
+    @Inject
+    private ProjectManager projectManager;
+
     private String issueTypeName;
     private int issueTypeId;
     private int stateId;
     private String stateName;
     private int priorityId;
     private String priorityName;
+
+    private String createIssueSummary;
+    private String createIssueDescription;
+    private String createIssueDefinitionOfDone;
+    private String createIssueIssueType;
+    private String createIssuePriority;
+    private String createIssueProjectKey;
+    private String createIssueState;
+
+    private Issue viewedIssue;
+
+    private String assigneeFullname;
+    private String issueToDelete;
 
     public List<IssueType> getAllIssueTypes() {
         return issueManager.findAllIssueTypes();
@@ -54,6 +71,44 @@ public class IssueService implements Serializable {
     public List<State> getAllStates() {return issueManager.findAllStates();}
 
     public List<Priority> getAllPriorities() { return issueManager.findAllPriorities();}
+
+    public Issue findIssueById(String issueId) {
+        try {
+            int issueIntId = Integer.parseInt(issueId);
+            Optional<Issue> issueOptional = issueManager.findIssue(issueIntId);
+            issueOptional.ifPresent(this::setViewedIssue);
+            return issueOptional.orElse(null);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    public String assignToUser() throws IOException {
+        String username = extractUserNameFromFullname(assigneeFullname);
+        int userId = getUserId(username);
+        viewedIssue.setAssigneeId(userId);
+        issueManager.update(viewedIssue);
+        clearFields();
+        return "";
+    }
+
+    public String deleteIssue() {
+        try {
+            int issueId = Integer.parseInt(issueToDelete);
+            issueManager.delete(issueId);
+            logger.info("Issue with id '" + issueId + "' was deleted.");
+            return pathProvider.getRedirectPath("index");
+        } catch (NumberFormatException e) {
+        }
+        return null;
+    }
+
+    public void unassign() {
+        viewedIssue.setAssigneeId(0);
+        logger.info("AS: " + viewedIssue.getAssigneeId());
+
+        issueManager.update(viewedIssue);
+    }
 
     public IssueType findIssueTypeById(String issueTypeId) {
         try {
@@ -181,6 +236,26 @@ public class IssueService implements Serializable {
         }
     }
 
+    public String createIssue() {
+        if (validateIssueSummary()) {
+            return null;
+        }
+        Issue issue = createIssueFromField();
+        try {
+            Project project = projectManager.findProject(createIssueProjectKey)
+                                            .get();
+            Issue savedIssue = issueManager.create(issue, project)
+                                           .get();
+            logger.info("Created issue with id '" + savedIssue.getId() + "' in project with key '" + project.getKey() + "'.");
+            clearFields();
+            return pathProvider.getRedirectPath("issue") + "&issueId=" + savedIssue.getId();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            createFacesMessage("system.fatal.create.issue", null);
+            return null;
+        }
+    }
+
     public String createIssueType() {
         if (validateIssueTypeName()) {
             return null;
@@ -237,6 +312,14 @@ public class IssueService implements Serializable {
         return false;
     }
 
+    public boolean validateIssueSummary() {
+        if (occupiedChecker.isIssueSummaryOccupied(createIssueSummary)) {
+            createFacesMessage("page.validator.occupied.issue.summary", "createIssueForm:summary");
+            return true;
+        }
+        return false;
+    }
+
     public boolean validateStateName() {
         if (occupiedChecker.isStateNameOccupied(stateName)) {
             createFacesMessage("page.validator.occupied.state.name", "createStateForm:stateName");
@@ -251,6 +334,17 @@ public class IssueService implements Serializable {
             return true;
         }
         return false;
+    }
+
+    String extractUserNameFromFullname(final String userFullname) {
+        if (userFullname == null) {
+            return null;
+        }
+        if (!userFullname.contains("(")) {
+            return "";
+        }
+        String usernameWithBrace = userFullname.split("\\(")[1];
+        return usernameWithBrace.substring(0, usernameWithBrace.length() - 1);
     }
 
     private void createFacesMessage(String property, String field) {
@@ -282,6 +376,44 @@ public class IssueService implements Serializable {
         return priority;
     }
 
+    private Issue createIssueFromField() {
+        Issue issue = new Issue();
+        issue.setReporterId(getUserId(getCurrentUsername()));
+        issue.setCreationDate(LocalDateTime.now());
+        issue.setDefinitionOfDone(createIssueDefinitionOfDone);
+        issue.setDescription(createIssueDescription);
+        issue.setIssueType(issueManager.findIssueType(Integer.parseInt(createIssueIssueType))
+                                       .get());
+        issue.setPriority(issueManager.findPriority(Integer.parseInt(createIssuePriority))
+                                      .get());
+        issue.setProjectKey(createIssueProjectKey);
+        issue.setSummary(createIssueSummary);
+        issue.setState(issueManager.findState(Integer.parseInt(createIssueState))
+                                   .get());
+        return issue;
+    }
+
+    private int getUserId(String username) {
+        return userManager.findByUsername(username)
+                          .orElse(new Developer())
+                          .getId();
+    }
+
+    private String getAssignedUserName(int assigneeId) {
+        return userManager.findByUserId(assigneeId)
+                          .orElse(new Developer())
+                          .getUsername();
+    }
+
+    private String getCurrentUsername() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        return FacesContext.getCurrentInstance()
+                           .getApplication()
+                           .evaluateExpressionGet(facesContext,
+                                                  "#{request.remoteUser}",
+                                                  String.class);
+    }
+
     private void clearFields() {
         issueTypeName = null;
         stateName = null;
@@ -289,6 +421,13 @@ public class IssueService implements Serializable {
         issueTypeId = 0;
         stateId = 0;
         priorityId = 0;
+        createIssueSummary = null;
+        createIssueDescription = null;
+        createIssueDefinitionOfDone = null;
+        createIssueIssueType = null;
+        createIssuePriority = null;
+        createIssueProjectKey = null;
+        createIssueState = null;
     }
 
 }

@@ -1,6 +1,7 @@
 package edu.piotrjonski.scrumus.dao;
 
 import edu.piotrjonski.scrumus.dao.model.project.ProjectEntity;
+import edu.piotrjonski.scrumus.dao.model.project.SprintEntity;
 import edu.piotrjonski.scrumus.dao.model.user.DeveloperEntity;
 import edu.piotrjonski.scrumus.dao.model.user.ProductOwnerEntity;
 import edu.piotrjonski.scrumus.domain.Developer;
@@ -17,8 +18,10 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import javax.persistence.EntityManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
 
 @RunWith(PowerMockRunner.class)
 public class ProductOwnerDAOTest {
@@ -38,6 +41,10 @@ public class ProductOwnerDAOTest {
     @Before
     public void before() {
         initMocks(this);
+        setInternalState(projectDAO, "entityManager", entityManager);
+
+        doReturn(new SprintEntity()).when(entityManager)
+                                    .find(SprintEntity.class, 1);
     }
 
     @Test

@@ -28,6 +28,7 @@ import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
 
 @RunWith(PowerMockRunner.class)
 public class SprintDAOTest {
@@ -61,6 +62,11 @@ public class SprintDAOTest {
                                                     .findById(anyObject());
         doReturn(Optional.of(createProject())).when(projectDAO)
                                               .findById(PROJ_KEY);
+
+        setInternalState(projectDAO, "entityManager", entityManager);
+
+        doReturn(new SprintEntity()).when(entityManager)
+                                    .find(SprintEntity.class, 1);
 
         timeRange = new TimeRange();
         timeRange.setEndDate(LocalDateTime.now());

@@ -15,20 +15,30 @@ public class PermissionManager {
 
     @Inject
     private transient Logger logger;
+
     @Inject
     private DeveloperDAO developerDAO;
+
     @Inject
     private ProjectDAO projectDAO;
+
     @Inject
     private TeamDAO teamDAO;
+
     @Inject
     private AdminDAO adminDAO;
+
     @Inject
     private RoleDAO roleDAO;
+
     @Inject
     private ScrumMasterDAO scrumMasterDAO;
+
     @Inject
     private ProductOwnerDAO productOwnerDAO;
+
+    @Inject
+    private ProjectManager projectManager;
 
     public void removeProductOwnerFromProject(String projectKey) {
         productOwnerDAO.findByProjectKey(projectKey)
@@ -75,6 +85,14 @@ public class PermissionManager {
     public boolean isAdmin(Developer user) {
         return adminDAO.findByDeveloperId(user.getId())
                        .isPresent() && hasRole(RoleType.ADMIN, user);
+    }
+
+    public boolean isAdmin(String username) {
+        Optional<Developer> user = developerDAO.findByUsername(username);
+        if (user.isPresent()) {
+            return isAdmin(user.get());
+        }
+        return false;
     }
 
     public boolean isProductOwner(Project project, Developer user) {
@@ -157,6 +175,13 @@ public class PermissionManager {
         if (teamOptional.isPresent() && projectOptional.isPresent()) {
             removeTeamFromProject(teamOptional.get(), projectOptional.get());
         }
+    }
+
+    public boolean hasRightsForProject(final String username, final String projectKey) {
+        return projectManager.getUserProjects(username)
+                             .stream()
+                             .map(Project::getKey)
+                             .anyMatch(x -> x.equals(projectKey));
     }
 
     private void createProductOwner(final Developer user, final Project project) {
