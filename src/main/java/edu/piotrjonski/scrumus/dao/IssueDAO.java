@@ -39,9 +39,10 @@ public class IssueDAO extends AbstractDAO<IssueEntity, Issue> {
     }
 
     public void deleteIssuesFromProject(String projectKey) {
-        entityManager.createNamedQuery(IssueEntity.DELETE_PROJECT_ISSUES)
+        entityManager.createNamedQuery(IssueEntity.FIND_ALL_PROJECT_ISSUES)
                      .setParameter(ProjectEntity.KEY, projectKey)
-                     .executeUpdate();
+                     .getResultList()
+                     .forEach(entityManager::remove);
     }
 
     public List<Issue> findAllIssuesWithIssueType(String issueTypeName) {

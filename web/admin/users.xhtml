@@ -43,12 +43,14 @@
                                          id="grantAdminPermissions"
                                          icon="fa fa-remove"
                                          action="#{permissionService.grantAdminPermission(user)}"
-                                         rendered="${not permissionService.isAdmin(user.username)}" />
+                                         rendered="${not permissionService.isAdmin(user.username)}"
+                                         update="userListTable" />
                         <p:commandButton value="#{i18n['page.admin.user.administratorPermissions.remove']}"
                                          id="removeAdminPermissions"
                                          icon="fa fa-remove"
                                          action="#{permissionService.removeAdminPermission(user)}"
-                                         rendered="${permissionService.isAdmin(user.username)}" />
+                                         rendered="${permissionService.isAdmin(user.username)}"
+                                         update="userListTable" />
 
                     </p:column>
                 </p:dataTable>

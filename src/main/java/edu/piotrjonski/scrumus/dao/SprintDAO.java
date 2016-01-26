@@ -31,9 +31,16 @@ public class SprintDAO extends AbstractDAO<SprintEntity, Sprint> {
     }
 
     public void deleteSprintsFromProject(String projectKey) {
-        entityManager.createNamedQuery(SprintEntity.DELETE_SPRINTS_FROM_PROJECT)
+        ProjectEntity projectEntity = entityManager.find(ProjectEntity.class, projectKey);
+        projectEntity.setCurrentSprint(null);
+        entityManager.merge(projectEntity);
+        entityManager.createNamedQuery(ProjectEntity.FIND_ALL_SPRINTS)
                      .setParameter(ProjectEntity.KEY, projectKey)
-                     .executeUpdate();
+                     .getResultList()
+                     .forEach(entityManager::remove);
+//        entityManager.createNamedQuery(SprintEntity.DELETE_SPRINTS_FROM_PROJECT)
+//                     .setParameter(ProjectEntity.KEY, projectKey)
+//                     .executeUpdate();
     }
 
     public List<Sprint> findAllSprints(String projectKey) {
