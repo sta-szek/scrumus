@@ -1,0 +1,118 @@
+\input{Ustawienia.tex}
+
+\begin{document}
+
+\newgeometry{left=2cm, right=2cm, top=1cm,bottom=2cm,headsep=1cm}
+\thispagestyle{empty}
+\kartapracy
+\myemptypage
+
+\newgeometry{left=3.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}	
+\linespread{1.49}
+\thispagestyle{empty}
+\stronatytulowa
+
+\normalsize
+\oswiadczenie
+\newpage
+
+\input{Streszczenie.tex}
+\myemptypage
+
+%========================================================================================
+% Spis tresci, spis tabel i~rysunków
+%========================================================================================
+%spis tresci
+\tableofcontents
+\newpage
+%\myemptypage
+%spis rysunków
+\listoffigures
+\newpage
+%\myemptypage
+%spis tabel
+\listoftables
+\newpage
+%\myemptypage
+
+%========================================================================================
+% Licznik Stron
+%========================================================================================
+\newcounter{licznikStron}
+\setcounter{licznikStron}{\value{page}}
+\setcounter{licznikStron}{1}
+\pagenumbering{arabic}
+\setcounter{page}{\value{licznikStron}}
+
+
+\section{Historyjki użytkownika}
+Jednym ze sposobów na prowadzenie dokumentacji projektu, jak i zbioru wymagań jest utrzymywanie rejestru historyjek użytkownika. Historyjki użytkownika są częścią zwinnych metody prowadzenia projektu. Jako że wytwarzanemu systemowi towarzyszy metodyka Scrum, nie mogło tutaj zabraknąć tego elementu.
+
+\begin{italicquote}
+	Historyjka jest jednostką funkcjonalności w projektach XP. Pokazujemy postęp prac, dostarczając przetestowany i zintegrowany kod, który składa się na implementację danej historyjki. Historyjka powinna być zrozumiała i wartościowa dla klientów, testowalna przez programistów i na tyle mała, żeby programiści mogli zaimplementować sześć historyjek w takcie jednej iteracji\footnote{K. Beck, M. Fowler, \textit{Planning Extreme Programming}, Addison-Wesley, Boston 2000, s.42}.
+\end{italicquote}
+
+Historyjki mogą mieć wiele wzorców. W tej pracy są stosowane dwa z nich:
+\begin{itemize}
+	\item Jako \textit{\textless typ użytkownika \textgreater} mogę \textit{\textless nazwa zadania\textgreater}.
+	\item Jako \textit{\textless typ użytkownika \textgreater} mogę \textit{\textless nazwa zadania\textgreater} w celu \textit{\textless cel \textgreater}\cite{SCRUM}
+\end{itemize} 
+
+W projektowanym systemie występują cztery rodzaje użytkowników (administrator, product owner, scrum master oraz developer) z różnymi uprawnieniami. Teraz szczegółowo zostaną opisane uprawnienia każdego z nich w postaci \textit{user story}. Warto pamiętać, że w systemie występuje uproszczony model użytkowników. Dodatkowo każdy z nich jest developerem, a co za tym idzie, może wykonywać akcje użytkownika developer oraz własne.
+	\newline
+	\newline
+	\textbf{Administrator}
+	\begin{enumerate}	
+		\item Jako administrator mogę tworzyć nowych użytkowników w celu dodania ich do systemu.
+		\item Jako administrator mogę usuwać użytkowników z systemu.
+		\item Jako administrator mogę dodawać użytkowników do grup oraz usuwać z nich w celu modyfikacji zespołu.
+		\item Jako administrator mogę nadawać dowolne uprawnienia wszystkim użytkownikom.		
+		\item Jako administrator mogę utworzyć projekt w celu dodania go do systemu.
+		\item Jako administrator mogę usunąć projekt w celu usunięcia z systemu oraz powiązanych z nim elementów t.j. sprint, story, backlog oraz inne. Operacja usuwania odbywa się kaskadowo.
+		\item Jako administrator mogę modyfikować projekt.		
+		\item Jako administrator mogę tworzyć nowe grupy w celu dodania ich do systemu.		
+		\item Jako administrator mogę dodawać i usuwać grupy z projektów w celu przydzielenia uprawnień.
+		\item Jako administrator mogę tworzyć, usuwać oraz edytować statusy zadań.
+		\item Jako administrator mogę tworzyć, usuwać oraz edytować priorytety zadań.
+	\end{enumerate}		
+	\textbf{Product owner}
+	\begin{enumerate}		
+		\item Jako product owner mogę tworzyć nowe zadania w projekcie, w celu dodania ich do backlogu.
+		\item Jako product owner mogę nadawać priorytety poszczególnym zadaniom w projekcie.
+		\item Jako product owner mam wgląd w cały projekt, do którego jestem przypisany.
+	\end{enumerate}	
+	\textbf{Scrum master}
+	\begin{enumerate}		
+		\item Jako scrum master mogę tworzyć nowe sprinty w projekcie.
+		\item Jako scrum master mogę tworzyć nowe story w sprintach.
+		\item Jako scrum master mogę dodawać i usuwać zadania ze story.
+		\item Jako scrum master mogę tworzyć retrospektywy.
+		\item Jako scrum master mam wgląd we wszystkie projekty zespołów, w których jestem scrum masterem.
+	\end{enumerate}
+	\textbf{Developer}
+	\begin{enumerate}		
+		\item Jako developer mogę tworzyć i edytować zadania.
+		\item Jako developer mogę dodawać komentarze do zadań oraz retrospektyw.
+		\item Jako developer mogę usuwać swoje komentarze do zadań oraz retrospektyw.
+		\item Jako developer mogę edytować swój profil.
+	\end{enumerate}
+	
+
+\newpage
+\begin{thebibliography}{99}
+	\bibitem{JSF} JavaServer Faces i Eclipse Galileo. Tworzenie aplikacji WWW \emph{Andrzej Marciniak} Helion 2010
+	\bibitem{JSF_CORE} Core JavaServer Faces. Wydanie II \emph{David Geary, Cay S. Horstmann} Helion 2008
+	\bibitem{EJB_3.0} Enterprise JavaBeans 3.0 \emph{Bill Burke \& Richard Monson-Haefel} Helion 2007
+	\bibitem{JBOSS_7} JBoss AS 7. Tworzenie aplikacji \emph{Francesco Marchioni} Helion 2014
+	\bibitem{J2EE} Core J2EE. Wzorce projektowe \emph{Deepak Alur, John Crupi, Dan Malks} Helion 2004
+	\bibitem{SCRUM} Scrum. O zwinnym zarządzaniu projektami. Wydanie II rozszerzone \emph{Mariusz Chrapko} Helion 2015
+	\bibitem{JAVA} Java. Kompedium programisty. Wydanie VIII \emph{Herbert Schildt} Helion 2012
+	\bibitem{CI} Zwinne wytwarzanie oprogramowania. Najlepsze zasady, wzorce i praktyki \emph{Robert C. Martin} Helion 2015
+	\bibitem{GIT} Git. Rozproszony system kontroli wersji \emph{Włodzimierz Gajda} Helion 2013
+	\bibitem{CLEAN_CODE_MASTER} Mistrz czystego kodu. Kodeks postępowania profesjonalnych programistów \emph{Robert C. Martin} Helion 2013
+	\bibitem{CLEAN_CODE} Czysty kod. Podręcznik dobrego programisty \emph{Robert C. Martin} Helion 2010
+	\bibitem{WZORCE} Rusz głową! Wzorce projektowe \emph{Eric Freeman, Elisabeth Freeman, Bert Bates, Kathy Sierra} Helion 2011
+	\bibitem{REFACTOR} Refaktoryzacja do wzorców projektowych \emph{Joshua Kerievsky} Helion 2005	
+\end{thebibliography}
+
+\end{document}
