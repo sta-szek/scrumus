@@ -6,6 +6,7 @@
 \usepackage{listings}
 \usepackage{color}
 \usepackage[pdftex]{graphicx}
+\usepackage{footnote}
 \usepackage{packages/zmienne}	
 \usepackage{packages/strona_tytulowa}
 \usepackage{packages/oswiadczenie}
@@ -189,3 +190,6 @@
 %==========================================================================================
 % Inne deklaracje
 %==========================================================================================
+
+\newcommand{\specialcell}[2][c]{%
+		\begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
