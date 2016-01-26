@@ -65,7 +65,9 @@
                     <h:outputText id="projectLabel" value="#{project.name}" />
 
                     <p:outputLabel for="reporter" value="#{i18n['page.issue.reporter']}" />
-                    <h:outputText id="reporter" value="#{reporter.getFullName()}" />
+                    <p:link id="reporter"
+                            outcome="#{path['userProfile']}?userId=#{reporter.id}"
+                            value="#{reporter.getFullName()}" />
 
                     <p:outputLabel for="created" value="#{i18n['page.issue.created']}" />
                     <h:outputText id="created" value="#{issue.creationDate}" />
@@ -80,7 +82,9 @@
                     <h:outputText id="type" value="#{issue.issueType.name}" />
 
                     <p:outputLabel for="assignee" value="#{i18n['page.issue.assignee']}" />
-                    <h:outputText id="assignee" value="#{assignee.getFullName()}" />
+                    <p:link id="assignee"
+                            outcome="#{path['userProfile']}?userId=#{assignee.id}"
+                            value="#{assignee.getFullName()}" />
 
                 </p:panelGrid>
             </p:panel>
