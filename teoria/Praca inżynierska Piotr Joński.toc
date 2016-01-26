@@ -8,4 +8,6 @@
 \contentsline {section}{\numberline {2.3}Przegl\IeC {\k a}d dost\IeC {\k e}pnych narz\IeC {\k e}dzi}{5}
 \contentsline {section}{\numberline {2.4}Rozwi\IeC {\k a}zanie problemu}{6}
 \contentsline {chapter}{\numberline {3}Analiza biznesowa problemu i za\IeC {\l }o\IeC {\.z}enia projektowe}{7}
-\contentsline {section}{\numberline {3.1}Wymagania funkcjonalne}{7}
+\contentsline {section}{\numberline {3.1}Role i u\IeC {\.z}ytkownicy systemu}{7}
+\contentsline {section}{\numberline {3.2}Wymagania funkcjonalne}{7}
+\contentsline {section}{\numberline {3.3}Wymagania funkcjonalne}{10}
