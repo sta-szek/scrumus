@@ -406,7 +406,7 @@ public class IssueDAOIT {
         issue.setIssueType(issueType);
         issue.setReporterId(currentlySavedDeveloperId);
         issue.setAssigneeId(currentlySavedDeveloperId);
-        issue.setSummary(SUMMARY);
+        issue.setSummary(SUMMARY + nextUniqueValue);
         issue.setState(state);
         nextUniqueValue++;
         return issue;
