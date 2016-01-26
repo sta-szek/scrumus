@@ -1,0 +1,29 @@
+\begin{thebibliography}{1}
+
+\bibitem{Osuchowska:1998}
+Barbara Osuchowska.
+\newblock {\em Poradnik redaktora i autora. Nauki œcis³e i technika}.
+\newblock Wydawnictwo Polskiego Towarzystwa Wydawców Ksi¹¿ek, Warszawa, 1988.
+
+\bibitem{latex:2007}
+Tobias Oetiker, Hubert Partl, Irene Hyna, and Elisabeth Schlegl.
+\newblock {\em Nie za krótkie wprowadzenie do systemu LaTeX2e. Albo LaTeX2e w
+  129 minut}, Styczeñ 2007.
+\newblock http://www.tex.ac.uk/ctan/info/lshort/polish/lshort2e.pdf.
+
+\bibitem{Norma}
+PN-78/N-01222 arkusz 02.
+\newblock {\em Kompozycja wydawnicza ksi¹¿ki. Tekst g³ówny}.
+\newblock Podzia³, elementy tekstu, cytaty i odwo³ania do innych publikacji.
+
+\bibitem{companion:04}
+M{ichel} Goossens, F{rank} Mittelbach, and A{lexander} Samarin.
+\newblock {\em The {\LaTeX} Companion, 2nd Edition}.
+\newblock Addison-Wesley, Boston, 2004.
+
+\bibitem{ams:02}
+American~Mathematical Society.
+\newblock {\em User's Guide for the amsmath Package}.
+\newblock \url{ftp://ftp.ams.org/pub/tex/doc/amsmath/amsldoc.pdf}, 2 2002.
+
+\end{thebibliography}

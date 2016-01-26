@@ -1,0 +1,113 @@
+% ------------------------------------------------------------------------
+% pakiet do wzorów ams
+% ------------------------------------------------------------------------
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% ------------------------------------------------------------------------
+% jêzyk polski
+% ------------------------------------------------------------------------
+\usepackage[MeX]{polski}
+\usepackage[cp1250]{inputenc}
+
+% ------------------------------------------------------------------------
+% obs³uga pdf
+% ------------------------------------------------------------------------
+\usepackage[pdftex,usenames,dvipsnames]{color}	%obs³uga kolorów
+
+% ------------------------------------------------------------------------
+% wstawienie danych o autorze i pracy 
+% ------------------------------------------------------------------------
+\usepackage[pdftex,
+				pagebackref=false,						% referencje w spisie literatury do strony na, której zosta³a urzyta
+				draft=false,								% draft
+				pdfpagelabels=false,						%
+				pdfstartview=FitV,						% lub FitH
+				pdfstartpage=1,							% 
+				bookmarks=true,							% zak³adki w pliku pdf
+				pdfauthor={Autor},						% nale¿y wpisaæ autora pracy
+				pdftitle={Praca in¿ynierska},			% 
+				pdfsubject={Tytu³ pracy},				% tytu³
+				pdfkeywords={slowa kluczowe},			% slowa kluczowe
+				unicode=true]{hyperref}   
+
+
+% ------------------------------------------------------------------------
+%	style
+% ------------------------------------------------------------------------
+\usepackage{extsizes}							%wiecej rozmiaróww czcionek
+\usepackage[a4paper,left=3.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{tocloft}								% format spisu treœci
+\usepackage{array}								% lepiej wygl¹daj¹ce tabelki
+\usepackage[format=hang,
+				labelsep=period,
+				labelfont={bf,small},
+				textfont=small]{caption}		% formatuje podpisy pod rysunkami i tabelami
+\usepackage{floatflt}							% ³adniejsze opisywanie obrazków tekstem
+\usepackage{subfig}								% mo¿liwoœæ wstawiania figur w kolumnach
+\usepackage{graphicx}							% do obs³ugi grafiki
+\usepackage{here}									% wymuszanie po³o¿enia figury w danym miejscu
+\usepackage{url}									% adresy internetowe
+\usepackage{enumerate}							% modyfikowanie list wyliczeniowych np \begin{enumerate}[(a)]...
+\usepackage{multirow}							% do tabel 
+% ------------------------------------------------------------------------
+% listingi
+% ------------------------------------------------------------------------
+\usepackage{listings}							% do wstawiania listingow programów
+
+
+
+
+\usepackage{slantsc} % Pochy³e kapitaliki  np. \textsl{\textsc{Automatyka i robotyka}}
+
+% ------------------------------------------------------------------------
+% inne
+% ------------------------------------------------------------------------
+\usepackage{glossaries}
+
+\usepackage{dashrule}
+\usepackage{fancyhdr} 							% do stopki i nag³ówka
+\usepackage{calc}
+\usepackage{packages/zmienne}					% zmienne dodatkowe u¿ywane min. w karcie pracy oœwiadczeniu i stronie tytu³owej zebrane w jednym miejscu
+\usepackage{packages/strona_tytulowa}
+\usepackage{packages/oswiadczenie}
+\usepackage{packages/karta_pracy}
+\usepackage{packages/dedykacja}
+\usepackage{packages/wspolrealizacja}
+\usepackage{longtable}							% do podzia³u tabel na wiele stron
+
+\usepackage{indentfirst}
+
+% ------------------------------------------------------------------------
+% kodowanie czcionek
+% ------------------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}\normalfont %to load T1lmr.fd 
+
+% ------------------------------------------------------------------------
+% do algorytmów
+% ------------------------------------------------------------------------
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\floatname{algorithm}{Algorytm}
+
+% ------------------------------------------------------------------------
+% do nonmeklatury
+% ------------------------------------------------------------------------
+
+\usepackage[section]{placeins}
+\usepackage{nomencl}
+\makenomenclature
+\usepackage{makeidx}
+\makeindex
+\renewcommand{\nomname}{Spis wa¿niejszych symboli}
+% na koñcu pliku z nonmekatur¹ nale¿y umieœciæ polecenie
+% \printnomenclature
+% plik nale¿y dodaæ poleceniem \input
+%% przyk³ad treœci pliku
+%% \nomenclature{$\oplus$}{Dylatacja zbioru}
+%% \printnomenclature
+
+
+

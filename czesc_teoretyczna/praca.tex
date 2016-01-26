@@ -1,0 +1,174 @@
+%==========================================================================================
+%
+%									Uniwersytet Zielonogórski
+%
+%						SZABLON PRACY DYPLOMOWEJ W~PAKIECIE LaTeX
+%							wykonany podczas zajêæ seminarjnych
+%				pod przewodnictwem prof. dr hab. in¿ Dariusza Uciñskiego 
+%
+%							 Damian Kowalów, Mariusz Buciakowski
+%
+% 				 Wydzia³ Elektrotechniki, Informatyki i~Telekomunikacji
+%						Instytut Sterowania i~Systemów Informatycznych
+%
+%							 Zielona Góra, kwiecieñ 2013 
+%						(ostatnia modyfikacja: 03.03.2014)
+%==========================================================================================
+%\documentclass[a4paper,12pt]{book}
+\documentclass[a4paper,12pt,openany]{book}
+\input{Pakiety/pakiety.tex}
+\input{Ustawienia/ustawienia.tex}
+
+
+%==========================================================================================
+% Dane na temat pracy do wype³nienia
+%==========================================================================================
+\author{Imiê i~nazwisko dyplomanta}
+\kierunek{Nazwa kierunku}
+\specjalnosc{Nazwa specjalnoœci}
+\grupa{Grupa}		% np. 101AiRDz
+\title{Tytu³ pracy}
+\tytulAngielski{Title of diploma}
+\uczelnia{Uniwersytet Zielonogórski}
+\wydzial{Wydzia³ Elektrotechniki, Informatyki i~Telekomunikacji}
+\praca{Praca dyplomowa/magisterska} % pozostawiæ w³aœciwe
+\promotor{stopieñ naukowy, imiê i~nazwisko promotora}
+\konsultant{stopieñ naukowy, imiê i~nazwisko konsultanta} 	% nie usuwaæ w~przypadku braku lecz pozostawiæ puste czyli: \konsultant{} 
+%\konsultant{} 
+\miasto{Zielona Góra}
+\miesiac{miesi¹c }	% miesi¹c z³o¿enia pracy
+\rok{rok}
+\dzien{dd} 			% dzieñ podpisania oœwiadczenia (cyfrowo) np. 10
+\mm{mm} 				% miesiac podpisania oœwiadczenia (cyfrowo) np. 01 (styczeñ)
+\podjecieTematu{dd.mm.rrrr} % data podjêcia tematu pracy dyplomowej (na karcie pracy)
+
+
+\celPracy{Krótko opisany cel pracy}
+
+\numZakres{7}		% iloœæ zdefiniowanych punktów w~zakresie pracy, musi byæ zdefiniowane ze wzglêdu na ustawienia karty pracy. Dostêpny zakres od 2 do 7. W~celu powiêkszenia zakresu nale¿y edytowaæ plik karta_pracy.sty
+
+\zakresI{Zakres pracy 1}
+\zakresII{Zakres pracy 2}
+\zakresIII{Zakres pracy 3}
+\zakresIV{Zakres pracy 4}
+\zakresV{Zakres pracy 5}
+\zakresVI{Zakres pracy 6}
+\zakresVII{Zakres pracy 7}
+
+
+%==========================================================================================
+% Uwaga! polecenie \myemptypage dodaje pust¹ stronê do treœci. Praca oddana do dziekanatu powinna byæ zbudowana zgodnie z~szablonem znajduj¹cym siê na stronie WEIT (z jedn¹ stron¹ pust¹ nastêpuj¹c¹ po karcie pracy), jednak je¿eli student planuje wydruk dla siebie, zalecane jest zast¹pienie poleceñ \newpage poleceniem \myemptypage. Skutkuje to utworzeniem bardziej przejrzystego uk³adu zgodnego z~zaleceniami pisania ksi¹¿ek, czyli rozpoczynanie nowych treci na prawej stronie.
+%==========================================================================================
+
+
+%==========================================================================================
+% Dokument glowny
+%==========================================================================================
+\begin{document}
+\pagenumbering{roman}
+%=========================================================================================
+% karta pracy
+%=========================================================================================
+\newgeometry{left=2cm, right=2cm, top=1cm,bottom=2cm,headsep=1cm}	% nowa geometria strony tylko dla karty pracy
+\thispagestyle{empty}
+\kartapracy
+\myemptypage
+\newgeometry{left=3.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}			% powrót do gemoetrii szablonu
+\linespread{1.49} %odstêp pomiêdzy liniami (interlinia)
+%=========================================================================================
+% Strona tytu³owa
+%=========================================================================================
+\thispagestyle{empty}
+\stronatytulowa
+%\myemptypage
+
+%=========================================================================================
+% Dedykacja - w~przypadku braku zakomentowaæ lub usun¹æ sekcjê 
+%=========================================================================================
+\thispagestyle{empty}
+\dedykacjaTresc{Na ¿yczenie autora strona zawieraj¹ca dedykacjê} % treœæ dedykacji je¿eli jest u¿ywana. 
+\dedykacja
+\newpage
+%\myemptypage
+%=========================================================================================
+% Oœwiadczenie
+%========================================================================================
+
+\oswiadczenie
+\newpage
+%\myemptypage
+
+%=========================================================================================
+% Oœwiadczenie o~wspó³realizacji pracy - w~przypadku braku zakomentowaæ lub usun¹æ sekcjê 
+%========================================================================================
+\autorDwa{Imiê i~nazwisko wspó³autora}
+\wspolrealizacjaTrescJeden{wykaz czynnoœci wykonanych przez tê osobê}
+\wspolrealizacjaTrescDwa{wykaz czynnoœci wykonanych przez tê osobê}
+\wspolrealizacja
+\newpage
+%\myemptypage
+
+%========================================================================================
+% Streszczenie
+%========================================================================================
+\normalsize 
+\input{Streszczenie/Streszczenie.tex}
+\newpage
+%\myemptypage
+
+%========================================================================================
+% Spis tresci, spis tabel i~rysunków
+%========================================================================================
+%spis tresci
+	\tableofcontents
+	\newpage
+	%\myemptypage
+%spis rysunków
+ 	\listoffigures
+	\newpage
+	%\myemptypage
+%spis tabel
+	\listoftables
+	\newpage
+	%\myemptypage
+
+%========================================================================================
+% Licznik Stron
+%========================================================================================
+\newcounter{licznikStron}
+\setcounter{licznikStron}{\value{page}}
+\setcounter{licznikStron}{1}
+\pagenumbering{arabic}
+\setcounter{page}{\value{licznikStron}}
+
+%========================================================================================
+% Tresc
+%========================================================================================
+\input{Rozdzial1/rozdzial1.tex}
+\input{Rozdzial2/rozdzial2.tex}
+\input{Rozdzial3/rozdzial3.tex}
+\input{Rozdzial4/rozdzial4.tex}
+\input{Rozdzial5/rozdzial5.tex}
+
+
+%========================================================================================
+% Dodatki
+%========================================================================================
+\begin{appendix}
+	\appendix
+	\input{Dodatki/dodatek_a.tex}
+	\input{Dodatki/dodatek_b.tex}
+\end{appendix}
+
+%========================================================================================
+% Literatura
+%========================================================================================
+
+\begin{flushleft}
+	\bibliography{bibliografia/bibliografia}
+\end{flushleft}
+
+\end{document}
+%========================================================================================
+% Koniec dokumentu
+%========================================================================================
