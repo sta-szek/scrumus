@@ -51,3 +51,9 @@ body {
 .ui-datascroller-item {
     border-bottom: 1px solid !important;
 }
+
+.issueList {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+    border-bottom: 1px gray solid;
+}

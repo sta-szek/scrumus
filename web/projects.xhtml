@@ -33,43 +33,130 @@
             <p:outputLabel value="#{i18n['page.project.notFound']}"
                            rendered="#{empty project and not empty projectKey}" />
 
-            <p:panel header="#{project.name}" rendered="#{not empty project}">
-                <div class="ui-grid ui-grid-responsive">
-                    <h2>
-                        <h:outputText value="#{project.name}" styleClass="ui-grid-row ui-grid-col-12" />
-                    </h2>
+            <p:outputPanel id="projectDetails" rendered="#{not empty project}">
 
-                    <div class="ui-grid-row ui-grid-col-12">
-                        <h:outputLink value="#{request.contextPath}#{path['agileBoard']}?projectKey=#{project.key}"
-                                      styleClass="ui-grid-col-6">
-                            <h:outputText value="#{i18n['page.project.agile']}" />
-                        </h:outputLink>
-                    </div>
+                <!-- INFORMACJE O PROJEKCIE -->
+                <p:accordionPanel multiple="true">
+                    <p:tab title="#{project.name}">
+                        <div class="ui-grid ui-grid-responsive">
+                            <h2>
+                                <h:outputText value="#{project.name}" styleClass="ui-grid-row ui-grid-col-12" />
+                            </h2>
 
-                    <div class="ui-grid-row">
-                        <p:outputLabel for="key" value="#{i18n['page.project.label.key']}" styleClass="ui-grid-row ui-grid-col-1" />
-                        <h:outputText id="key" value="#{project.key}" styleClass="ui-grid-row ui-grid-col-11" />
-                    </div>
+                            <div class="ui-grid-row ui-grid-col-12">
+                                <h:outputLink value="#{request.contextPath}#{path['agileBoard']}?projectKey=#{project.key}"
+                                              styleClass="ui-grid-col-6">
+                                    <h:outputText value="#{i18n['page.project.agile']}" />
+                                </h:outputLink>
+                            </div>
 
-                    <div class="ui-grid-row">
-                        <p:outputLabel for="startDate" value="#{i18n['page.project.label.start']}" styleClass="ui-grid-col-1" />
-                        <h:outputText id="startDate" value="#{project.creationDate}" styleClass="ui-grid-col-11" />
-                    </div>
-                    <div class="ui-grid-row">
-                        <p:outputLabel for="definitionOfDone"
-                                       value="#{i18n['page.project.label.definitionOfDone']}"
-                                       styleClass="ui-grid-row ui-grid-col-1" />
-                        <h:outputText id="definitionOfDone" value="#{project.definitionOfDone}" styleClass="ui-grid-col-11" />
-                    </div>
-                    <div class="ui-grid-row">
-                        <p:outputLabel for="description"
-                                       value="#{i18n['page.project.label.description']}"
-                                       styleClass="ui-grid-row ui-grid-col-1" />
-                        <h:outputText id="description" value="#{project.description}" styleClass="ui-grid-col-11" />
-                    </div>
-                </div>
-            </p:panel>
+                            <div class="ui-grid-row">
+                                <p:outputLabel for="key" value="#{i18n['page.project.label.key']}" styleClass="ui-grid-row ui-grid-col-1" />
+                                <h:outputText id="key" value="#{project.key}" styleClass="ui-grid-row ui-grid-col-11" />
+                            </div>
 
+                            <div class="ui-grid-row">
+                                <p:outputLabel for="startDate" value="#{i18n['page.project.label.start']}" styleClass="ui-grid-col-1" />
+                                <h:outputText id="startDate" value="#{project.creationDate}" styleClass="ui-grid-col-11" />
+                            </div>
+                            <div class="ui-grid-row">
+                                <p:outputLabel for="definitionOfDone"
+                                               value="#{i18n['page.project.label.definitionOfDone']}"
+                                               styleClass="ui-grid-row ui-grid-col-1" />
+                                <h:outputText id="definitionOfDone" value="#{project.definitionOfDone}" styleClass="ui-grid-col-11" />
+                            </div>
+                            <div class="ui-grid-row">
+                                <p:outputLabel for="description"
+                                               value="#{i18n['page.project.label.description']}"
+                                               styleClass="ui-grid-row ui-grid-col-1" />
+                                <h:outputText id="description" value="#{project.description}" styleClass="ui-grid-col-11" />
+                            </div>
+                        </div>
+                    </p:tab>
+
+
+                    <!-- LISTA ZADAŃ W BACKLOGU -->
+
+                    <c:set var="backlog" value="#{agileService.findBacklogForProject(projectKey)}" />
+                    <p:tab rendered="${not empty backlog}" title="#{i18n['page.project.backlog.header']}">
+
+                        <div class="ui-grid ui-grid-responsive ui-grid-row issueList"
+                             style="font-weight: bold; border-bottom: 2px dotted !important;">
+
+                            <p:outputLabel value="#{i18n['page.project.backlog.issue.summary']}" styleClass="ui-grid-col-3" />
+
+                            <p:outputLabel value="#{i18n['page.project.backlog.issue.description']}" styleClass="ui-grid-col-4" />
+
+                            <p:outputLabel value="#{i18n['page.project.backlog.issue.reporter']}" styleClass="ui-grid-col-1" />
+
+                            <p:outputLabel value="#{i18n['page.project.backlog.issue.assignee']}" styleClass="ui-grid-col-1" />
+
+                            <p:outputLabel value="#{i18n['page.project.backlog.issue.actions']}" styleClass="ui-grid-col-3" />
+                        </div>
+
+                        <c:forEach var="issue" items="#{backlog.issues}">
+                            <div class="ui-grid ui-grid-responsive ui-grid-row issueList">
+
+                                <p:outputLabel value="#{issue.summary}" styleClass="ui-grid-col-3" />
+
+                                <p:outputLabel value="#{issue.description}" styleClass="ui-grid-col-4" />
+
+                                <p:outputLabel value="#{userService.findUser(issue.reporterId).fullName}" styleClass="ui-grid-col-1" />
+
+                                <p:outputLabel value="#{userService.findUser(issue.assigneeId).fullName}" styleClass="ui-grid-col-1" />
+
+                                <div class="ui-grid-col-3">
+                                    <p:button outcome="issue"
+                                              value="#{i18n['page.project.backlog.issue.link']}">
+                                        <f:param name="issueId" value="#{issue.id}" /></p:button>
+                                </div>
+                            </div>
+                        </c:forEach>
+
+                    </p:tab>
+
+
+                    <!-- SPRINTY -->
+
+                    <c:set var="backlog" value="#{agileService.findBacklogForProject(projectKey)}" />
+                    <p:tab rendered="${not empty backlog}" title="#{i18n['page.project.backlog.header']}">
+
+                        <div class="ui-grid ui-grid-responsive ui-grid-row" style="font-weight: bold">
+
+                            <p:outputLabel value="#{i18n['page.project.backlog.issue.summary']}" styleClass="ui-grid-col-3" />
+
+                            <p:outputLabel value="#{i18n['page.project.backlog.issue.description']}" styleClass="ui-grid-col-4" />
+
+                            <p:outputLabel value="#{i18n['page.project.backlog.issue.reporter']}" styleClass="ui-grid-col-1" />
+
+                            <p:outputLabel value="#{i18n['page.project.backlog.issue.assignee']}" styleClass="ui-grid-col-1" />
+
+                            <p:outputLabel value="#{i18n['page.project.backlog.issue.actions']}" styleClass="ui-grid-col-3" />
+                        </div>
+
+                        <c:forEach var="issue" items="#{backlog.issues}">
+                            <div class="ui-grid ui-grid-responsive ui-grid-row">
+
+                                <p:outputLabel value="#{issue.summary}" styleClass="ui-grid-col-3" />
+
+                                <p:outputLabel value="#{issue.description}" styleClass="ui-grid-col-4" />
+
+                                <p:outputLabel value="#{userService.findUser(issue.reporterId).fullName}" styleClass="ui-grid-col-1" />
+
+                                <p:outputLabel value="#{userService.findUser(issue.assigneeId).fullName}" styleClass="ui-grid-col-1" />
+
+                                <div class="ui-grid-col-3">
+                                    <p:button outcome="issue"
+                                              value="#{i18n['page.project.backlog.issue.link']}">
+                                        <f:param name="issueId" value="#{issue.id}" /></p:button>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </p:tab>
+
+                </p:accordionPanel>
+
+            </p:outputPanel>
         </ui:define>
     </ui:composition>
 </h:body>
