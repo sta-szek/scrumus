@@ -86,3 +86,13 @@ Pierwszą rzeczą, która nasuwa się na myśl jest wykorzystanie MDB (Message D
 Drugim możliwym zastosowaniem jest możliwość wysyłania rozgłoszeń w systemie. Jednak że aplikacja nie wprowadza funkcjonalności wiadomości systemowych również i tu ten komponent nie ma zastosowania.
 
 Na tym etapie warto wspomnieć, że komponenty sterowane komunikatami można wprowadzić na każdym etapie udoskonalania projektu jednak warto zwrócić uwagę na to, jak zachować odpowiedni stopień bezpieczeństwa przy tego typu komunikatach.
+
+\section{Model bazy danych}
+System korzysta z zewnętrznej bazy danych, której model jest przedstawiony na rysunku \ref{fig:modeldb}. Został on wygenerowany za pomocą testowej wersji programu DbSchema. Kolorem zielonym zostały oznaczone tabele dotyczące użytkowników oraz uprawnień. Niebieski kolor oznacza tabele złączeniowe, które nie mają odwzorowania w kodzie. Czerwone zaś to pozostałe struktury występujące w projekcie -- są to obiekty na których operują użytkownicy. W pozostałej części pracy opiszę jak został wygenerowany model bazy danych.
+
+\begin{sidewaysfigure}[h!]
+	\centering
+	\includegraphics[width=25cm]{rysunki/modeldb.png}	
+	\caption{Szczegółowy diagram wybranych klas}
+	\label{fig:modeldb}
+\end{sidewaysfigure}
