@@ -1,0 +1,111 @@
+\chapter{Analiza biznesowa problemu i założenia projektowe}
+
+\section{Role i użytkownicy systemu}
+W projektowanym systemie występują cztery rodzaje użytkowników:
+
+\begin{enumerate}
+	\item administrator - posiada on największe uprawnienia w systemie,
+	\item właściciel produktu - odzwierciela rolę właściciela produktu w Scrumie,
+	\item scrum master - odzwierciela rolę scrum mastera w Scrumie,
+	\item deweloper - posiada najmniejsze uprawnienia, jest częścią zespołu deweloperskiego.
+\end{enumerate} 
+
+Na tym etapie warto wspomnieć, że każdy użytkownik jest jest deweloperem. Każdy projekt może mieć tylko jednego właściciela produktu, a każdy z nich może być product ownerem tylko raz. Dodatkowo zespół deweloperski ma przydzielonego tylko jednego scrum mastera, przy czym scrum master może być przypisany do wielu zespołów jednocześnie.
+
+\section{Wymagania funkcjonalne}
+Prezentowany przeze mnie system ma pewne założenia oraz wymagania. W tym rozdziale zajmę się opisem wymagań funkcjonalnych. 
+
+We wcześniejszym akapicie zostały omówione role w systemie. Każda z tych ról ma pewne uprawnienia lub restrykcje. Każda taka cecha zostanie przedstawiona jako wymaganie funkcjonalne prezentowanego systemy.
+
+Jednym ze sposobów na prowadzenie dokumentacji projektu, jak i zbioru wymagań jest utrzymywanie rejestru historyjek użytkownika. Historyjki użytkownika są częścią zwinnych metody prowadzenia projektu. Jako że wytwarzanemu systemowi towarzyszy metodyka Scrum, nie mogło tutaj zabraknąć tego elementu.
+
+\begin{italicquote}
+	Historyjka jest jednostką funkcjonalności w projektach XP. Pokazujemy postęp prac, dostarczając przetestowany i zintegrowany kod, który składa się na implementację danej historyjki. Historyjka powinna być zrozumiała i wartościowa dla klientów, testowalna przez programistów i na tyle mała, żeby programiści mogli zaimplementować sześć historyjek w takcie jednej iteracji\footnote{K. Beck, M. Fowler, \textit{Planning Extreme Programming}, Addison-Wesley, Boston 2000, s.42}.
+\end{italicquote}
+
+Historyjki mogą mieć wiele wzorców. W tej pracy są stosowane dwa z nich:
+\begin{itemize}
+	\item Jako \textit{\textless typ użytkownika\textgreater} mogę \textit{\textless nazwa zadania\textgreater}.
+	\item Jako \textit{\textless typ użytkownika\textgreater} mogę \textit{\textless nazwa zadania\textgreater} w celu \textit{\textless cel\textgreater}\cite{SCRUM}
+\end{itemize} 
+
+
+\textbf{Administrator}
+\begin{enumerate}	
+	\item jako administrator mogę tworzyć nowych użytkowników w celu dodania ich do systemu,
+	\item jako administrator mogę usuwać użytkowników z systemu z wyjątkiem siebie samego,
+	\item jako administrator mogę dodawać użytkowników do zespołu w celu modyfikacji zespołu,
+	\item jako administrator mogę usuwać użytkowników z zespołu w celu modyfikacji zespołu,
+	\item jako administrator mogę nadać uprawnienia administratora dowolnemu użytkownikowi,
+	\item jako administrator mogę odebrać uprawnienia administratora dowolnemu administratorowi,
+	\item jako administrator mogę przypisać właściciela produktu do projektu,
+	\item jako administrator mogę usunąć właściciela produktu z projektu,
+	\item jako administrator mogę utworzyć projekt w celu dodania go do systemu,
+	\item jako administrator mogę usunąć projekt w celu usunięcia z systemu oraz powiązanych z nim elementów t.j. sprint, story, backlog oraz inne. Operacja usuwania odbywa się kaskadowo,
+	\item jako administrator mogę modyfikować projekt,
+	\item jako administrator mogę tworzyć nowe zespoły w celu dodania ich do systemu,
+	\item jako administrator mogę dodawać zespoły do projektów w celu przydzielenia uprawnień,
+	\item jako administrator mogę usuwać zespoły z projektów w celu odebrania uprawnień,
+	\item jako administrator mogę przypisać scrum mastera do zespołu,
+	\item jako administrator mogę usunąć scrum mastera z zespołu,
+	\item jako administrator mogę tworzyć, usuwać oraz edytować statusy zadań,
+	\item jako administrator mogę tworzyć, usuwać oraz edytować priorytety zadań,
+	\item jako administrator mogę tworzyć, usuwać oraz edytować typy zadań.
+\end{enumerate}		
+\textbf{Product owner}
+\begin{enumerate}		
+	\item TODO
+\end{enumerate}	
+\textbf{Scrum master}
+\begin{enumerate}		
+	\item TODO
+\end{enumerate}
+\textbf{Developer}
+\begin{enumerate}		
+	\item jako deweloper mogę tworzyć zadania,
+	\item jako deweloper mogę usuwać zadania,
+	\item jako deweloper mogę dodawać komentarze do zadań,
+	\item jako deweloper mogę dodawać komentarze do retrospektyw,
+	\item jako deweloper mogę edytować swój profil,
+	\item jako deweloper mogę zmienić swoje hasło,
+	\item jako deweloper mogę przeglądać profile innych użytkowników,
+	\item jako deweloper mogę przeglądać wszystkie projekty, do których jestem przypisany,
+	\item jako deweloper mogę przypisać zadanie do dowolnego użytkownika,
+	
+\end{enumerate}
+
+\section{Wymagania niefunkcjonalne}
+Kolejnym zagadnieniem, które zostanie poruszone w tym rozdziale będą wymagania niefunkcjonalne. Do analizy zostanie wykorzystana metoda FURPS. Oto pełny spis wymagań niefunkcjonalnych systemu:
+\begin{enumerate}
+	\item \textbf{F}unctionality - funkcjonalność, system powinien:
+		\begin{itemize}
+			\item spełniać wszystkie wymagania funkcjonalne,
+			\item mieć możliwość administracji poprzez panel administracyjny,
+			\item posiadać audyt w postaci logów systemu,
+			\item być łatwo rozszerzalny.
+		\end{itemize}
+	\item \textbf{U}sability - używalność, system powinien posiadać następujące cechy:
+		\begin{itemize}
+			\item ergonomia - łatwość używania,
+			\item look \& feel, czyli estetyczność oraz możliwość modyfikacji wyglądu,
+			\item internacjonalizacja - wiele wersji językowych.
+		\end{itemize}
+	\item \textbf{R}eliability - niezawodność, w której skład wchodzą:
+		\begin{itemize}
+			\item dostępność, czyli czas pomiędzy awariami,
+			\item odzyskiwalność - ile czasu zajmie ponowne uruchomienie systemu.
+		\end{itemize}
+	\item \textbf{P}erformance - wydajność, system powinien:
+		\begin{itemize}
+			\item być przepustowy ,
+			\item mieć dużą responsywność,
+			\item działać szybko.
+		\end{itemize}
+	\item \textbf{S}supportability - wsparcie, do którego należy:
+		\begin{itemize}
+			\item prostota w instalacji,
+			\item łatwość konfiguracji,
+			\item adaptowalność, czyli możliwość zaadoptowania systemu do innych warunków,
+			\item testowalność, czyli testy jednostkowe oraz integracyjne.
+		\end{itemize}
+\end{enumerate}
