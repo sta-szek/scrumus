@@ -10,4 +10,5 @@
 \contentsline {chapter}{\numberline {3}Analiza biznesowa problemu i za\IeC {\l }o\IeC {\.z}enia projektowe}{7}
 \contentsline {section}{\numberline {3.1}Role i u\IeC {\.z}ytkownicy systemu}{7}
 \contentsline {section}{\numberline {3.2}Wymagania funkcjonalne}{7}
-\contentsline {section}{\numberline {3.3}Wymagania funkcjonalne}{10}
+\contentsline {section}{\numberline {3.3}Wymagania niefunkcjonalne}{10}
+\contentsline {chapter}{\numberline {4}Dokumentacja projektowa}{11}
