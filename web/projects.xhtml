@@ -80,8 +80,7 @@
                     <c:set var="backlog" value="#{agileService.findBacklogForProject(projectKey)}" />
                     <p:tab rendered="${not empty backlog}" title="#{i18n['page.project.backlog.header']}">
 
-                        <div class="ui-grid ui-grid-responsive ui-grid-row issueList"
-                             style="font-weight: bold; border-bottom: 2px dotted !important;">
+                        <div class="ui-grid ui-grid-responsive ui-grid-row issue-list-header">
 
                             <p:outputLabel value="#{i18n['page.project.backlog.issue.summary']}" styleClass="ui-grid-col-3" />
 
@@ -95,15 +94,17 @@
                         </div>
 
                         <c:forEach var="issue" items="#{backlog.issues}">
-                            <div class="ui-grid ui-grid-responsive ui-grid-row issueList">
+                            <div class="ui-grid ui-grid-responsive ui-grid-row issue-list-item">
 
-                                <p:outputLabel value="#{issue.summary}" styleClass="ui-grid-col-3" />
+                                <p:outputLabel value="#{issue.summary} &#160;" styleClass="ui-grid-col-3" />
 
-                                <p:outputLabel value="#{issue.description}" styleClass="ui-grid-col-4" />
+                                <p:outputLabel value="#{issue.description} &#160;" styleClass="ui-grid-col-4" />
 
-                                <p:outputLabel value="#{userService.findUser(issue.reporterId).fullName}" styleClass="ui-grid-col-1" />
+                                <p:outputLabel value="#{userService.findUser(issue.reporterId).fullName} &#160;"
+                                               styleClass="ui-grid-col-1" />
 
-                                <p:outputLabel value="#{userService.findUser(issue.assigneeId).fullName}" styleClass="ui-grid-col-1" />
+                                <p:outputLabel value="#{userService.findUser(issue.assigneeId).fullName} &#160;"
+                                               styleClass="ui-grid-col-1" />
 
                                 <div class="ui-grid-col-3">
                                     <p:button outcome="issue"
@@ -118,38 +119,63 @@
 
                     <!-- SPRINTY -->
 
+                    <!--Header sprintów-->
                     <c:set var="sprints" value="#{agileService.findSprintsForProject(projectKey)}" />
                     <p:tab rendered="${not empty sprints}" title="#{i18n['page.project.sprints.header']}">
+                        <div class="ui-grid ui-grid-responsive">
+                            <div class="ui-grid-row issue-list-header">
 
-                        <div class="ui-grid ui-grid-responsive ui-grid-row issueList"
-                             style="font-weight: bold; border-bottom: 2px dotted !important;">
+                                <p:outputLabel value="#{i18n['page.project.sprint.name']}" styleClass="ui-grid-col-6" />
 
-                            <p:outputLabel value="#{i18n['page.project.sprint.name']}" styleClass="ui-grid-col-6" />
+                                <p:outputLabel value="#{i18n['page.project.sprint.time.start']}" styleClass="ui-grid-col-2" />
 
-                            <p:outputLabel value="#{i18n['page.project.sprint.time.start']}" styleClass="ui-grid-col-2" />
+                                <p:outputLabel value="#{i18n['page.project.sprint.time.end']}" styleClass="ui-grid-col-2" />
 
-                            <p:outputLabel value="#{i18n['page.project.sprint.time.end']}" styleClass="ui-grid-col-2" />
-
-                            <p:outputLabel value="#{i18n['page.project.sprint.actions']}" styleClass="ui-grid-col-2" />
-                        </div>
-
-                        <c:forEach var="sprint" items="#{sprints}">
-                            <div class="ui-grid ui-grid-responsive ui-grid-row issueList">
-
-                                <p:outputLabel value="#{sprint.name}" styleClass="ui-grid-col-6" />
-
-                                <p:outputLabel value="#{sprint.timeRange.startDate}" styleClass="ui-grid-col-2" />
-
-                                <p:outputLabel value="#{sprint.timeRange.endDate}" styleClass="ui-grid-col-2" />
-
-                                <div class="ui-grid-col-2">
-                                    <p:button outcome="#{path['retrospective']}"
-                                              value="#{i18n['page.project.sprint.retrospective.link']}"
-                                              rendered="${not empty sprint.retrospectiveId}">
-                                        <f:param name="retrospectiveId" value="#{sprint.retrospectiveId}" /></p:button>
-                                </div>
+                                <p:outputLabel value="#{i18n['page.project.sprint.actions']}" styleClass="ui-grid-col-2" />
                             </div>
-                        </c:forEach>
+
+                            <!--Sprinty-->
+                            <c:forEach var="sprint" items="#{sprints}">
+                                <div class="ui-grid-row issue-list-item">
+
+                                    <p:outputLabel value="#{sprint.name} &#160;" styleClass="ui-grid-col-6" />
+
+                                    <p:outputLabel value="#{sprint.timeRange.startDate} &#160;" styleClass="ui-grid-col-2" />
+
+                                    <p:outputLabel value="#{sprint.timeRange.endDate} &#160;" styleClass="ui-grid-col-2" />
+
+                                    <div class="ui-grid-col-2">
+                                        <p:button outcome="#{path['retrospective']}"
+                                                  value="#{i18n['page.project.sprint.retrospective.link']}"
+                                                  rendered="${not empty sprint.retrospectiveId}">
+                                            <f:param name="retrospectiveId" value="#{sprint.retrospectiveId}" /></p:button>
+                                    </div>
+                                </div>
+                                <!--toggable story list-->
+                                <p:spacer />
+                                <p:fieldset legend="#{i18n['page.project.sprint.stories.list']}"
+                                            toggleable="true"
+                                            collapsed="true"
+                                            styleClass="ui-grid-row ui-grid-col-12"
+                                            style="padding-bottom: 10px !important;">
+                                    <!-- stories -->
+                                    <c:forEach var="story" items="#{agileService.findStoriesForSprint(sprint.id)}">
+                                        <p:fieldset legend="#{story.name} (#{story.points})"
+                                                    toggleable="true"
+                                                    collapsed="true"
+                                                    styleClass="ui-grid-row ui-grid-col-12">
+                                            <div class="ui-grid-row">
+
+                                                <p:outputLabel value="#{story.name} &#160;" styleClass="ui-grid-col-11" />
+
+                                                <p:outputLabel value="#{story.points} &#160;" styleClass="ui-grid-col-1" />
+
+                                            </div>
+                                        </p:fieldset>
+                                    </c:forEach>
+                                </p:fieldset>
+                            </c:forEach>
+                        </div>
                     </p:tab>
 
                 </p:accordionPanel>

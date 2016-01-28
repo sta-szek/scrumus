@@ -52,8 +52,18 @@ body {
     border-bottom: 1px solid !important;
 }
 
-.issueList {
+.issue-list-header {
+    padding-bottom: 10px !important;
+    font-weight: bold;
+    border-bottom: 2px dotted !important;
+}
+
+.issue-list-item {
     padding-top: 5px !important;
-    padding-bottom: 5px !important;
-    border-bottom: 1px gray solid;
+}
+
+.ui-fieldset-legend {
+    cursor: pointer;
+    width: 100%;
+    padding: 0px !important;
 }
