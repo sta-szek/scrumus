@@ -5,15 +5,22 @@ import edu.piotrjonski.scrumus.business.ProjectManager;
 import edu.piotrjonski.scrumus.business.SprintManager;
 import edu.piotrjonski.scrumus.business.StoryManager;
 import edu.piotrjonski.scrumus.domain.Backlog;
+import edu.piotrjonski.scrumus.domain.Issue;
 import edu.piotrjonski.scrumus.domain.Sprint;
 import edu.piotrjonski.scrumus.domain.Story;
 import lombok.Data;
 import org.slf4j.Logger;
 
+import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 @Data
 public class AgileService implements Serializable {
@@ -33,23 +40,83 @@ public class AgileService implements Serializable {
     @Inject
     private StoryManager storyManager;
 
-    public List<Sprint> findSprintsForProject(String projectKey) {
+    private String currentlyViewedProjectKey;
+
+    private String moveIssueToSprint;
+    private String moveIssueToStory;
+
+    private List<Sprint> sprintsForCurrentlyViewedProject = new ArrayList<>();
+    private Map<Integer, List<Story>> storiesForSprints = new HashMap<>();
+    private Backlog backlogForCurrentlyViewedProject;
+
+    @PostConstruct
+    public void prepareForView() {
+        currentlyViewedProjectKey = FacesContext.getCurrentInstance()
+                                                .getExternalContext()
+                                                .getRequestParameterMap()
+                                                .get("projectKey");
+        sprintsForCurrentlyViewedProject = findSprintsForProject(currentlyViewedProjectKey);
+        sprintsForCurrentlyViewedProject.stream()
+                                        .map(Sprint::getId)
+                                        .forEach(findStoriesAndPutIntoMap());
+        backlogForCurrentlyViewedProject = findBacklogForProject(currentlyViewedProjectKey);
+        logger.info("postcontrcuctr");
+    }
+
+    public String moveToBacklog(Issue issue, Story story) {
+        storyManager.moveIssueToBacklog(issue, story);
+        logger.info("issue moved to backlog");
+        return null;
+    }
+
+    public void moveIssueToStory() {
+        logger.info(moveIssueToSprint + " " + moveIssueToStory);
+    }
+
+    public List<Story> getStoriesForSprint(int sprintId) {
+        return storiesForSprints.getOrDefault(sprintId, new ArrayList<>());
+    }
+
+    public List<String> completeSprints() {
+        List<String> collect = sprintsForCurrentlyViewedProject.stream()
+                                                               .map(Sprint::getName)
+                                                               .collect(Collectors.toList());
+        logger.info("complete sprints" + collect);
+        return collect;
+    }
+
+    public List<String> completeSprintStories() {
+        int sprintId = sprintsForCurrentlyViewedProject.stream()
+                                                       .filter(sprint -> sprint.getName()
+                                                                               .equals(moveIssueToSprint))
+                                                       .findFirst()
+                                                       .orElse(new Sprint())
+                                                       .getId();
+        List<String> collect = storiesForSprints.get(sprintId)
+                                                .stream()
+                                                .map(Story::getName)
+                                                .collect(Collectors.toList());
+        logger.info("complete stories" + collect + " sprintId " + sprintId + " moveIssueToSprint " + moveIssueToSprint);
+        return collect;
+    }
+
+    private Consumer<Integer> findStoriesAndPutIntoMap() {
+        return sprintId -> {
+            List<Story> storiesForSprint = findStoriesForSprint(sprintId);
+            storiesForSprints.put(sprintId, storiesForSprint);
+        };
+    }
+
+    private List<Sprint> findSprintsForProject(String projectKey) {
         return sprintManager.findAllSprintsForProject(projectKey);
     }
 
-    public Backlog findBacklogForProject(String projectKey) {
+    private Backlog findBacklogForProject(String projectKey) {
         return projectManager.findBacklogForProject(projectKey)
                              .orElse(null);
     }
 
-    public List<Story> findStoriesForSprint(String sprintId) {
-        try {
-            int sprintIntId = Integer.parseInt(sprintId);
-            return storyManager.findAllStoriesForSprint(sprintIntId);
-        } catch (NumberFormatException e) {
-            return new ArrayList<>();
-        }
+    private List<Story> findStoriesForSprint(int sprintId) {
+        return storyManager.findAllStoriesForSprint(sprintId);
     }
-
-
 }
