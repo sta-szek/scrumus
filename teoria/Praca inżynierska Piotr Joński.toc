@@ -12,19 +12,28 @@
 \contentsline {section}{\numberline {2.4}U\IeC {\.z}yte technologie i narz\IeC {\k e}dzia}{11}
 \contentsline {subsection}{\numberline {2.4.1}Testowanie}{11}
 \contentsline {subsubsection}{\numberline {2.4.1.1}JUnit}{11}
-\contentsline {subsection}{\numberline {2.4.2}Arquillian}{11}
+\contentsline {subsubsection}{\numberline {2.4.1.2}PowerMock}{11}
+\contentsline {subsubsection}{\numberline {2.4.1.3}AssertJ}{12}
+\contentsline {subsection}{\numberline {2.4.2}Arquillian}{12}
 \contentsline {subsection}{\numberline {2.4.3}Ci\IeC {\k a}g\IeC {\l }a integracja}{12}
 \contentsline {subsubsection}{\numberline {2.4.3.1}Gradle}{12}
-\contentsline {subsubsection}{\numberline {2.4.3.2}GitHub}{12}
-\contentsline {subsubsection}{\numberline {2.4.3.3}TeamCity}{12}
+\contentsline {subsubsection}{\numberline {2.4.3.2}GitHub}{13}
+\contentsline {subsubsection}{\numberline {2.4.3.3}TeamCity}{13}
 \contentsline {subsubsection}{\numberline {2.4.3.4}YouTrack}{13}
 \contentsline {subsubsection}{\numberline {2.4.3.5}IntelliJ}{13}
-\contentsline {chapter}{\numberline {3}Dokumentacja projektowa}{15}
-\contentsline {section}{\numberline {3.1}Architektura systemu}{15}
-\contentsline {subsection}{\numberline {3.1.1}Identyfikacja komponent\IeC {\'o}w biznesowych}{17}
-\contentsline {section}{\numberline {3.2}Struktura projektu}{19}
-\contentsline {subsection}{\numberline {3.2.1}Klasyfikacja komponent\IeC {\'o}w EJB}{20}
-\contentsline {subsubsection}{\numberline {3.2.1.1}Komponenty encyjne}{20}
-\contentsline {subsubsection}{\numberline {3.2.1.2}Komponenty sesyjne}{20}
-\contentsline {subsubsection}{\numberline {3.2.1.3}Komponenty sterowane komunikatami}{21}
-\contentsline {section}{\numberline {3.3}Model bazy danych}{21}
+\contentsline {subsection}{\numberline {2.4.4}Warstwa prezentacji}{14}
+\contentsline {subsubsection}{\numberline {2.4.4.1}JSF}{14}
+\contentsline {subsubsection}{\numberline {2.4.4.2}PrimeFaces}{14}
+\contentsline {subsection}{\numberline {2.4.5}WildFly}{14}
+\contentsline {subsection}{\numberline {2.4.6}Docker}{15}
+\contentsline {subsection}{\numberline {2.4.7}Postgresql}{15}
+\contentsline {subsection}{\numberline {2.4.8}Inne}{15}
+\contentsline {chapter}{\numberline {3}Dokumentacja projektowa}{17}
+\contentsline {section}{\numberline {3.1}Architektura systemu}{17}
+\contentsline {subsection}{\numberline {3.1.1}Identyfikacja komponent\IeC {\'o}w biznesowych}{19}
+\contentsline {section}{\numberline {3.2}Struktura projektu}{21}
+\contentsline {subsection}{\numberline {3.2.1}Klasyfikacja komponent\IeC {\'o}w EJB}{22}
+\contentsline {subsubsection}{\numberline {3.2.1.1}Komponenty encyjne}{22}
+\contentsline {subsubsection}{\numberline {3.2.1.2}Komponenty sesyjne}{22}
+\contentsline {subsubsection}{\numberline {3.2.1.3}Komponenty sterowane komunikatami}{23}
+\contentsline {section}{\numberline {3.3}Model bazy danych}{23}

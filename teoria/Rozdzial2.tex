@@ -121,6 +121,12 @@ Jak wiadomo w dzisiejszych czasach aplikacje, które nie posiadają testów, jak
 \subsubsection{JUnit}
 JUnit jest frameworkiem, który umożliwia pisanie testów jednostkowych. Stosuje się go do aplikacji napisanych w języku Java. Jego działanie sprawia, że uruchomienie testów trwa parę sekund, dzięki czemu programista może je uruchamiać na bieżąco, przez co jakoś kodu jest stale monitorowana. Framework ten jest doskonale zintegrowany z systemami budowania projektów takimi jak Gradle czy Maven. 
 
+\subsubsection{PowerMock}
+Jest to framework rozszerzający możliwości zwykłych testów jednostkowych. Oferuje on mockowanie klas, tzn. przykrywanie ich funkcjonalności na potrzeby testów, przez co możemy przykryć np. komunikację z bazą danych i zwrócić własne rezultaty. Takie możliwości są bardzo ważne przy pisaniu testów jednostkowych, które mają wykonywać się błyskawicznie i nie mogą polegać na zewnętrznych systemach t.j. bazy danych.
+
+\subsubsection{AssertJ}
+Jest to kolejny framework na potrzeby testów. Jego zaletą jest to, iż pozwala on tworzyć czytelne dla programisty asercje oraz ma możliwość szerokiej rozbudowy. Pozwala on na sprawdzenie wyników testów w jednej linii, co ma duży wpływ na czytelność.
+
 \subsection{Arquillian}
 Arquillian jest kolejnym frameworkiem do testowania, tym razem jednak integracyjnego. Posiada on wsparcie dla wielu kontenerów aplikacji JEE, co czyni go pionierem pod tym względem. Dzięki jego mechanizmom możliwe jest uruchomienie testów bez konieczności posiadania serwera aplikacji, co znacznie przyśpiesza wykonywanie testów integracyjnych. Istnieje również możliwość uruchamiania testów na zdalnym serwerze i to właśnie tą ścieżkę wybrałem, ze względu na większe możliwości testowania oraz to, że aplikacja jest uruchamiana na żywym środowisku, przez co umożliwia to sprawdzenia zachowania aplikacji dokładnie na takim serwerze, na jakim będzie uruchomiona wersja produkcyjna.
 
@@ -143,3 +149,24 @@ YouTrack również jest systemem do zarządzania projektami. Jest on dedykowany 
 \subsubsection{IntelliJ}
 IntelliJ jest zintegrowanym środowiskiem deweloperskim na bardzo wysokim poziomie. Umożliwia on tworzenie, kompilację oraz testowanie kodu napisanego w języku Java lub innych językach, które działają na wirtualnej maszynie Javy np. Scala lub Groovy. Narzędzie to posiada szereg funkcjonalności ułatwiających i przyśpieszających programowanie. Jest ono świetnie zintegrowane z frameworkami do testowania (JUnit, Arquillian), systemami do budowania (Gradle, TeamCity), czy zarządzania (YouTrack) przez co programista może się skupić wyłącznie na jednym oknie - oknie aplikacji IntelliJ. Ten system również jest darmowy dla studentów, co stwarza świetne możliwości dla tej grupy osób.
 
+
+\subsection{Warstwa prezentacji}
+Pisząc warstwa prezentacji mam na myśli zarówno część wizualną jak i różne technologie i wzorce pozwalające na budowę własnych aplikacji prezentacji dla istniejącego już systemu. Przy projektowaniu interfejsu WWW pomogły frameworki JSF oraz PrimeFaces, zaś do umożliwienia rozbudowy systemu o dodatkowe aplikacje klienckie odpowiadają przykładowe endpointy w postaci RESTów.
+
+\subsubsection{JSF}
+JSF jest frameworkiem, który umożliwia tworzenia warstwy prezentacji dla aplikacji webowych napisanych w języku Java. Posiada on szereg udogodnień, dzięki którym programowanie części wizualnej staje się proste. Framework umożliwia stworzenie warstwy oddzielającej logikę biznesową od widoku, co jest pożądanym, a wręcz wymaganym aspektem programowania aplikacji webowych.
+
+\subsubsection{PrimeFaces}
+PrimeFaces jest darmowym frameworkiem, który posiada szereg dostępnych z półki kontrolek służących do obsługiwania widoku. Dodatkowo wprowadza wiele usprawnień, takich jak generowanie tabel z danymi czy szablony css, przez co możemy zmienić wygląd naszej aplikacji za pomocą jednej linii kodu. Został on napisany jako częściowa nakładka na JSF. Wszystkie żądania potrafi obsługiwać synchronicznie i asynchronicznie dzięki zastosowaniu Javascriptu.
+
+\subsection{WildFly}
+WildFly jest darmowym kontenerem aplikacji, rozwijanym przez firmę RedHat. Jest on w pełni zgodny ze standardem EJB. Serwer posiada wsparcie dla baz danych oraz zabezpieczeń aplikacji na poziomie kontenerów. Implementuje również w pełni specyfikację JAAS (Java Authentication and Authorization Service), dzięki której zapewnione jest bezpieczeństwo w moim systemie. Posiada on bardzo dobre parametry takie jak czas startu serwera - poniżej dwóch sekund, czy czas wdrożenia aplikacji - poniżej dziesięciu sekund.
+
+\subsection{Docker}
+Jest to narzędzie, które w ostatnim czasie zwróciło uwagę wielu firm i indywidualnych programistów. Co prawna koncepcja kontenerów sięga lat 80-tych, jednak dopiero w dobie mikrousług system ten miał możliwość przebicia się. Pozwala on na budowanie obrazów opartych na systemach z rodziny UNIX. Z takich obrazów można tworzyć kontenery, skalować je i zarządzać nimi. System daje możliwość zainstalowania dowolnych aplikacji, przy niewielkiej konfiguracji, co pozwala uruchomić mój system wraz z bazą danych za pomocą jednej komendy w czasie równym uruchomieniu serwera i wdrożenia aplikacji.
+
+\subsection{Postgresql}
+Postgresql jest darmową bazą danych o dużych możliwościach. Ma on niewielkie wymagania systemowe oraz oferuje wsparcie dla transakcji. Umożliwia przechowywanie danych o różnych typach i posiada szereg usprawnień optymalizacyjnych. Dodatkowo można definiować własne typy danych.
+
+\subsection{Inne}
+latex, dbschema, lombok
