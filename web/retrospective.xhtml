@@ -21,27 +21,45 @@
 
             <p:panel id="container"
                      rendered="${not empty retrospectiveId}"
-                     styleClass="ui-grid ui-grid-responsive ui-grid-row"
+                     styleClass="ui-grid ui-grid-responsive"
                      header="#{i18n['page.retrospective.header']}">
-                <p:panel id="retrospetivePlus" styleClass="ui-grid-col-6"
-                         header="#{i18n['page.retrospective.header.plus']}">
-                    <p:dataList value="#{retrospectiveService.currentlyViewedRetrospective.getPluses()}"
-                                var="plusItem" itemStyleClass="retrospectiveItem">
-                        <div class="retrospectivePlus">
-                            (#{plusItem.rate}) #{plusItem.description}
-                        </div>
-                    </p:dataList>
-                </p:panel>
+                <p:outputLabel value="#{retrospectiveService.currentlyViewedRetrospective.description}"
+                               styleClass="ui-grid-row ui-grid-col-12" />
+                <div class="ui-grid-row">
+                    <p:panel id="retrospetivePlus" styleClass="ui-grid-col-6"
+                             header="#{i18n['page.retrospective.header.plus']}">
+                        <p:dataList value="#{retrospectiveService.currentlyViewedRetrospective.pluses}"
+                                    var="plusItem" itemStyleClass="retrospectiveItem">
+                            <div class="retrospectivePlus">
+                                #{plusItem.description}
+                            </div>
+                        </p:dataList>
+                    </p:panel>
 
-                <p:panel id="retrospetiveMinus" styleClass="ui-grid-col-6" header="#{i18n['page.retrospective.header.minus']}">
-                    <p:dataList value="#{retrospectiveService.currentlyViewedRetrospective.getPluses()}"
-                                var="minusItem" itemStyleClass="retrospectiveItem">
-                        <div class="retrospectiveMinus">
-                            (#{minusItem.rate}) #{minusItem.description}
-                        </div>
-                    </p:dataList>
-                </p:panel>
+                    <p:panel id="retrospetiveMinus" styleClass="ui-grid-col-6" header="#{i18n['page.retrospective.header.minus']}">
+                        <p:dataList value="#{retrospectiveService.currentlyViewedRetrospective.minuses}"
+                                    var="minusItem" itemStyleClass="retrospectiveItem">
+                            <div class="retrospectiveMinus">
+                                #{minusItem.description}
+                            </div>
+                        </p:dataList>
+                    </p:panel>
+                </div>
+
             </p:panel>
+            <h:form>
+                <p:inputTextarea id="retrospectiveItemDescription"
+                                 value="#{retrospectiveService.itemDescription}"
+                                 autoResize="true" style="width: 100%" />
+                <br />
+                <p:commandButton value="#{i18n['page.retrospective.plus.add']}"
+                                 action="#{retrospectiveService.addPlus()}"
+                                 update="retrospetivePlus, retrospectiveItemDescription" />
+
+                <p:commandButton value="#{i18n['page.retrospective.minus.add']}"
+                                 action="#{retrospectiveService.addMinus()}"
+                                 update="retrospetiveMinus, retrospectiveItemDescription" />
+            </h:form>
 
             <!--komentarze-->
             <p:dataScroller value="#{retrospectiveService.currentlyViewedRetrospective.comments}"
@@ -70,7 +88,9 @@
                     <p:inputTextarea id="commentBody" value="#{commentService.commentBody}" styleClass="ui-grid-col-12" autoResize="true" />
                     <br />
                     <p:commandButton value="#{i18n['page.retrospective.comment.add']}"
-                                     action="#{commentService.addCommentToRetrospective()}" update="comments, commentBody">
+                                     action="#{commentService.addCommentToRetrospective()}"
+                                     actionListener="#{retrospectiveService.refreshRetrospective()}"
+                                     update="comments, commentBody">
                         <f:param name="retrospectiveId" value="#{retrospectiveId}" />
                         <f:param name="userId" value="#{currentUser.id}" />
                     </p:commandButton>

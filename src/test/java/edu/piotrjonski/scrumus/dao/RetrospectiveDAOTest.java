@@ -110,7 +110,6 @@ public class RetrospectiveDAOTest {
 
     private RetrospectiveItem createDomainRetrospectiveItem() {
         RetrospectiveItem retrospectiveItem = new RetrospectiveItem();
-        retrospectiveItem.setRate(RATE);
         retrospectiveItem.setDescription(ITEM_DESC);
         retrospectiveItem.setRetrospectiveItemType(RetrospectiveItemType.MINUS);
         return retrospectiveItem;

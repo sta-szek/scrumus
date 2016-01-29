@@ -11,7 +11,6 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 public class RetrospectiveItem implements Serializable {
-    private int rate;
     private String description;
     private RetrospectiveItemType retrospectiveItemType;
 }

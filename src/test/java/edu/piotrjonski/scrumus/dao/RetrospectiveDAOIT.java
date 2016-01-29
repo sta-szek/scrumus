@@ -262,16 +262,12 @@ public class RetrospectiveDAOIT {
         RetrospectiveItem retrospectiveItem2 = new RetrospectiveItem();
         RetrospectiveItem retrospectiveItem3 = new RetrospectiveItem();
         RetrospectiveItem retrospectiveItem4 = new RetrospectiveItem();
-        retrospectiveItem1.setRate(1);
         retrospectiveItem1.setDescription("desc1");
         retrospectiveItem1.setRetrospectiveItemType(RetrospectiveItemType.MINUS);
-        retrospectiveItem2.setRate(5);
         retrospectiveItem2.setDescription("desc1");
         retrospectiveItem2.setRetrospectiveItemType(RetrospectiveItemType.PLUS);
-        retrospectiveItem3.setRate(7);
         retrospectiveItem3.setDescription("desc1");
         retrospectiveItem3.setRetrospectiveItemType(RetrospectiveItemType.PLUS);
-        retrospectiveItem4.setRate(2);
         retrospectiveItem4.setDescription("desc1");
         retrospectiveItem4.setRetrospectiveItemType(RetrospectiveItemType.MINUS);
 

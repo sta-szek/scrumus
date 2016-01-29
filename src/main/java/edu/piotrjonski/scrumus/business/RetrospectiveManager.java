@@ -50,6 +50,10 @@ public class RetrospectiveManager {
         retrospectiveDAO.saveOrUpdate(retrospective);
     }
 
+    public void update(final Retrospective retrospective) {
+        retrospectiveDAO.saveOrUpdate(retrospective);
+    }
+
     private Optional<Retrospective> createRetrospectiveAndUpdateSprint(final Retrospective retrospective, final Sprint sprint) {
         Optional<Retrospective> savedRetrospective = retrospectiveDAO.saveOrUpdate(retrospective);
         if (savedRetrospective.isPresent()) {

@@ -45,7 +45,7 @@ public class Retrospective implements Serializable {
 
     public List<RetrospectiveItem> getMinuses() {
         return retrospectiveItems.stream()
-                                 .filter(isPlus())
+                                 .filter(isMinus())
                                  .collect(Collectors.toList());
     }
 
