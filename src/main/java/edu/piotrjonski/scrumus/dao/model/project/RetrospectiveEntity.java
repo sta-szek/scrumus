@@ -33,9 +33,9 @@ public class RetrospectiveEntity {
     @Column(length = 4096, nullable = true)
     private String description;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection
     private List<RetrospectiveItemEmbeddable> retrospectiveItemEmbeddables = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<CommentEntity> commentEntities = new ArrayList<>();
 }

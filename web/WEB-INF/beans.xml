@@ -5,6 +5,11 @@
               version="2.2">
 
     <managed-bean>
+        <managed-bean-name>retrospectiveService</managed-bean-name>
+        <managed-bean-class>edu.piotrjonski.scrumus.ui.services.RetrospectiveService</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
         <managed-bean-name>agileService</managed-bean-name>
         <managed-bean-class>edu.piotrjonski.scrumus.ui.services.AgileService</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>

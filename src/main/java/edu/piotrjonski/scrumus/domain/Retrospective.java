@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Represents retrospective object.
@@ -33,5 +35,27 @@ public class Retrospective implements Serializable {
 
     public void removeRetrospectiveItem(RetrospectiveItem retrospectiveItem) {
         retrospectiveItems.remove(retrospectiveItem);
+    }
+
+    public List<RetrospectiveItem> getPluses() {
+        return retrospectiveItems.stream()
+                                 .filter(isPlus())
+                                 .collect(Collectors.toList());
+    }
+
+    public List<RetrospectiveItem> getMinuses() {
+        return retrospectiveItems.stream()
+                                 .filter(isPlus())
+                                 .collect(Collectors.toList());
+    }
+
+    private Predicate<RetrospectiveItem> isPlus() {
+        return retrospectiveItem -> retrospectiveItem.getRetrospectiveItemType()
+                                                     .equals(RetrospectiveItemType.PLUS);
+    }
+
+    private Predicate<RetrospectiveItem> isMinus() {
+        return retrospectiveItem -> retrospectiveItem.getRetrospectiveItemType()
+                                                     .equals(RetrospectiveItemType.MINUS);
     }
 }

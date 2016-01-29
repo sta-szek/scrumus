@@ -67,3 +67,17 @@ body {
     width: 100%;
     padding: 0px !important;
 }
+
+.retrospectivePlus {
+    background: rgba(34, 139, 34, 0.25);;
+    padding-bottom: 5px !important;
+}
+
+.retrospectiveMinus {
+    background: rgba(255, 0, 0, 0.13);
+    padding-bottom: 5px !important;
+}
+
+.retrospectiveItem {
+    padding-bottom: 5px !important;
+}

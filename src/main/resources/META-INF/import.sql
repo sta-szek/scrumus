@@ -189,7 +189,7 @@ INSERT INTO comment VALUES (11, 'Komentarz 11Komentarz 11Komentarz 11Komentarz 1
 INSERT INTO comment VALUES (12, 'Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12Komentarz 12', '2015-02-02 12:00:00', 12);
 INSERT INTO comment VALUES (13, 'Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13Komentarz 13', '2015-02-02 12:00:00', 13);
 INSERT INTO comment VALUES (14, 'Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14Komentarz 14', '2015-02-02 12:00:00', 14);
-select setval('comment_ID_SEQ', 15, true);
+select setval('comment_ID_SEQ', 30, true);
 
 -- KOMENTARZE DO ISSE
 INSERT INTO issue_comment VALUES (9, 1);
@@ -204,10 +204,10 @@ INSERT INTO issue_comment VALUES (9, 9);
 
 -- KOMENTARZE DO RETROSPEKTYWY
 INSERT INTO retrospective_comment VALUES (1, 10);
-INSERT INTO retrospective_comment VALUES (2, 11);
-INSERT INTO retrospective_comment VALUES (3, 12);
-INSERT INTO retrospective_comment VALUES (4, 13);
-INSERT INTO retrospective_comment VALUES (5, 14);
+INSERT INTO retrospective_comment VALUES (1, 11);
+INSERT INTO retrospective_comment VALUES (1, 12);
+INSERT INTO retrospective_comment VALUES (2, 13);
+INSERT INTO retrospective_comment VALUES (2, 14);
 
 -- ISSUE DO BACKLOGA
 INSERT INTO backlog_issue VALUES (2, 4);

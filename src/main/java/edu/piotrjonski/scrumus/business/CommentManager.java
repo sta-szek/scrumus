@@ -30,6 +30,13 @@ public class CommentManager {
         }
     }
 
+    public void addCommentToRetrospective(Comment comment, int retrospectiveId) {
+        Optional<Retrospective> retrospective = retrospectiveDAO.findById(retrospectiveId);
+        if (retrospective.isPresent()) {
+            addCommentToRetrospective(comment, retrospective.get());
+        }
+    }
+
     public Optional<Comment> addCommentToIssue(Comment comment, Issue issue) {
         if (issueExist(issue)) {
             Optional<Comment> savedComment = saveCommentAndAddToIssue(comment, issue);
