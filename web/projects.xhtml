@@ -33,7 +33,7 @@
             <p:outputLabel value="#{i18n['page.project.notFound']}"
                            rendered="#{empty project and not empty projectKey}" />
 
-            <h:messages />
+            <p:messages />
             <p:outputPanel id="projectDetails" rendered="#{not empty project}">
 
                 <!-- INFORMACJE O PROJEKCIE -->
@@ -115,61 +115,19 @@
                                               value="#{i18n['page.project.backlog.issue.link']}">
                                         <f:param name="issueId" value="#{issue.id}" />
                                     </p:button>
-                                    <p:commandButton action="#{agileService.moveToBacklog(issue, story)}"
+                                    <p:commandButton id="moveIssueToStoryButton"
                                                      value="#{i18n['page.project.backlog.move.story']}"
-                                                     onclick="PF('moveToStory').show()" />
+                                                     onclick="PF('moveToStory').show()"
+                                                     action="#{agileService.setMoveIssue(issue)}" immediate="true">
+                                        <f:param name="test1" value="#{issue}" />
+                                        <f:passThroughAttribute name="test2" value="#{issue}" />
+                                        <f:viewParam name="test2" value="#{issue}" />
+                                        <f:setPropertyActionListener value="#{issue}" target="#{testService.issueToMove}" />
+                                        <ui:param name="test3" value="#{issue}" />
+                                    </p:commandButton>
                                 </div>
                             </div>
                         </c:forEach>
-
-                        <p:dialog showEffect="fade"
-                                  hideEffect="fade"
-                                  widgetVar="moveToStory"
-                                  header="#{i18n['page.project.backlog.move.story.header']}"
-                                  icon="fa fa-warning">
-                            <h:form id="moveToStoryForm">
-                                <p:autoComplete id="sprint"
-                                                multiple="false"
-                                                value="#{agileService.moveIssueToSprint}"
-                                                completeMethod="#{agileService.completeSprints}"
-                                                var="sprint"
-                                                itemLabel="#{sprint}"
-                                                itemValue="#{sprint}"
-                                                forceSelection="true"
-                                                dropdown="true">
-                                    <p:column>
-                                        <h:outputText value="#{sprint}" />
-                                    </p:column>
-                                </p:autoComplete>
-                                <br />
-                                <!-- <p:autoComplete id="story"
-                                                 multiple="false"
-                                                 value="#{agileService.moveIssueToStory}"
-                                                 completeMethod="#{agileService.completeSprintStories}"
-                                                 var="story"
-                                                 itemLabel="#{story}"
-                                                 itemValue="#{story}"
-                                                 forceSelection="true"
-                                                 dropdown="true">
-                                     <p:column>
-                                         <h:outputText value="#{story}" />
-                                     </p:column>
-                                 </p:autoComplete>-->
-                                <br />
-                                <p:commandButton value="#{i18n['page.project.backlog.move.story.yes']}"
-                                                 styleClass="ui-confirmdialog-yes"
-                                                 icon="ui-icon-check"
-                                                 action="#{agileService.moveIssueToStory()}"
-                                                 oncomplete="PF('moveToStory').hide()"
-                                                 update="mainAccordionPannel">
-                                    <f:ajax render="mainAccordionPannel" />
-                                </p:commandButton>
-                                <p:commandButton value="#{i18n['page.project.backlog.move.story.cancel']}"
-                                                 styleClass="ui-confirmdialog-no"
-                                                 icon="ui-icon-close"
-                                                 onclick="PF('moveToStory').hide()" />
-                            </h:form>
-                        </p:dialog>
 
                     </p:tab>
 
@@ -280,6 +238,59 @@
 
                 </p:accordionPanel>
             </p:outputPanel>
+
+            <p:dialog showEffect="fade"
+                      hideEffect="fade"
+                      widgetVar="moveToStory"
+                      header="#{i18n['page.project.backlog.move.story.header']}"
+                      icon="fa fa-warning">
+                #{test1}
+                #{test2}
+                #{test3}
+                <h:form id="moveToStoryForm">
+                    <p:autoComplete id="sprint"
+                                    multiple="false"
+                                    value="#{agileService.moveIssueToSprint}"
+                                    completeMethod="#{agileService.completeSprints}"
+                                    var="sprint"
+                                    itemLabel="#{sprint}"
+                                    itemValue="#{sprint}"
+                                    forceSelection="true"
+                                    dropdown="true">
+                        <p:ajax event="itemSelect" listener="#{agileService.onItemSelect}" update="story" />
+                        <p:column>
+                            <h:outputText value="#{sprint}" />
+                        </p:column>
+                    </p:autoComplete>
+                    <br />
+                    <p:autoComplete id="story"
+                                    multiple="false"
+                                    value="#{agileService.moveIssueToStory}"
+                                    completeMethod="#{agileService.completeSprintStories}"
+                                    var="story"
+                                    itemLabel="#{story}"
+                                    itemValue="#{story}"
+                                    forceSelection="true"
+                                    dropdown="true">
+                        <p:column>
+                            <h:outputText value="#{story}" />
+                        </p:column>
+                    </p:autoComplete>
+                    <br />
+                    <p:commandButton value="#{i18n['page.project.backlog.move.story.yes']}"
+                                     styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"
+                                     action="#{agileService.moveIssueToStory()}"
+                                     oncomplete="PF('moveToStory').hide()"
+                                     update="mainAccordionPannel">
+                        <f:ajax render="mainAccordionPannel" />
+                    </p:commandButton>
+                    <p:commandButton value="#{i18n['page.project.backlog.move.story.cancel']}"
+                                     styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close"
+                                     onclick="PF('moveToStory').hide()" />
+                </h:form>
+            </p:dialog>
         </ui:define>
     </ui:composition>
 </h:body>
