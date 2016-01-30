@@ -43,3 +43,4 @@
 \contentsline {section}{\numberline {3.3}Model bazy danych}{25}
 \contentsline {section}{\numberline {3.4}Szczeg\IeC {\'o}\IeC {\l }y implementacji}{27}
 \contentsline {subsection}{\numberline {3.4.1}Baza danych i model}{27}
+\contentsline {subsection}{\numberline {3.4.2}Warstwa logiki biznesowej}{30}
