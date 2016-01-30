@@ -96,3 +96,71 @@ System korzysta z zewnętrznej bazy danych, której model jest przedstawiony na 
 	\caption{Szczegółowy diagram wybranych klas}
 	\label{fig:modeldb}
 \end{sidewaysfigure}
+
+\section{Szczegóły implementacji}
+Przy omawianiu szczegółów implementacji przejdziemy przez cały zaprojektowany system w kierunku od bazy danych poprzez logikę biznesową, warstwę prezentacji aż do sposobu uruchomienia aplikacji wraz z opisem środowiska testowego i produkcyjnego, które w przypadku tego projektu stanowiły jedność. Zanim jednak przystąpimy do opisu poszczególnych warstw, w celu zrozumienia wszystkich omawianych zagadnień, warto zapoznać się ze strukturą plików i folderów w projekcie scrumus, która została przedstawiona na rysunku \ref{fig:struktura_intellij}.
+
+\begin{figure}[tp]
+	\centering
+	\includegraphics[width=12cm]{rysunki/struktura_intellij.png}	
+	\caption{Struktura plików i folderów projektu scrumus}
+	\label{fig:struktura_intellij}
+\end{figure}
+
+\subsection{Baza danych i model}
+Model bazy danych został zaprojektowany w postaci klas Javy, tak zwanych encji, a następnie automatycznie wygenerowany za pomocą frameworka Hibernate. Dodatkowo zaraz po wdrożeniu aplikacji na serwer wykonywany jest skrypt SQL, który wprowadza do bazy testowe wartości i tworzy użytkowników z różnymi uprawnieniami. Przykładowy kod klasy encji został przedstawiony na listingu \ref{lis:encja}, a konfiguracja Hibernate na listingu \ref{lis:konfiguracja_hibernate}.
+
+\begin{lstlisting}[caption={Przykładowa klasa encji}, label=lis:encja, numbers=none]
+@Data									 		// adnotacja lombok dodaje gettery
+@NoArgsConstructor 				// settery oraz hashcode i equals
+@Entity				  	 		 		// oznaczenie klasy jako encji
+@Table(name = "project")  //nazwa tabeli w bazie danych
+@NamedQueries({@NamedQuery(name = ProjectEntity.FIND_ALL, 
+													 query = ProjectEntity.FIND_ALL_QUERY),
+   							//pozostale zapytania uzywane przez DAO})
+public class ProjectEntity {
+
+// zapytania nazwane
+
+// mapowanie
+@Id
+@Column(length = 8, nullable = false, unique = true)
+private String key;
+
+// pozostale pola
+}\end{lstlisting}
+\newpage
+\begin{lstlisting}[caption={Konfiguracja Hibernate}, label=lis:konfiguracja_hibernate, numbers=none]
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+					 	 version="2.0">
+	<persistence-unit name="PostgresDS">
+		<jta-data-source>java:jboss/datasources/PostgresDS</jta-data-source>
+		<properties>
+			<property name="hibernate.show_sql" 
+								value="false"/>
+			<property name="hibernate.format_sql" 
+								value="true"/>
+			<property name="hibernate.dialect" 
+								value="org.hibernate.dialect.PostgreSQLDialect"/>
+			<property name="hibernate.hbm2ddl.auto" 
+								value="create-drop"/>
+			<property name="javax.persistence.sql-load-script-source" 
+								value="import.sql"/>
+			<property name="hibernate.connection.CharSet" 
+								value="utf8"/>
+			<property name="hibernate.connection.characterEncoding" 
+								value="utf8"/>
+			<property name="hibernate.connection.useUnicode" 
+								value="true"/>
+			<property name="hibernate.event.merge.entity_copy_observer" 
+								value="allow"/>
+		</properties>
+	</persistence-unit>
+</persistence>\end{lstlisting}
+
+Kolejnym krokiem było zaprojektowanie warstwy DAO, która jest odpowiedzialna za pobieranie, utrwalania i usuwanie obiektów z bazy. Klasy obsługujące te żądania zostały zaprojektowane zgodnie ze wzorcem DAO\footnote{D. Alur, J. Crupi, D. Malks, \textit{Core J2EE. Wzorce projektowe}, Helion 2004, s.383}, który pozwolił zaoszczędzić sporo kodu poprzez zastosowanie typów generycznych i klas abstrakcyjnych. Dodatkowo podczas wykonywanych operacji występuje mapowanie pomiędzy obiektami encji, które są przechowywane w bazie danych, a obiektami biznesowymi, które są bezpośrednio używane w warstwach wyższych. Takie rozgraniczenie jest zgodne z regułą OCP\footnote{R. C. Martin, \textit{Czysty kod. Podręcznik dobrego programisty}, Helion 2010, s.160}.
+
+
+\subsection{Warstwa logiki biznesowej}
+W tej warstwie wykonują się wszystkie operacje biznesowe. Dzięki zastosowaniu EJB, poprzez ustanowienie klas jako ziaren sesyjnych, wprowadzone zostały transakcje, które umożliwiają obsługę błędnych operacji oraz uniemożliwiają wykonanie takiej operacji. To znaczy, że jeżeli chcemy dodać do bazy danych użytkownika, którego adres e-mail został już wykorzystany, wtedy cała transakcja zostaje cofnięta. Usuwane są również inne obiekty, które powstały na skutek tej operacji jak np. powiązane z użytkownikiem hasło. Zaletą tego rozwiązania jest to, że nie dopuszcza ono możliwości wprowadzenia błędnych danych do systemu.
