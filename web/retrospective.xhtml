@@ -1,0 +1,102 @@
+<h:body xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="#{path['common.template']}">
+        <ui:define name="content">
+            <f:metadata>
+                <f:viewParam name="retrospectiveId" />
+            </f:metadata>
+            <c:if test="${not empty retrospectiveId}">
+                <ui:param name="retrospective" value="#{retrospectiveService.findById(retrospectiveId)}" />
+            </c:if>
+
+            <c:if test="${empty retrospectiveId or empty retrospectiveService.currentlyViewedRetrospective}">
+                #{facesContext.getCurrentInstance().externalContext.redirect(request.contextPath)}
+            </c:if>
+
+            <c:set var="currentUser" value="#{userService.findUserByUsername(request.remoteUser)}" />
+
+            <p:panel id="container"
+                     rendered="${not empty retrospectiveId}"
+                     styleClass="ui-grid ui-grid-responsive"
+                     header="#{i18n['page.retrospective.header']}">
+                <p:outputLabel value="#{retrospectiveService.currentlyViewedRetrospective.description}"
+                               styleClass="ui-grid-row ui-grid-col-12" />
+                <div class="ui-grid-row">
+                    <p:panel id="retrospetivePlus" styleClass="ui-grid-col-6"
+                             header="#{i18n['page.retrospective.header.plus']}">
+                        <p:dataList value="#{retrospectiveService.currentlyViewedRetrospective.pluses}"
+                                    var="plusItem" itemStyleClass="retrospectiveItem">
+                            <div class="retrospectivePlus">
+                                #{plusItem.description}
+                            </div>
+                        </p:dataList>
+                    </p:panel>
+
+                    <p:panel id="retrospetiveMinus" styleClass="ui-grid-col-6" header="#{i18n['page.retrospective.header.minus']}">
+                        <p:dataList value="#{retrospectiveService.currentlyViewedRetrospective.minuses}"
+                                    var="minusItem" itemStyleClass="retrospectiveItem">
+                            <div class="retrospectiveMinus">
+                                #{minusItem.description}
+                            </div>
+                        </p:dataList>
+                    </p:panel>
+                </div>
+
+            </p:panel>
+            <h:form>
+                <p:inputTextarea id="retrospectiveItemDescription"
+                                 value="#{retrospectiveService.itemDescription}"
+                                 autoResize="true" style="width: 100%" />
+                <br />
+                <p:commandButton value="#{i18n['page.retrospective.plus.add']}"
+                                 action="#{retrospectiveService.addPlus()}"
+                                 update="retrospetivePlus, retrospectiveItemDescription" />
+
+                <p:commandButton value="#{i18n['page.retrospective.minus.add']}"
+                                 action="#{retrospectiveService.addMinus()}"
+                                 update="retrospetiveMinus, retrospectiveItemDescription" />
+            </h:form>
+
+            <!--komentarze-->
+            <p:dataScroller value="#{retrospectiveService.currentlyViewedRetrospective.comments}"
+                            var="comment"
+                            id="comments"
+                            styleClass="ui-grid-row ui-grid-col-12"
+                            style="border: none">
+                <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
+
+                    <p:outputPanel styleClass="ui-grid">
+                        <c:set var="currentCommentUser" value="#{userService.findUser(comment.developerId)}" />
+
+                        <div class="ui-grid-row">
+                            <h:outputText value="#{currentCommentUser.getFullName()}" styleClass="ui-grid-col-1" />
+                            <h:outputText value="#{comment.creationDate}" styleClass="ui-grid-col-2" />
+                        </div>
+                        <div class="ui-grid-row">
+                            <h:outputText value="#{comment.commentBody}" styleClass="ui-grid-col-12" />
+                        </div>
+                    </p:outputPanel>
+                </h:panelGrid>
+            </p:dataScroller>
+
+            <p:panel>
+                <h:form>
+                    <p:inputTextarea id="commentBody" value="#{commentService.commentBody}" styleClass="ui-grid-col-12" autoResize="true" />
+                    <br />
+                    <p:commandButton value="#{i18n['page.retrospective.comment.add']}"
+                                     action="#{commentService.addCommentToRetrospective()}"
+                                     actionListener="#{retrospectiveService.refreshRetrospective()}"
+                                     update="comments, commentBody">
+                        <f:param name="retrospectiveId" value="#{retrospectiveId}" />
+                        <f:param name="userId" value="#{currentUser.id}" />
+                    </p:commandButton>
+                </h:form>
+            </p:panel>
+        </ui:define>
+    </ui:composition>
+</h:body>
+

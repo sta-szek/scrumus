@@ -80,7 +80,6 @@ public class RetrospectiveDAO extends AbstractDAO<RetrospectiveEntity, Retrospec
     private RetrospectiveItem mapRetroItemToDomainModel(RetrospectiveItemEmbeddable dbModel) {
         RetrospectiveItem item = new RetrospectiveItem();
         item.setDescription(dbModel.getDescription());
-        item.setRate(dbModel.getRate());
         item.setRetrospectiveItemType(mapRetroItemTypeToDomainModel(dbModel.getRetrospectiveItemTypeEnum()));
         return item;
     }
@@ -99,7 +98,6 @@ public class RetrospectiveDAO extends AbstractDAO<RetrospectiveEntity, Retrospec
     private RetrospectiveItemEmbeddable mapRetroItemToDatabaseModel(RetrospectiveItem domainModel) {
         RetrospectiveItemEmbeddable item = new RetrospectiveItemEmbeddable();
         item.setDescription(domainModel.getDescription());
-        item.setRate(domainModel.getRate());
         item.setRetrospectiveItemTypeEnum(mapRetroItemTypeToDatabaseModel(domainModel.getRetrospectiveItemType()));
         return item;
     }

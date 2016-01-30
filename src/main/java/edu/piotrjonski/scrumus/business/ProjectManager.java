@@ -91,6 +91,10 @@ public class ProjectManager {
                           .collect(Collectors.toList());
     }
 
+    public Optional<Backlog> findBacklogForProject(final String projectKey) {
+        return backlogDAO.findBacklogForProject(projectKey);
+    }
+
     private void removeAllTeams(final String projectKey, final Project project) {
         teamManager.findTeamsForProject(projectKey)
                    .forEach(team -> permissionManager.removeTeamFromProject(team, project));

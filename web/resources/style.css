@@ -51,3 +51,33 @@ body {
 .ui-datascroller-item {
     border-bottom: 1px solid !important;
 }
+
+.issue-list-header {
+    padding-bottom: 10px !important;
+    font-weight: bold;
+    border-bottom: 2px dotted !important;
+}
+
+.issue-list-item {
+    padding-top: 5px !important;
+}
+
+.ui-fieldset-legend {
+    cursor: pointer;
+    width: 100%;
+    padding: 0px !important;
+}
+
+.retrospectivePlus {
+    background: rgba(34, 139, 34, 0.25);;
+    padding-bottom: 5px !important;
+}
+
+.retrospectiveMinus {
+    background: rgba(255, 0, 0, 0.13);
+    padding-bottom: 5px !important;
+}
+
+.retrospectiveItem {
+    padding-bottom: 5px !important;
+}

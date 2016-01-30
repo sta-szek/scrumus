@@ -76,6 +76,16 @@ public class StoryManager {
         return storyDAO.findStoryForIssue(issueId);
     }
 
+    public void moveIssueToBacklog(Issue issue, Story story) {
+        removeIssueFromStory(issue, story);
+        addIssueToBacklog(issue);
+    }
+
+    public void moveIssueToStory(int storyId) {
+//        removeIssueFromStory(issue, story);
+//        addIssueToBacklog(issue);
+    }
+
     private void addIssueToBacklog(final Issue issue) {
         Backlog backlog = backlogDAO.findBacklogForProject(issue.getProjectKey())
                                     .get();

@@ -136,7 +136,6 @@ public class RetrospectiveManagerIT {
         Retrospective retrospective = retrospectiveDAO.saveOrUpdate(createRetrospective())
                                                       .get();
         RetrospectiveItem retrospectiveItem = new RetrospectiveItem();
-        retrospectiveItem.setRate(1);
         retrospectiveItem.setRetrospectiveItemType(RetrospectiveItemType.MINUS);
         retrospectiveItem.setDescription("desc");
 
@@ -154,7 +153,6 @@ public class RetrospectiveManagerIT {
     public void shouldRemoveItemFromRetrospective() throws NotExistException {
         // given
         RetrospectiveItem retrospectiveItem = new RetrospectiveItem();
-        retrospectiveItem.setRate(1);
         retrospectiveItem.setRetrospectiveItemType(RetrospectiveItemType.MINUS);
         retrospectiveItem.setDescription("desc");
         Retrospective retrospective = createRetrospective();

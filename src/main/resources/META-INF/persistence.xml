@@ -4,15 +4,24 @@
     <persistence-unit name="PostgresDS">
         <jta-data-source>java:jboss/datasources/PostgresDS</jta-data-source>
         <properties>
-            <property name="hibernate.show_sql" value="false"/>
-            <property name="hibernate.format_sql" value="true"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
-            <property name="javax.persistence.sql-load-script-source" value="import.sql"/>
-            <property name="hibernate.connection.CharSet" value="utf8"/>
-            <property name="hibernate.connection.characterEncoding" value="utf8"/>
-            <property name="hibernate.connection.useUnicode" value="true"/>
-            <property name="hibernate.event.merge.entity_copy_observer" value="allow"/>
+            <property name="hibernate.show_sql"
+                      value="false"/>
+            <property name="hibernate.format_sql"
+                      value="true"/>
+            <property name="hibernate.dialect"
+                      value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="hibernate.hbm2ddl.auto"
+                      value="create-drop"/>
+            <property name="javax.persistence.sql-load-script-source"
+                      value="import.sql"/>
+            <property name="hibernate.connection.CharSet"
+                      value="utf8"/>
+            <property name="hibernate.connection.characterEncoding"
+                      value="utf8"/>
+            <property name="hibernate.connection.useUnicode"
+                      value="true"/>
+            <property name="hibernate.event.merge.entity_copy_observer"
+                      value="allow"/>
         </properties>
     </persistence-unit>
 </persistence>

@@ -35,6 +35,21 @@ public class CommentService implements Serializable {
         }
     }
 
+    public void addCommentToRetrospective() {
+        if (commentIsEmpty()) {
+            return;
+        }
+        try {
+            int userIntId = Integer.parseInt(getRequestParameter("userId"));
+            int retrospectiveIntId = Integer.parseInt(getRequestParameter("retrospectiveId"));
+            Comment comment = createCommentFromField(userIntId);
+            commentManager.addCommentToRetrospective(comment, retrospectiveIntId);
+            logger.info("Created comment for retrospective with id '" + retrospectiveIntId + "' by user with id '" + userIntId + "'.");
+        } catch (NumberFormatException e) {
+            return;
+        }
+    }
+
     private Comment createCommentFromField(final int userIntId) {
         Comment comment = new Comment();
         comment.setCommentBody(commentBody);
