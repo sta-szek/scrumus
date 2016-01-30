@@ -44,3 +44,10 @@
 \contentsline {section}{\numberline {3.4}Szczeg\IeC {\'o}\IeC {\l }y implementacji}{27}
 \contentsline {subsection}{\numberline {3.4.1}Baza danych i model}{27}
 \contentsline {subsection}{\numberline {3.4.2}Warstwa logiki biznesowej}{30}
+\contentsline {subsection}{\numberline {3.4.3}Warstwa prezentacji}{32}
+\contentsline {chapter}{\numberline {4}Dokumentacja wdro\IeC {\.z}eniowa i testowa}{33}
+\contentsline {subsection}{\numberline {4.0.1}Gradle}{33}
+\contentsline {subsection}{\numberline {4.0.2}Docker}{33}
+\contentsline {subsection}{\numberline {4.0.3}Wyniki test\IeC {\'o}w}{33}
+\contentsline {chapter}{\numberline {5}Podsumowanie}{35}
+\contentsline {chapter}{\numberline {6}Literatura}{37}

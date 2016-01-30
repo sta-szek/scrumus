@@ -165,6 +165,13 @@ Kolejnym krokiem było zaprojektowanie warstwy DAO, która jest odpowiedzialna z
 \subsection{Warstwa logiki biznesowej}
 W tej warstwie wykonują się wszystkie operacje biznesowe. Dzięki zastosowaniu EJB, poprzez ustanowienie klas jako ziaren sesyjnych, wprowadzone zostały transakcje, które umożliwiają obsługę błędnych operacji oraz uniemożliwiają wykonanie takiej operacji. To znaczy, że jeżeli chcemy dodać do bazy danych użytkownika, którego adres e-mail został już wykorzystany, wtedy cała transakcja zostaje cofnięta. Usuwane są również inne obiekty, które powstały na skutek tej operacji jak np. powiązane z użytkownikiem hasło. Zaletą tego rozwiązania jest to, że nie dopuszcza ono możliwości wprowadzenia błędnych danych do systemu. Dla przykładu zostanie omówiona operacja dodawania nowego użytkownika, której diagram sekwencji został przedstawiony na rysunku \ref{fig:diagsekw}. 
 
+\begin{sidewaysfigure}[tp!]
+	\centering
+	\includegraphics[width=25cm]{rysunki/diagsekw.pdf}	
+	\caption{Diagram sekwencji dla tworzenia nowego użytkownika}
+	\label{fig:diagsekw}
+\end{sidewaysfigure}
+
 Na diagramie nie została uwzględniona operacja anulowania transakcji, ze względu na czytelność. Przerwanie procesu może nastąpić przy zapisywaniu użytkownika do bazy - błąd komunikacji, generowaniu hasła - brak algorytmu SHA-256, zapisywaniu hasła do bazy - błąd komunikacji lub też przy wysyłaniu e-maila z hasłem w sytuacji, gdy wprowadzimy złe ustawienia podczas procesu kompilacji. W każdym z tych przypadków generowany jest odpowiedni wyjątek, który następnie jest obsługiwany przez warstwę JSF, a użytkownikowi zostaje wyświetlona stosowna informacja.
 
 Generowanie haseł odbywa się poprzez klasę narzędziową UUID z pakietu java.util. Generuje ona co prawda numer UUID, lecz z powodzeniem można go wykorzystać jako hasło początkowe użytkownika, wystarczy tylko usunąć wszystkie znaki myślnika (-) z tak wygenerowanego ciągu znaków. Następnie hasło jest szyfrowane za pomocą algorytmu SHA256 i w takiej postaci jest zapisywane w bazie danych. Cały kod odpowiedzialny za generowanie i szyfrowanie hasła został zamieszony na listingu \ref{lis:generowanie_hasla}.
@@ -183,9 +190,9 @@ MessageDigest.getInstance("SHA-256").update(text.getBytes("UTF-8")).digest());
 }
 }\end{lstlisting}
 
-\begin{sidewaysfigure}[h!]
-	\centering
-	\includegraphics[width=25cm]{rysunki/diagsekw.pdf}	
-	\caption{Diagram sekwencji dla tworzenia nowego użytkownika}
-	\label{fig:diagsekw}
-\end{sidewaysfigure}
+\subsection{Warstwa prezentacji}
+
+Tu krótko opiszę, że warstwa składa się na 
+a) REST - jest jedna metoda rest w projekcie dla celow demonstracyjnych, jak latwo dwoma adnotacjami mozna udostepnic ten web service
+b) remote ejb, pokaze jak latwo jedna adnotacja mozna udostepnic ejb, tak aby mozna bylo polaczyc sie zdalnie
+c) wlasciwa warstwa prezentacji czyli interfejs www + zrzuty wybranych ekranów - najlepiej tworzenia uzytkownika aby pokrylo sie ze schematem wyzej

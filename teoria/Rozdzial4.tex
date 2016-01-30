@@ -1,0 +1,12 @@
+\chapter{Dokumentacja wdrożeniowa i testowa}
+tu diagram wdrozenia i opis o co chodzi
+
+\subsection{Gradle}
+plik gradle i krotki opis
+
+\subsection{Docker}
+plik dockera i krotki opis jak to wgrac i co gdzie sie konfiguruje oraz to ze zawiera w sobie baze danych
+
+\subsection{Wyniki testów}
+opis testów jednostkowych, integracyjnych, 
+opisanie niewyjasnionej przyczyny błędnego mierzenia pokrycia - intellij code coverage runner nie mierzy prawie wcale testow integracyjnych dla innych warstw niz DAO, przyczy sa niewyjasnione, prawdopodobnie nie jest w pelni kompatybilny z Arquillian, bo tam sa tworzone jakies obiety proxy i moze miec to jakis wplyw. probowalem jacoco i emma i to samo bylo.
