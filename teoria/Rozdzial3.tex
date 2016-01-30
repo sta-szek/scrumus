@@ -1,15 +1,15 @@
 \chapter{Dokumentacja projektowa}
 
 \section{Architektura systemu}
-Wytworzony przeze mnie system jest aplikacją webową, która korzysta z bazy danych do odczytu i zapisu niezbędnych informacji. Z systemu będą korzystać cztery, wcześniej omówione, rodzaje użytkowników poprzez interfejs WWW. Dodatkowo system został zaprojektowany w taki sposób, aby była możliwość rozbudowy o dodatkowe zdalne aplikacje klienckie umożliwiające komunikację z systemem. System wraz z bazą danych znajdują się w kontenerze Dockera.
+Wytworzony w ramach pracy system jest aplikacją webową, która korzysta z bazy danych do odczytu i zapisu niezbędnych informacji. Z systemu będą korzystać cztery, wcześniej omówione, rodzaje użytkowników poprzez interfejs WWW. Dodatkowo system został zaprojektowany w taki sposób, aby była możliwość rozbudowy o dodatkowe zdalne aplikacje klienckie umożliwiające komunikację z systemem. System wraz z bazą danych znajdują się w kontenerze Dockera.
 
 Jak wiadomo, połączenie ze zdalnymi klientami nie jest gwarantowane, co skłania do zastosowania mechanizmu komunikacji Java Message Service (JMS). Jednak pomimo, że połączenie nie jest ani stabilne, ani nawet w ogóle nie wiadomo czy zostało nawiązane, zależy nam, aby informować użytkowników o różnego rodzaju błędach, lub przesyłać im dane na bieżąco. Co prawda JMS umożliwia realizację tego zadania lecz do komunikacji z samodzielną aplikacją zostały udostępnione inne ścieżki komunikacji. 
 
-Pierwsza z nich to warstwa usługi REST. Dzięki takiemu rozwiązaniu z aplikacją może komunikować się dowolny system niezależnie od tego w jakim języku został napisany. Warstwa ta nie została zaimplementowana w całości, lecz jedynie w jako fragment funkcjonalności w celu zobrazowania komunikacji ze zdalnymi klientami.
+Pierwsza z nich to warstwa usługi REST. Dzięki takiemu rozwiązaniu z aplikacją może komunikować się dowolny system niezależnie od tego w jakim języku został napisany. Warstwa ta nie została zaimplementowana w całości, lecz jedynie jako fragment funkcjonalności w celu zobrazowania komunikacji ze zdalnymi klientami.
 
-Kolejna ścieżka komunikacji to zdalny interfejs komponentu EJB (Enterprise JavaBean). Mechanizm ten wprowadza możliwość komunikacji asynchronicznej z aplikacją. Jest one jednak ograniczony tylko do klientów napisanych w języku Java.
+Kolejna ścieżka komunikacji to zdalny interfejs komponentu EJB (Enterprise JavaBean). Mechanizm ten wprowadza możliwość komunikacji asynchronicznej z aplikacją. Jest on jednak ograniczony tylko do klientów napisanych w języku Java.
 
-Wyżej wymienione rozwiązania stanowią warstwę do komunikacji z aplikacjami klienckimi. Kolejnym krokiem było zaprojektowanie warstwy do komunikacji z klientem WWW. Co prawda warstwa REST spełniałaby swoje wymagania, lecz w tym celu posłużymy się, specjalnie zaprojektowaną do tego rodzaju zadań, technologią JavaServer Faces (JSF), która będzie wymagała dodatkowej warstwy z którą będzie się komunikować. Warstwa ta to tzw. komponenty Java Beans zwane również Backing Beans (BB). Rysunek \ref{fig:diagsys} przedstawia diagram systemowy aplikacji:
+Wyżej wymienione rozwiązania stanowią warstwę do komunikacji z aplikacjami klienckimi. Kolejnym krokiem było zaprojektowanie warstwy do komunikacji z klientem WWW. Co prawda warstwa REST spełniałaby swoje wymagania, lecz w tym celu posłużymy się, specjalnie zaprojektowaną do tego rodzaju zadań, technologią JavaServer Faces (JSF). Rozwiązanie to pozwoli nam zaimplementować dodatkową warstwę, dedykowaną specjalnie dla interfejsu WWW. Warstwa ta to tzw. komponenty Java Beans zwane również Backing Beans (BB). Rysunek \ref{fig:diagsys} przedstawia diagram systemowy aplikacji:
 
 \begin{figure}[h!]
 	\centering
@@ -20,7 +20,7 @@ Wyżej wymienione rozwiązania stanowią warstwę do komunikacji z aplikacjami k
 
 Jak wiadomo, interfejsy graficzne, a co za tym idzie – sposób ich obsługi będą się różniły w zależności od klienta. Najważniejszą różnicą będzie sposób walidacji danych oraz obsługi błędów. W samodzielnej aplikacji klienckiej walidacja danych oraz obsługa błędów powinna wystąpić możliwie szybko, aby nie generować zbędnego ruchu sieciowego. Jeżeli w trakcie przetwarzania żądania wystąpią jakiekolwiek błędy, to powinny one zostać zamienione na wyjątki aplikacji oraz przekazane do klienta. Również w aplikacji WWW walidacja danych wejściowych powinna znajdywać się na poziomie klienta. Jednak nie można wykluczyć sytuacji, w której błędy pojawią się po stronie serwera nawet po poprawnej walidacji danych. Z tego względu błędy powinny być konwertowane po stronie serwera (przez dodatkową warstwę obsługi JSF) na obiekty typu FaceMessage i dodawane bezpośrednio do kontekstu aplikacji WWW. 
 
-Wymagania odnośnie walidacji oraz obsługi błędów mogą skłaniać do wprowadzenia dodatkowej warstwy w architekturze systemu. Nie mniej jednak taka warstwa nie została wprowadzona, gdyż spowodowało by to nadmierny przyrost klas oraz niepotrzebne uogólnienie systemu. Zamiast tego logika biznesowa generuje wyjątki aplikacji, gdy zajdzie taka potrzeba oraz przekazuje je warstwie wyżej lub klientom, które wywołują dane komponenty logiki biznesowej. Oznacza to tyle, że obsługa błędów aplikacji w samodzielnej aplikacji Javy powinna być zaimplementowana po stronie samej aplikacji, natomiast interfejs WWW posiada dodatkową warstwę w postaci komponentów JavaBeans, które takową obsługę zapewnią. Aby zrozumieć taką modyfikację należy wykonać bardziej szczegółowy diagram systemu. Rysunek 3 przedstawia zmodyfikowany diagram systemu.
+Wymagania odnośnie walidacji oraz obsługi błędów mogą skłaniać do wprowadzenia dodatkowej warstwy w architekturze systemu. Nie mniej jednak taka warstwa nie została wprowadzona, gdyż spowodowało by to nadmierny przyrost klas oraz niepotrzebne uogólnienie systemu. Zamiast tego logika biznesowa generuje wyjątki aplikacji, gdy zajdzie taka potrzeba oraz przekazuje je warstwie wyżej lub klientom, które wywołują dane komponenty logiki biznesowej. Oznacza to tyle, że obsługa błędów aplikacji w samodzielnej aplikacji Javy powinna być zaimplementowana po stronie samej aplikacji, natomiast interfejs WWW posiada dodatkową warstwę w postaci komponentów JavaBeans, które takową obsługę zapewnią. 
 
 \subsection{Identyfikacja komponentów biznesowych}
 W oparciu o artefakty metodyki Scrum oraz wymagania funkcjonalne z systemu wyłaniają się następujące komponenty biznesowe:
@@ -46,7 +46,7 @@ W oparciu o artefakty metodyki Scrum oraz wymagania funkcjonalne z systemu wyła
 \textit{Zadanie} -- jest tworzone przez \textit{użytkowników}.
 
 
-Należy wspomnień, iż jest to częściowy opis obiektów biznesowych, który ma na celu zobrazowanie procesu powstawania aplikacji. Wyczerpujący opis tych obiektów byłby zbyt rozległy i nie jest on meritum części opisowej pracy. Aby zobrazować wpływ poszczególnych jednostek biznesowych oraz ich wzajemne relacje należy przedstawić ich diagram UML:
+Należy wspomnieć, iż jest to częściowy opis obiektów biznesowych, który ma na celu zobrazowanie procesu powstawania aplikacji. Wyczerpujący opis tych obiektów byłby zbyt rozległy i nie jest on meritum części opisowej pracy. Aby zobrazować wpływ poszczególnych jednostek biznesowych oraz ich wzajemne relacje należy przedstawić ich diagram UML:
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=15cm]{rysunki/diaguml.pdf}	
@@ -72,7 +72,7 @@ Reprezentują rekordy utrwalone w bazie danych. Komponenty encyjne mogą być u�
 \subsubsection{Komponenty sesyjne}
 Podczas gdy komponenty encyjne są rzeczami w aplikacji, komponenty sesyjne określają czynności jakie można na tych rzeczach wykonać. Są one jednostkami kontrolującymi procesy biznesowe. Zatem, aby wyodrębnić ten rodzaj komponentów należy się skupić na tym, co aplikacja może robić.
 Przyglądając się diagramowi klas można zauważyć, że ProjectManager może wykonywać operacje Create Restore Update Delete (CRUD) na projektach.
-Gdy w dowolnej aplikacji funkcjonalności skupiają się zazwyczaj wokół jednej lub więcej encji, to znaczy, że prawdopodobnie jest to komponent sesyjne. Ta reguła również tutaj ma swoje zastosowanie. Zostały utworzone odpowiednie komponenty sesyjne, które są rodzaju menadżerem spinającym funkcjonalności biznesowe, które są ze sobą powiązane. Ponieważ komponent sesyjny definiuje zbiór zachowań, to każde takie zachowanie można podporządkować jednej metodzie.
+Gdy w dowolnej aplikacji funkcjonalności skupiają się zazwyczaj wokół jednej lub więcej encji, to znaczy, że prawdopodobnie jest to komponent sesyjny. Ta reguła również tutaj ma swoje zastosowanie. Zostały utworzone odpowiednie komponenty sesyjne, które są swego rodzaju menedżerami spinającym funkcjonalności biznesowe, które są ze sobą powiązane. Ponieważ komponent sesyjny definiuje zbiór zachowań, to każde takie zachowanie można podporządkować jednej metodzie.
 
 Głównym zadaniem aplikacji będzie przeglądanie projektów oraz zadań. W tym celu zostały utworzone odpowiednie komponenty sesyjne dla każdego rodzaju obiektu biznesowego, które jednak nie zostały przedstawione na szczegółowym diagramie, ze względu na ich obszerność. Każdy taki komponent posiada metody CRUD, które umożliwiają wykonywanie dowolnych operacji na tychże obiektach.
 
@@ -81,7 +81,7 @@ Tworzona aplikacja skupia się na zarządzaniu projektami, więc bez konfiguracj
 \subsubsection{Komponenty sterowane komunikatami}
 Pomimo iż zostało postanowione, że w aplikacji nie będą użyte komponenty sterowane komunikatami, nic nie stoi na przeszkodzie, aby głębiej przemyśleć możliwość wykorzystania takich komponentów. Zastanówmy się, w jakich sytuacjach mogłyby one być korzystne.
 
-Pierwszą rzeczą, która nasuwa się na myśl jest wykorzystanie MDB (Message Driven Bean) generowania i wysyłania e-maili z hasłem po utworzeniu użytkownika. Taka wiadomość mogła by być rozgłoszona w systemie i dzięki temu różne komponenty mogłyby obsłużyć to zdarzenie. W systemie zrezygnowano jednak z tego typu technik.
+Pierwszą rzeczą, która nasuwa się na myśl jest wykorzystanie MDB (Message Driven Bean) do generowania i wysyłania e-maili z hasłem po utworzeniu użytkownika. Taka wiadomość mogła by być rozgłoszona w systemie i dzięki temu różne komponenty mogłyby obsłużyć to zdarzenie. W systemie zrezygnowano jednak z tego typu technik.
 
 Drugim możliwym zastosowaniem jest możliwość wysyłania rozgłoszeń w systemie. Jednak że aplikacja nie wprowadza funkcjonalności wiadomości systemowych również i tu ten komponent nie ma zastosowania.
 

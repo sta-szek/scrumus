@@ -14,8 +14,8 @@ Nie jest to wyczerpująca lista metodyk - istnieje wiele innych metod tworzenia 
 Obecnie na rynku istnieje mnóstwo narzędzi do tego typu zadań, a liczba oferowanych szkoleń z zakresu zarządzania projektami oraz metodyki Scrum nie ma końca. Coraz więcej firm decyduje się na zakup drogich systemów wspomagających proces zarządzania projektami. Ale czy zakup takiego programu jest konieczny? W mojej pracy przedstawię system, który bez żadnych przeszkód mógłby być stosowany w niewielkich zespołach, czy firmach, które nie zamierzają wydawać fortuny na profesjonalne aplikacje.
 
 \section{Czym właściwie jest scrum}
-Scrum jest zwinną metodyką wytwarzania oprogramowania, której początki sięgają połowy lat 80. Polega ona na przyrostowym wytwarzaniu produktu oraz stałej komunikacji z klientem bądź też jego reprezentantem - właścicielem produktu (\textit{ang. product owner}). Zespół deweloperski {\textit{team}} podejmuje się przygotowania wybranych przez siebie funkcjonalności, których wybór może być zależny od właściciela produktu - to on ustala priorytety. Jednak w celu zminimalizowania ryzyka "wyższej władzy", czyli narzucaniu zbyt wysokich wymagań i nieosiągalnych terminów, co często czynią product ownerzy, została wprowadzona kolejna rola - scrum master, którą ciężko jest przetłumaczyć na język polski (z tego względu w dalszej części pracy będę posługiwał się właśnie tym terminem). To on "chroni" zespół przed przepracowaniem i rozwiązuje napotykane po drodze problemy. Aby prawidłowo przedstawić omawiany temat należy zapoznać się z kilkoma pojęciami, które są nieodłącznym elementem tej metody:
-\begin{enumerate}
+Scrum jest zwinną metodyką wytwarzania oprogramowania, której początki sięgają połowy lat 80. Polega ona na przyrostowym wytwarzaniu produktu oraz stałej komunikacji z klientem bądź też jego reprezentantem - właścicielem produktu (\textit{ang. product owner}). Zespół deweloperski ({\textit{ang. team}}) podejmuje się przygotowania wybranych przez siebie funkcjonalności, których wybór może być zależny od właściciela produktu - to on ustala priorytety. Jednak w celu zminimalizowania ryzyka "wyższej władzy", czyli narzucaniu zbyt wysokich wymagań i nieosiągalnych terminów, co często czynią właściciele produktu, została wprowadzona kolejna rola - scrum master, którą ciężko jest przetłumaczyć na język polski (z tego względu w dalszej części pracy będę posługiwał się właśnie tym terminem). To on "chroni" zespół przed przepracowaniem i rozwiązuje napotykane po drodze problemy. Aby prawidłowo przedstawić omawiany temat należy zapoznać się z kilkoma pojęciami, które są nieodłącznym elementem tej metody:
+\begin{itemize}
 	\item \textbf{właściciel produktu} (\textit{ang. product owner}) - osoba odpowiedzialna za projekt,
 	\item \textbf{scrum master} - osoba, która pomaga zespołowi w organizacji czasu pracy a także rozwiązuje powstałe problemu,
 	\item \textbf{zespół deweloperski} (\textit{ang. team}) - zespół programistów wspólnie pracujący nad wytworzeniem produktu,
@@ -24,7 +24,7 @@ Scrum jest zwinną metodyką wytwarzania oprogramowania, której początki sięg
 	\item \textbf{historyjka} (\textit{ang. story}) - najmniejsza jednostka podlegająca ocenie (wg. wybranej przez zespół skali). 
 	\item \textbf{zadanie} (\textit{ang. task}) - zadania, które mogą być powiązane bezpośrednio ze story lub projektem.
 	\item \textbf{retrospektywa} (\textit{ang. retrospective}) - wydarzenie, które ma miejsce na koniec sprintu. W tym momencie zespół deweloperski spisuje wszystkie wady i zalety minionego sprintu oraz wspólnie z scrum masterem starają się rozwiązać zaistniałe problemy. Jest to jeden z ważniejszych elementów Scruma.
-\end{enumerate} 
+\end{itemize} 
 
 \section{Przegląd dostępnych narzędzi}
 Wytwarzając ten system skupiłem się, aby wpasował się on w wybraną przeze mnie metodykę oraz rozwiązywał szereg mankamentów, które napotkałem podczas korzystania z obecnych już rozwiązań. W celu lepszego zrozumienia problemów postanowiłem opisać kilka z nich.
@@ -35,13 +35,13 @@ Kolejną wadą jest to, że nie są one proste w instalacji. Często występują
 
 Ostatnim, jednak nie mniej ważnym problemem jest ich czytelność. Oferują one szereg zbędnej zwykłemu użytkownikowi - programiście - funkcjonalności, która jest przydatna tylko w określonych warunkach. Taki ogrom zakładek i okienek powoduje często zamęt i niezrozumienie wśród programistów.
 
-Aby zobrazować wagę powyższych problemów zostały one zestawione w poniższej tabeli porównującej wybrane systemy wraz z systemem, który został wytworzony w ramach pracy dyplomowej.
+Aby zobrazować wagę powyższych problemów zostały one zestawione w poniższej tabeli porównującej wybrane systemy wraz z systemem, który został wytworzony w ramach pracy dyplomowej. Nadałem mu nazwę \textbf{scrumus}, która ma charakter gry słownej - scrum us - w wolnym tłumaczeniu "wyskramuj nas".
 \begin{table}[h!]
 	\caption{Porównanie wybranych systemów zarządzania projektami}
 	\centering
 	\begin{tabular}{|c|c|c|c|c|}
 		\hline
-		\multirow{2}{*}{Cecha systemu} & \multicolumn{4}{c|}{Wybrane systemy} \\\cline{2-5} & JIRA & Bitbucket & GitHub & Autorski system\\
+		\multirow{2}{*}{Cecha systemu} & \multicolumn{4}{c|}{Wybrane systemy} \\\cline{2-5} & JIRA & Bitbucket & GitHub & scrumus\\
 		\hline
 		Darmowy & do 10 użyt. & do 5 użyt. & open source & tak\\
 		\hline
@@ -51,7 +51,7 @@ Aby zobrazować wagę powyższych problemów zostały one zestawione w poniższe
 		\hline
 		Wymagania & baza danych & nd. & nd. & docker\\
 		\hline
-		Cechy & \specialcell{issue tracker\\ wiki} & \specialcell{issue tracker\\ wiki} & \specialcell{issue tracker\\ wiki} & issue tracker\\
+		Cechy & \specialcell{issue tracker\\ wiki} & \specialcell{issue tracker\\ wiki} & \specialcell{issue tracker\\ wiki} & \specialcell{issue tracker\\ wersja lite}\\
 		\hline
 		
 	\end{tabular}
@@ -62,13 +62,13 @@ Aby zobrazować wagę powyższych problemów zostały one zestawione w poniższe
 
 Celem pracy było wytworzenie systemu do zarządzania projektami dedykowanego metody Scrum. Obecnie na rynku jest wiele zarówno darmowych jak i płatnych narzędzi przedstawionych w tabeli \ref{tabela:porownanie_systemow}, które oferują możliwość prowadzenia projektów rożnymi metodykami. Wcześniej wymienione wady skłoniły mnie do opracowania własnego systemu, który ma za zadanie rozwiązać wspomniane problemy w następujący sposób:
 \begin{enumerate}
-	\item łatwość instalacji - do tego celu zostało wykorzystane oprogramowanie docker, które wspiera błyskawiczne stawianie systemów,
-	\item przejrzysty interfejs użytkownika - został osiągnięty dzięki open sourcowej bibliotece PrimeFaces,
+	\item łatwość instalacji - do tego celu zostało wykorzystane oprogramowanie docker, które wspiera błyskawiczne uruchamianie systemów,
+	\item przejrzysty interfejs użytkownika, który został osiągnięty dzięki darmowej bibliotece PrimeFaces,
 	\item bez zbędnej funkcjonalności - zostały zaimplementowane tylko obligatoryjne funkcje tego typu systemu oraz niewielka ilość udogodnień.
 \end{enumerate}
 
 \section{Cel i zakres pracy}
-Celem pracy było wytworzenie systemu do zarządzania projektami dedykowanego metody Scrum. Obecnie na rynku jest wiele zarówno darmowych jak i płatnych narzędzi, które oferują możliwość prowadzenia projektów rożnymi metodykami. W zakres pracy wchodzą:
+Poza wyżej wymienionymi wymaganiami, jakie są stawiane systemowi scrumus, w zakres pracy wchodzą także:
 \begin{enumerate}
 	\item zapoznanie się z literaturą tematu,
 	\item opracowanie założeń projektu,

@@ -4,13 +4,13 @@
 W projektowanym systemie występują cztery rodzaje użytkowników:
 
 \begin{enumerate}
-	\item administrator - posiada on największe uprawnienia w systemie,
-	\item właściciel produktu - odzwierciela rolę właściciela produktu w Scrumie,
-	\item scrum master - odzwierciela rolę scrum mastera w Scrumie,
+	\item administrator - posiada największe uprawnienia w systemie,
+	\item właściciel produktu - odzwierciedla rolę właściciela produktu w Scrumie,
+	\item scrum master - odzwierciedla rolę scrum mastera w Scrumie,
 	\item deweloper - posiada najmniejsze uprawnienia, jest częścią zespołu deweloperskiego.
 \end{enumerate} 
 
-Na tym etapie warto wspomnieć, że każdy użytkownik jest jest deweloperem. Każdy projekt może mieć tylko jednego właściciela produktu, a każdy z nich może być product ownerem tylko raz. Dodatkowo zespół deweloperski ma przydzielonego tylko jednego scrum mastera, przy czym scrum master może być przypisany do wielu zespołów jednocześnie.
+Na tym etapie warto wspomnieć, że każdy użytkownik jest deweloperem. Każdy projekt może mieć tylko jednego właściciela produktu, a każdy z nich może być product ownerem tylko raz. Dodatkowo zespół deweloperski ma przydzielonego tylko jednego scrum mastera, przy czym scrum master może być przypisany do wielu zespołów jednocześnie.
 
 \section{Wymagania funkcjonalne}
 Prezentowany przeze mnie system ma pewne założenia oraz wymagania. W tym rozdziale zajmę się opisem wymagań funkcjonalnych. 
@@ -111,9 +111,9 @@ Kolejnym zagadnieniem, które zostanie poruszone w tym rozdziale będą wymagani
 \end{enumerate}
 
 \section{Użyte technologie i narzędzia}
-Przy implementacji tego systemu wykorzystano wiele gotowych rozwiązań, które bez wątpienia podniosły wydajność pracy poprzez automatyczne budowanie, czy wdrażanie projektu na serwer. Również jakoś aplikacji utrzymuje się na bardzo dobrym poziomie dzięki wielu testom jednostkowym, integracyjnym i w końcu testom użytkownika końcowego. 
+Przy implementacji systemu scrumus wykorzystano wiele gotowych rozwiązań, które bez wątpienia podniosły wydajność pracy poprzez automatyczne budowanie, czy wdrażanie projektu na serwer. Również jakoś aplikacji utrzymuje się na bardzo dobrym poziomie dzięki wielu testom jednostkowym, integracyjnym i w końcu testom użytkownika końcowego. 
 
-Dodatkowo przy implementowaniu systemu zostały wykorzystane narzędzia, które oferuje Student Developer Pack. Znalazł się tam między innymi system GitHub w wersji Micro z możliwością prowadzenia prywatnych repozytoriów.\footnote{Projekt Student Developer Pack dotyczy wyłącznie studentów. Więcej informacji można znaleźć pod adresem \url{https://education.github.com/pack/offers}}
+Dodatkowo przy implementowaniu systemu zostały wykorzystane narzędzia, które oferuje Student Developer Pack\footnote{Projekt Student Developer Pack dotyczy wyłącznie studentów. Więcej informacji można znaleźć pod adresem \url{https://education.github.com/pack/offers}}. Znalazł się tam między innymi system GitHub w wersji Micro z możliwością prowadzenia prywatnych repozytoriów.
 
 \subsection{Testowanie}
 Jak wiadomo w dzisiejszych czasach aplikacje, które nie posiadają testów, jak i również te, które testów nie przechodzą, nie mają prawa znaleźć się na serwerze produkcyjnym. Co prawda przy projektowaniu mojej aplikacji serwer produkcyjny jak i testowy stanowił jedność, jednak bez testów obyć się nie mogło.
@@ -127,24 +127,32 @@ Jest to framework rozszerzający możliwości zwykłych testów jednostkowych. O
 \subsubsection{AssertJ}
 Jest to kolejny framework na potrzeby testów. Jego zaletą jest to, iż pozwala on tworzyć czytelne dla programisty asercje oraz ma możliwość szerokiej rozbudowy. Pozwala on na sprawdzenie wyników testów w jednej linii, co ma duży wpływ na czytelność.
 
-\subsection{Arquillian}
-Arquillian jest kolejnym frameworkiem do testowania, tym razem jednak integracyjnego. Posiada on wsparcie dla wielu kontenerów aplikacji JEE, co czyni go pionierem pod tym względem. Dzięki jego mechanizmom możliwe jest uruchomienie testów bez konieczności posiadania serwera aplikacji, co znacznie przyśpiesza wykonywanie testów integracyjnych. Istnieje również możliwość uruchamiania testów na zdalnym serwerze i to właśnie tą ścieżkę wybrałem, ze względu na większe możliwości testowania oraz to, że aplikacja jest uruchamiana na żywym środowisku, przez co umożliwia to sprawdzenia zachowania aplikacji dokładnie na takim serwerze, na jakim będzie uruchomiona wersja produkcyjna.
+\subsubsection{Arquillian}
+Arquillian jest kolejnym frameworkiem do testowania, tym razem jednak integracyjnego. Posiada on wsparcie dla wielu kontenerów aplikacji JEE, co czyni go pionierem pod tym względem. Dzięki jego mechanizmom możliwe jest uruchomienie testów bez konieczności posiadania serwera aplikacji, co znacznie przyśpiesza wykonywanie testów integracyjnych. Istnieje również możliwość uruchamiania testów na zdalnym serwerze i to właśnie tą ścieżkę wybrałem, ze względu na większe możliwości testowania oraz to, że aplikacja jest uruchamiana na żywym środowisku, przez co umożliwia to sprawdzenia zachowania aplikacji dokładnie na takim serwerze, na jakim będzie uruchomiona wersja produkcyjna. Dodatkową zaletą tego frameworku jest to, że nie musimy wdrażać całej aplikacji. Jeżeli testujemy tylko jedną klasę, która nie ma żadnych powiązań lub zależności to wystarczy, że wgramy tylko tę klasę.
 
-\subsection{Ciągła integracja}
+\subsection{Ciągła integracja oraz zarządzanie projektem}
 Koleje narzędzia z grupy ciągłej integracji umożliwiają budowanie, testowanie oraz monitorowanie stanu projektu na każdym etapie jego powstawania. W dzisiejszych czasach każda firma, a nawet osoby prywatne, posiada takie systemy, bez których nie byłoby możliwe tak szybkie wytwarzanie aplikacji.
 
 \subsubsection{Gradle}
-Gradle jest darmowym narzędziem do budowania projektów oraz zarządzania zależnościami, przez co programista może skupić się na pracy, a wszystkimi bibliotekami oraz zadaniami jakie należy wykonać podczas budowania zajmie się Gradle. W przeciwieństwie do Maven został on stworzony przy użyciu języka Groovy, co sprawia, że nie ma rzeczy niewykonanych. Jego prostota i zarazem ogrom możliwości sprawiają, że powoli zastępuje on przestarzały framework Maven. Dzięki temu projektowi za pomocą jednej komendy skompilujemy, zbudujemy oraz uruchomimy testy naszej aplikacji. Gradle został przyswojony przez prawie każdy system budowania projektów, przez co był oczywistym wyborem przy planowaniu projektu.
+Gradle jest darmowym narzędziem do budowania projektów oraz zarządzania zależnościami, przez co programista może skupić się na pracy, a wszystkimi bibliotekami oraz zadaniami jakie należy wykonać podczas budowania zajmie się Gradle. W przeciwieństwie do Maven został on stworzony przy użyciu języka Groovy, co sprawia, że nie ma rzeczy niewykonalnych. Jego prostota i zarazem ogrom możliwości sprawiają, że powoli zastępuje on przestarzały framework Maven. Dzięki temu projektowi za pomocą jednej komendy skompilujemy, zbudujemy oraz uruchomimy testy naszej aplikacji. Gradle został przyswojony przez prawie każdy system budowania projektów, przez co był oczywistym wyborem przy planowaniu projektu.
 
 \subsubsection{GitHub}
 GitHub jest serwisem, który umożliwia prowadzenie projektów z użyciem systemu kontroli wersji - Git. Git jest rozproszonym systemem kontroli wersji. Umożliwia on prowadzenie projektu w sposób przejrzysty i efektowny. Każda nasza zmiana jest rejestrowana w tym systemie z możliwością jej przywrócenia bądź też cofnięcia, przez co nie musimy obawiać się, że coś nam ucieknie. Dzięki pakietowi Student Developer Pack, otrzymałem rozszerzone konto GitHub, które zawiera do 5 prywatnych repozytoriów. Narzędzie to pozwoliło mi utrzymać kod w prywatności przed światem zewnętrznym jak i również udostępnić go dla promotora.
 
 
 \subsubsection{TeamCity}
-TeamCity jest potężnym narzędziem do budowy projektów, którego rozwojem zajmuje się firma JetBrains. Jest on darmowy dla małych projektów i w skład tej wersji wchodzi jeden agent, który wykonuje zadania. System umożliwia budowanie oraz testowanie aplikacji, generując przy tym raporty, przez co wszystkie błędy zostaną znalezione i poprawione. Ma on świetną integrację z systemami kontroli wersji takimi jak Git czy SVN oraz innymi narzędziami tej firmy, które zostały również wykorzystane podczas prac.
+TeamCity jest potężnym narzędziem do budowy projektów, którego rozwojem zajmuje się firma JetBrains. Jest on darmowy dla małych projektów i w skład tej wersji wchodzi jeden agent, który wykonuje zadania. System umożliwia budowanie oraz testowanie aplikacji, generując przy tym raporty, przez co wszystkie błędy zostaną znalezione i poprawione. Ma on świetną integrację z systemami kontroli wersji takimi jak Git czy SVN oraz innymi narzędziami tej firmy, które zostały również wykorzystane podczas prac. Rysunek \ref{fig:teamcity} przedstawia historię budowań projektu wraz z całkowitą liczbą testów. Dodatkowo prezentowane są informacje, które testy nie przeszły, czas budowy oraz wiele innych przydatnych informacji.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=15cm]{rysunki/screenshot_teamcity.png}	
+	\caption{Historia budować projektu w systemie TeamCity}
+	\label{fig:teamcity}
+\end{figure}
+
 
 \subsubsection{YouTrack}
-YouTrack również jest systemem do zarządzania projektami. Jest on dedykowany ogólnie metodykom zwinnymi, między innymi Scrumowi. Używałem go podczas implementacji aplikacji, co pozwoliło mi kontrolować zadania, które należy wykonać. Aplikacja umożliwia również generowanie raportów i wykresów dot. zadań, użytkowników czy projektów. System jest również rozwijany przez firmę JetBrains, przez co jest zintegrowany z TeamCity oraz IntelliJ. Pobiera on informacje o budowach projektów z systemu TeamCity oraz umożliwia przeglądania zadań w programie IntelliJ, przez co znazcnie upraszcza pracę. Dodatkowo jest darmowy dla małych projektów (do 10 osób), przez co może być wykorzystywany przez małe firmy lub studentów.
+YouTrack jest systemem do zarządzania projektami, którego funkcjonalność jest bardzo zbliżona do wcześniej przedstawionego systemu Jira. Jest on dedykowany ogólnie metodykom zwinnymi, między innymi Scrumowi. Używałem go podczas implementacji aplikacji, co pozwoliło mi kontrolować zadania, które należy wykonać. Aplikacja umożliwia również generowanie raportów i wykresów dot. zadań, użytkowników czy projektów. System jest również rozwijany przez firmę JetBrains, przez co jest zintegrowany z TeamCity oraz IntelliJ. Pobiera on informacje o budowach projektów z systemu TeamCity oraz umożliwia przeglądania zadań w programie IntelliJ, przez co znacznie upraszcza pracę. Dodatkowo jest darmowy dla małych projektów (do 10 osób), przez co może być wykorzystywany przez małe firmy lub studentów.
 
 \subsubsection{IntelliJ}
 IntelliJ jest zintegrowanym środowiskiem deweloperskim na bardzo wysokim poziomie. Umożliwia on tworzenie, kompilację oraz testowanie kodu napisanego w języku Java lub innych językach, które działają na wirtualnej maszynie Javy np. Scala lub Groovy. Narzędzie to posiada szereg funkcjonalności ułatwiających i przyśpieszających programowanie. Jest ono świetnie zintegrowane z frameworkami do testowania (JUnit, Arquillian), systemami do budowania (Gradle, TeamCity), czy zarządzania (YouTrack) przez co programista może się skupić wyłącznie na jednym oknie - oknie aplikacji IntelliJ. Ten system również jest darmowy dla studentów, co stwarza świetne możliwości dla tej grupy osób.
@@ -157,16 +165,33 @@ Pisząc warstwa prezentacji mam na myśli zarówno część wizualną jak i ró�
 JSF jest frameworkiem, który umożliwia tworzenia warstwy prezentacji dla aplikacji webowych napisanych w języku Java. Posiada on szereg udogodnień, dzięki którym programowanie części wizualnej staje się proste. Framework umożliwia stworzenie warstwy oddzielającej logikę biznesową od widoku, co jest pożądanym, a wręcz wymaganym aspektem programowania aplikacji webowych.
 
 \subsubsection{PrimeFaces}
-PrimeFaces jest darmowym frameworkiem, który posiada szereg dostępnych z półki kontrolek służących do obsługiwania widoku. Dodatkowo wprowadza wiele usprawnień, takich jak generowanie tabel z danymi czy szablony css, przez co możemy zmienić wygląd naszej aplikacji za pomocą jednej linii kodu. Został on napisany jako częściowa nakładka na JSF. Wszystkie żądania potrafi obsługiwać synchronicznie i asynchronicznie dzięki zastosowaniu Javascriptu.
+PrimeFaces jest darmowym frameworkiem, który posiada szereg dostępnych z półki kontrolek służących do obsługiwania widoku. Dodatkowo wprowadza wiele usprawnień, takich jak generowanie tabel z danymi czy szablony css, przez co możemy zmienić wygląd naszej aplikacji za pomocą jednej linii kodu. Został on napisany jako częściowa nakładka na JSF. Wszystkie żądania potrafi obsługiwać synchronicznie i asynchronicznie dzięki zastosowaniu JavaScriptu.
 
-\subsection{WildFly}
-WildFly jest darmowym kontenerem aplikacji, rozwijanym przez firmę RedHat. Jest on w pełni zgodny ze standardem EJB. Serwer posiada wsparcie dla baz danych oraz zabezpieczeń aplikacji na poziomie kontenerów. Implementuje również w pełni specyfikację JAAS (Java Authentication and Authorization Service), dzięki której zapewnione jest bezpieczeństwo w moim systemie. Posiada on bardzo dobre parametry takie jak czas startu serwera - poniżej dwóch sekund, czy czas wdrożenia aplikacji - poniżej dziesięciu sekund.
+\subsection{Pozostałe}
+W tej sekcji zostaną omówione pozostałe aplikacje, frameworki oraz język Java EE.
 
-\subsection{Docker}
-Jest to narzędzie, które w ostatnim czasie zwróciło uwagę wielu firm i indywidualnych programistów. Co prawna koncepcja kontenerów sięga lat 80-tych, jednak dopiero w dobie mikrousług system ten miał możliwość przebicia się. Pozwala on na budowanie obrazów opartych na systemach z rodziny UNIX. Z takich obrazów można tworzyć kontenery, skalować je i zarządzać nimi. System daje możliwość zainstalowania dowolnych aplikacji, przy niewielkiej konfiguracji, co pozwala uruchomić mój system wraz z bazą danych za pomocą jednej komendy w czasie równym uruchomieniu serwera i wdrożenia aplikacji.
+\subsubsection{Java Enterprise Edition}
+Język Java powstał w roku 1995. Jego głównymi założeniami są m.in. niezależność od architektury oraz bezpieczeństwo i niezawodność. Język ten jest dostępny w trzech podstawowych pakietach:
+\begin{itemize}
+	\item Java Micro Edition - służy do wytwarzania aplikacji na urządzenia, które posiadają niewielkie parametry systemowe. Obecnie wraz z rozwojem telefonów komórkowych i innych urządzeń mobilnych, powstaje coraz mniej aplikacji wykorzystującej ten pakiet.
+	\item Java Standard Edition - jest podstawowym pakietem Javy, który można znaleźć na każdym komputerze z zainstalowaną Javą. Oferuje on możliwości programowania sieciowego i współbieżnego. Powstałe aplikacje mogą mieć postać programów uruchamialnych z linii komend lub też pełnoprawnych aplikacji desktopowych.
+	\item Java Enterprise Edition - jest to najszerszy pakiet Javy, który oferuje możliwość tworzenia aplikacji webowych z wykorzystaniem różnych technologii takich jak JSF czy EJB. Jest obecnie jednym z najbardziej popularnych narzędzi wykorzystywanych przy implementacji projektów serwerowych.
+\end{itemize}
 
-\subsection{Postgresql}
+\subsubsection{WildFly}
+WildFly jest darmowym kontenerem aplikacji, rozwijanym przez firmę RedHat. Jest on w pełni zgodny ze standardem EJB. Serwer posiada wsparcie dla baz danych oraz zabezpieczeń aplikacji na poziomie kontenerów. Implementuje również specyfikację JAAS (Java Authentication and Authorization Service), dzięki której zapewnione jest bezpieczeństwo w systemie scrumus. Posiada on bardzo dobre parametry takie jak czas startu serwera - poniżej dwóch sekund, czy czas wdrożenia aplikacji - poniżej dziesięciu sekund.
+
+\subsubsection{Docker}
+Jest to narzędzie, które w ostatnim czasie zwróciło uwagę wielu firm i indywidualnych programistów. Co prawda koncepcja kontenerów sięga lat 80-tych, jednak dopiero w dobie mikrousług system ten miał możliwość przebicia się. Pozwala on na budowanie obrazów opartych na systemach z rodziny UNIX. Z takich obrazów można tworzyć kontenery, skalować je i zarządzać nimi. System daje możliwość zainstalowania dowolnych aplikacji, przy niewielkiej konfiguracji, co pozwala uruchomić wytworzony w ramach pracy system wraz z bazą danych za pomocą jednej komendy w czasie równym uruchomieniu serwera i wdrożenia aplikacji.
+
+\subsubsection{Postgresql}
 Postgresql jest darmową bazą danych o dużych możliwościach. Ma on niewielkie wymagania systemowe oraz oferuje wsparcie dla transakcji. Umożliwia przechowywanie danych o różnych typach i posiada szereg usprawnień optymalizacyjnych. Dodatkowo można definiować własne typy danych.
 
-\subsection{Inne}
-latex, dbschema, lombok
+\subsubsection{\LaTeX}
+\LaTeX jest oprogramowaniem do składania tekstu. Posiada szereg funkcjonalności takich jak automatyczne tworzenie spisów treści, tabel czy ilustracji. W łatwy sposób można utworzyć bibliografię i skorowidze. \LaTeX pozwala autorowi odizolować się do wyglądu i formatowania dokumentu, a skupić jedynie na treści i strukturze tekstu. Został on użyty do wytworzenia części opisowej tejże pracy dyplomowej, co znacznie ułatwiło pracę.
+
+\subsubsection{DbSchema}
+Jest to program, który pozwala na wizualizację bazy danych oraz zmienianie jej struktury z poziomu programy, bez konieczności wykonywania skryptów SQL. Za pomocą tego programu został wygenerowany model bazy danych przedstawiony w dalszej części tej pracy.
+
+\subsubsection{Lombok}
+Framework Lombok służy do automatycznego generowania kodu Javy. Pozwala on za pomocą jednej adnotacji wstawić podstawowe metody do klasy takie jak gettery i settery, konstruktory czy też hashcode i equals. Dzięki temu projektowi nasze klasy zostaną znacznie odchudzone przez co zyskują na czytelności.
