@@ -45,9 +45,12 @@
 \contentsline {subsection}{\numberline {3.4.1}Baza danych i model}{27}
 \contentsline {subsection}{\numberline {3.4.2}Warstwa logiki biznesowej}{30}
 \contentsline {subsection}{\numberline {3.4.3}Warstwa prezentacji}{32}
-\contentsline {chapter}{\numberline {4}Dokumentacja wdro\IeC {\.z}eniowa i testowa}{33}
-\contentsline {subsection}{\numberline {4.0.1}Gradle}{33}
-\contentsline {subsection}{\numberline {4.0.2}Docker}{33}
-\contentsline {subsection}{\numberline {4.0.3}Wyniki test\IeC {\'o}w}{33}
-\contentsline {chapter}{\numberline {5}Podsumowanie}{35}
-\contentsline {chapter}{\numberline {6}Literatura}{37}
+\contentsline {chapter}{\numberline {4}Dokumentacja wdro\IeC {\.z}eniowa i testowa}{37}
+\contentsline {section}{\numberline {4.1}Gradle}{37}
+\contentsline {section}{\numberline {4.2}Docker}{40}
+\contentsline {section}{\numberline {4.3}Wyniki test\IeC {\'o}w}{42}
+\contentsline {subsection}{\numberline {4.3.1}Testy jednostkowe}{42}
+\contentsline {subsection}{\numberline {4.3.2}Testy integracyjne}{42}
+\contentsline {subsection}{\numberline {4.3.3}Podsumowanie wynik\IeC {\'o}w test\IeC {\'o}w oraz statystyki}{44}
+\contentsline {chapter}{\numberline {5}Podsumowanie}{47}
+\contentsline {chapter}{\numberline {6}Literatura}{49}

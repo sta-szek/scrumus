@@ -98,7 +98,7 @@ System korzysta z zewnętrznej bazy danych, której model jest przedstawiony na 
 \end{sidewaysfigure}
 
 \section{Szczegóły implementacji}
-Przy omawianiu szczegółów implementacji przejdziemy przez cały zaprojektowany system w kierunku od bazy danych poprzez logikę biznesową, warstwę prezentacji aż do sposobu uruchomienia aplikacji wraz z opisem środowiska testowego i produkcyjnego, które w przypadku tego projektu stanowiły jedność. Zanim jednak przystąpimy do opisu poszczególnych warstw, w celu zrozumienia wszystkich omawianych zagadnień, warto zapoznać się ze strukturą plików i folderów w projekcie scrumus, która została przedstawiona na rysunku \ref{fig:struktura_intellij}.
+Przy omawianiu szczegółów implementacji przejdziemy przez cały zaprojektowany system w kierunku od bazy danych poprzez logikę biznesową, warstwę prezentacji a w następnym rozdziale przejdziemy do sposobu uruchomienia aplikacji wraz z opisem środowiska testowego i produkcyjnego, które w przypadku tego projektu stanowiły jedność. Zanim jednak przystąpimy do opisu poszczególnych warstw, w celu zrozumienia wszystkich omawianych zagadnień, warto zapoznać się ze strukturą plików i folderów w projekcie scrumus, która została przedstawiona na rysunku \ref{fig:struktura_intellij}.
 
 \begin{figure}[tp]
 	\centering
@@ -192,7 +192,98 @@ MessageDigest.getInstance("SHA-256").update(text.getBytes("UTF-8")).digest());
 
 \subsection{Warstwa prezentacji}
 
-Tu krótko opiszę, że warstwa składa się na 
-a) REST - jest jedna metoda rest w projekcie dla celow demonstracyjnych, jak latwo dwoma adnotacjami mozna udostepnic ten web service
-b) remote ejb, pokaze jak latwo jedna adnotacja mozna udostepnic ejb, tak aby mozna bylo polaczyc sie zdalnie
-c) wlasciwa warstwa prezentacji czyli interfejs www + zrzuty wybranych ekranów - najlepiej tworzenia uzytkownika aby pokrylo sie ze schematem wyzej
+Ostatnią warstwą, która zostanie omówiona w tym rozdziale jest widok użytkownika, czyli warstwa prezentacji. Równolegle z tą warstwą idą w parze usługi REST, za pomocą których można komunikować się z systemem. Są jednak one rozwinięte w bardzo małym stopniu - jedynie w celach demonstracyjnych.
+
+Widoki użytkownika opierają się na technologii JSF 2.2 oraz darmowym frameworku PrimeFaces w wersji 5.3. Dzięki jego funkcjonalności zostały zaimplementowane tabele, menu, czy różnego rodzaju listy dostępne na stronach systemu. Całość operacji wykonywanych na stronie odbywa się za pomocą JavaScriptu, który został użyty przez framework oraz ziaren Backing Beans. Ziarna te mają dodatkową funkcjonalność - są odpowiedzialne za dostarczanie danych do widoku oraz obsługę żądań - to w nich znajduje się kod, który wykonuje się po wciśnięciu przycisku. Dla przykładu na listingu \ref{lis:kod_form_tworzenia_uzyt} został przedstawiony częściowy kod formularza, napisany w xhtml z użyciem JSF oraz Primefaces odpowiedzialny za wykonanie akcji tworzenia użytkownika. Na listingu został pominięty fragment odpowiedzialny za wyświetlanie pól, w których wprowadza się imię, nazwisko, nazwę użytkownika oraz adres e-mail.
+
+\begin{lstlisting}[caption={Kod formularza tworzenia użytkownika}, label=lis:kod_form_tworzenia_uzyt, numbers=none]
+<h:form id="createUserForm">
+<p:panel id="createUserPanel" header="#{i18n['page.admin.user.create']}">
+<p:focus context="createUserPanel" />
+<p:messages id="messages" globalOnly="true closable="true" />
+<h:panelGrid columns="3" cellpadding="5">
+................
+</h:panelGrid>
+<p:commandButton id="createButton" value="#{i18n['page.admin.user.create']}"
+action="#{userService.createUser}" ajax="false" icon="fa fa-user-plus"
+validateClient="true" onclick="PF('block').show()" />
+</p:panel>
+<p:blockUI block="createUserPanel" trigger="createButton" widgetVar="block">
+<p:outputLabel value="#{i18n['page.admin.user.create.process']}" />
+<br />
+<p:graphicImage library="primefaces" name="/outputpanel/images/loading.gif" />
+</p:blockUI>
+</h:form>\end{lstlisting}
+
+Najważniejszym elementem kodu jest przycisk utworzony za pomocą znacznika Primefaces <p:commandButton~...~/>. Jego wartość (value), czyli wyświetlany tekst jest pobierany za pomocą zasobu o nazwie \textbf{i18n}, co sprawia, że możliwa jest internacjonalizacja systemu. Ta funkcjonalność również została wykonana w ramach pracy dyplomowej. Kolejnym elementem jest akcja (action) przycisku, która wskazuje na metodę \textit{createUser} z klasy \textit{UserService} zadeklarowanej jako ziarno o zasięgu widoku (view scoped). Po naciśnięciu przycisku zostaje wykonana JavaScriptowa akcja uruchomiona za pomocą obsługi onclick. Jej zadaniem jest wyświetlenie okna poczekania. Krok ten odpowiada wysłaniu żądania utworzenia użytkownika z widoku do ziarna UserService, a następnie wyświetleniu animacji przez ten serwis. Przebieg akcji został przedstawiony we wcześniejszej sekcji na rysunku \ref{fig:diagsekw}. Samo okno poczekania zostało zaprezentowane na ilustracji \ref{fig:user-czekanie}. 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=15cm]{rysunki/user-czekanie.png}	
+	\caption{Komunikaty o błędzie podczas tworzenia użytkownika}
+	\label{fig:user-czekanie}
+\end{figure}
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=15cm]{rysunki/user-blad.png}	
+	\caption{Komunikaty o błędzie podczas tworzenia użytkownika}
+	\label{fig:user-blad}
+\end{figure}
+
+Po poprawnej walidacji nowy użytkownik zostaje utworzony, na jego skrzynkę trafia e-mail z wygenerowanym hasłem, a administrator zostaje przeniesiony na stronę z listą użytkowników. Jak wiadomo, wprowadzane dane nie zawsze muszą być poprawne. W takim wypadku użytkownikowi zostają wyświetlone komunikaty o błędach, jakie popełnił podczas wprowadzania danych do formularza, co przedstawia rysunek \ref{fig:user-blad}.
+
+Kolejnym aspektem widoku jest to, że został on zaprojektowany w technologi responsywnej, co oznacza, że widok jest skalowany w zależności od rozmiaru okna przeglądarki. Dzięki temu użytkownik zawsze będzie miał wgląd w na całą zawartość strony. To sprawia, że przeglądanie treści systemu jest równie łatwe z poziomu przeglądarek desktopowych jak i urządzeń mobilnych. Technologia ta działa na zasadzie dynamicznego dostosowywania szerokości wyświetlanych elementów i jest w pełni oparta na systemie CSS (Cascading Style Sheets). Została ona zintegrowana z frameworkiem Primefaces, co sprawia, że jej użycie ogranicza się do zastosowania odpowiednich klas komponentów.
+
+System posiada również zabezpieczenia, sprawiające, że część stron jest widoczna tylko dla użytkowników z rolą administratora, a pozostałe treści dla zalogowanych. Zabezpieczenia zostały oparte na specyfikacji JAAS (Java Authentication and Authorization Service), która jest implementowana przez używany kontener - Wildfly. Konfiguracja została przedstawiona na listingu \ref{lis:konf_zab_ad} oraz \ref{lis:konf_zab_zal}.
+
+\begin{lstlisting}[caption={Konfiguracja zabezpieczeń systemu scrumus - administrator}, label=lis:konf_zab_ad, numbers=none]
+ <security-constraint>
+ <web-resource-collection>
+ <web-resource-name>scrumusSecurity</web-resource-name>
+ <description>Dostep tylko dla administratora</description>
+ <url-pattern>/admin/</url-pattern>
+ <http-method>GET</http-method>
+ <http-method>POST</http-method>
+ <http-method>HEAD</http-method>
+ <http-method>PUT</http-method>
+ </web-resource-collection>
+ <auth-constraint>
+ <role-name>ADMIN</role-name>
+ </auth-constraint>
+ </security-constraint>
+ \end{lstlisting}
+ \newpage
+ \begin{lstlisting}[caption={Konfiguracja zabezpieczeń systemu scrumus - zalogowany użytkownik}, label=lis:konf_zab_zal, numbers=none]
+ <security-constraint>
+ <web-resource-collection>
+ <web-resource-name>scrumusSecurity</web-resource-name>
+ <description>Dostep tylko dla zalogowanych uzytkownikow</description>
+ <url-pattern>/</url-pattern>
+ <http-method>GET</http-method>
+ <http-method>POST</http-method>
+ <http-method>HEAD</http-method>
+ <http-method>PUT</http-method>
+ </web-resource-collection>
+ <auth-constraint>
+ <role-name>DEVELOPER</role-name>
+ </auth-constraint>
+ </security-constraint>\end{lstlisting}
+ 
+ 
+ Kolejnym możliwym sposobem komunikacji z aplikacją jest usługa REST, która jest oparta na protokole HTTP. Po wysłaniu zapytania na wybrany adres otrzymujemy odpowiedź w postaci obiektu JSON (JavaScript Object Notation). Protokół HTTP umożliwia różne metody do komunikacji m.in.: GET - pobranie zasobów, POST - wysłanie zapytania z ciałem, które jest używane przy zapisywaniu obiektów oraz DELETE - usuwanie obiektów. Listing \ref{lis:rest} przedstawia konfigurację takiej usługi, która mogłaby zostać zaimplementowana na nowej lub istniejącej już warstwie JSF. Takie rozwiązanie umożliwia rozbudowę systemu o dodatkowe klienty.
+
+\begin{lstlisting}[caption={Przykładowa usługa REST}, label=lis:rest, numbers=none]
+@GET
+@Path("/users/{userId}")
+public Developer findUser(String userId) {
+	  try {
+	  int userInId = Integer.parseInt(userId);
+		  Optional<Developer> userOptional = userManager.findByUserId(userInId);
+		  return userOptional.orElse(null);
+	  } catch (NumberFormatException e) {
+		  return null;
+	  }
+}
+\end{lstlisting}
+
+

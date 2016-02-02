@@ -17,6 +17,8 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
@@ -55,6 +57,8 @@ public class UserService implements Serializable {
 
     private Developer userToDelete;
 
+    @GET
+    @Path("/users/{userId}")
     public Developer findUser(String userId) {
         try {
             int userInId = Integer.parseInt(userId);

@@ -62,7 +62,6 @@ public class AgileService implements Serializable {
                                         .map(Sprint::getId)
                                         .forEach(findStoriesAndPutIntoMap());
         backlogForCurrentlyViewedProject = findBacklogForProject(currentlyViewedProjectKey);
-        logger.info("postcontrcuctr");
     }
 
     public String moveToBacklog(Issue issue, Story story) {
