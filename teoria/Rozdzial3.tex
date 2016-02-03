@@ -9,7 +9,7 @@ Pierwsza z nich to warstwa usługi REST. Dzięki takiemu rozwiązaniu z aplikacj
 
 Kolejna ścieżka komunikacji to zdalny interfejs komponentu EJB (Enterprise JavaBean). Mechanizm ten wprowadza możliwość komunikacji asynchronicznej z aplikacją. Jest on jednak ograniczony tylko do klientów napisanych w języku Java.
 
-Wyżej wymienione rozwiązania stanowią warstwę do komunikacji z aplikacjami klienckimi. Kolejnym krokiem było zaprojektowanie warstwy do komunikacji z klientem WWW. Co prawda warstwa REST spełniałaby swoje wymagania, lecz w tym celu posłużymy się, specjalnie zaprojektowaną do tego rodzaju zadań, technologią JavaServer Faces (JSF). Rozwiązanie to pozwoli nam zaimplementować dodatkową warstwę, dedykowaną specjalnie dla interfejsu WWW. Warstwa ta to tzw. komponenty Java Beans zwane również Backing Beans (BB). Rysunek \ref{fig:diagsys} przedstawia diagram systemowy aplikacji:
+Wyżej wymienione rozwiązania stanowią warstwę do komunikacji z aplikacjami klienckimi. Kolejnym krokiem było zaprojektowanie warstwy do komunikacji z klientem WWW. Co prawda warstwa REST spełniałaby te wymagania, lecz w tym celu posłużymy się, specjalnie zaprojektowaną do tego rodzaju zadań, technologią JavaServer Faces (JSF). Rozwiązanie to pozwoli nam zaimplementować dodatkową warstwę, dedykowaną specjalnie dla interfejsu WWW. Warstwa ta to tzw. komponenty Java Beans zwane również Backing Beans (BB). Rysunek \ref{fig:diagsys} przedstawia diagram systemowy aplikacji:
 
 \begin{figure}[h!]
 	\centering
@@ -18,7 +18,7 @@ Wyżej wymienione rozwiązania stanowią warstwę do komunikacji z aplikacjami k
 	\label{fig:diagsys}
 \end{figure}
 
-Jak wiadomo, interfejsy graficzne, a co za tym idzie – sposób ich obsługi będą się różniły w zależności od klienta. Najważniejszą różnicą będzie sposób walidacji danych oraz obsługi błędów. W samodzielnej aplikacji klienckiej walidacja danych oraz obsługa błędów powinna wystąpić możliwie szybko, aby nie generować zbędnego ruchu sieciowego. Jeżeli w trakcie przetwarzania żądania wystąpią jakiekolwiek błędy, to powinny one zostać zamienione na wyjątki aplikacji oraz przekazane do klienta. Również w aplikacji WWW walidacja danych wejściowych powinna znajdywać się na poziomie klienta. Jednak nie można wykluczyć sytuacji, w której błędy pojawią się po stronie serwera nawet po poprawnej walidacji danych. Z tego względu błędy powinny być konwertowane po stronie serwera (przez dodatkową warstwę obsługi JSF) na obiekty typu FaceMessage i dodawane bezpośrednio do kontekstu aplikacji WWW. 
+Jak wiadomo, interfejsy graficzne, a co za tym idzie – sposób ich obsługi będą się różniły w zależności od klienta. Najważniejszą różnicą będzie sposób walidacji danych oraz obsługi błędów. W samodzielnej aplikacji klienckiej walidacja danych oraz obsługa błędów powinna wystąpić możliwie szybko, aby nie generować zbędnego ruchu sieciowego. Jeżeli w trakcie przetwarzania żądania wystąpią jakiekolwiek błędy, to powinny one zostać zamienione na wyjątki aplikacji oraz być przekazane do klienta. Również w aplikacji WWW walidacja danych wejściowych powinna znajdować się na poziomie klienta. Jednak nie można wykluczyć sytuacji, w której błędy pojawią się po stronie serwera nawet po poprawnej walidacji danych. Z tego względu błędy powinny być konwertowane po stronie serwera (przez dodatkową warstwę obsługi JSF) na obiekty typu FaceMessage i dodawane bezpośrednio do kontekstu aplikacji WWW. 
 
 Wymagania odnośnie walidacji oraz obsługi błędów mogą skłaniać do wprowadzenia dodatkowej warstwy w architekturze systemu. Nie mniej jednak taka warstwa nie została wprowadzona, gdyż spowodowało by to nadmierny przyrost klas oraz niepotrzebne uogólnienie systemu. Zamiast tego logika biznesowa generuje wyjątki aplikacji, gdy zajdzie taka potrzeba oraz przekazuje je warstwie wyżej lub klientom, które wywołują dane komponenty logiki biznesowej. Oznacza to tyle, że obsługa błędów aplikacji w samodzielnej aplikacji Javy powinna być zaimplementowana po stronie samej aplikacji, natomiast interfejs WWW posiada dodatkową warstwę w postaci komponentów JavaBeans, które takową obsługę zapewnią. 
 
@@ -37,7 +37,7 @@ W oparciu o artefakty metodyki Scrum oraz wymagania funkcjonalne z systemu wyła
 
 \textit{Projekt} -- zbiór \textit{zadań}, posiada \textit{właściciela produktu}.
 
-\textit{Sprint} -- jest tworzone przez  \textit{scrum mastera}. Posiada story.
+\textit{Sprint} -- jest tworzony przez  \textit{scrum mastera}. Posiada \textit{story}.
 
 \textit{Story} -- jest agregatem \textit{zadań}.
 
@@ -85,15 +85,15 @@ Pierwszą rzeczą, która nasuwa się na myśl jest wykorzystanie MDB (Message D
 
 Drugim możliwym zastosowaniem jest możliwość wysyłania rozgłoszeń w systemie. Jednak że aplikacja nie wprowadza funkcjonalności wiadomości systemowych również i tu ten komponent nie ma zastosowania.
 
-Na tym etapie warto wspomnieć, że komponenty sterowane komunikatami można wprowadzić na każdym etapie udoskonalania projektu jednak warto zwrócić uwagę na to, jak zachować odpowiedni stopień bezpieczeństwa przy tego typu komunikatach.
+Na tym etapie warto wspomnieć, że komponenty sterowane komunikatami można wprowadzić na każdym etapie udoskonalania projektu, jednak warto zwrócić uwagę na to, jak zachować odpowiedni stopień bezpieczeństwa przy tego typu komunikatach.
 
 \section{Model bazy danych}
-System korzysta z zewnętrznej bazy danych, której model jest przedstawiony na rysunku \ref{fig:modeldb}. Został on wygenerowany za pomocą testowej wersji programu DbSchema. Kolorem zielonym zostały oznaczone tabele dotyczące użytkowników oraz uprawnień. Niebieski kolor oznacza tabele złączeniowe, które nie mają odwzorowania w kodzie. Czerwone zaś to pozostałe struktury występujące w projekcie -- są to obiekty na których operują użytkownicy. W pozostałej części pracy opiszę jak został wygenerowany model bazy danych.
+System korzysta z zewnętrznej bazy danych, której model jest przedstawiony na rysunku \ref{fig:modeldb}. Został on wygenerowany za pomocą testowej wersji programu DbSchema. Kolorem zielonym zostały oznaczone tabele dotyczące użytkowników oraz uprawnień. Niebieski kolor oznacza tabele złączeniowe, które nie mają odwzorowania w kodzie. Czerwone zaś to pozostałe struktury występujące w projekcie -- są to obiekty na których operują użytkownicy. Model bazy został wygenerowany bezpośrednio z klas Javy, za pomocą frameworka Hibernate oraz specyfikacji JPA (\textit{ang. Java Persistence API}).
 
 \begin{sidewaysfigure}[h!]
 	\centering
 	\includegraphics[width=25cm]{rysunki/modeldb.png}	
-	\caption{Szczegółowy diagram wybranych klas}
+	\caption{Model bazy danych projektu scrumus}
 	\label{fig:modeldb}
 \end{sidewaysfigure}
 
@@ -108,7 +108,7 @@ Przy omawianiu szczegółów implementacji przejdziemy przez cały zaprojektowan
 \end{figure}
 
 \subsection{Baza danych i model}
-Model bazy danych został zaprojektowany w postaci klas Javy, tak zwanych encji, a następnie automatycznie wygenerowany za pomocą frameworka Hibernate. Dodatkowo zaraz po wdrożeniu aplikacji na serwer wykonywany jest skrypt SQL, który wprowadza do bazy testowe wartości i tworzy użytkowników z różnymi uprawnieniami. Przykładowy kod klasy encji został przedstawiony na listingu \ref{lis:encja}, a konfiguracja Hibernate na listingu \ref{lis:konfiguracja_hibernate}.
+Model bazy danych został zaprojektowany w postaci klas Javy, tak zwanych encji, a następnie automatycznie wygenerowany za pomocą frameworka Hibernate. Dodatkowo zaraz po wdrożeniu aplikacji na serwer wykonywany jest skrypt SQL, który wprowadza do bazy testowe wartości i tworzy użytkowników z różnymi uprawnieniami. Przykładowy kod klasy encji został przedstawiony na listingu \ref{lis:encja}, a konfiguracja Hibernate na listingu~\ref{lis:konfiguracja_hibernate}.
 
 \begin{lstlisting}[caption={Przykładowa klasa encji}, label=lis:encja, numbers=none]
 @Data									 		// adnotacja lombok dodaje gettery
@@ -168,11 +168,11 @@ W tej warstwie wykonują się wszystkie operacje biznesowe. Dzięki zastosowaniu
 \begin{sidewaysfigure}[tp!]
 	\centering
 	\includegraphics[width=25cm]{rysunki/diagsekw.pdf}	
-	\caption{Diagram sekwencji dla tworzenia nowego użytkownika}
+	\caption{Diagram sekwencji przedstawiający proces tworzenia nowego użytkownika}
 	\label{fig:diagsekw}
 \end{sidewaysfigure}
 
-Na diagramie nie została uwzględniona operacja anulowania transakcji, ze względu na czytelność. Przerwanie procesu może nastąpić przy zapisywaniu użytkownika do bazy - błąd komunikacji, generowaniu hasła - brak algorytmu SHA-256, zapisywaniu hasła do bazy - błąd komunikacji lub też przy wysyłaniu e-maila z hasłem w sytuacji, gdy wprowadzimy złe ustawienia podczas procesu kompilacji. W każdym z tych przypadków generowany jest odpowiedni wyjątek, który następnie jest obsługiwany przez warstwę JSF, a użytkownikowi zostaje wyświetlona stosowna informacja.
+Na diagramie nie została uwzględniona operacja anulowania transakcji, ze względu na czytelność. Przerwanie procesu może nastąpić przy zapisywaniu użytkownika do bazy - błąd komunikacji, generowaniu hasła - brak algorytmu SHA-256, zapisywaniu hasła do bazy - błąd komunikacji lub też przy wysyłaniu e-maila z hasłem w sytuacji, gdy wprowadzimy złe ustawienia podczas procesu konfiguracji. W każdym z tych przypadków generowany jest odpowiedni wyjątek, który następnie jest obsługiwany przez warstwę JSF, a użytkownikowi zostaje wyświetlona stosowna informacja.
 
 Generowanie haseł odbywa się poprzez klasę narzędziową UUID z pakietu java.util. Generuje ona co prawda numer UUID, lecz z powodzeniem można go wykorzystać jako hasło początkowe użytkownika, wystarczy tylko usunąć wszystkie znaki myślnika (-) z tak wygenerowanego ciągu znaków. Następnie hasło jest szyfrowane za pomocą algorytmu SHA256 i w takiej postaci jest zapisywane w bazie danych. Cały kod odpowiedzialny za generowanie i szyfrowanie hasła został zamieszony na listingu \ref{lis:generowanie_hasla}.
 
@@ -194,7 +194,7 @@ MessageDigest.getInstance("SHA-256").update(text.getBytes("UTF-8")).digest());
 
 Ostatnią warstwą, która zostanie omówiona w tym rozdziale jest widok użytkownika, czyli warstwa prezentacji. Równolegle z tą warstwą idą w parze usługi REST, za pomocą których można komunikować się z systemem. Są jednak one rozwinięte w bardzo małym stopniu - jedynie w celach demonstracyjnych.
 
-Widoki użytkownika opierają się na technologii JSF 2.2 oraz darmowym frameworku PrimeFaces w wersji 5.3. Dzięki jego funkcjonalności zostały zaimplementowane tabele, menu, czy różnego rodzaju listy dostępne na stronach systemu. Całość operacji wykonywanych na stronie odbywa się za pomocą JavaScriptu, który został użyty przez framework oraz ziaren Backing Beans. Ziarna te mają dodatkową funkcjonalność - są odpowiedzialne za dostarczanie danych do widoku oraz obsługę żądań - to w nich znajduje się kod, który wykonuje się po wciśnięciu przycisku. Dla przykładu na listingu \ref{lis:kod_form_tworzenia_uzyt} został przedstawiony częściowy kod formularza, napisany w xhtml z użyciem JSF oraz Primefaces odpowiedzialny za wykonanie akcji tworzenia użytkownika. Na listingu został pominięty fragment odpowiedzialny za wyświetlanie pól, w których wprowadza się imię, nazwisko, nazwę użytkownika oraz adres e-mail.
+Widoki użytkownika opierają się na technologii JSF 2.2 oraz darmowym frameworku Primefaces w wersji 5.3. Dzięki jego funkcjonalności zostały zaimplementowane tabele, menu, czy różnego rodzaju listy dostępne na stronach systemu. Całość operacji wykonywanych na stronie odbywa się za pomocą JavaScriptu, który został użyty przez framework oraz ziaren Backing Beans. Ziarna te mają dodatkową funkcjonalność - są odpowiedzialne za dostarczanie danych do widoku oraz obsługę żądań - to w nich znajduje się kod, który wykonuje się po wciśnięciu przycisku. Dla przykładu na listingu \ref{lis:kod_form_tworzenia_uzyt} został przedstawiony częściowy kod formularza, napisany w xhtml z użyciem JSF oraz Primefaces odpowiedzialny za wykonanie akcji tworzenia użytkownika. Na listingu został pominięty fragment odpowiedzialny za wyświetlanie pól, w których wprowadza się imię, nazwisko, nazwę użytkownika oraz adres e-mail.
 
 \begin{lstlisting}[caption={Kod formularza tworzenia użytkownika}, label=lis:kod_form_tworzenia_uzyt, numbers=none]
 <h:form id="createUserForm">
@@ -219,7 +219,7 @@ Najważniejszym elementem kodu jest przycisk utworzony za pomocą znacznika Prim
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=15cm]{rysunki/user-czekanie.png}	
-	\caption{Komunikaty o błędzie podczas tworzenia użytkownika}
+	\caption{Ekran poczekania podczas tworzenia użytkownika}
 	\label{fig:user-czekanie}
 \end{figure}
 

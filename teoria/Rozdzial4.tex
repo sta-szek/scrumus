@@ -4,7 +4,7 @@ W tym rozdziale opiszę proces budowania projektu z zastosowaniem specjalnie prz
 \section{Gradle}
 We wcześniejszych rozdziałach został opisany system Gradle, który jest używany podczas budowy projektu wytwarzanego w ramach pracy dyplomowej. Skupię się tutaj na opisaniu komend użytecznych podczas pracy z kodem oraz przedstawię wyniki uruchomienia budowy na lokalnym serwerze TeamCity.
 
-Na początek jednak pragnę przedstawić tabelę porównawczą systemu Gradle oraz Maven, w celu lepszego zobrazowania wyboru oraz zachęcenia do korzystania z tegoż frameworka. Wyniki zostały zawarte w tabeli\footnote{Wyczerpujące porównanie wybranych systemów można znaleźć pod adresem \url{http://gradle.org/maven_vs_gradle/}} \ref{tabela:gradle_vs_maven}.
+Na początek jednak pragnę przedstawić tabelę porównawczą systemu Gradle oraz Maven\footnote{Wyczerpujące porównanie wybranych systemów można znaleźć pod adresem \url{http://gradle.org/maven_vs_gradle/}}, w celu lepszego zobrazowania wyboru oraz zachęcenia do korzystania z tegoż frameworka. Wyniki zostały zawarte w tabeli \ref{tabela:gradle_vs_maven}.
 
 \begin{table}[h!]
 	\caption{Porównanie systemu Gradle vs Maven}
@@ -39,7 +39,7 @@ System Gradle rozpoczyna budowę projektu po uruchomieniu komendy:
 
 \verb|gradle build|
 
-Istnieje też możliwość definiowania własnych zadań oraz uruchamiania ich po kolei. Przykładowe wywołanie zadań zbuduj, przetestuj jednostkowo, przetestuj integracyjnie, wgraj na serwer można uruchomić za pomocą komendy:
+Istnieje też możliwość definiowania własnych zadań oraz uruchamiania ich po kolei. Przykładowe wywołanie zadań: zbuduj, przetestuj jednostkowo, przetestuj integracyjnie, wgraj na serwer można uruchomić za pomocą komendy:
 
 
 \verb|gradle build test integrationTest deploy|
@@ -88,21 +88,21 @@ Projekt wytworzony podczas pracy dyplomowej korzystał z lokalnego serwera do bu
 
 Jak widać, na załączonym powyżej logu z historii budowy, system TeamCity po dostaniu sygnału o zmianie stanu repozytorium zdalnego (zawartego na GitHubie) rozpoczął proces aktualizacji źródeł. Następnie po transferze wykonała się komenda Gradle uruchamiająca budowę projektu. W skład tej fazy wchodzą następująco:
 \begin{itemize}
-	\item \textbf{clean} - wyczyszczenie folderu wynikowego
-	\item \textbf{compileJava} - kompilacja źródeł Java używając kompilatora javac
-	\item \textbf{processResources} - kopiowanie plików produkcyjnych zasobów do folderu docelowego
-	\item \textbf{classes} - gromadzenie klas produkcyjnych i folderów produkcyjnych zasobów
-	\item \textbf{war} - gromadzenie zasobów WAR
-	\item \textbf{assemble} - gromadzenie wszystkich archiwów w projekcie
-	\item \textbf{compileTestJava} - kompilacja źródeł testowych Java używając kompilatora javac
-	\item \textbf{processTestResources} - kopiowanie plików testowych zasobów do folderu docelowego
-	\item \textbf{testClasses} - gromadzenie klas testowych i folderów testowych zasobów
-	\item \textbf{test} - uruchomienie testów jednostkowych oraz integracyjnych
-	\item \textbf{check} - uruchomienie wszystkich zadań weryfikujących
-	\item \textbf{build} - wykonanie pełnej budowy projektu
+	\item \textbf{clean} - wyczyszczenie folderu wynikowego,
+	\item \textbf{compileJava} - kompilacja źródeł Java używając kompilatora javac,
+	\item \textbf{processResources} - kopiowanie plików produkcyjnych zasobów do folderu docelowego,
+	\item \textbf{classes} - gromadzenie klas produkcyjnych i folderów produkcyjnych zasobów,
+	\item \textbf{war} - gromadzenie zasobów WAR,
+	\item \textbf{assemble} - gromadzenie wszystkich archiwów w projekcie,
+	\item \textbf{compileTestJava} - kompilacja źródeł testowych Java używając kompilatora javac,
+	\item \textbf{processTestResources} - kopiowanie plików testowych zasobów do folderu docelowego,
+	\item \textbf{testClasses} - gromadzenie klas testowych i folderów testowych zasobów,
+	\item \textbf{test} - uruchomienie testów jednostkowych oraz integracyjnych,
+	\item \textbf{check} - uruchomienie wszystkich zadań weryfikujących,
+	\item \textbf{build} - wykonanie pełnej budowy projektu.
 \end{itemize}
 
-Po wykonaniu wszystkich wyżej wymienionych zadań dostajemy informację o powodzeniu zakończenia budowy projektu, co oznacza, że wszystkie testy przeszły oraz nie wystąpił błąd podczas żadnej fazy budowy. Na końcu system TeamCity publikuje wyniki testów - czyli udostępnia je samemu sobie, tak aby były możliwe do wyświetlenia na stronie.
+Po wykonaniu wszystkich wyżej wymienionych zadań dostajemy informację o powodzeniu zakończenia budowy projektu, co oznacza, że wszystkie testy przeszły oraz nie wystąpił błąd podczas żadnej fazy budowy. Na końcu system TeamCity publikuje wyniki testów -- udostępnia je samemu sobie, tak aby były możliwe do wyświetlenia na stronie.
 
 \section{Docker}
 Docker jest kolejnym systemem użytym podczas wytwarzania pracy dyplomowej. Służy on do pakowania aplikacji w gotowe jednostki uruchomieniowe. Jego podstawowymi koncepcjami jest utrzymanie zawsze stabilnej, niezmiennej paczki aplikacji, którą da się bez problemu uruchomić na każdym systemie rodziny UNIX zawierającym oprogramowanie Docker.
@@ -113,54 +113,44 @@ Każdy obraz podczas swojego powstawania tworzy tzw. między obrazy. Są to obra
 
 \begin{enumerate}
 	\item W pliku Dockerfile definiujemy z jakiego obrazu ma powstać nasz, np. z obrazu systemu ubuntu. W tym momencie powstaje pierwszy między obraz.
-	\item Po wgraniu systemu ubuntu "mówimy" dockerowi, aby zaaktualizował nasz system. Po tej aktualizacji system utworzy kolejny między obraz z wgranymi aktualizacjam.
+	\item Po wgraniu systemu ubuntu "mówimy" Dockerowi, aby zaaktualizował nasz system. Po tej aktualizacji system utworzy kolejny między obraz z wgranymi aktualizacjam.
 	\item Kolejnym krokiem będzie zainstalowanie np. bazy danych. Po jej instalacji zostanie wygenerowany kolejny między obraz itd.
 \end{enumerate}
 
 Głównym powodem, który zadecydował o wybraniu tej technologii była jej łatwość użycia i możliwość uruchomienia systemu scrumus, mając jedynie kilkunastolinijkowy plik konfiguracyjny. Na listingu \ref{lis:dockerfile} został przedstawiony plik Dockerfile systemu scrumus.
 
 \begin{lstlisting}[caption={Plik Dockerfile systemu scrumus}, label=lis:dockerfile, numbers=none]
-FROM debian:jessie
+FROM jboss/wildfly
 
-RUN groupadd -r mysql && useradd -r -g mysql mysql
-RUN mkdir /docker-entrypoint-initdb.d
-RUN apt-get update && apt-get install -y perl pwgen \
---no-install-recommends && rm -rf /var/lib/apt/lists/
+USER root
 
-RUN apt-key adv --keyserver ha.pool.sks-keyservers.net \
---recv-keys A4A9406876FCBD3C456770C88C718D3B5072E1F5
-ENV MYSQL_MAJOR 5.7
-ENV MYSQL_VERSION 5.7.10-1debian8
+ENV HOME /opt/jboss
+ENV JBOSS_HOME /opt/jboss/wildfly
 
-RUN echo "deb http://repo.mysql.com/apt/debian/ jessie mysql-${MYSQL_MAJOR}"\
-> /etc/apt/sources.list.d/mysql.list
-RUN { \
-echo mysql-community-server mysql-community-server/data-dir select ''; \
-echo mysql-community-server mysql-community-server/root-pass password ''; \
-} | debconf-set-selections \
-&& apt-get update && apt-get install -y mysql-server="${MYSQL_VERSION}" &&\
- rm -rf /var/lib/apt/lists/ \
-&& rm -rf /var/lib/mysql && mkdir -p /var/lib/mysql
+RUN yum install -y \
+postgresql \
+postgresql-contrib \
+pgadmin3 \
+telnet \
+curl
 
-RUN sed -Ei 's/^(bind-address|log)/#&/' /etc/mysql/my.cnf \
-&& echo 'skip-host-cache\nskip-name-resolve' \
-| awk '{ print } $1 == "[mysqld]" && c == 0 { c = 1; system("cat") }' \
-/etc/mysql/my.cnf > /tmp/my.cnf \
-&& mv /tmp/my.cnf /etc/mysql/my.cnf
+RUN /opt/jboss/wildfly/bin/add-user.sh admin admin --silent
 
-COPY docker-entrypoint.sh /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+COPY /postgresql /opt/jboss/wildfly/modules/system/layers/base/org/postgresql
 
-EXPOSE 3306
-CMD ["mysqld"]\end{lstlisting}
+EXPOSE 9990:9990 8080:8080
 
-TODO tutaj opisac co plik robi po kolei
+CMD ["/opt/jboss/wildfly/bin/standalone.sh", 
+			"-b", "0.0.0.0", 
+			"-bmanagement", "0.0.0.0"]\end{lstlisting}
+
+W przedstawionym wyżej listingu tworzymy obraz Dockera oparty na obrazie \textit{jboss/wildfly}, co mówi klauzula \textit{FROM}. Następnie przełączamy się na użytkownika \textit{root} i ustawiamy dwie zmienne środowiskowe za pomocą komendy \textit{ENV}. Kolejnym krokiem jest aktualizacja systemu oraz zainstalowanie bazy danych Postgresql i skryptu telnet, który jest przydatny przy sprawdzaniu poprawności działania systemu. Następnie tworzymy użytkownika o nazwie \textit{admin}. Po tych operacjach kopiujemy konfigurację bazy zawartą w folderze \textit{postgres}, wystawiamy porty na zewnątrz kontenera. Komenda \textit{CMD} mówi nam, co ma się wykonać po uruchomieniu kontenera. W naszym przypadku jest to uruchomienie serwera wildfly w wersji standalone, na której uprzednio skonfigurowany został system scrumus.
 
 \section{Wyniki testów}
 Kolejnym, a zarazem ostatnim elementem jakie zostaną opisane w pracy dyplomowej będzie opis testów jednostkowych i integracyjnych. Podczas pisania testów korzystano z konwencji \textit{given-when-then}, czyli mając (given) wartości, kiedy (when) wykonana zostanie dana operacje, wtedy (then) upewnij się, że coś się zgadza lub coś się wykonało. Zostaną również przedstawione wyniki pokrycia kodu oraz krótkie statystyki dot. projektu.
 
 \subsection{Testy jednostkowe}
-W pracy do jednostkowego przetestowania kodu użyto frameworka JUnit wspartego kolejnym biblioteką do "podszywania się obiektów" (\textit{ang. mocking objects}) PowerMockito. Testy jednostkowe stosuje się, jak sama nazwa mówi, do przetestowania jednostkowej funkcjonalności np. dodawania liczb, generowania ciągu znaków czy wywoływania metod. W celu poprawy czytelności kodu zastosowano funkcje projektu AssertJ ułatwiającego asercje z bogatym wsparciem dla list, obiektów \textit{Optional} czy strumieni z Java 8. Kod przykładowego testu został przedstawiony na listingu \ref{lis:unit}.
+W pracy do jednostkowego przetestowania kodu użyto frameworka JUnit wspartego kolejną biblioteką do "podszywania się obiektów" (\textit{ang. mocking objects}) PowerMockito. Testy jednostkowe stosuje się, jak sama nazwa mówi, do przetestowania jednostkowej funkcjonalności np. dodawania liczb, generowania ciągu znaków czy wywoływania metod. W celu poprawy czytelności kodu zastosowano funkcje projektu AssertJ ułatwiającego asercje z bogatym wsparciem dla list, obiektów \textit{Optional} czy strumieni z Java 8. Kod przykładowego testu został przedstawiony na listingu \ref{lis:unit}.
 
 \begin{lstlisting}[caption={Kod przykładowego testu jednostkowego}, label=lis:unit, numbers=none]
 @Test
@@ -179,7 +169,7 @@ assertThat(result).isEqualTo(expectedHash);
 }\end{lstlisting}
 
 \subsection{Testy integracyjne}
-Następnym rodzajem testów były testy integracyjne, które w odróżnieniu od jednostkowych służą do sprawdzenia integracyjności, czyli współpracy różnych komponentów systemu. Istnieją różne interpretacje testów integracyjnych - niektóre z nich mówią, że są to bardziej rozbudowane testy jednostkowe, które nadal nie mogą korzystać z zewnętrznych źródeł, inne zaś iż komunikacja z np. bazą danych jest dozwolona. 
+Następnym rodzajem testów były testy integracyjne, które w odróżnieniu od jednostkowych służą do sprawdzenia integracji, czyli współpracy różnych komponentów systemu. Istnieją różne interpretacje testów integracyjnych - niektóre z nich mówią, że są to bardziej rozbudowane testy jednostkowe, które nadal nie mogą korzystać z zewnętrznych źródeł, inne zaś, iż komunikacja z np. bazą danych jest dozwolona. 
 
 W pracy zastosowano podejście, które umożliwia komunikację z bazą danych. Dzięki temu mogło zostać przetestowane również mapowanie się obiektów na struktury oraz zachowanie się JPA podczas próby wprowadzenia błędnych danych, które nie zawsze były oczywiste.
 
@@ -202,7 +192,6 @@ Przedstawiony wyżej listnig tworzy plik WAR oraz dodaje rekurencyjnie do niego 
 
 Na listingu \ref{lis:integ} przedstawiono przykładowy test integracyjny. W pierwszej kolejności tworzone są dwa nowe zadania, które następnie zostają zapisane w bazie danych za pomocą obiektu DAO. Obiekt DAO został wstrzyknięty (\textit{ang. injected}) do klasy testu, co było możliwe dzięki uruchomieniu testu w kontenerze. Kolejnym krokiem jest wyszukanie zadań z odpowiednim statusem - to właśnie metoda o nazwie \textit{findAllIssuesWithIssueType} jest tutaj testowana. Na końcu następuje sprawdzenie, czy zwrócona lista zawiera dwa elementy.
 
-\newpage
 \begin{lstlisting}[caption={Przykład testu integracyjnego}, label=lis:integ, numbers=none]
 @Test
 public void shouldFindAllIssuesWithGivenIssueType() {
@@ -226,7 +215,7 @@ Projekt został oparty na wielu różnych frameworkach dedykowanych językowi Ja
 
 Podczas pracy napisano 103 (składających się z 2774 linii kodu) testy jednostkowe oraz 261 testów integracyjnych, które zawierają 7285 linii kodu. Kod produkcyjny jest złożony z 6349 linii, które zostały zoptymalizowane dzięki wykorzystaniu wzorców. 
 
-Łącznie razem napisano 16428 linii kodu Javy, 2137 xhtml, 1086 \LaTeX, 292 xml oraz 83 css, co daje 20026 powodów do radości.  Sumaryczny czas wytworzenia projektu, wraz z częścią teoretyczną, wyniósł 98 dni. W tym czasie rozwiązano 43 zadania, wykonano 196 zdalnych budować projektów oraz 262 commity, co daje około 204 linie kodu, 0.4 zadania, 2 budowy projektu i 2.7 commita dziennie.
+Łącznie napisano 16428 linii kodu Javy, 2137 xhtml, 1086 \LaTeX, 292 xml oraz 83 css, co daje 20026 powodów do radości.  Sumaryczny czas wytworzenia projektu, wraz z częścią teoretyczną, wyniósł 98 dni. W tym czasie rozwiązano 43 zadania, wykonano 196 zdalnych budowań projektów oraz 262 commity, co daje około 204 linie kodu, 0.4 zadania, 2 budowy projektu i 2.7 commita dziennie.
 
 Kolejnym faktem jest, iż w aplikacji stosowano języka Java w wersji 8 oraz wykorzystywano wszystkie jego mechanizmy takie jak strumienie czy Optionale. Dzięki Optionalom w kodzie produkcyjnym nie ma ani jednego słówka kluczowego \textbf{null}, a przynajmniej w całej logice biznesowej.
 
