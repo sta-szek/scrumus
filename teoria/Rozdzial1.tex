@@ -9,7 +9,7 @@ Szybki rozwój w dziedzinie informatyki spowodował wzrost zapotrzebowania na sy
 	\item Test Driven Develipment.
 \end{enumerate}
 
-Nie jest to wyczerpująca lista metodyk - istnieje wiele innych metod tworzenia oprogramowania, jednak opis wszystkich wykracza po za zakres tej pracy. W mojej pracy dyplomowej poruszam temat systemu do zarządzania projektami, który jest dedykowany metodyce Scrum. Nie bez powodu wybrana została właśnie ta zwinna metodyka - jest to na chwilę obecną najbardziej popularna forma wytwarzania oprogramowania, a umiejętności pracy wraz z nią są pożądane przez większość pracodawców na całym świecie.
+Nie jest to wyczerpująca lista metodyk -- istnieje wiele innych metod tworzenia oprogramowania, jednak opis wszystkich wykracza po za zakres tej pracy. W mojej pracy dyplomowej poruszam temat systemu do zarządzania projektami, który jest dedykowany metodyce Scrum. Nie bez powodu wybrana została właśnie ta zwinna metodyka - jest to na chwilę obecną najbardziej popularna forma wytwarzania oprogramowania, a umiejętności pracy wraz z nią są pożądane przez większość pracodawców na całym świecie.
 
 Obecnie na rynku istnieje mnóstwo narzędzi do tego typu zadań, a liczba oferowanych szkoleń z zakresu zarządzania projektami oraz metodyki Scrum nie ma końca. Coraz więcej firm decyduje się na zakup drogich systemów wspomagających proces zarządzania projektami. Ale czy zakup takiego programu jest konieczny? W mojej pracy przedstawię system, który bez żadnych przeszkód mógłby być stosowany w niewielkich zespołach, czy firmach, które nie zamierzają wydawać fortuny na profesjonalne aplikacje.
 
@@ -18,8 +18,8 @@ Scrum jest zwinną metodyką wytwarzania oprogramowania, której początki sięg
 \begin{itemize}
 	\item \textbf{właściciel produktu} (\textit{ang. product owner}) - osoba odpowiedzialna za projekt,
 	\item \textbf{scrum master} - osoba, która pomaga zespołowi w organizacji czasu pracy a także rozwiązuje powstałe problemu,
-	\item \textbf{zespół deweloperski} (\textit{ang. team}) - zespół programistów wspólnie pracujący nad wytworzeniem produktu,
-	\item \textbf{rejestr produktu} (\textit{ang. backlog}) - jest to zbiór zadań / funkcjonalności wchodzące w skład wytwarzanego projektu,
+	\item \textbf{zespół deweloperski} (\textit{ang. team}) - zespół programistów wspólnie pracujących nad wytworzeniem produktu,
+	\item \textbf{rejestr produktu} (\textit{ang. backlog}) - jest to zbiór zadań / funkcjonalności wchodzących w skład wytwarzanego projektu,
 	\item \textbf{interwał} (\textit{ang. sprint}) - interwały czasowe, w których realizowane są zadania. Bezpośrednio przed każdym sprintem występuje planowanie, czyli wybieranie funkcjonalności do zrealizowania w danym sprincie. Bezpośrednio po sprincie powinna wystąpić retrospektywa oraz demo produktu, które jest często pomijane przez wiele zespołów,
 	\item \textbf{historyjka} (\textit{ang. story}) - najmniejsza jednostka podlegająca ocenie (wg. wybranej przez zespół skali). 
 	\item \textbf{zadanie} (\textit{ang. task}) - zadania, które mogą być powiązane bezpośrednio ze story lub projektem.
@@ -31,7 +31,7 @@ Wytwarzając ten system skupiłem się, aby wpasował się on w wybraną przeze 
 
 Pierwszym i niewątpliwie największym problemem tego typu systemów jest to, że są one płatne, przez co nie wszystkich na nie stać. Niektóre są darmowe, lecz tylko dla projektów typu open source, co nie sprawdza się podczas pracy nad wspólnymi projektami w firmie lub np. pracą dyplomową.
 
-Kolejną wadą jest to, że nie są one proste w instalacji. Często występują jako potężne programy, przez co nie można ich bezpłatnie hostować w chmurze gdyż potrzebują dużo płatnych zasobów. 
+Kolejną wadą jest to, że nie są one proste w instalacji. Często występują jako potężne programy, przez co nie można ich bezpłatnie hostować w chmurze, gdyż potrzebują dużo płatnych zasobów. 
 
 Ostatnim, jednak nie mniej ważnym problemem jest ich czytelność. Oferują one szereg zbędnej zwykłemu użytkownikowi - programiście - funkcjonalności, która jest przydatna tylko w określonych warunkach. Taki ogrom zakładek i okienek powoduje często zamęt i niezrozumienie wśród programistów.
 
@@ -62,8 +62,8 @@ Aby zobrazować wagę powyższych problemów zostały one zestawione w poniższe
 
 Celem pracy było wytworzenie systemu do zarządzania projektami dedykowanego metody Scrum. Obecnie na rynku jest wiele zarówno darmowych jak i płatnych narzędzi przedstawionych w tabeli \ref{tabela:porownanie_systemow}, które oferują możliwość prowadzenia projektów rożnymi metodykami. Wcześniej wymienione wady skłoniły mnie do opracowania własnego systemu, który ma za zadanie rozwiązać wspomniane problemy w następujący sposób:
 \begin{enumerate}
-	\item łatwość instalacji - do tego celu zostało wykorzystane oprogramowanie docker, które wspiera błyskawiczne uruchamianie systemów,
-	\item przejrzysty interfejs użytkownika, który został osiągnięty dzięki darmowej bibliotece PrimeFaces,
+	\item łatwość instalacji - do tego celu zostało wykorzystane oprogramowanie Docker, które wspiera błyskawiczne uruchamianie systemów,
+	\item przejrzysty interfejs użytkownika, który został osiągnięty dzięki darmowej bibliotece Primefaces,
 	\item bez zbędnej funkcjonalności - zostały zaimplementowane tylko obligatoryjne funkcje tego typu systemu oraz niewielka ilość udogodnień.
 \end{enumerate}
 
@@ -74,11 +74,15 @@ Poza wyżej wymienionymi wymaganiami, jakie są stawiane systemowi scrumus, w za
 	\item opracowanie założeń projektu,
 	\item spis wymagań funkcjonalnych i niefunkcjonalnych systemu,
 	\item implementacja wszystkich funkcjonalności oraz usunięcie powstałych błędów,
-	\item przetestowanie systemu ,
+	\item przetestowanie systemu,
 	\item wytworzenie części opisowej pracy.
 	
 \end{enumerate}
 
 
 \section{Struktura pracy}
-Opis rozdziałów zostanie uzupełniony na końcu pracyitemize
+Na początku pracy przedstawiona zostanie analiza problemu oraz podstawowe założenia projektowe. Opisane zostaną również technologie, które były stosowane podczas implementacji i wdrażania projektu. 
+
+W kolejnym rozdziale zapoznamy się z dokumentacją projektową, która będzie poparta przykładowymi implementacjami danych funkcjonalności oraz konfiguracji. Całość zostanie uzupełniona o schematy stanów oraz diagramy UML. 
+
+Na końcu przedstawiona zostanie konfiguracja z użyciem systemu Docker oraz analiza pracy pod względem jakości wraz ze statystykami i podsumowaniem osiągniętych celów.
