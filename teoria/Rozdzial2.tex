@@ -1,4 +1,4 @@
-\chapter{Analiza biznesowa problemu i założenia projektowe}
+\chapter{Analiza biznesowa problemu i~założenia projektowe}
 
 \section{Role i użytkownicy systemu}
 W projektowanym systemie występują cztery rodzaje użytkowników:
@@ -15,12 +15,12 @@ Na tym etapie warto wspomnieć, że każdy użytkownik jest deweloperem. Każdy 
 \section{Wymagania funkcjonalne}
 Prezentowany przeze mnie system ma pewne założenia oraz wymagania. W tym rozdziale zajmę się opisem wymagań funkcjonalnych. 
 
-We wcześniejszym akapicie zostały omówione role w systemie. Każda z tych ról ma pewne uprawnienia lub restrykcje. Każda taka cecha zostanie przedstawiona jako wymaganie funkcjonalne prezentowanego systemu.
+We wcześniejszym akapicie zostały omówione role w systemie. Każda z tych ról ma~pewne uprawnienia lub restrykcje. Każda taka cecha zostanie przedstawiona jako wymaganie funkcjonalne prezentowanego systemu.
 
 Jednym ze sposobów na prowadzenie dokumentacji projektu, jak i zbioru wymagań jest utrzymywanie rejestru historyjek użytkownika. Historyjki użytkownika są częścią zwinnych metodyk prowadzenia projektu. Jako że wytwarzanemu systemowi towarzyszy metodyka Scrum, nie mogło tutaj zabraknąć tego elementu.
 
 \begin{italicquote}
-	Historyjka jest jednostką funkcjonalności w projektach XP (ang. eXtreme Programming). Pokazujemy postęp prac, dostarczając przetestowany i zintegrowany kod, który składa się na implementację danej historyjki. Historyjka powinna być zrozumiała i wartościowa dla klientów, testowalna przez programistów i na tyle mała, żeby programiści mogli zaimplementować sześć historyjek w takcie jednej iteracji\footnote{K. Beck, M. Fowler, \textit{Planning Extreme Programming}, Addison-Wesley 2000, s.42}.
+	Historyjka jest jednostką funkcjonalności w projektach XP (ang. eXtreme Programming). Pokazujemy postęp prac, dostarczając przetestowany i zintegrowany kod, który składa się na implementację danej historyjki. Historyjka powinna być zrozumiała i wartościowa dla klientów, testowalna przez programistów i~na~tyle mała, żeby programiści mogli zaimplementować sześć historyjek w~trakcie jednej iteracji\footnote{K. Beck, M. Fowler, \textit{Planning Extreme Programming}, Addison-Wesley 2000, s.42}.
 \end{italicquote}
 
 Historyjki mogą mieć wiele wzorców. W tej pracy są stosowane dwa z nich:
@@ -52,7 +52,7 @@ Historyjki mogą mieć wiele wzorców. W tej pracy są stosowane dwa z nich:
 	\item jako administrator mogę tworzyć, usuwać oraz edytować priorytety zadań,
 	\item jako administrator mogę tworzyć, usuwać oraz edytować typy zadań.
 \end{itemize}		
-\textbf{Product owner}
+\textbf{Właściciel produktu}
 \begin{itemize}	
 	\item jako product owner mam wgląd w projekt, w którym jestem product, ownerem	
 	\item jako product owner mogę tworzyć zadania w projekcie, w którym jestem product ownerem.
@@ -65,7 +65,7 @@ Historyjki mogą mieć wiele wzorców. W tej pracy są stosowane dwa z nich:
 	\item jako scrum master mogę tworzyć story w sprincie,
 	\item jako scrum master mogę tworzyć sprint w projekcie.
 \end{itemize}
-\textbf{Developer}
+\textbf{Deweloper}
 \begin{itemize}		
 	\item jako deweloper mogę tworzyć zadania,
 	\item jako deweloper mogę usuwać zadania,
@@ -108,7 +108,7 @@ Kolejnym zagadnieniem, które zostanie poruszone w tym rozdziale będą wymagani
 			\item mieć dużą responsywność,
 			\item działać szybko.
 		\end{itemize}
-	\item \textbf{S}supportability - wsparcie, do którego należy:
+	\item \textbf{S}upportability - wsparcie, do którego należy:
 		\begin{itemize}
 			\item prostota w instalacji,
 			\item łatwość konfiguracji,
@@ -189,16 +189,16 @@ Język Java powstał w roku 1995. Jego głównymi założeniami są m.in. niezal
 WildFly jest darmowym kontenerem aplikacji, rozwijanym przez firmę RedHat. Jest on w pełni zgodny ze standardem EJB. Serwer posiada wsparcie dla baz danych oraz zabezpieczeń aplikacji na poziomie kontenerów. Implementuje również specyfikację JAAS (Java Authentication and Authorization Service), dzięki której zapewnione jest bezpieczeństwo w systemie scrumus. Posiada on bardzo dobre parametry takie jak czas startu serwera - poniżej dwóch sekund, czy czas wdrożenia aplikacji - poniżej dziesięciu sekund.
 
 \subsubsection{Docker}
-Jest to narzędzie, które w ostatnim czasie zwróciło uwagę wielu firm i indywidualnych programistów. Co prawda koncepcja kontenerów sięga lat 80-tych, jednak dopiero w dobie mikrousług system ten miał możliwość przebicia się. Pozwala on na budowanie obrazów opartych na systemach z rodziny UNIX. Z takich obrazów można tworzyć kontenery, skalować je i zarządzać nimi. System daje możliwość zainstalowania dowolnych aplikacji, przy niewielkiej konfiguracji, co pozwala uruchomić wytworzony w ramach pracy system wraz z bazą danych za pomocą jednej komendy w czasie równym uruchomieniu serwera i wdrożenia aplikacji.
+Jest to narzędzie, które w ostatnim czasie zwróciło uwagę wielu firm i indywidualnych programistów. Co prawda koncepcja kontenerów sięga lat 80-tych, jednak dopiero w dobie mikrousług system ten miał możliwość przebicia się. Pozwala on na budowanie obrazów opartych na systemach z rodziny UNIX. Z takich obrazów można tworzyć kontenery, skalować je i zarządzać nimi. System daje możliwość zainstalowania dowolnych aplikacji, przy niewielkiej konfiguracji, co pozwala uruchomić wytworzony w ramach pracy system wraz z bazą danych za pomocą jednej komendy w czasie równym uruchomieniu serwera i~wdrożenia aplikacji.
 
 \subsubsection{Postgresql}
 Postgresql jest darmową bazą danych o dużych możliwościach. Ma on niewielkie wymagania systemowe oraz oferuje wsparcie dla transakcji. Umożliwia przechowywanie danych o różnych typach i posiada szereg usprawnień optymalizacyjnych. Dodatkowo można definiować własne typy danych.
 
 \subsubsection{\LaTeX}
-\LaTeX jest oprogramowaniem do składania tekstu. Posiada szereg funkcjonalności takich jak automatyczne tworzenie spisów treści, tabel czy ilustracji. W łatwy sposób można utworzyć bibliografię i skorowidze. \LaTeX pozwala autorowi odizolować się do wyglądu i formatowania dokumentu, a skupić jedynie na treści i strukturze tekstu. Został on użyty do wytworzenia części opisowej tejże pracy dyplomowej, co znacznie ułatwiło pracę.
+\LaTeX jest oprogramowaniem do składania tekstu. Posiada szereg funkcjonalności takich jak automatyczne tworzenie spisów treści, tabel czy ilustracji. W łatwy sposób można utworzyć bibliografię i skorowidze. \LaTeX pozwala autorowi odizolować się do wyglądu i~formatowania dokumentu, a skupić jedynie na treści i strukturze tekstu. Został on użyty do wytworzenia części opisowej tejże pracy dyplomowej, co znacznie ułatwiło pracę.
 
 \subsubsection{DbSchema}
 Jest to program, który pozwala na wizualizację bazy danych oraz zmienianie jej struktury z poziomu programu, bez konieczności wykonywania skryptów SQL. Za pomocą tego programu został wygenerowany model bazy danych przedstawiony w dalszej części tej pracy.
 
 \subsubsection{Lombok}
-Framework Lombok służy do automatycznego generowania kodu Javy. Pozwala on za pomocą jednej adnotacji wstawić podstawowe metody do klasy takie jak gettery i settery, konstruktory czy też hashcode i equals. Dzięki temu projektowi nasze klasy zostaną znacznie odchudzone przez co zyskują na czytelności.
+Framework Lombok służy do automatycznego generowania kodu Javy. Pozwala on za pomocą jednej adnotacji wstawić podstawowe metody do klasy takie jak gettery i~settery, konstruktory czy też hashcode i equals. Dzięki temu projektowi nasze klasy zostaną znacznie odchudzone przez co zyskują na czytelności.
