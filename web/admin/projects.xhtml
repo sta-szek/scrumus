@@ -59,14 +59,14 @@
                         </p:commandButton>
                         <p:commandButton value="#{i18n['page.admin.project.select.productOwner']}"
                                          id="selectProductOwner"
-                                         icon="fa-user-plus"
+                                         icon="fa fa-graduation-cap"
                                          onclick="PF('selectProductOwner').show()"
                                          rendered="#{empty productOwner}">
                             <f:setPropertyActionListener value="#{proj.key}" target="#{permissionService.productOwnerProjectKey}" />
                         </p:commandButton>
                         <p:commandButton value="#{i18n['page.admin.project.remove.productOwner']}"
                                          id="removeProductOwner"
-                                         icon="fa fa-remove"
+                                         icon="fa fa-hotel"
                                          rendered="#{not empty productOwner}"
                                          action="#{permissionService.removeProductOwner}"
                                          update="projectsListPanel">
@@ -74,7 +74,7 @@
                         </p:commandButton>
                         <p:commandButton value="#{i18n['page.admin.project.add.team']}"
                                          id="addTeamButton"
-                                         icon="fa-user-plus"
+                                         icon="fa fa-plus"
                                          onclick="PF('addTeam').show()">
                             <f:setPropertyActionListener value="#{proj.key}" target="#{projectService.addTeamProjectKey}" />
                         </p:commandButton>

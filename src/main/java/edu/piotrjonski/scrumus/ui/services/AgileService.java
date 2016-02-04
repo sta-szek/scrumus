@@ -64,25 +64,6 @@ public class AgileService implements Serializable {
         backlogForCurrentlyViewedProject = findBacklogForProject(currentlyViewedProjectKey);
     }
 
-    public String moveToBacklog(Issue issue, Story story) {
-        storyManager.moveIssueToBacklog(issue, story);
-        logger.info("issue moved to backlog");
-        return null;
-    }
-
-    public void moveIssueToStory() {
-        //storyManager.addIssueToStory();
-        logger.info(FacesContext.getCurrentInstance()
-                                .getExternalContext()
-                                .getRequestParameterMap()
-                                .get("test"));
-        logger.info(FacesContext.getCurrentInstance()
-                                .getExternalContext()
-                                .getRequestParameterMap()
-                                .get("test2"));
-        logger.info(moveIssueToSprint + " " + moveIssueToStory + " issue: " + moveIssue);
-    }
-
     public void setMoveIssue(Issue moveIssue) {
         this.moveIssue = moveIssue;
         logger.info("setter");
