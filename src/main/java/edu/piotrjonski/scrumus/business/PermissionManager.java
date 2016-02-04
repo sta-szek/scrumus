@@ -178,6 +178,16 @@ public class PermissionManager {
     }
 
     public boolean hasRightsForProject(final String username, final String projectKey) {
+        Optional<Developer> userOptional = developerDAO.findByUsername(username);
+        Optional<Project> projectOptional = projectDAO.findById(projectKey);
+        if (userOptional.isPresent() && projectOptional.isPresent()) {
+            return isProductOwner(projectOptional.get(), userOptional.get()) || hasUserRightForProject(username, projectKey);
+        } else {
+            return false;
+        }
+    }
+
+    private boolean hasUserRightForProject(final String username, final String projectKey) {
         return projectManager.getUserProjects(username)
                              .stream()
                              .map(Project::getKey)
