@@ -188,7 +188,7 @@ Testy integracyjne korzystają z frameworku Arquillian, który jak wcześniej op
 										  .as(WebArchive.class);
  }\end{lstlisting}
 
-Przedstawiony wyżej listnig tworzy plik WAR oraz dodaje rekurencyjnie do niego pakiety znajdujące się w pakietach: edu.piotrjonski.scrumus, org.assertj.core, org.mockito, org.obejnesis, org.apache.commons.collections4. Dodatkowo kopiowane są pliki ustawień bazy danych - persistence.xml oraz plik konfiguracji systemu. Wszystko jest wdrażane pod nazwą test.war.
+Przedstawiony wyżej listnig tworzy plik WAR oraz dodaje rekurencyjnie do niego pakiety znajdujące się w pakietach: \textit{edu.piotrjonski.scrumus, org.assertj.core, org.mockito, org.obejnesis, org.apache.commons.collections4}. Dodatkowo kopiowane są pliki ustawień bazy danych - \textit{persistence.xml} oraz plik konfiguracji systemu. Wszystko jest wdrażane pod nazwą \textit{test.war}.
 
 Na listingu \ref{lis:integ} przedstawiono przykładowy test integracyjny. W pierwszej kolejności tworzone są dwa nowe zadania, które następnie zostają zapisane w bazie danych za pomocą obiektu DAO. Obiekt DAO został wstrzyknięty (\textit{ang. injected}) do klasy testu, co~było możliwe dzięki uruchomieniu testu w kontenerze. Kolejnym krokiem jest wyszukanie zadań z odpowiednim statusem - to właśnie metoda o nazwie \textit{findAllIssuesWithIssueType} jest tutaj testowana. Na końcu następuje sprawdzenie, czy zwrócona lista zawiera dwa elementy.
 
