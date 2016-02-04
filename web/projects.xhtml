@@ -89,11 +89,11 @@
 
                             <p:outputLabel value="#{i18n['page.project.backlog.issue.description']}" styleClass="ui-grid-col-4" />
 
-                            <p:outputLabel value="#{i18n['page.project.backlog.issue.reporter']}" styleClass="ui-grid-col-1" />
+                            <p:outputLabel value="#{i18n['page.project.backlog.issue.reporter']}" styleClass="ui-grid-col-2" />
 
-                            <p:outputLabel value="#{i18n['page.project.backlog.issue.assignee']}" styleClass="ui-grid-col-1" />
+                            <p:outputLabel value="#{i18n['page.project.backlog.issue.assignee']}" styleClass="ui-grid-col-2" />
 
-                            <p:outputLabel value="#{i18n['page.project.backlog.issue.actions']}" styleClass="ui-grid-col-3" />
+                            <p:outputLabel value="#{i18n['page.project.backlog.issue.actions']}" styleClass="ui-grid-col-1" />
                         </div>
 
                         <!-- lista zadan w backlogu -->
@@ -105,12 +105,12 @@
                                 <p:outputLabel value="#{issue.description} &#160;" styleClass="ui-grid-col-4" />
 
                                 <p:outputLabel value="#{userService.findUser(issue.reporterId).fullName} &#160;"
-                                               styleClass="ui-grid-col-1" />
+                                               styleClass="ui-grid-col-2" />
 
                                 <p:outputLabel value="#{userService.findUser(issue.assigneeId).fullName} &#160;"
-                                               styleClass="ui-grid-col-1" />
+                                               styleClass="ui-grid-col-2" />
 
-                                <div class="ui-grid-col-3">
+                                <div class="ui-grid-col-1">
                                     <p:button outcome="issue"
                                               value="#{i18n['page.project.backlog.issue.link']}">
                                         <f:param name="issueId" value="#{issue.id}" />
@@ -178,13 +178,13 @@
                                                                styleClass="ui-grid-col-4" />
 
                                                 <p:outputLabel value="#{i18n['page.project.story.issue.reporter']}"
-                                                               styleClass="ui-grid-col-1" />
+                                                               styleClass="ui-grid-col-2" />
 
                                                 <p:outputLabel value="#{i18n['page.project.story.issue.assignee']}"
-                                                               styleClass="ui-grid-col-1" />
+                                                               styleClass="ui-grid-col-2" />
 
                                                 <p:outputLabel value="#{i18n['page.project.story.issue.actions']}"
-                                                               styleClass="ui-grid-col-3" />
+                                                               styleClass="ui-grid-col-1" />
                                             </div>
 
                                             <!--lista zadan w story-->
@@ -196,12 +196,12 @@
                                                     <p:outputLabel value="#{issue.description} &#160;" styleClass="ui-grid-col-4" />
 
                                                     <p:outputLabel value="#{userService.findUser(issue.reporterId).fullName} &#160;"
-                                                                   styleClass="ui-grid-col-1" />
+                                                                   styleClass="ui-grid-col-2" />
 
                                                     <p:outputLabel value="#{userService.findUser(issue.assigneeId).fullName} &#160;"
-                                                                   styleClass="ui-grid-col-1" />
+                                                                   styleClass="ui-grid-col-2" />
 
-                                                    <div class="ui-grid-col-3">
+                                                    <div class="ui-grid-col-1">
 
                                                         <p:button outcome="issue"
                                                                   value="#{i18n['page.project.story.issue.link']}">
@@ -222,7 +222,7 @@
                 </p:accordionPanel>
             </p:outputPanel>
         </ui:define>
-        
+
     </ui:composition>
 </h:body>
 
