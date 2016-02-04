@@ -232,7 +232,7 @@ Najważniejszym elementem kodu jest przycisk utworzony za pomocą znacznika Prim
 
 Po poprawnej walidacji nowy użytkownik zostaje utworzony, na jego skrzynkę trafia e-mail z wygenerowanym hasłem, a administrator zostaje przeniesiony na stronę z listą użytkowników. Jak wiadomo, wprowadzane dane nie zawsze muszą być poprawne. W takim wypadku użytkownikowi zostają wyświetlone komunikaty o błędach, jakie popełnił podczas wprowadzania danych do formularza, co przedstawia rysunek \ref{fig:user-blad}.
 
-Kolejnym aspektem widoku jest to, że został on zaprojektowany w technologi responsywnej, co oznacza, że widok jest skalowany w zależności od rozmiaru okna przeglądarki. Dzięki temu użytkownik zawsze będzie miał wgląd w na całą zawartość strony. To sprawia, że przeglądanie treści systemu jest równie łatwe z poziomu przeglądarek desktopowych jak i urządzeń mobilnych. Technologia ta działa na zasadzie dynamicznego dostosowywania szerokości wyświetlanych elementów i jest w pełni oparta na systemie CSS (Cascading Style Sheets). Została ona zintegrowana z frameworkiem Primefaces, co sprawia, że jej użycie ogranicza się do zastosowania odpowiednich klas komponentów.
+Kolejnym aspektem widoku jest to, że został on zaprojektowany w technologi responsywnej, co oznacza, że widok jest skalowany w zależności od rozmiaru okna przeglądarki. Dzięki temu użytkownik zawsze będzie miał wgląd w na całą zawartość strony. To sprawia, że przeglądanie treści systemu jest równie łatwe z poziomu przeglądarek desktopowych jak i urządzeń mobilnych. Technologia ta działa na zasadzie dynamicznego dostosowywania szerokości wyświetlanych elementów i jest w pełni oparta na systemie CSS (Cascading Style Sheets). Została ona zintegrowana z frameworkiem Primefaces, co sprawia, że jej użycie ogranicza się do zastosowania odpowiednich klas komponentów. Strony systemu zostały zaprojektowane z użyciem szablonów, które również są dostępne dzięki bibliotece Primefaces. Cały szablon strony został opisany w jednym pliku, przez~co w~bardzo łatwy sposób możemy modyfikować układ poszczególnych grup elementów na~stronie takich~jak menu górne, treść właściwa czy stopka.
 
 System posiada również zabezpieczenia, sprawiające, że część stron jest widoczna tylko dla użytkowników z rolą administratora, a pozostałe treści dla zalogowanych. Zabezpieczenia zostały oparte na specyfikacji JAAS (Java Authentication and Authorization Service), która jest implementowana przez używany kontener - Wildfly. Konfiguracja została przedstawiona na listingu \ref{lis:konf_zab_ad} oraz \ref{lis:konf_zab_zal}.
 
@@ -243,9 +243,6 @@ System posiada również zabezpieczenia, sprawiające, że część stron jest w
  <description>Dostep tylko dla administratora</description>
  <url-pattern>/admin/</url-pattern>
  <http-method>GET</http-method>
- <http-method>POST</http-method>
- <http-method>HEAD</http-method>
- <http-method>PUT</http-method>
  </web-resource-collection>
  <auth-constraint>
  <role-name>ADMIN</role-name>
