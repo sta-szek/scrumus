@@ -3,56 +3,58 @@
         xmlns:p="http://primefaces.org/ui"
         xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
         xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:outputText value="SCRUMUS ~ project management system"
+                  style="font-weight: bold; font-size: xx-large;     color: #7CA02A;" />
     <p:menubar>
         <p:submenu id="projects" label="#{i18n['page.menubar.project']}"
-                   icon="fa fa-user-plus">
-            <p:menuitem icon="fa fa-user-plus"
+                   icon="fa fa-list-alt">
+            <p:menuitem icon="fa fa-list-alt"
                         value="#{i18n['page.menubar.project.all']}"
                         url="#{path['project']}" />
             <c:forEach items="#{projectService.getUserProjects(request.remoteUser)}" var="project">
-                <p:menuitem icon="fa fa-user-plus"
+                <p:menuitem icon="fa fa-eye"
                             value="#{project.name}"
                             url="#{path['project']}?projectKey=#{project.key}"
                             includeViewParams="true" />
             </c:forEach>
         </p:submenu>
 
-        <p:submenu id="agiles" label="#{i18n['page.menubar.agile']}" icon="fa fa-user-plus">
+        <p:submenu id="agiles" label="#{i18n['page.menubar.agile']}" icon="fa fa-dashboard">
             <c:forEach items="#{projectService.getUserProjects(request.remoteUser)}" var="project">
-                <p:menuitem icon="fa fa-user-plus"
+                <p:menuitem icon="fa fa-eye"
                             value="#{project.name}"
                             url="#{path['agileBoard']}?projectKey=#{project.key}"
                             includeViewParams="true" />
             </c:forEach>
         </p:submenu>
 
-        <p:menuitem icon="fa fa-user-plus"
+        <p:menuitem icon="fa fa-plus-square"
                     value="#{i18n['page.menubar.createIssue']}"
                     url="#{path['createIssue']}"
                     rendered="#{not empty request.remoteUser}" />
 
         <f:facet name="options">
-            <p:button icon="fa fa-user-plus"
+            <p:button icon="fa fa-street-view"
                       value="#{i18n['page.menubar.userProfile']}"
                       outcome="#{path['userProfile']}?userId=#{userService.currentUserId}"
                       rendered="#{not empty request.remoteUser}"
                       style="margin-right:10px"
                       type="button" />
 
-            <p:button icon="fa fa-user-plus"
+            <p:button icon="fa fa-bomb"
                       value="#{i18n['page.admin.menubar.title']}"
                       outcome="#{path['admin.page']}"
                       rendered="#{permissionService.isAdmin(request.remoteUser)}"
                       type="button" />
 
-            <p:button icon="fa fa-user-plus"
+            <p:button icon="fa fa-sign-in"
                       value="#{i18n['page.menubar.login']}"
                       outcome="#{path['login']}"
                       rendered="#{empty request.remoteUser}"
                       type="button" />
 
             <h:form style="display: inline">
-                <p:commandButton icon="fa fa-user-plus"
+                <p:commandButton icon="fa fa-sign-out"
                                  value="#{i18n['page.menubar.logout']}"
                                  action="#{userService.logout()}"
                                  rendered="#{not empty request.remoteUser}" />

@@ -16,9 +16,6 @@ import javax.persistence.Enumerated;
 @Embeddable
 public class RetrospectiveItemEmbeddable {
 
-    @Column(nullable = false)
-    private int rate;
-
     @Column(length = 256, nullable = false)
     private String description;
 

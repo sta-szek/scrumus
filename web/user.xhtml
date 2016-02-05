@@ -57,13 +57,13 @@
                     <p:commandButton id="editButton"
                                      value="#{i18n['page.user.edit']}"
                                      action="#{editUserService.edit}"
-                                     icon="fa fa-user-plus"
+                                     icon="fa fa-save"
                                      validateClient="true"
                                      update="editableUserForm" />
                 </h:form>
 
                 <p:commandButton value="#{i18n['page.user.changePassword']}"
-                                 icon="fa fa-user-plus"
+                                 icon="fa fa-edit"
                                  validateClient="true"
                                  onclick="PF('confirmation').show()" />
 

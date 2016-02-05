@@ -13,7 +13,7 @@
                              value="#{userService.allUsers}"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                              paginator="true"
-                             rows="10">
+                             rows="5">
                     <p:column headerText="#{i18n['page.admin.user.firstname']}">
                         <h:outputText value="#{user.firstName}" />
                     </p:column>
@@ -37,17 +37,18 @@
                                          onclick="PF('confirmation').show()">
                             <f:setPropertyActionListener value="#{user}" target="#{userService.userToDelete}" />
                         </p:commandButton>
-                        <p:button value="#{i18n['page.admin.user.view']}"
+                        <p:button icon="fa fa-eye"
+                                  value="#{i18n['page.admin.user.view']}"
                                   href="#{path['userProfile']}?userId=#{user.id}" />
                         <p:commandButton value="#{i18n['page.admin.user.administratorPermissions.grant']}"
                                          id="grantAdminPermissions"
-                                         icon="fa fa-remove"
+                                         icon="fa fa-graduation-cap"
                                          action="#{permissionService.grantAdminPermission(user)}"
                                          rendered="${not permissionService.isAdmin(user.username)}"
                                          update="userListTable" />
                         <p:commandButton value="#{i18n['page.admin.user.administratorPermissions.remove']}"
                                          id="removeAdminPermissions"
-                                         icon="fa fa-remove"
+                                         icon="fa fa-hotel"
                                          action="#{permissionService.removeAdminPermission(user)}"
                                          rendered="${permissionService.isAdmin(user.username)}"
                                          update="userListTable" />

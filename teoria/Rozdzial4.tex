@@ -1,10 +1,10 @@
-\chapter{Dokumentacja wdrożeniowa i testowa}
-W tym rozdziale opiszę proces budowania projektu z zastosowaniem specjalnie przeznaczonego do tego celu systemu Gradle. Następnie prześledzimy przebieg wdrażania z wykorzystaniem kontenerów Dockerów, a na końcu przedstawię statystyki oraz wyniki testów projektu.
+\chapter{Dokumentacja wdrożeniowa i~testowa}
+W tym rozdziale opiszę proces budowania projektu z zastosowaniem specjalnie przeznaczonego do tego celu systemu Gradle. Następnie prześledzimy przebieg wdrażania z~wykorzystaniem kontenerów Dockerów, a na końcu przedstawię statystyki oraz wyniki testów projektu.
 
 \section{Gradle}
-We wcześniejszych rozdziałach został opisany system Gradle, który jest używany podczas budowy projektu wytwarzanego w ramach pracy dyplomowej. Skupię się tutaj na opisaniu komend użytecznych podczas pracy z kodem oraz przedstawię wyniki uruchomienia budowy na lokalnym serwerze TeamCity.
+We wcześniejszych rozdziałach został opisany system Gradle, który jest używany podczas budowy projektu wytwarzanego w ramach pracy dyplomowej. Skupię się tutaj na~opisaniu komend użytecznych podczas pracy z kodem oraz przedstawię wyniki uruchomienia budowy na lokalnym serwerze TeamCity.
 
-Na początek jednak pragnę przedstawić tabelę porównawczą systemu Gradle oraz Maven\footnote{Wyczerpujące porównanie wybranych systemów można znaleźć pod adresem \url{http://gradle.org/maven_vs_gradle/}}, w celu lepszego zobrazowania wyboru oraz zachęcenia do korzystania z tegoż frameworka. Wyniki zostały zawarte w tabeli \ref{tabela:gradle_vs_maven}.
+Na początek jednak pragnę przedstawić tabelę porównawczą systemu Gradle oraz Maven\footnote{Wyczerpujące porównanie wybranych systemów można znaleźć pod adresem \url{http://gradle.org/maven_vs_gradle/}}, ilustrującą kryteria na podstawie których został dokonany wybór narzędzia dla ciągłej integracji kodu. Wyniki zostały zawarte w tabeli \ref{tabela:gradle_vs_maven}.
 
 \begin{table}[h!]
 	\caption{Porównanie systemu Gradle vs Maven}
@@ -27,7 +27,7 @@ Na początek jednak pragnę przedstawić tabelę porównawczą systemu Gradle or
 		\hline	
 		Przyrostowe budowanie & Tak & Nie \\
 		\hline	
-		Deamon & Tak & Nie \\
+		Daemon & Tak & Nie \\
 		\hline	
 		Równoległe wykonywanie zadań & Tak & Nie \\
 		\hline	
@@ -48,17 +48,17 @@ Projekt wytworzony podczas pracy dyplomowej korzystał z lokalnego serwera do bu
 
 \begin{verbatim}
 	[20:20:00]Skip checking for changes - changes are already collected
-	[20:20:00]Clearing temporary directory: E:\study\TeamCity\buildAgent\temp\buildTmp
+	[20:20:00]Clearing temporary directory: E:\study\TeamCity\buildAgent\buildTmp
 	[20:20:00]Publishing internal artifacts
-	[20:20:00]Checkout directory: E:\study\TeamCity\buildAgent\work\2166da533cb64e16
-	[20:20:00]Updating sources: server side checkout
+	[20:20:00]Checkout directory: E:\study\TeamCity\buildAgent\21cb64e16
+	[20:20:00][Updating sources] server side checkout
 	[20:20:00][Updating sources] Using vcs information from agent ...
 	[20:20:00][Updating sources] Building incremental patch for VCS root:...
 	[20:20:01][Updating sources] Repository sources transferred: 36.14 KB total
-	[20:20:01][Updating sources] Updating E:\study\TeamCity\buildAgent\work\2166da533cb64e16
+	[20:20:01][Updating sources] Updating E:\study\TeamCity\buildAgent\21cb64e16
 	[20:20:01]Step 1/1: Gradle (7m:31s)
 	[20:20:01][Step 1/1] Starting: "C:\Program Files\gradle-2.6\bin\gradle.bat" ...
-	[20:20:01][Step 1/1] in directory: E:\study\TeamCity\buildAgent\work\2166da533cb64e16
+	[20:20:01][Step 1/1] in directory: E:\study\TeamCity\buildAgent\21cb64e16
 	[20:20:03][Step 1/1] Starting Gradle in TeamCity build 174
 	[20:20:03][Step 1/1] :clean
 	[20:20:04][Step 1/1] :compileJava (2s)
@@ -144,13 +144,13 @@ CMD ["/opt/jboss/wildfly/bin/standalone.sh",
 			"-b", "0.0.0.0", 
 			"-bmanagement", "0.0.0.0"]\end{lstlisting}
 
-W przedstawionym wyżej listingu tworzymy obraz Dockera oparty na obrazie \textit{jboss/wildfly}, co mówi klauzula \textit{FROM}. Następnie przełączamy się na użytkownika \textit{root} i ustawiamy dwie zmienne środowiskowe za pomocą komendy \textit{ENV}. Kolejnym krokiem jest aktualizacja systemu oraz zainstalowanie bazy danych Postgresql i skryptu telnet, który jest przydatny przy sprawdzaniu poprawności działania systemu. Następnie tworzymy użytkownika o nazwie \textit{admin}. Po tych operacjach kopiujemy konfigurację bazy zawartą w folderze \textit{postgres}, wystawiamy porty na zewnątrz kontenera. Komenda \textit{CMD} mówi nam, co ma się wykonać po uruchomieniu kontenera. W naszym przypadku jest to uruchomienie serwera wildfly w wersji standalone, na której uprzednio skonfigurowany został system scrumus.
+W przedstawionym wyżej listingu tworzymy obraz Dockera oparty na obrazie \textit{jboss/wildfly}, co mówi klauzula \textit{FROM}. Następnie przełączamy się na użytkownika \textit{root} i~ustawiamy dwie zmienne środowiskowe za pomocą komendy \textit{ENV}. Kolejnym krokiem jest aktualizacja systemu oraz zainstalowanie bazy danych Postgresql i skryptu telnet, który jest przydatny przy sprawdzaniu poprawności działania systemu. Następnie tworzymy użytkownika o nazwie \textit{admin}. Po tych operacjach kopiujemy konfigurację bazy zawartą w~folderze \textit{postgres}, wystawiamy porty na zewnątrz kontenera. Komenda \textit{CMD} mówi nam, co ma się wykonać po uruchomieniu kontenera. W naszym przypadku jest to uruchomienie serwera wildfly w wersji standalone, na której uprzednio skonfigurowany został system scrumus.
 
 \section{Wyniki testów}
-Kolejnym, a zarazem ostatnim elementem jakie zostaną opisane w pracy dyplomowej będzie opis testów jednostkowych i integracyjnych. Podczas pisania testów korzystano z konwencji \textit{given-when-then}, czyli mając (given) wartości, kiedy (when) wykonana zostanie dana operacje, wtedy (then) upewnij się, że coś się zgadza lub coś się wykonało. Zostaną również przedstawione wyniki pokrycia kodu oraz krótkie statystyki dot. projektu.
+Kolejnym, a zarazem ostatnim elementem jakie zostaną opisane w pracy dyplomowej będzie opis testów jednostkowych i integracyjnych. Podczas pisania testów korzystano z~konwencji \textit{given-when-then}, czyli mając (given) wartości, kiedy (when) wykonana zostanie dana operacje, wtedy (then) upewnij się, że coś się zgadza lub coś się wykonało. Zostaną również przedstawione wyniki pokrycia kodu oraz krótkie statystyki dot. projektu.
 
 \subsection{Testy jednostkowe}
-W pracy do jednostkowego przetestowania kodu użyto frameworka JUnit wspartego kolejną biblioteką do "podszywania się obiektów" (\textit{ang. mocking objects}) PowerMockito. Testy jednostkowe stosuje się, jak sama nazwa mówi, do przetestowania jednostkowej funkcjonalności np. dodawania liczb, generowania ciągu znaków czy wywoływania metod. W celu poprawy czytelności kodu zastosowano funkcje projektu AssertJ ułatwiającego asercje z bogatym wsparciem dla list, obiektów \textit{Optional} czy strumieni z Java 8. Kod przykładowego testu został przedstawiony na listingu \ref{lis:unit}.
+W pracy do jednostkowego przetestowania kodu użyto frameworka JUnit wspartego kolejną biblioteką do "podszywania się obiektów" (\textit{ang. mocking objects}) PowerMockito. Testy jednostkowe stosuje się, jak sama nazwa mówi, do przetestowania jednostkowej funkcjonalności np. dodawania liczb, generowania ciągu znaków czy wywoływania metod. W~celu poprawy czytelności kodu zastosowano funkcje projektu AssertJ ułatwiającego asercje z bogatym wsparciem dla list, obiektów \textit{Optional} czy strumieni z Java 8. Kod przykładowego testu został przedstawiony na listingu \ref{lis:unit}.
 
 \begin{lstlisting}[caption={Kod przykładowego testu jednostkowego}, label=lis:unit, numbers=none]
 @Test
@@ -173,7 +173,7 @@ Następnym rodzajem testów były testy integracyjne, które w odróżnieniu od 
 
 W pracy zastosowano podejście, które umożliwia komunikację z bazą danych. Dzięki temu mogło zostać przetestowane również mapowanie się obiektów na struktury oraz zachowanie się JPA podczas próby wprowadzenia błędnych danych, które nie zawsze były oczywiste.
 
-Testy integracyjne korzystają z frameworku Arquillian, który jak wcześniej opisano pozwala tworzyć pliki wdrożeniowe i uruchamiać je na serwerach wbudowanych, lokalnych oraz zdalnych. Przykład utworzenia testowego pliku wdrożenia został przedstawiony na listingu \ref{lis:arqu}.
+Testy integracyjne korzystają z frameworku Arquillian, który jak wcześniej opisano pozwala tworzyć pliki wdrożeniowe i uruchamiać je na serwerach wbudowanych, lokalnych oraz zdalnych. Przykład utworzenia testowego pliku wdrożenia został przedstawiony na~listingu \ref{lis:arqu}.
 
 \begin{lstlisting}[caption={Przykład przygotowania pliku wdrożenia Arquillian}, label=lis:arqu, numbers=none]
  public static WebArchive createDeployment() {
@@ -188,9 +188,9 @@ Testy integracyjne korzystają z frameworku Arquillian, który jak wcześniej op
 										  .as(WebArchive.class);
  }\end{lstlisting}
 
-Przedstawiony wyżej listnig tworzy plik WAR oraz dodaje rekurencyjnie do niego pakiety znajdujące się w pakietach: edu.piotrjonski.scrumus, org.assertj.core, org.mockito, org.obejnesis, org.apache.commons.collections4. Dodatkowo kopiowane są pliki ustawień bazy danych - persistence.xml oraz plik konfiguracji systemu. Wszystko jest wdrażane pod nazwą test.war.
+Przedstawiony wyżej listnig tworzy plik WAR (\textit{ang. Web Archive Resource}) oraz dodaje rekurencyjnie do niego pakiety znajdujące się w pakietach: \textit{edu.piotrjonski.scrumus, org.assertj.core, org.mockito, org.obejnesis, org.apache.commons.collections4}. Dodatkowo kopiowane są pliki ustawień bazy danych - \textit{persistence.xml} oraz plik konfiguracji systemu. Wszystko jest wdrażane pod nazwą \textit{test.war}.
 
-Na listingu \ref{lis:integ} przedstawiono przykładowy test integracyjny. W pierwszej kolejności tworzone są dwa nowe zadania, które następnie zostają zapisane w bazie danych za pomocą obiektu DAO. Obiekt DAO został wstrzyknięty (\textit{ang. injected}) do klasy testu, co było możliwe dzięki uruchomieniu testu w kontenerze. Kolejnym krokiem jest wyszukanie zadań z odpowiednim statusem - to właśnie metoda o nazwie \textit{findAllIssuesWithIssueType} jest tutaj testowana. Na końcu następuje sprawdzenie, czy zwrócona lista zawiera dwa elementy.
+Na listingu \ref{lis:integ} przedstawiono przykładowy test integracyjny. W pierwszej kolejności tworzone są dwa nowe zadania, które następnie zostają zapisane w bazie danych za pomocą obiektu DAO. Obiekt DAO został wstrzyknięty (\textit{ang. injected}) do klasy testu, co~było możliwe dzięki uruchomieniu testu w kontenerze. Kolejnym krokiem jest wyszukanie zadań z odpowiednim statusem - to właśnie metoda o nazwie \textit{findAllIssuesWithIssueType} jest tutaj testowana. Na końcu następuje sprawdzenie, czy zwrócona lista zawiera dwa elementy.
 
 \begin{lstlisting}[caption={Przykład testu integracyjnego}, label=lis:integ, numbers=none]
 @Test
@@ -217,6 +217,6 @@ Podczas pracy napisano 103 (składających się z 2774 linii kodu) testy jednost
 
 Łącznie napisano 16428 linii kodu Javy, 2137 xhtml, 1086 \LaTeX, 292 xml oraz 83 css, co daje 20026 powodów do radości.  Sumaryczny czas wytworzenia projektu, wraz z częścią teoretyczną, wyniósł 98 dni. W tym czasie rozwiązano 43 zadania, wykonano 196 zdalnych budowań projektów oraz 262 commity, co daje około 204 linie kodu, 0.4 zadania, 2 budowy projektu i 2.7 commita dziennie.
 
-Kolejnym faktem jest, iż w aplikacji stosowano języka Java w wersji 8 oraz wykorzystywano wszystkie jego mechanizmy takie jak strumienie czy Optionale. Dzięki Optionalom w kodzie produkcyjnym nie ma ani jednego słówka kluczowego \textbf{null}, a przynajmniej w całej logice biznesowej.
+Kolejnym faktem jest, iż aplikację projektowano opierając się na dobrych wzorcach programistycznych \cite{CLEAN_CODE}\cite{REFACTOR}\cite{CI}, a podczas implementacji korzystano z języka Java w wersji 8 oraz wykorzystywano wszystkie jego mechanizmy takie jak strumienie czy kontenery wartości Optional. Dzięki tym kontenerom w kodzie produkcyjnym nie ma ani jednego słówka kluczowego \textbf{null}, a przynajmniej w~całej logice biznesowej.
 
-Łączne pokrycie kodu nie przekracza poziomu 72\% klas 43\% metod i 32\% linii kodu. Taki wynik jest dalece rozbieżny z prawdą przez problemy z kompatybilnością frameworku Arquillian, PowerMockito oraz narzędzia mierzącego pokrycie kodu jakim jest IntelliJ Code Coverage Runner. Spowodowane jest to tworzeniem obiektów proxy przez Arquilliana, przez co pokrycie wywoływanych metod nie jest w pełni mierzone. Inne narzędzia służące do pomiaru takie jak JaCoCo czy Cobertura również miały z tym faktem problemy.
+Łączne pokrycie kodu nie przekracza poziomu 72\% klas, 43\% metod oraz 32\% linii kodu. Taki wynik jest dalece rozbieżny ze stanem faktycznym przez problemy z kompatybilnością frameworku Arquillian, PowerMockito oraz narzędzia mierzącego pokrycie kodu jakim jest IntelliJ Code Coverage Runner. W rzeczywistości testy integracyjne pokrywają więcej metod, niż jest to wskazane przez używane narzędzia. Spowodowane jest to tworzeniem obiektów proxy przez Arquilliana i dlatego pokrycie wywoływanych metod nie jest w pełni mierzone. Inne narzędzia służące do pomiaru takie jak JaCoCo czy Cobertura również miały z tym faktem problemy.

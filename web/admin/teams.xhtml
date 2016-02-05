@@ -53,14 +53,14 @@
                         </p:commandButton>
                         <p:commandButton value="#{i18n['page.admin.team.select.scrumMaster']}"
                                          id="selectScrumMaster"
-                                         icon="fa-user-plus"
+                                         icon="fa fa-graduation-cap"
                                          onclick="PF('selectScrumMaster').show()"
                                          rendered="#{empty scrumMaster}">
                             <f:setPropertyActionListener value="#{tm.id}" target="#{permissionService.scrumMasterTeamId}" />
                         </p:commandButton>
                         <p:commandButton value="#{i18n['page.admin.team.remove.scrumMaster']}"
                                          id="removeScrumMaster"
-                                         icon="fa fa-remove"
+                                         icon="fa fa-hotel"
                                          rendered="#{not empty scrumMaster}"
                                          action="#{permissionService.removeScrumMaster}"
                                          update="teamsListPanel">
@@ -68,7 +68,7 @@
                         </p:commandButton>
                         <p:commandButton value="#{i18n['page.admin.team.add.user']}"
                                          id="addUserButton"
-                                         icon="fa-user-plus"
+                                         icon="fa fa-user-plus"
                                          onclick="PF('addUser').show()">
                             <f:setPropertyActionListener value="#{tm.id}" target="#{teamService.addUserTeamId}" />
                         </p:commandButton>

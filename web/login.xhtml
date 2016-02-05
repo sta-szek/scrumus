@@ -2,34 +2,48 @@
         xmlns:h="http://xmlns.jcp.org/jsf/html"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <script>
+        $(document).ready(function () {
+            $('#logo').addClass('animated fadeInDown');
+            $("input:text:visible:first").focus();
+        });
+        $('#username').focus(function () {
+            $('label[for="username"]').addClass('selected');
+        });
+        $('#username').blur(function () {
+            $('label[for="username"]').removeClass('selected');
+        });
+        $('#password').focus(function () {
+            $('label[for="password"]').addClass('selected');
+        });
+        $('#password').blur(function () {
+            $('label[for="password"]').removeClass('selected');
+        });
+    </script>
     <ui:composition template="#{path['common.template']}">
         <ui:define name="content">
             <c:if test="${not empty request.remoteUser}">
-                <h1>dupa</h1>
                 #{facesContext.getCurrentInstance().externalContext.redirect(request.contextPath.concat(path['index']))}
             </c:if>
-
-            <h1>Proszę się zalogować</h1>
-
             <form name="loginForm" method="post" action="j_security_check">
-                <p>
-                    <strong>
-                        <label for="username">Please type your user name: </label>
-                    </strong>
-                    <input id="username" type="text" name="j_username" size="25" />
-                </p>
-
-                <p>
-                    <strong>
-                        <label for="password">Please type your password: </label>
-                    </strong>
-                    <input id="password" type="password" size="15" name="j_password" />
-                </p>
-
-                <p>
-                    <input type="submit" value="Submit" />
-                    <input type="reset" value="Reset" />
-                </p>
+                <div class="container">
+                    <div class="login-box animated fadeInUp">
+                        <div class="box-header" style="color: white; padding: 2px; font-size: 17px;">
+                            <h2>Log In</h2>
+                        </div>
+                        <br />
+                        <label for="username" style="padding-top: 5px">Username</label>
+                        <br />
+                        <input id="username" type="text" name="j_username" />
+                        <br />
+                        <label for="password">Password</label>
+                        <br />
+                        <input id="password" type="password" name="j_password" />
+                        <br />
+                        <button type="submit" style="font-size: 14px;">Sign In</button>
+                        <br />
+                    </div>
+                </div>
             </form>
         </ui:define>
     </ui:composition>

@@ -1,10 +1,9 @@
 package edu.piotrjonski.scrumus.business;
 
 import edu.piotrjonski.scrumus.dao.BacklogDAO;
+import edu.piotrjonski.scrumus.dao.ProductOwnerDAO;
 import edu.piotrjonski.scrumus.dao.ProjectDAO;
-import edu.piotrjonski.scrumus.domain.Backlog;
-import edu.piotrjonski.scrumus.domain.Project;
-import edu.piotrjonski.scrumus.domain.Team;
+import edu.piotrjonski.scrumus.domain.*;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -37,6 +36,12 @@ public class ProjectManager {
 
     @Inject
     private BacklogDAO backlogDAO;
+
+    @Inject
+    private UserManager userManager;
+
+    @Inject
+    private ProductOwnerDAO productOwnerDAO;
 
     public Optional<Project> create(Project project) throws AlreadyExistException {
         if (exists(project)) {
@@ -84,15 +89,34 @@ public class ProjectManager {
     }
 
     public List<Project> getUserProjects(final String username) {
-        return teamManager.findTeamsForUser(username)
-                          .stream()
-                          .map(Team::getProjects)
-                          .flatMap(Collection::stream)
-                          .collect(Collectors.toList());
+        Project project = findProjectIfUserIsProductOwner(username);
+        List<Project> lisOfUserProjects = teamManager.findTeamsForUser(username)
+                                                     .stream()
+                                                     .map(Team::getProjects)
+                                                     .flatMap(Collection::stream)
+                                                     .collect(Collectors.toList());
+        if (project != null) {
+            lisOfUserProjects.add(project);
+        }
+        return lisOfUserProjects;
     }
 
     public Optional<Backlog> findBacklogForProject(final String projectKey) {
         return backlogDAO.findBacklogForProject(projectKey);
+    }
+
+    private Project findProjectIfUserIsProductOwner(final String username) {
+        Optional<Developer> userOptional = userManager.findByUsername(username);
+        if (userOptional.isPresent()) {
+            Optional<ProductOwner> productOwnerOptional = productOwnerDAO.findByDeveloperId(userOptional.get()
+                                                                                                        .getId());
+            if (productOwnerOptional.isPresent()) {
+                return productOwnerOptional.get()
+                                           .getProject();
+            }
+
+        }
+        return null;
     }
 
     private void removeAllTeams(final String projectKey, final Project project) {

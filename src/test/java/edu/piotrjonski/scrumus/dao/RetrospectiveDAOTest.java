@@ -117,7 +117,6 @@ public class RetrospectiveDAOTest {
 
     private RetrospectiveItemEmbeddable createDatabaseRetrospectiveItem() {
         RetrospectiveItemEmbeddable retrospectiveItemEmbeddable = new RetrospectiveItemEmbeddable();
-        retrospectiveItemEmbeddable.setRate(RATE);
         retrospectiveItemEmbeddable.setDescription(ITEM_DESC);
         retrospectiveItemEmbeddable.setRetrospectiveItemTypeEnum(MINUS1);
         return retrospectiveItemEmbeddable;

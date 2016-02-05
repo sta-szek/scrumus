@@ -1,9 +1,16 @@
 <h:body xmlns="http://www.w3.org/1999/xhtml"
         xmlns:h="http://xmlns.jcp.org/jsf/html"
-        xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
     <ui:composition template="#{path['common.template']}">
         <ui:define name="content">
-            <h:outputText value="ACCESS DENIED!" />
+            <div style="text-align: center">
+                <p:graphicImage name="Security_Denied.png" />
+                <br />
+                <h:outputText value="ACCESS DENIED!" />
+                <br />
+                <h:outputText value="You dont have permissions to view this page." />
+            </div>
         </ui:define>
     </ui:composition>
 </h:body>
