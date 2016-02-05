@@ -1,28 +1,21 @@
 \chapter{Wstęp}
 \section{Wprowadzenie}
+Szybki rozwój w dziedzinie informatyki spowodował wzrost zapotrzebowania na systemy, które pomogłyby rozwiązywać problemy kwestii organizacyjnej projektów. W dzisiejszych czasach zarządzanie projektami jest szerokim zagadnieniem, a na jego temat powstało wiele publikacji i rozwiązań. Do najpopularniejszych rozwiązań dotyczących zarządzania projektami można zaliczyć m.in.: Scrum, Lean Softrware Development (LSD), Feature Driven Development (FDD) czy też Test Driven Development (TDD). 
 
-Szybki rozwój w dziedzinie informatyki spowodował wzrost zapotrzebowania na systemy, które pomogłyby rozwiązywać problemy kwestii organizacyjnej projektów. W dzisiejszych czasach zarządzanie projektami jest szerokim zagadnieniem, a na jego temat powstało wiele publikacji i rozwiązań. Do najpopularniejszych rozwiązań dotyczących zarządzania projektami można zaliczyć m.in.:
-\begin{enumerate}
-	\item Scrum,
-	\item Lean Softrware Development,
-	\item Feature Driven Development,
-	\item Test Driven Development.
-\end{enumerate}
-
-Nie jest to wyczerpująca lista metodyk -- istnieje wiele innych metod tworzenia oprogramowania, jednak opis wszystkich wykracza poza zakres tej pracy. W mojej pracy dyplomowej poruszam temat systemu do zarządzania projektami, który jest dedykowany metodyce Scrum. Nie bez powodu wybrana została właśnie ta zwinna metodyka - jest to na chwilę obecną najbardziej popularna forma wytwarzania oprogramowania, a umiejętności pracy wraz z nią są pożądane przez większość pracodawców na całym świecie.
+Nie jest to wyczerpująca lista metodyk -- istnieje wiele innych metod tworzenia oprogramowania, jednak opis wszystkich wykracza poza zakres tej pracy. Wszystkie z nich zaliczają się do tzw. metodyk zwinnych, które charakteryzują wspólne cechy takie jak: prowadzenie historyjek użytkownika, planowanie interwałów i podsumowanie ich w postaci retrospektywy oraz wytwarzanie oprogramowania w sposób przyrostowy. W mojej pracy dyplomowej poruszam temat systemu do zarządzania projektami, który jest dedykowany metodyce Scrum. Nie bez powodu wybrana została właśnie ta zwinna metodyka - jest to na chwilę obecną najbardziej popularna forma wytwarzania oprogramowania, a~umiejętności pracy wraz z nią są pożądane przez większość pracodawców na całym świecie. 
 
 Obecnie na rynku istnieje mnóstwo narzędzi do tego typu zadań, a liczba oferowanych szkoleń z zakresu zarządzania projektami oraz metodyki Scrum nie ma końca. Coraz więcej firm decyduje się na zakup drogich systemów wspomagających proces zarządzania projektami. Ale czy zakup takiego programu jest konieczny? W mojej pracy przedstawię system, który bez żadnych przeszkód mógłby być stosowany w niewielkich zespołach, czy firmach, które nie zamierzają wydawać fortuny na profesjonalne aplikacje.
 
 \section{Czym właściwie jest scrum}
-Scrum jest zwinną metodyką wytwarzania oprogramowania, której początki sięgają połowy lat 80. Polega ona na przyrostowym wytwarzaniu produktu oraz stałej komunikacji z klientem bądź też jego reprezentantem - właścicielem produktu (\textit{ang. product owner}). Zespół deweloperski ({\textit{ang. team}}) podejmuje się przygotowania wybranych przez siebie funkcjonalności, których wybór może być zależny od właściciela produktu - to on ustala priorytety. Jednak w celu zminimalizowania ryzyka "wyższej władzy", czyli narzucaniu zbyt wysokich wymagań i nieosiągalnych terminów, co często czynią właściciele produktu, została wprowadzona kolejna rola - scrum master, którą ciężko jest przetłumaczyć na język polski (z tego względu w dalszej części pracy będę posługiwał się właśnie tym terminem). To on "chroni" zespół przed przepracowaniem i rozwiązuje napotykane po drodze problemy. Aby prawidłowo przedstawić omawiany temat należy zapoznać się z kilkoma pojęciami, które są nieodłącznym elementem tej metody:
+Scrum jest zwinną metodyką wytwarzania oprogramowania, której początki sięgają połowy lat 80 \cite{SCRUM}. Polega ona na przyrostowym wytwarzaniu produktu oraz stałej komunikacji z klientem bądź też jego reprezentantem - właścicielem produktu (\textit{ang. product owner}). Zespół deweloperski ({\textit{ang. team}}) podejmuje się przygotowania wybranych przez siebie funkcjonalności, których wybór może być zależny od właściciela produktu -- to on ustala priorytety. Jednak w celu zminimalizowania ryzyka "wyższej władzy", czyli narzucaniu zbyt wysokich wymagań i nieosiągalnych terminów, co często czynią właściciele produktu, została wprowadzona kolejna rola - scrum master, którą ciężko jest przetłumaczyć na język polski (z tego względu w dalszej części pracy będę posługiwał się właśnie tym terminem). To on "chroni" zespół przed przepracowaniem i rozwiązuje napotykane po drodze problemy. Aby prawidłowo przedstawić omawiany temat należy zapoznać się z~kilkoma pojęciami, które są nieodłącznym elementem tej metody:
 \begin{itemize}
 	\item \textbf{właściciel produktu} (\textit{ang. product owner}) - osoba odpowiedzialna za projekt,
 	\item \textbf{scrum master} - osoba, która pomaga zespołowi w organizacji czasu pracy a także rozwiązuje powstałe problemy,
 	\item \textbf{zespół deweloperski} (\textit{ang. team}) - zespół programistów wspólnie pracujących nad wytworzeniem produktu,
 	\item \textbf{rejestr produktu} (\textit{ang. backlog}) - jest to zbiór zadań / funkcjonalności wchodzących w skład wytwarzanego projektu,
 	\item \textbf{interwał} (\textit{ang. sprint}) - interwały czasowe, w których realizowane są zadania. Bezpośrednio przed każdym sprintem występuje planowanie, czyli wybieranie funkcjonalności do zrealizowania w danym sprincie. Bezpośrednio po sprincie powinna wystąpić retrospektywa oraz demo produktu, które jest często pomijane przez wiele zespołów,
-	\item \textbf{historyjka} (\textit{ang. story}) - najmniejsza jednostka podlegająca ocenie (wg. wybranej przez zespół skali). 
-	\item \textbf{zadanie} (\textit{ang. task}) - zadania, które mogą być powiązane bezpośrednio z historyjką lub projektem.
+	\item \textbf{historyjka} (\textit{ang. story}) - najmniejsza jednostka podlegająca ocenie (wg. wybranej przez zespół skali),
+	\item \textbf{zadanie} (\textit{ang. task}) - zadania, które mogą być powiązane bezpośrednio z historyjką lub projektem,
 	\item \textbf{retrospektywa} (\textit{ang. retrospective}) - wydarzenie, które ma miejsce na koniec interwału. W tym momencie zespół deweloperski spisuje wszystkie wady i zalety minionego sprintu oraz wspólnie z scrum masterem starają się rozwiązać zaistniałe problemy. Jest to jeden z ważniejszych elementów Scruma.
 \end{itemize} 
 

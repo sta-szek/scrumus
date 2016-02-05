@@ -1,19 +1,16 @@
 \chapter{Podsumowanie}
 
-\section{Przegląd projektu}
 W trakcie pracy nad systemem wykorzystano wiele nowych technologii, które przyczyniły się do jego jakości oraz stabilności. Pierwszym celem jaki został postawiony systemowi była jego użyteczność -- zostały zaimplementowane tylko obligatoryjne funkcje systemu, jaki powinien posiadać projekt tej kategorii. W łatwy i przejrzysty sposób pozwala on~zarządzać projektem, który jest prowadzony za pomocą metodyki Scrum. 
 
-Następnie w celu zapewnienia trwałości wszystkie dane systemu zapisywane są w darmowej i popularnej bazie Postgres. Przy procesie interakcji z bazą posłużyła nam specyfikacja JPA oraz jej implementacja oparta na Hibernate. Takie rozwiązanie sprawia, że~modyfikacja i pielęgnacja już istniejącego kodu nie powinna sprawiać żadnych problemów.
+W celu zapewnienia trwałości wszystkie dane systemu zapisywane są w darmowej i~popularnej bazie Postgres. Do zapewnienia interakcji aplikacji z bazą danych wykorzystana została specyfikacja JPA oraz jej implementacja oparta na Hibernate. Takie rozwiązanie sprawia, że~modyfikacja i pielęgnacja już istniejącego kodu nie powinna sprawiać żadnych problemów.
 
-Do osiągnięcia kolejnego celu pracy - przejrzystości interfejsu użytkownika - zastosowano dobrze znany i lubiany framework JSF wzbogacony o darmowe komponenty z biblioteki Primefaces. Umożliwiło to skupienie się na wytwarzaniu funkcjonalności systemu zapewniając jednocześnie jego prostotę i elegancję.
+Do osiągnięcia kolejnego celu pracy - przejrzystości interfejsu użytkownika - zastosowano popularny szkielet aplikacji JSF wzbogacony o darmowe komponenty z biblioteki Primefaces. Umożliwiło to skupienie się na wytwarzaniu funkcjonalności systemu zapewniając jednocześnie jego prostotę i elegancję.
 
 Ostatnim celem była prosta konfiguracja i zarządzanie systemem oraz szybka reakcja na niedostępność systemu. Został on osiągnięty dzięki wykorzystaniu systemu Docker, który jest pionierem jeżeli chodzi o szybie wytwarzanie i uruchamianie środowisk zarówno deweloperskich jak i testowych. 
 
 Całość została uzupełniona o testy jednostkowe oraz integracyjne. W kodzie wykorzystano szereg udogodnień, jakie wprowadza wersja ósma Javy. Dodatkowo praktyczna znajomość wzorców projektowych pozwoliła na efektywniejszą pracę i szybszą implementację funkcjonalności przy jak najmniejszym wysiłku.
 
-
-\section{Czy można było zrobić coś lepiej?}
-Oczywiście, jak każdy projekt informatyczny, tak i ten posiada pewne wady. Został on~napisany jako monolityczna aplikacja webowa, co sprawia, że wgranie nowej funkcjonalności powoduje konieczność ponownego wdrożenia całego systemu.
+Oczywiście, jak każdy projekt informatyczny, tak i ten posiada pewne wady. Został on~napisany jako monolityczna aplikacja webowa, co sprawia, że dołączenie nowej funkcjonalności powoduje konieczność ponownego wdrożenia całego systemu.
 
 System może zostać zrefaktoryzowany do postaci szeregu mikroserwisów, z których każdy posiada swoją odpowiedzialność. Na przykład serwis użytkowników odpowiadający za autentykację i autoryzację, serwis warstwy prezentacji korzystający z serwisu danych np. zadań lub projektów. Całość mogłaby również zostać oparta na Dockerach oraz na~technologi mikroserwisów, którą wspaniale wspierają takie projekty jak SpringBoot.
 

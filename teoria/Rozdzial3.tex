@@ -3,7 +3,7 @@
 \section{Architektura systemu}
 Wytworzony w ramach pracy system jest aplikacją webową, która korzysta z bazy danych do odczytu i zapisu niezbędnych informacji. Z systemu będą korzystać cztery, wcześniej omówione, rodzaje użytkowników poprzez interfejs WWW. Dodatkowo system został zaprojektowany w taki sposób, aby była możliwość rozbudowy o dodatkowe zdalne aplikacje klienckie umożliwiające komunikację z systemem. System wraz z bazą danych znajdują się w kontenerze Dockera.
 
-Jak wiadomo, połączenie ze zdalnymi klientami nie jest gwarantowane, co skłania do zastosowania mechanizmu komunikacji Java Message Service (JMS). Jednak pomimo, że połączenie nie jest ani stabilne, ani nawet w ogóle nie wiadomo czy zostało nawiązane, zależy nam, aby informować użytkowników o różnego rodzaju błędach, lub przesyłać im dane na bieżąco. Co prawda JMS umożliwia realizację tego zadania lecz do komunikacji z samodzielną aplikacją zostały udostępnione inne ścieżki komunikacji. 
+Jak wiadomo, połączenie ze zdalnymi klientami nie jest gwarantowane, co skłania do zastosowania mechanizmu komunikacji Java Message Service (JMS). Jednak pomimo, że połączenie nie jest ani stabilne, ani nawet w ogóle nie wiadomo czy zostało nawiązane, zależy nam, aby informować użytkowników o różnego rodzaju błędach, lub przesyłać im dane na bieżąco. Co prawda JMS umożliwia realizację tego zadania lecz do komunikacji z~samodzielną aplikacją zostały udostępnione inne ścieżki komunikacji. 
 
 Pierwsza z nich to warstwa usługi REST (\textit{ang. Representational State Transfer}). Dzięki takiemu rozwiązaniu z aplikacją może komunikować się dowolny system niezależnie od~tego w jakim języku został napisany. Warstwa ta nie została zaimplementowana w całości, lecz jedynie jako fragment funkcjonalności w celu zobrazowania komunikacji ze zdalnymi klientami.
 
@@ -18,7 +18,7 @@ Wyżej wymienione rozwiązania stanowią warstwę do komunikacji z aplikacjami k
 	\label{fig:diagsys}
 \end{figure}
 
-Jak wiadomo, interfejsy graficzne, a co za tym idzie – sposób ich obsługi będą się różniły w zależności od klienta. Najważniejszą różnicą będzie sposób walidacji danych oraz obsługi błędów. W samodzielnej aplikacji klienckiej walidacja danych oraz obsługa błędów powinna wystąpić możliwie szybko, aby nie generować zbędnego ruchu sieciowego. Jeżeli w trakcie przetwarzania żądania wystąpią jakiekolwiek błędy, to powinny one zostać zamienione na wyjątki aplikacji oraz być przekazane do klienta. Również w aplikacji WWW walidacja danych wejściowych powinna znajdować się na poziomie klienta. Jednak nie można wykluczyć sytuacji, w której błędy pojawią się po stronie serwera nawet po poprawnej walidacji danych. Z tego względu błędy powinny być konwertowane po stronie serwera (przez dodatkową warstwę obsługi JSF) na obiekty typu FacesMessage i dodawane bezpośrednio do kontekstu aplikacji WWW. 
+Jak wiadomo, interfejsy graficzne, a co za tym idzie – sposób ich obsługi będą się różniły w zależności od klienta. Najważniejszą różnicą będzie sposób walidacji danych oraz obsługi błędów. W samodzielnej aplikacji klienckiej walidacja danych oraz obsługa błędów powinna wystąpić możliwie szybko, aby nie generować zbędnego ruchu sieciowego. Jeżeli w trakcie przetwarzania żądania wystąpią jakiekolwiek błędy, to powinny one zostać zamienione na wyjątki aplikacji oraz być przekazane do klienta. Również w aplikacji WWW walidacja danych wejściowych powinna znajdować się na poziomie klienta. Jednak nie można wykluczyć sytuacji, w której błędy pojawią się po stronie serwera nawet po~poprawnej walidacji danych. Z tego względu błędy powinny być konwertowane po stronie serwera (przez dodatkową warstwę obsługi JSF) na obiekty typu FacesMessage i~dodawane bezpośrednio do kontekstu aplikacji WWW. 
 
 Wymagania odnośnie walidacji oraz obsługi błędów mogą skłaniać do wprowadzenia dodatkowej warstwy w architekturze systemu. Niemniej jednak taka warstwa nie została wprowadzona, gdyż spowodowałoby to nadmierny przyrost klas oraz niepotrzebne uogólnienie systemu. Zamiast tego logika biznesowa generuje wyjątki aplikacji, gdy zajdzie taka potrzeba oraz przekazuje je warstwie wyżej lub klientom, które wywołują dane komponenty logiki biznesowej. Oznacza to tyle, że obsługa błędów aplikacji w samodzielnej aplikacji Javy powinna być zaimplementowana po stronie samej aplikacji, natomiast interfejs WWW posiada dodatkową warstwę w postaci komponentów JavaBeans, które takową obsługę zapewnią. 
 
@@ -46,7 +46,7 @@ W oparciu o artefakty metodyki Scrum oraz wymagania funkcjonalne z systemu wyła
 \textit{Zadanie} -- jest tworzone przez \textit{użytkowników}.
 
 
-Należy wspomnieć, iż jest to częściowy opis obiektów biznesowych, który ma na celu zobrazowanie procesu powstawania aplikacji. Wyczerpujący opis tych obiektów byłby zbyt rozległy i nie stanowi on meritum części opisowej pracy. Aby zobrazować wpływ poszczególnych jednostek biznesowych oraz ich wzajemne relacje należy przedstawić ich diagram UML:
+Należy wspomnieć, iż jest to częściowy opis obiektów biznesowych, który ma na celu zobrazowanie procesu powstawania aplikacji. Wyczerpujący opis tych obiektów byłby zbyt rozległy i nie stanowi on meritum części opisowej pracy. Wpływ poszczególnych jednostek biznesowych oraz ich wzajemne relacje przedstawiono na rysunku \ref{fig:diaguml} w postaci diagramu modelu  pojęciowego UML.
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=15cm]{rysunki/diaguml.pdf}	
@@ -55,7 +55,7 @@ Należy wspomnieć, iż jest to częściowy opis obiektów biznesowych, który m
 \end{figure}
 
 \section{Struktura projektu}
-W poprzedniej sekcji została opisana ogólna architektura systemu umożliwiająca pogląd na całą aplikację. Teraz zostaną opisane wybrane komponenty. Zanim jednak to zrobimy zostanie przedstawiony bardziej szczegółowy diagram jednostek biznesowych, który uwzględnia funkcje, jakie można wykonywać w systemie. Diagram powstał w oparciu o~wymagania funkcjonalne, które szczegółowo opisują, co dany użytkownik może robić, oraz o~identyfikację komponentów biznesowych omówionych wcześniej. Także i tutaj należy zwrócić uwagę, iż nie jest to wyczerpujący diagram klas opracowanych w systemie.
+W poprzedniej sekcji opisany został model dziedzinowy (koncepcyjny) projektowanej aplikacji. W niniejszym punkcie zostaną opisane wybrane komponenty. Zanim jednak to zrobimy zostanie przedstawiony bardziej szczegółowy diagram jednostek biznesowych, który uwzględnia funkcje, jakie można wykonywać w systemie. Diagram z rysunku \ref{fig:diagdetailuml} powstał w oparciu o~wymagania funkcjonalne, które szczegółowo opisują, co dany użytkownik może robić, oraz o~identyfikację komponentów biznesowych omówionych wcześniej. Także i tutaj należy zwrócić uwagę, iż nie jest to wyczerpujący diagram klas opracowanych w systemie.
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=15cm]{rysunki/diagdetailuml.pdf}	
@@ -87,8 +87,8 @@ Drugim możliwym zastosowaniem jest możliwość wysyłania rozgłoszeń w syste
 
 Na tym etapie warto wspomnieć, że komponenty sterowane komunikatami można wprowadzić na każdym etapie udoskonalania projektu, jednak warto zwrócić uwagę na to, jak zachować odpowiedni stopień bezpieczeństwa przy tego typu komunikatach.
 
-\section{Model bazy danych}
-System korzysta z zewnętrznej bazy danych, której model jest przedstawiony na rysunku \ref{fig:modeldb}. Został on wygenerowany za pomocą testowej wersji programu DbSchema. Kolorem zielonym zostały oznaczone tabele dotyczące użytkowników oraz uprawnień. Niebieski kolor oznacza tabele złączeniowe, które nie mają odwzorowania w kodzie. Czerwone zaś to pozostałe struktury występujące w projekcie -- są to obiekty na których operują użytkownicy. Model bazy został wygenerowany bezpośrednio z klas Javy, za pomocą frameworka Hibernate oraz specyfikacji JPA (\textit{ang. Java Persistence API}).
+\section{Schemat danych}
+System korzysta z zewnętrznej bazy danych, której schemat jest przedstawiony na rysunku \ref{fig:modeldb}. Został on wygenerowany za pomocą testowej wersji programu DbSchema. Kolorem zielonym zostały oznaczone tabele dotyczące użytkowników oraz uprawnień. Niebieski kolor oznacza tabele złączeniowe, które nie mają odwzorowania w kodzie. Czerwone zaś to pozostałe struktury występujące w projekcie -- są to obiekty na których operują użytkownicy. Schemat danych został wygenerowany bezpośrednio z klas Javy, za pomocą frameworka Hibernate oraz specyfikacji JPA (\textit{ang. Java Persistence API}).
 
 \begin{sidewaysfigure}[h!]
 	\centering
@@ -107,8 +107,8 @@ Przy omawianiu szczegółów implementacji przejdziemy przez cały zaprojektowan
 	\label{fig:struktura_intellij}
 \end{figure}
 
-\subsection{Baza danych i model}
-Model bazy danych został zaprojektowany w postaci klas Javy, tak zwanych encji, a następnie automatycznie wygenerowany za pomocą frameworka Hibernate. Dodatkowo zaraz po wdrożeniu aplikacji na serwer wykonywany jest skrypt SQL, który wprowadza do bazy testowe wartości i tworzy użytkowników z różnymi uprawnieniami. Przykładowy kod klasy encji został przedstawiony na listingu \ref{lis:encja}, a konfiguracja Hibernate na listingu~\ref{lis:konfiguracja_hibernate}.
+\subsection{Baza danych i model encyjny}
+Baza danych i model encyjny został zaprojektowany w postaci klas Javy, tak zwanych encji, a następnie automatycznie wygenerowany za pomocą frameworka Hibernate. Dodatkowo zaraz po wdrożeniu aplikacji na serwer wykonywany jest skrypt SQL, który wprowadza do bazy testowe wartości i tworzy użytkowników z różnymi uprawnieniami. Przykładowy kod klasy encji został przedstawiony na listingu \ref{lis:encja}, a konfiguracja Hibernate na listingu~\ref{lis:konfiguracja_hibernate}.
 
 \begin{lstlisting}[caption={Przykładowa klasa encji}, label=lis:encja, numbers=none]
 @Data									 		// adnotacja lombok dodaje gettery
@@ -159,7 +159,7 @@ private String key;
 	</persistence-unit>
 </persistence>\end{lstlisting}
 
-Kolejnym krokiem było zaprojektowanie warstwy DAO, która jest odpowiedzialna za pobieranie, utrwalania i usuwanie obiektów z bazy. Klasy obsługujące te żądania zostały zaprojektowane zgodnie ze wzorcem DAO\footnote{D. Alur, J. Crupi, D. Malks, \textit{Core J2EE. Wzorce projektowe}, Helion 2004, s.383}, który pozwolił zaoszczędzić sporo kodu poprzez zastosowanie typów generycznych i klas abstrakcyjnych. Dodatkowo podczas wykonywanych operacji występuje mapowanie pomiędzy obiektami encji, które są przechowywane w bazie danych, a obiektami biznesowymi, które są bezpośrednio używane w~warstwach wyższych. Takie rozgraniczenie jest zgodne z regułą OCP\footnote{R. C. Martin, \textit{Czysty kod. Podręcznik dobrego programisty}, Helion 2010, s.160}.
+Kolejnym krokiem było zaprojektowanie warstwy DAO, która jest odpowiedzialna za pobieranie, utrwalania i usuwanie obiektów z bazy. Klasy obsługujące te żądania zostały zaprojektowane zgodnie ze wzorcem DAO \cite{J2EE}\cite{WZORCE}, który pozwolił zaoszczędzić sporo kodu poprzez zastosowanie typów generycznych i klas abstrakcyjnych. Dodatkowo podczas wykonywanych operacji występuje mapowanie pomiędzy obiektami encji, które są przechowywane w bazie danych, a obiektami biznesowymi, które są bezpośrednio używane w~warstwach wyższych. Takie rozgraniczenie jest zgodne z regułą OCP\footnote{R. C. Martin, \textit{Czysty kod. Podręcznik dobrego programisty}, Helion 2010, s.160}.
 
 
 \subsection{Warstwa logiki biznesowej}
@@ -194,7 +194,7 @@ MessageDigest.getInstance("SHA-256").update(text.getBytes("UTF-8")).digest());
 
 Ostatnią warstwą, która zostanie omówiona w tym rozdziale jest widok użytkownika, czyli warstwa prezentacji. Równolegle z tą warstwą idą w parze usługi REST, za pomocą których można komunikować się z systemem. Są jednak one rozwinięte w bardzo małym stopniu - jedynie w celach demonstracyjnych.
 
-Widoki użytkownika opierają się na technologii JSF 2.2 oraz darmowym frameworku Primefaces w wersji 5.3. Dzięki jego funkcjonalności zostały zaimplementowane tabele, menu, czy różnego rodzaju listy dostępne na stronach systemu. Całość operacji wykonywanych na stronie odbywa się za pomocą JavaScriptu, który został użyty przez framework oraz ziaren Backing Beans. Ziarna te mają dodatkową funkcjonalność - są odpowiedzialne za dostarczanie danych do widoku oraz obsługę żądań - to w nich znajduje się kod, który wykonuje się po wciśnięciu przycisku. Dla przykładu na listingu \ref{lis:kod_form_tworzenia_uzyt} został przedstawiony częściowy kod formularza, napisany w xhtml z użyciem JSF oraz Primefaces odpowiedzialny za wykonanie akcji tworzenia użytkownika. Na listingu został pominięty fragment odpowiedzialny za wyświetlanie pól, w których wprowadza się imię, nazwisko, nazwę użytkownika oraz adres e-mail.
+Widoki użytkownika opierają się na technologii JSF 2.2 \cite{JSF_CORE} oraz darmowym frameworku Primefaces w wersji 5.3. Dzięki jego funkcjonalności zostały zaimplementowane tabele, menu, czy różnego rodzaju listy dostępne na stronach systemu. Całość operacji wykonywanych na stronie odbywa się za pomocą JavaScriptu, który został użyty przez framework oraz ziaren Backing Beans. Ziarna te mają dodatkową funkcjonalność - są odpowiedzialne za dostarczanie danych do widoku oraz obsługę żądań - to w nich znajduje się kod, który wykonuje się po wciśnięciu przycisku. Dla przykładu na listingu \ref{lis:kod_form_tworzenia_uzyt} został przedstawiony częściowy kod formularza, napisany w xhtml z użyciem JSF oraz Primefaces odpowiedzialny za wykonanie akcji tworzenia użytkownika. Na listingu został pominięty fragment odpowiedzialny za wyświetlanie pól, w których wprowadza się imię, nazwisko, nazwę użytkownika oraz adres e-mail.
 
 \begin{lstlisting}[caption={Kod formularza tworzenia użytkownika}, label=lis:kod_form_tworzenia_uzyt, numbers=none]
 <h:form id="createUserForm">
@@ -267,7 +267,7 @@ System posiada również zabezpieczenia, sprawiające, że część stron jest w
  </security-constraint>\end{lstlisting}
  
  
- Kolejnym możliwym sposobem komunikacji z aplikacją jest usługa REST, która jest oparta na protokole HTTP. Po wysłaniu zapytania na wybrany adres otrzymujemy odpowiedź w postaci obiektu JSON (JavaScript Object Notation). Protokół HTTP umożliwia różne metody do komunikacji m.in.: GET - pobranie zasobów, POST - wysłanie zapytania z ciałem, które jest używane przy zapisywaniu obiektów oraz DELETE - usuwanie obiektów. Listing \ref{lis:rest} przedstawia konfigurację takiej usługi, która mogłaby zostać zaimplementowana na nowej lub istniejącej już warstwie JSF. Takie rozwiązanie umożliwia rozbudowę systemu o dodatkowe klienty.
+ Kolejnym możliwym sposobem komunikacji z aplikacją jest usługa REST, która jest oparta na protokole HTTP. Po wysłaniu zapytania na wybrany adres otrzymujemy odpowiedź w postaci obiektu JSON (\textit{ang. JavaScript Object Notation}). Protokół HTTP oferuje zbiór metod, które w REST API (\textit{ang. Application Programming Interface}) umownie używa się do wymienionych czynności: GET - pobranie zasobów, POST - wysłanie zapytania z~ciałem, które jest używane przy zapisywaniu obiektów oraz DELETE - usuwanie obiektów. Listing \ref{lis:rest} przedstawia konfigurację takiej usługi, która mogłaby zostać zaimplementowana na nowej lub istniejącej już warstwie JSF. Takie rozwiązanie umożliwia rozbudowę systemu o dodatkowe klienty.
 
 \begin{lstlisting}[caption={Przykładowa usługa REST}, label=lis:rest, numbers=none]
 @GET

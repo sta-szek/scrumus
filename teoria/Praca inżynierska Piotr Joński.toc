@@ -4,7 +4,7 @@
 \contentsline {section}{\numberline {1.3}Przegl\IeC {\k a}d dost\IeC {\k e}pnych narz\IeC {\k e}dzi}{3}
 \contentsline {section}{\numberline {1.4}Rozwi\IeC {\k a}zanie problemu}{4}
 \contentsline {section}{\numberline {1.5}Cel i zakres pracy}{4}
-\contentsline {section}{\numberline {1.6}Struktura pracy}{5}
+\contentsline {section}{\numberline {1.6}Struktura pracy}{4}
 \contentsline {chapter}{\numberline {2}Analiza biznesowa problemu i\nobreakspace {}za\IeC {\l }o\IeC {\.z}enia projektowe}{7}
 \contentsline {section}{\numberline {2.1}Role i u\IeC {\.z}ytkownicy systemu}{7}
 \contentsline {section}{\numberline {2.2}Wymagania funkcjonalne}{7}
@@ -40,9 +40,9 @@
 \contentsline {subsubsection}{\numberline {3.2.1.1}Komponenty encyjne}{24}
 \contentsline {subsubsection}{\numberline {3.2.1.2}Komponenty sesyjne}{25}
 \contentsline {subsubsection}{\numberline {3.2.1.3}Komponenty sterowane komunikatami}{25}
-\contentsline {section}{\numberline {3.3}Model bazy danych}{26}
+\contentsline {section}{\numberline {3.3}Schemat danych}{26}
 \contentsline {section}{\numberline {3.4}Szczeg\IeC {\'o}\IeC {\l }y implementacji}{28}
-\contentsline {subsection}{\numberline {3.4.1}Baza danych i model}{28}
+\contentsline {subsection}{\numberline {3.4.1}Baza danych i model encyjny}{28}
 \contentsline {subsection}{\numberline {3.4.2}Warstwa logiki biznesowej}{31}
 \contentsline {subsection}{\numberline {3.4.3}Warstwa prezentacji}{33}
 \contentsline {chapter}{\numberline {4}Dokumentacja wdro\IeC {\.z}eniowa i\nobreakspace {}testowa}{37}
@@ -53,5 +53,3 @@
 \contentsline {subsection}{\numberline {4.3.2}Testy integracyjne}{43}
 \contentsline {subsection}{\numberline {4.3.3}Podsumowanie wynik\IeC {\'o}w test\IeC {\'o}w oraz statystyki}{44}
 \contentsline {chapter}{\numberline {5}Podsumowanie}{47}
-\contentsline {section}{\numberline {5.1}Przegl\IeC {\k a}d projektu}{47}
-\contentsline {section}{\numberline {5.2}Czy mo\IeC {\.z}na by\IeC {\l }o zrobi\IeC {\'c} co\IeC {\'s} lepiej?}{48}
