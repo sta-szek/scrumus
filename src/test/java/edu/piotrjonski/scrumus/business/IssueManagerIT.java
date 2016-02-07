@@ -107,15 +107,11 @@ public class IssueManagerIT {
         Issue savedIssue = issueManager.create(issue, lastProject)
                                        .get();
         boolean result = issueDAO.exist(savedIssue.getId());
-        List<Issue> issues = backlogDAO.findBacklogForProject(lastProject.getKey())
-                                       .get()
-                                       .getIssues();
 
 
         // then
         assertThat(result).isTrue();
         assertThat(savedIssue.getProjectKey()).isEqualTo(PROJECT_KEY);
-        assertThat(issues).contains(savedIssue);
     }
 
     @Test
