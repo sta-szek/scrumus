@@ -25,6 +25,6 @@ public class PictureEntity {
     @Column(nullable = false, length = 255, unique = false)
     private String name;
 
-    @Lob
+    @Basic
     private byte[] data;
 }

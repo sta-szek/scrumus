@@ -7,7 +7,7 @@
     <module id="scrumus-Web">
         <web>
             <web-uri>web.war</web-uri>
-            <context-root>scrumusWeb</context-root>
+            <context-root>scrumus</context-root>
         </web>
     </module>
     <module id="scrumus-EJB">
