@@ -38,6 +38,11 @@
                     url="#{path['createSprint']}"
                     rendered="#{not empty request.remoteUser}" />
 
+        <p:menuitem icon="fa fa-plus"
+                    value="#{i18n['page.menubar.createStory']}"
+                    url="#{path['createStory']}"
+                    rendered="#{not empty request.remoteUser}" />
+
         <f:facet name="options">
             <p:button icon="fa fa-street-view"
                       value="#{i18n['page.menubar.userProfile']}"

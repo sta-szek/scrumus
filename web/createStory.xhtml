@@ -1,0 +1,82 @@
+<h:body xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="#{path['common.template']}">
+        <ui:define name="content">
+
+            <h:form id="createStoryForm">
+                <p:panel id="createStoryPanel" header="#{i18n['page.createStory.create']}">
+                    <p:focus context="createStoryPanel" />
+                    <p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true" />
+                    <h:panelGrid columns="3" cellpadding="5">
+
+                        <p:outputLabel for="projectKey" value="#{i18n['page.createStory.projectKey']}" />
+                        <p:selectOneMenu id="projectKey"
+                                         value="#{sprintService.createStoryProjectKey}"
+                                         required="true"
+                                         requiredMessage="#{i18n['page.validator.require.createStory.project.key']}">
+                            <f:selectItem itemLabel="#{i18n['page.createStory.selectOne']}" itemValue="" />
+                            <c:forEach var="projKey" items="#{occupiedChecker.allProjectKeys}">
+                                <f:selectItem itemLabel="#{projKey}" itemValue="#{projKey}" />
+                            </c:forEach>
+                            <p:ajax event="itemSelect" listener="#{sprintService.onProjectKeySelect}" update="sprint" />
+                        </p:selectOneMenu>
+                        <p:message for="projectKey" />
+
+                        <p:outputLabel for="sprint" value="#{i18n['page.createStory.sprint']}" />
+                        <p:autoComplete id="sprint"
+                                        multiple="false"
+                                        value="#{sprintService.createStorySprint}"
+                                        completeMethod="#{sprintService.completeSprints}"
+                                        var="sprint"
+                                        itemLabel="#{sprint}"
+                                        itemValue="#{sprint}"
+                                        forceSelection="true"
+                                        dropdown="true"
+                                        required="true"
+                                        requiredMessage="#{i18n['page.validator.require.createStory.sprint']}">
+                            <p:column>
+                                <h:outputText value="#{sprint}" />
+                            </p:column>
+                        </p:autoComplete>
+                        <p:message for="sprint" />
+
+                        <p:outputLabel for="name" value="#{i18n['page.createStory.name']}" />
+                        <p:inputText id="name"
+                                     value="#{sprintService.createStoryName}"
+                                     required="true"
+                                     requiredMessage="#{i18n['page.validator.require.story.name']}"
+                                     maxlength="255" />
+                        <p:message for="name" />
+
+                        <p:outputLabel for="points" value="#{i18n['page.createStory.points']}" />
+                        <p:inputText id="points"
+                                     value="#{sprintService.createStoryPoints}" />
+                        <p:message for="points" />
+
+                        <p:outputLabel for="definitionOfDone" value="#{i18n['page.createStory.definitionOfDone']}" />
+                        <p:inputTextarea rows="8"
+                                         cols="150"
+                                         autoResize="true"
+                                         id="definitionOfDone"
+                                         value="#{sprintService.createStoryDefinitionOfDone}"
+                                         maxlength="4096" />
+                        <p:message for="definitionOfDone" />
+                    </h:panelGrid>
+                    <p:commandButton id="createButton"
+                                     value="#{i18n['page.createStory.create']}"
+                                     action="#{sprintService.createStory}"
+                                     ajax="false"
+                                     icon="fa fa-plus"
+                                     validateClient="true">
+                    </p:commandButton>
+                </p:panel>
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</h:body>
+

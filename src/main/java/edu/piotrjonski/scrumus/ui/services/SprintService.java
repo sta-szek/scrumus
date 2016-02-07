@@ -2,12 +2,15 @@ package edu.piotrjonski.scrumus.ui.services;
 
 import edu.piotrjonski.scrumus.business.RetrospectiveManager;
 import edu.piotrjonski.scrumus.business.SprintManager;
+import edu.piotrjonski.scrumus.business.StoryManager;
 import edu.piotrjonski.scrumus.dao.model.project.TimeRange;
 import edu.piotrjonski.scrumus.domain.Retrospective;
 import edu.piotrjonski.scrumus.domain.Sprint;
+import edu.piotrjonski.scrumus.domain.Story;
 import edu.piotrjonski.scrumus.ui.configuration.I18NProvider;
 import edu.piotrjonski.scrumus.ui.configuration.PathProvider;
 import lombok.Data;
+import org.primefaces.event.SelectEvent;
 import org.slf4j.Logger;
 
 import javax.annotation.PostConstruct;
@@ -17,7 +20,10 @@ import javax.inject.Inject;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class SprintService implements Serializable {
@@ -37,11 +43,21 @@ public class SprintService implements Serializable {
     @Inject
     private RetrospectiveManager retrospectiveManager;
 
+    @Inject
+    private StoryManager storyManager;
+
     private String createSprintProjectKey;
     private String createSprintName;
     private String createSprintDefinitionOfDone;
     private Date startDate;
     private Date endDate;
+
+    private String createStoryProjectKey;
+    private String createStoryName;
+    private String createStorySprint;
+    private String createStoryPoints;
+    private String createStoryDefinitionOfDone;
+    private List<Sprint> sprintsForCurrentlySelectedProject = new ArrayList<>();
 
     private String createRetrospectiveDescription;
     private int createRetrospectiveSprintId;
@@ -55,6 +71,23 @@ public class SprintService implements Serializable {
                                                                        .get("sprintId"));
         } catch (NumberFormatException e) {
             createRetrospectiveSprintId = 0;
+        }
+    }
+
+    public void onProjectKeySelect(SelectEvent event) {
+        createStoryProjectKey = event.getObject()
+                                     .toString();
+        sprintsForCurrentlySelectedProject = findSprintsForProject(createStoryProjectKey);
+    }
+
+    public List<String> completeSprints(String query) {
+        if (createStoryProjectKey != null) {
+            return sprintsForCurrentlySelectedProject.stream()
+                                                     .map(Sprint::getName)
+                                                     .filter(name -> name.startsWith(query))
+                                                     .collect(Collectors.toList());
+        } else {
+            return new ArrayList<>();
         }
     }
 
@@ -94,6 +127,35 @@ public class SprintService implements Serializable {
         }
     }
 
+    public String createStory() {
+        Story story = crateStoryFromFields();
+        try {
+            Story savedStory = storyManager.createStory(story)
+                                           .get();
+            logger.info("Created story with id '" + savedStory.getId() + "' in sprint with id '" + savedStory.getSprintId() + "'.");
+            final String projectKey = createStoryProjectKey;
+            clearFields();
+            return pathProvider.getRedirectPath("project") + "&projectKey=" + projectKey;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            createFacesMessage("system.fatal.create.story", null);
+            return null;
+        }
+    }
+
+    private Story crateStoryFromFields() {
+        Story story = new Story();
+        story.setDefinitionOfDone(createStoryDefinitionOfDone);
+        story.setName(createStoryName);
+        story.setPoints(Integer.parseInt(createStoryPoints));
+        story.setSprintId(getSprintIdFromName());
+        return story;
+    }
+
+    private List<Sprint> findSprintsForProject(String projectKey) {
+        return sprintManager.findAllSprintsForProject(projectKey);
+    }
+
     private void createFacesMessage(String property, String field) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -128,5 +190,20 @@ public class SprintService implements Serializable {
         endDate = null;
         createRetrospectiveDescription = null;
         createRetrospectiveSprintId = 0;
+        createStoryProjectKey = null;
+        createStoryName = null;
+        createStorySprint = null;
+        createStoryPoints = null;
+        createStoryDefinitionOfDone = null;
+        sprintsForCurrentlySelectedProject = new ArrayList<>();
+    }
+
+    private int getSprintIdFromName() {
+        return sprintsForCurrentlySelectedProject.stream()
+                                                 .filter(sprint -> sprint.getName()
+                                                                         .equals(createStorySprint))
+                                                 .findFirst()
+                                                 .orElse(new Sprint())
+                                                 .getId();
     }
 }
