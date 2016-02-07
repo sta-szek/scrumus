@@ -28,9 +28,14 @@
             </c:forEach>
         </p:submenu>
 
-        <p:menuitem icon="fa fa-plus-square"
+        <p:menuitem icon="fa fa-plus"
                     value="#{i18n['page.menubar.createIssue']}"
                     url="#{path['createIssue']}"
+                    rendered="#{not empty request.remoteUser}" />
+
+        <p:menuitem icon="fa fa-plus"
+                    value="#{i18n['page.menubar.createSprint']}"
+                    url="#{path['createSprint']}"
                     rendered="#{not empty request.remoteUser}" />
 
         <f:facet name="options">

@@ -9,6 +9,11 @@
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
     <managed-bean>
+        <managed-bean-name>sprintService</managed-bean-name>
+        <managed-bean-class>edu.piotrjonski.scrumus.ui.services.SprintService</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
         <managed-bean-name>agileService</managed-bean-name>
         <managed-bean-class>edu.piotrjonski.scrumus.ui.services.AgileService</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>

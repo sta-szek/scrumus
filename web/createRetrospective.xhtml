@@ -1,0 +1,37 @@
+<h:body xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+>
+    <ui:composition template="#{path['common.template']}">
+        <ui:define name="content">
+
+            <h:form id="createRetrospectiveForm">
+                <p:panel id="createRetrospectivePanel" header="#{i18n['page.createRetrospective.create']}">
+                    <p:focus context="createRetrospectivePanel" />
+                    <p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true" />
+                    <h:panelGrid columns="3" cellpadding="5">
+
+                        <p:outputLabel for="description" value="#{i18n['page.createRetrospective.description']}" />
+                        <p:inputTextarea rows="8"
+                                         cols="150"
+                                         autoResize="true"
+                                         id="description"
+                                         value="#{sprintService.createRetrospectiveDescription}"
+                                         maxlength="4096" />
+                        <p:message for="description" />
+                    </h:panelGrid>
+                    <p:commandButton id="createButton"
+                                     value="#{i18n['page.createRetrospective.create']}"
+                                     action="#{sprintService.createRetrospective}"
+                                     ajax="false"
+                                     icon="fa fa-plus"
+                                     validateClient="true">
+                    </p:commandButton>
+                </p:panel>
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</h:body>
+
