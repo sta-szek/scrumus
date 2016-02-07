@@ -200,10 +200,10 @@ Issue issue1 = createIssue();
 Issue issue2 = createIssue();
 issueDAO.saveOrUpdate(issue1);
 issueDAO.saveOrUpdate(issue2);
+IssueType issueType = issue1.getIssueType().getName();
 
 // when
-List<Issue> result = issueDAO.findAllIssuesWithIssueType(issue1.getIssueType()
-.getName());
+List<Issue> result = issueDAO.findAllIssuesWithIssueType(issueType);
 
 // then
 assertThat(result).hasSize(2);
@@ -213,10 +213,10 @@ assertThat(result).hasSize(2);
 \subsection{Podsumowanie wyników testów oraz statystyki}
 Projekt został oparty na wielu różnych frameworkach dedykowanych językowi Java oraz z użyciem komponentów wspierających ciągłą integrację i wdrażanie systemu.
 
-Podczas pracy napisano 103 (składających się z 2774 linii kodu) testy jednostkowe oraz 261 testów integracyjnych, które zawierają 7285 linii kodu. Kod produkcyjny jest złożony z 6349 linii, które zostały zoptymalizowane dzięki wykorzystaniu wzorców. 
+Podczas pracy napisano 103 (składających się z 2773 linii kodu) testy jednostkowe oraz 261 testów integracyjnych, które zawierają 7280 linii kodu. Kod produkcyjny jest złożony z 6645 linii, które zostały zoptymalizowane dzięki wykorzystaniu wzorców. 
 
-Łącznie napisano 16428 linii kodu Javy, 2137 xhtml, 1086 \LaTeX, 292 xml oraz 83 css, co daje 20026 powodów do radości.  Sumaryczny czas wytworzenia projektu, wraz z częścią teoretyczną, wyniósł 98 dni. W tym czasie rozwiązano 43 zadania, wykonano 196 zdalnych budowań projektów oraz 262 commity, co daje około 204 linie kodu, 0.4 zadania, 2 budowy projektu i 2.7 commita dziennie.
+Łącznie napisano 16617 linii kodu Javy, 2346 xhtml, 1034 \LaTeX, 347 .properties, 298 xml oraz 83 css, co daje 20725 powodów do radości.  Sumaryczny czas wytworzenia projektu, wraz z częścią teoretyczną, wyniósł 98 dni. W tym czasie rozwiązano 50 zadania, wykonano 200 zdalnych budowań projektów oraz 288 commity, co daje około 211 linie kodu, 0.5 zadania, 2 budowy projektu i 2.9 commita dziennie.
 
 Kolejnym faktem jest, iż aplikację projektowano opierając się na dobrych wzorcach programistycznych \cite{CLEAN_CODE}\cite{REFACTOR}\cite{CI}, a podczas implementacji korzystano z języka Java w wersji 8 oraz wykorzystywano wszystkie jego mechanizmy takie jak strumienie czy kontenery wartości Optional. Dzięki tym kontenerom w kodzie produkcyjnym nie ma ani jednego słówka kluczowego \textbf{null}, a przynajmniej w~całej logice biznesowej.
 
-Łączne pokrycie kodu nie przekracza poziomu 72\% klas, 43\% metod oraz 32\% linii kodu. Taki wynik jest dalece rozbieżny ze stanem faktycznym przez problemy z kompatybilnością frameworku Arquillian, PowerMockito oraz narzędzia mierzącego pokrycie kodu jakim jest IntelliJ Code Coverage Runner. W rzeczywistości testy integracyjne pokrywają więcej metod, niż jest to wskazane przez używane narzędzia. Spowodowane jest to tworzeniem obiektów proxy przez Arquilliana i dlatego pokrycie wywoływanych metod nie jest w pełni mierzone. Inne narzędzia służące do pomiaru takie jak JaCoCo czy Cobertura również miały z tym faktem problemy.
+Łączne pokrycie kodu nie przekracza poziomu 70\% klas, 40\% metod oraz 30\% linii kodu. Taki wynik jest dalece rozbieżny ze stanem faktycznym przez problemy z kompatybilnością frameworku Arquillian, PowerMockito oraz narzędzia mierzącego pokrycie kodu jakim jest IntelliJ Code Coverage Runner. W rzeczywistości testy integracyjne pokrywają więcej metod, niż jest to wskazane przez używane narzędzia. Spowodowane jest to tworzeniem obiektów proxy przez Arquilliana i dlatego pokrycie wywoływanych metod nie jest w pełni mierzone. Inne narzędzia służące do pomiaru takie jak JaCoCo czy Cobertura również miały z tym faktem problemy.
