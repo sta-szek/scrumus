@@ -69,6 +69,8 @@ public class IssueService implements Serializable {
     private String assigneeFullname;
     private String issueToDelete;
 
+    private boolean addToBacklog;
+
     private List<Sprint> sprintsForCurrentlySelectedProject = new ArrayList<>();
     private List<Story> storiesForCurrentlySelectedSprint = new ArrayList<>();
     private Map<Integer, List<Story>> storiesForSprints = new HashMap<>();
@@ -288,7 +290,10 @@ public class IssueService implements Serializable {
         try {
             Project project = projectManager.findProject(createIssueProjectKey)
                                             .get();
-            Issue savedIssue = issueManager.create(issue, project, getStoryIdFromName())
+            int storyId = addToBacklog == true
+                          ? 0
+                          : getStoryIdFromName();
+            Issue savedIssue = issueManager.create(issue, project, storyId)
                                            .get();
             logger.info("Created issue with id '" + savedIssue.getId() + "' in project with key '" + project.getKey() + "'.");
             clearFields();

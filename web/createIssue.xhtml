@@ -26,6 +26,13 @@
                         </p:selectOneMenu>
                         <p:message for="projectKey" />
 
+                        <p:outputLabel for="backlog" value="#{i18n['page.issue.backlog']}" />
+                        <p:selectBooleanCheckbox id="backlog"
+                                                 value="#{issueService.addToBacklog}">
+                            <p:ajax update="sprint, story" />
+                        </p:selectBooleanCheckbox>
+                        <p:message for="backlog" />
+
                         <p:outputLabel for="sprint" value="#{i18n['page.createIssue.sprint']}" />
                         <p:autoComplete id="sprint"
                                         multiple="false"
@@ -36,6 +43,7 @@
                                         itemValue="#{sprint}"
                                         forceSelection="true"
                                         dropdown="true"
+                                        disabled="#{issueService.addToBacklog}"
                                         required="true"
                                         requiredMessage="#{i18n['page.validator.require.createIssue.sprint']}">
                             <p:ajax event="itemSelect" listener="#{issueService.onSprintSelect}" update="story" />
@@ -55,6 +63,7 @@
                                         itemValue="#{story}"
                                         forceSelection="true"
                                         dropdown="true"
+                                        disabled="#{issueService.addToBacklog}"
                                         required="true"
                                         requiredMessage="#{i18n['page.validator.require.createIssue.story']}">
                             <p:column>

@@ -48,7 +48,6 @@ public class IssueManager {
         }
         issue.setProjectKey(project.getKey());
         Issue savedIssue = saveIssue(issue);
-        addIssueToBacklog(savedIssue, project);
         return Optional.of(savedIssue);
     }
 
@@ -192,6 +191,8 @@ public class IssueManager {
                 Story story = storyOptional.get();
                 story.addIssue(issueOptional.get());
                 storyDAO.saveOrUpdate(story);
+            } else {
+                addIssueToBacklog(issueOptional.get(), project);
             }
         }
         return issueOptional;
