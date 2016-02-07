@@ -22,8 +22,46 @@
                             <c:forEach var="projKey" items="#{occupiedChecker.allProjectKeys}">
                                 <f:selectItem itemLabel="#{projKey}" itemValue="#{projKey}" />
                             </c:forEach>
+                            <p:ajax event="itemSelect" listener="#{issueService.onProjectKeySelect}" update="sprint" />
                         </p:selectOneMenu>
                         <p:message for="projectKey" />
+
+                        <p:outputLabel for="sprint" value="#{i18n['page.createIssue.sprint']}" />
+                        <p:autoComplete id="sprint"
+                                        multiple="false"
+                                        value="#{issueService.createIssueSprint}"
+                                        completeMethod="#{issueService.completeSprints}"
+                                        var="sprint"
+                                        itemLabel="#{sprint}"
+                                        itemValue="#{sprint}"
+                                        forceSelection="true"
+                                        dropdown="true"
+                                        required="true"
+                                        requiredMessage="#{i18n['page.validator.require.createIssue.sprint']}">
+                            <p:ajax event="itemSelect" listener="#{issueService.onSprintSelect}" update="story" />
+                            <p:column>
+                                <h:outputText value="#{sprint}" />
+                            </p:column>
+                        </p:autoComplete>
+                        <p:message for="sprint" />
+
+                        <p:outputLabel for="story" value="#{i18n['page.createIssue.story']}" />
+                        <p:autoComplete id="story"
+                                        multiple="false"
+                                        value="#{issueService.createIssueStory}"
+                                        completeMethod="#{issueService.completeSprintStories}"
+                                        var="story"
+                                        itemLabel="#{story}"
+                                        itemValue="#{story}"
+                                        forceSelection="true"
+                                        dropdown="true"
+                                        required="true"
+                                        requiredMessage="#{i18n['page.validator.require.createIssue.story']}">
+                            <p:column>
+                                <h:outputText value="#{story}" />
+                            </p:column>
+                        </p:autoComplete>
+                        <p:message for="story" />
 
                         <p:outputLabel for="summary" value="#{i18n['page.createIssue.summary']}" />
                         <p:inputText id="summary"
@@ -70,8 +108,8 @@
                         <p:message for="priority" />
 
                         <p:outputLabel for="description" value="#{i18n['page.createIssue.description']}" />
-                        <p:inputTextarea rows="10"
-                                         cols="200"
+                        <p:inputTextarea rows="8"
+                                         cols="150"
                                          autoResize="true"
                                          id="description"
                                          value="#{issueService.createIssueDescription}"
@@ -79,8 +117,8 @@
                         <p:message for="description" />
 
                         <p:outputLabel for="definitionOfDone" value="#{i18n['page.createIssue.definitionOfDone']}" />
-                        <p:inputTextarea rows="10"
-                                         cols="200"
+                        <p:inputTextarea rows="8"
+                                         cols="150"
                                          autoResize="true"
                                          id="definitionOfDone"
                                          value="#{issueService.createIssueDefinitionOfDone}"

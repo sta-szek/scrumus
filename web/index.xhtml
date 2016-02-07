@@ -1,0 +1,15 @@
+<h:body xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="#{path['common.template']}">
+        <ui:define name="content">
+            <c:if test="${empty request.remoteUser}">
+                #{facesContext.getCurrentInstance().externalContext.redirect(request.contextPath.concat(path['login']))}
+            </c:if>
+            <c:if test="${not empty request.remoteUser}">
+                #{facesContext.getCurrentInstance().externalContext.redirect(request.contextPath.concat(path['project']))}
+            </c:if>
+        </ui:define>
+    </ui:composition>
+</h:body>

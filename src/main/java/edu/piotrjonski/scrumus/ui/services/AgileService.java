@@ -9,7 +9,6 @@ import edu.piotrjonski.scrumus.domain.Issue;
 import edu.piotrjonski.scrumus.domain.Sprint;
 import edu.piotrjonski.scrumus.domain.Story;
 import lombok.Data;
-import org.primefaces.event.SelectEvent;
 import org.slf4j.Logger;
 
 import javax.annotation.PostConstruct;
@@ -21,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 @Data
 public class AgileService implements Serializable {
@@ -72,36 +70,6 @@ public class AgileService implements Serializable {
     public List<Story> getStoriesForSprint(int sprintId) {
         return storiesForSprints.getOrDefault(sprintId, new ArrayList<>());
     }
-
-    public List<String> completeSprints(String query) {
-        return sprintsForCurrentlyViewedProject.stream()
-                                               .map(Sprint::getName)
-                                               .filter(name -> name.startsWith(query))
-                                               .collect(Collectors.toList());
-
-    }
-
-    public List<String> completeSprintStories(String query) {
-        int sprintId = sprintsForCurrentlyViewedProject.stream()
-                                                       .filter(sprint -> sprint.getName()
-                                                                               .equals(moveIssueToSprint))
-                                                       .findFirst()
-                                                       .orElse(new Sprint())
-                                                       .getId();
-        return storiesForSprints.getOrDefault(sprintId, new ArrayList<>())
-                                .stream()
-                                .map(Story::getName)
-                                .filter(name -> name.startsWith(query))
-                                .collect(Collectors.toList());
-
-    }
-
-    public void onItemSelect(SelectEvent event) {
-        moveIssueToSprint = event.getObject()
-                                 .toString();
-        moveIssueToStory = null;
-    }
-
 
     private Consumer<Integer> findStoriesAndPutIntoMap() {
         return sprintId -> {

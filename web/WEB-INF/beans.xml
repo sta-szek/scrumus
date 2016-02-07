@@ -43,5 +43,10 @@
         <managed-bean-class>edu.piotrjonski.scrumus.ui.services.TeamService</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>issueService</managed-bean-name>
+        <managed-bean-class>edu.piotrjonski.scrumus.ui.services.IssueService</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
 
 </faces-config>

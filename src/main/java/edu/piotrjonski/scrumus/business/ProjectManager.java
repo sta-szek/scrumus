@@ -3,6 +3,7 @@ package edu.piotrjonski.scrumus.business;
 import edu.piotrjonski.scrumus.dao.BacklogDAO;
 import edu.piotrjonski.scrumus.dao.ProductOwnerDAO;
 import edu.piotrjonski.scrumus.dao.ProjectDAO;
+import edu.piotrjonski.scrumus.dao.ScrumMasterDAO;
 import edu.piotrjonski.scrumus.domain.*;
 
 import javax.ejb.Stateless;
@@ -42,6 +43,9 @@ public class ProjectManager {
 
     @Inject
     private ProductOwnerDAO productOwnerDAO;
+
+    @Inject
+    private ScrumMasterDAO scrumMasterDAO;
 
     public Optional<Project> create(Project project) throws AlreadyExistException {
         if (exists(project)) {
@@ -89,32 +93,48 @@ public class ProjectManager {
     }
 
     public List<Project> getUserProjects(final String username) {
-        Project project = findProjectIfUserIsProductOwner(username);
-        List<Project> lisOfUserProjects = teamManager.findTeamsForUser(username)
-                                                     .stream()
-                                                     .map(Team::getProjects)
-                                                     .flatMap(Collection::stream)
-                                                     .collect(Collectors.toList());
-        if (project != null) {
-            lisOfUserProjects.add(project);
+        Optional<Developer> userOptional = userManager.findByUsername(username);
+        Project productOwnerProject = null;
+        List<Project> scrumMasterProjects = new ArrayList<>();
+        if (userOptional.isPresent()) {
+            Developer user = userOptional.get();
+            productOwnerProject = findProjectIfUserIsProductOwner(user);
+            List<ScrumMaster> scrumMasterList = scrumMasterDAO.findByDeveloperId(user.getId());
+            scrumMasterProjects = scrumMasterList.stream()
+                                                 .map(ScrumMaster::getTeams)
+                                                 .flatMap(List::stream)
+                                                 .map(Team::getProjects)
+                                                 .flatMap(List::stream)
+                                                 .collect(Collectors.toList());
+
         }
-        return lisOfUserProjects;
+        List<Project> userTeamsProjects = getUserTeamsProjects(username);
+        if (productOwnerProject != null) {
+            userTeamsProjects.add(productOwnerProject);
+        }
+        if (!scrumMasterProjects.isEmpty()) {
+            userTeamsProjects.addAll(scrumMasterProjects);
+        }
+        return userTeamsProjects;
     }
 
     public Optional<Backlog> findBacklogForProject(final String projectKey) {
         return backlogDAO.findBacklogForProject(projectKey);
     }
 
-    private Project findProjectIfUserIsProductOwner(final String username) {
-        Optional<Developer> userOptional = userManager.findByUsername(username);
-        if (userOptional.isPresent()) {
-            Optional<ProductOwner> productOwnerOptional = productOwnerDAO.findByDeveloperId(userOptional.get()
-                                                                                                        .getId());
-            if (productOwnerOptional.isPresent()) {
-                return productOwnerOptional.get()
-                                           .getProject();
-            }
+    private List<Project> getUserTeamsProjects(final String username) {
+        return teamManager.findTeamsForUser(username)
+                          .stream()
+                          .map(Team::getProjects)
+                          .flatMap(Collection::stream)
+                          .collect(Collectors.toList());
+    }
 
+    private Project findProjectIfUserIsProductOwner(final Developer user) {
+        Optional<ProductOwner> productOwnerOptional = productOwnerDAO.findByDeveloperId(user.getId());
+        if (productOwnerOptional.isPresent()) {
+            return productOwnerOptional.get()
+                                       .getProject();
         }
         return null;
     }

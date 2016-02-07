@@ -5,22 +5,19 @@ import edu.piotrjonski.scrumus.domain.*;
 import edu.piotrjonski.scrumus.ui.configuration.I18NProvider;
 import edu.piotrjonski.scrumus.ui.configuration.PathProvider;
 import lombok.Data;
+import org.primefaces.event.SelectEvent;
 import org.slf4j.Logger;
 
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
-@RequestScoped
-@Named
 public class IssueService implements Serializable {
 
     @Inject
@@ -44,6 +41,12 @@ public class IssueService implements Serializable {
     @Inject
     private ProjectManager projectManager;
 
+    @Inject
+    private SprintManager sprintManager;
+
+    @Inject
+    private StoryManager storyManager;
+
     private String issueTypeName;
     private int issueTypeId;
     private int stateId;
@@ -57,12 +60,53 @@ public class IssueService implements Serializable {
     private String createIssueIssueType;
     private String createIssuePriority;
     private String createIssueProjectKey;
+    private String createIssueSprint;
+    private String createIssueStory;
     private String createIssueState;
 
     private Issue viewedIssue;
 
     private String assigneeFullname;
     private String issueToDelete;
+
+    private List<Sprint> sprintsForCurrentlySelectedProject = new ArrayList<>();
+    private List<Story> storiesForCurrentlySelectedSprint = new ArrayList<>();
+    private Map<Integer, List<Story>> storiesForSprints = new HashMap<>();
+
+    public List<String> completeSprintStories(String query) {
+        if (createIssueSprint != null) {
+            return storiesForCurrentlySelectedSprint.stream()
+                                                    .map(Story::getName)
+                                                    .filter(name -> name.startsWith(query))
+                                                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    public List<String> completeSprints(String query) {
+        if (createIssueProjectKey != null) {
+            return sprintsForCurrentlySelectedProject.stream()
+                                                     .map(Sprint::getName)
+                                                     .filter(name -> name.startsWith(query))
+                                                     .collect(Collectors.toList());
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    public void onProjectKeySelect(SelectEvent event) {
+        createIssueProjectKey = event.getObject()
+                                     .toString();
+        sprintsForCurrentlySelectedProject = findSprintsForProject(createIssueProjectKey);
+    }
+
+    public void onSprintSelect(SelectEvent event) {
+        createIssueSprint = event.getObject()
+                                 .toString();
+        int sprintId = getSprintIdFromName();
+        storiesForCurrentlySelectedSprint = storyManager.findAllStoriesForSprint(sprintId);
+    }
 
     public List<IssueType> getAllIssueTypes() {
         return issueManager.findAllIssueTypes();
@@ -244,7 +288,7 @@ public class IssueService implements Serializable {
         try {
             Project project = projectManager.findProject(createIssueProjectKey)
                                             .get();
-            Issue savedIssue = issueManager.create(issue, project)
+            Issue savedIssue = issueManager.create(issue, project, getStoryIdFromName())
                                            .get();
             logger.info("Created issue with id '" + savedIssue.getId() + "' in project with key '" + project.getKey() + "'.");
             clearFields();
@@ -345,6 +389,28 @@ public class IssueService implements Serializable {
         }
         String usernameWithBrace = userFullname.split("\\(")[1];
         return usernameWithBrace.substring(0, usernameWithBrace.length() - 1);
+    }
+
+    private int getSprintIdFromName() {
+        return sprintsForCurrentlySelectedProject.stream()
+                                                 .filter(sprint -> sprint.getName()
+                                                                         .equals(createIssueSprint))
+                                                 .findFirst()
+                                                 .orElse(new Sprint())
+                                                 .getId();
+    }
+
+    private int getStoryIdFromName() {
+        return storiesForCurrentlySelectedSprint.stream()
+                                                .filter(sprint -> sprint.getName()
+                                                                        .equals(createIssueStory))
+                                                .findFirst()
+                                                .orElse(new Story())
+                                                .getId();
+    }
+
+    private List<Sprint> findSprintsForProject(String projectKey) {
+        return sprintManager.findAllSprintsForProject(projectKey);
     }
 
     private void createFacesMessage(String property, String field) {

@@ -182,6 +182,21 @@ public class IssueManager {
         return issueDAO.findAllIssueSummaries();
     }
 
+    public Optional<Issue> create(final Issue issue, final Project project, final int storyId)
+            throws AlreadyExistException, NotExistException {
+        Optional<Issue> issueOptional = create(issue, project);
+        if (issueOptional.isPresent()) {
+            Optional<Story> storyOptional = storyDAO.findById(storyId);
+
+            if (storyOptional.isPresent()) {
+                Story story = storyOptional.get();
+                story.addIssue(issueOptional.get());
+                storyDAO.saveOrUpdate(story);
+            }
+        }
+        return issueOptional;
+    }
+
     private boolean isIssueTypeInUse(final IssueType issueType) {
         return issueDAO.isIssueTypeInUse(issueType.getName());
     }
