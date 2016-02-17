@@ -2,7 +2,8 @@
 \beamer@sectionintoc {1}{Wst\IeC {\k e}p}{3}{0}{1}
 \beamer@sectionintoc {2}{Czym jest metodyka Scrum}{4}{0}{2}
 \beamer@sectionintoc {3}{Przegl\IeC {\k a}d dost\IeC {\k e}pnych narz\IeC {\k e}dzi}{5}{0}{3}
-\beamer@sectionintoc {4}{Cel i zakres pracy}{10}{0}{4}
-\beamer@sectionintoc {5}{Wybrane za\IeC {\l }o\IeC {\.z}enia i analiza biznesowa}{20}{0}{5}
-\beamer@sectionintoc {6}{Prezentacja narz\IeC {\k e}dzi}{40}{0}{6}
-\beamer@sectionintoc {7}{Pytania}{41}{0}{7}
+\beamer@sectionintoc {4}{Cel i zakres pracy}{6}{0}{4}
+\beamer@sectionintoc {5}{Analiza biznesowa}{8}{0}{5}
+\beamer@sectionintoc {6}{Diagram systemowy aplikacji}{17}{0}{6}
+\beamer@sectionintoc {7}{Diagram jednostek biznesowych}{18}{0}{7}
+\beamer@sectionintoc {8}{Technologie i narz\IeC {\k e}dzia}{19}{0}{8}
